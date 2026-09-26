@@ -1,6 +1,7 @@
 # Coco.Nut – Migration plan from WinNUT-Client (VB.NET) to C#
 
-Status: **in progress** on branch `claude/intelligent-johnson-32c3oo`.
+Status: **in progress** on branch `claude/intelligent-johnson-32c3oo`. Waves 0-2 (skeleton, A-F) are done;
+waves 3-4 (G/H app shell + secondary windows, I CI + docs) are in progress.
 Source of the port: [SebastianOehm/WinNUT-Client @ dev-2.3](https://github.com/SebastianOehm/WinNUT-Client/tree/dev-2.3)
 (pre-release v2.3.9492). Background: [nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/issues/40).
 
@@ -113,18 +114,18 @@ Roles: the **architect/reviewer** (lead session) owns the skeleton, the contract
 on the Sonnet model**, each in its own git worktree, one work package each, and must leave `dotnet build` (warnings
 as errors) and `dotnet test` green.
 
-| Wave | WP | Scope | Depends on |
-|---|---|---|---|
-| 0 | Skeleton | solution, props, contracts, empty app, this plan | – |
-| 1 | **A** NUT client | `NutClient` + fake NUT server test harness + protocol tests | 0 |
-| 1 | **B** Localization | import tool, `Strings*.resx` for all 7 languages, resx completeness tests | 0 |
-| 1 | **C** Platform | power actions, autostart for Windows/Linux/macOS + tests of command construction | 0 |
-| 1 | **D** Settings/Logging/Updates | JSON store + secret protection, WinNUT import, file logger + ring buffer, update checker | 0 |
-| 2 | **E** Monitor + Shutdown | `UpsMonitor`, calculators, status parser, `ShutdownPolicy`, `ShutdownCountdown` + tests (fake `INutClient`) | A |
-| 2 | **F** Gauge + tray icons | `Gauge` control, battery/tray icon composition | 0 |
-| 3 | **G** App shell | DI, MainWindow + VM, tray, notifications popup, Shutdown window, language startup | B–F |
-| 3 | **H** Secondary windows | Settings, UPS variables, About, Update available windows + VMs | B, D, G-shell contracts |
-| 4 | **I** CI + docs | GitHub Actions (ubuntu + windows), README, CONTRIBUTING (translations) | all |
+| Wave | WP | Scope | Depends on | Status |
+|---|---|---|---|---|
+| 0 | Skeleton | solution, props, contracts, empty app, this plan | – | Done |
+| 1 | **A** NUT client | `NutClient` + fake NUT server test harness + protocol tests | 0 | Done |
+| 1 | **B** Localization | import tool, `Strings*.resx` for all 7 languages, resx completeness tests | 0 | Done |
+| 1 | **C** Platform | power actions, autostart for Windows/Linux/macOS + tests of command construction | 0 | Done |
+| 1 | **D** Settings/Logging/Updates | JSON store + secret protection, WinNUT import, file logger + ring buffer, update checker | 0 | Done |
+| 2 | **E** Monitor + Shutdown | `UpsMonitor`, calculators, status parser, `ShutdownPolicy`, `ShutdownCountdown` + tests (fake `INutClient`) | A | Done |
+| 2 | **F** Gauge + tray icons | `Gauge` control, battery/tray icon composition | 0 | Done |
+| 3 | **G** App shell | DI, MainWindow + VM, tray, notifications popup, Shutdown window, language startup | B–F | In progress |
+| 3 | **H** Secondary windows | Settings, UPS variables, About, Update available windows + VMs | B, D, G-shell contracts | In progress |
+| 4 | **I** CI + docs | GitHub Actions (ubuntu + windows), README, CONTRIBUTING (translations) | all | In progress |
 
 Review checklist applied to every WP: matches the contracts; no blocking I/O on the UI thread; cancellation honoured;
 no secrets in logs; invariant culture for NUT parsing; strings from `Strings` (no hard-coded UI text); tests cover the
