@@ -1,7 +1,8 @@
 # Coco.Nut – Migration plan from WinNUT-Client (VB.NET) to C#
 
-Status: **in progress** on branch `claude/intelligent-johnson-32c3oo`. Waves 0-2 (skeleton, A-F) are done;
-waves 3-4 (G/H app shell + secondary windows, I CI + docs) are in progress.
+Status: **milestone 1 implemented** on branch `claude/intelligent-johnson-32c3oo`: all work packages (0, A-I) are
+merged, CI builds and tests on Windows, Linux and macOS. Next: manual testing against real NUT servers and UPS
+hardware on all three platforms (see "Open items" at the end).
 Source of the port: [SebastianOehm/WinNUT-Client @ dev-2.3](https://github.com/SebastianOehm/WinNUT-Client/tree/dev-2.3)
 (pre-release v2.3.9492). Background: [nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/issues/40).
 
@@ -123,9 +124,9 @@ as errors) and `dotnet test` green.
 | 1 | **D** Settings/Logging/Updates | JSON store + secret protection, WinNUT import, file logger + ring buffer, update checker | 0 | Done |
 | 2 | **E** Monitor + Shutdown | `UpsMonitor`, calculators, status parser, `ShutdownPolicy`, `ShutdownCountdown` + tests (fake `INutClient`) | A | Done |
 | 2 | **F** Gauge + tray icons | `Gauge` control, battery/tray icon composition | 0 | Done |
-| 3 | **G** App shell | DI, MainWindow + VM, tray, notifications popup, Shutdown window, language startup | B–F | In progress |
-| 3 | **H** Secondary windows | Settings, UPS variables, About, Update available windows + VMs | B, D, G-shell contracts | In progress |
-| 4 | **I** CI + docs | GitHub Actions (ubuntu + windows), README, CONTRIBUTING (translations) | all | In progress |
+| 3 | **G** App shell | DI, MainWindow + VM, tray, notifications popup, Shutdown window, language startup | B–F | Done |
+| 3 | **H** Secondary windows | Settings, UPS variables, About, Update available windows + VMs | B, D, G-shell contracts | Done |
+| 4 | **I** CI + docs | GitHub Actions (ubuntu, windows, macos), README, CONTRIBUTING (translations) | all | Done |
 
 Review checklist applied to every WP: matches the contracts; no blocking I/O on the UI thread; cancellation honoured;
 no secrets in logs; invariant culture for NUT parsing; strings from `Strings` (no hard-coded UI text); tests cover the
@@ -134,3 +135,21 @@ WinNUT behaviours listed in the WP; build has zero warnings.
 ### Out of scope for milestone 1
 Installer/MSI, auto-download of updates, multiple UPS at once, instant commands (`INSTCMD`), `SET VAR`, TLS (`STARTTLS`),
 mobile targets. These are follow-ups once the port reaches feature parity.
+
+### How the work was done
+Every work package was implemented by a Sonnet sub-agent in its own git worktree and reviewed by the architect before
+merging. Reviews went beyond reading the diff: stress runs of the test suite (flaky fake-clock tests were found and
+fixed), rendering screenshots, and an end-to-end run of the real app under Xvfb against a scripted fake NUT server with
+`COCONUT_DRY_RUN=1` (outage → countdown → dry-run execution → reconnect → re-arm; power restored → cancel). Bugs found
+that way and fixed include: the shutdown coordinator never recovering after a suspend/failed action, a stale
+shutdown window, gauge read-outs showing clamped values, a second instance crashing, macOS socket path limits, and
+lost translations.
+
+### Open items
+* Manual tests on real hardware/NUT servers (Windows, Linux desktop environments incl. GNOME tray behaviour, macOS),
+  including a real suspend/hibernate/shutdown.
+* WinNUT `user.config` import: the credential format is inferred, not verified against a real file.
+* Host name / IP format validation in the settings (WinNUT had it; only "not empty" is checked now).
+* Windows hibernate capability check (`IsSupported(Hibernate)` currently always true).
+* Native-speaker review of the translations (several were machine-translated or carried over from WinNUT verbatim).
+* Packaging (installer, signed builds) and the other out-of-scope items above.
