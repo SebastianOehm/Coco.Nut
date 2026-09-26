@@ -473,4 +473,15 @@ public class ShutdownCoordinatorTests
         await h.Rearmed.NextAsync(h.TimeProvider, ShutdownCoordinator.DefaultRearmDelay);
         await h.PowerActions.Executions.NextAsync(h.TimeProvider, TimeSpan.FromSeconds(1));
     }
+
+    [Fact]
+    public async Task DisposeAsync_CalledTwice_DoesNotThrow()
+    {
+        // Regression: exiting the app disposed the coordinator twice (explicitly and via the DI container), and the
+        // second call threw ObjectDisposedException from the already disposed CancellationTokenSource.
+        await using var h = await CreateStartedHarnessAsync();
+
+        await h.Coordinator.DisposeAsync();
+        await h.Coordinator.DisposeAsync();
+    }
 }

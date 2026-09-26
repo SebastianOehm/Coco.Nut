@@ -37,6 +37,7 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
     private readonly ILogger _logger;
     private readonly Lock _gate = new();
     private readonly CancellationTokenSource _disposeCts = new();
+    private int _disposed;
 
     private ShutdownCountdown? _countdown;
     private bool _shutdownPending;
@@ -355,6 +356,13 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
     /// <inheritdoc/>
     public ValueTask DisposeAsync()
     {
+        // Idempotent: the app disposes the coordinator explicitly (before the monitor) and the DI container
+        // disposes it again on shutdown; a second Cancel() on the disposed token source used to throw.
+        if (Interlocked.Exchange(ref _disposed, 1) != 0)
+        {
+            return ValueTask.CompletedTask;
+        }
+
         _monitor.ReadingUpdated -= OnReadingUpdated;
         _monitor.StatusChanged -= OnStatusChanged;
 
