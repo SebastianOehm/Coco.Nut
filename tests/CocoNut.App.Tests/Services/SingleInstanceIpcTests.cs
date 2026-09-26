@@ -9,7 +9,8 @@ namespace CocoNut.App.Tests.Services;
 /// </summary>
 public sealed class SingleInstanceIpcTests
 {
-    private static string UniquePipeName() => $"CocoNutTest_{Guid.NewGuid():N}";
+    // Short on purpose: macOS limits Unix domain socket paths to 104 bytes (see SingleInstanceIpc.GetPipeName).
+    private static string UniquePipeName() => $"cnt-{Guid.NewGuid():N}"[..16];
 
     [Fact]
     public async Task A_show_request_reaches_the_listening_server()
@@ -75,10 +76,21 @@ public sealed class SingleInstanceIpcTests
     }
 
     [Fact]
-    public void Pipe_name_is_scoped_to_the_current_user()
+    public void Pipe_name_is_stable_short_and_specific_to_the_app()
     {
         var name = SingleInstanceIpc.GetPipeName();
 
-        Assert.Contains(Environment.UserName, name, StringComparison.Ordinal);
+        Assert.Equal(name, SingleInstanceIpc.GetPipeName());
+        Assert.NotEqual(name, SingleInstanceIpc.GetPipeName("OtherApp"));
+        // Unix domain socket paths are limited to 104 bytes on macOS; the temp dir prefix takes ~60 of them.
+        Assert.True(name.Length <= 20, $"Pipe name '{name}' is too long for macOS socket paths.");
+    }
+
+    [Fact]
+    public async Task A_pipe_name_that_is_invalid_for_the_platform_does_not_throw()
+    {
+        var tooLong = new string('x', 300);
+
+        Assert.False(await SingleInstanceIpc.TryRequestShowAsync(tooLong, TimeSpan.FromMilliseconds(200)));
     }
 }

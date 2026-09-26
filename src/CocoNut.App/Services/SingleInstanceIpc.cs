@@ -19,7 +19,16 @@ public static class SingleInstanceIpc
     /// current user (like <see cref="SingleInstanceGuard"/>'s mutex name) so different user sessions on the same
     /// machine never see each other's instance.
     /// </summary>
-    public static string GetPipeName(string appName = "CocoNut") => $"{appName}_ShowRequest_{Environment.UserName}";
+    /// <remarks>
+    /// Kept short on purpose: on Linux/macOS the pipe is a Unix domain socket under the temp directory, and socket
+    /// paths are limited to 104 bytes on macOS (whose per-user temp directory alone is ~50 characters). The user name
+    /// is therefore hashed instead of embedded.
+    /// </remarks>
+    public static string GetPipeName(string appName = "CocoNut")
+    {
+        var hash = System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes($"{appName}|{Environment.UserName}"));
+        return $"cn-{Convert.ToHexStringLower(hash, 0, 8)}";
+    }
 
     /// <summary>
     /// Connects to <paramref name="pipeName"/> and asks the listening instance to show its window. Returns
@@ -42,8 +51,10 @@ public static class SingleInstanceIpc
             await client.FlushAsync(cancellationToken).ConfigureAwait(false);
             return true;
         }
-        catch (Exception ex) when (ex is IOException or TimeoutException or OperationCanceledException or UnauthorizedAccessException)
+        catch (Exception ex) when (ex is IOException or TimeoutException or OperationCanceledException or UnauthorizedAccessException
+                                       or ArgumentException or PlatformNotSupportedException)
         {
+            // ArgumentException: e.g. a socket path that is too long for the platform. The hand-off is best effort.
             return false;
         }
     }
@@ -76,7 +87,18 @@ public sealed class SingleInstanceServer : IAsyncDisposable
 
     private async Task AcceptLoopAsync(CancellationToken cancellationToken)
     {
-        var server = CreateServer();
+        NamedPipeServerStream server;
+        try
+        {
+            server = CreateServer();
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or PlatformNotSupportedException)
+        {
+            // Best effort: without the listener a second launch simply exits without showing this window.
+            _logger.LogWarning(ex, "Could not start the single-instance IPC server.");
+            return;
+        }
+
         try
         {
             while (!cancellationToken.IsCancellationRequested)
