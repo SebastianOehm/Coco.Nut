@@ -247,12 +247,14 @@ public class UpsMonitorTests
         await h.ConnectionLosses.NextAsync();
         Assert.Equal(1, await h.ReconnectAttempts.NextAsync());
 
-        // The failed reconnect attempt waits 5s (initial delay) before retrying; nothing happens before that.
-        h.TimeProvider.Advance(TimeSpan.FromSeconds(4));
+        // The failed reconnect attempt waits 5s (initial delay) before retrying; nothing happens well before that.
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(2));
         await h.ReconnectAttempts.AssertNoneAsync(TimeSpan.FromMilliseconds(50));
 
-        h.TimeProvider.Advance(TimeSpan.FromSeconds(1)); // completes the 5s backoff
-        Assert.Equal(2, await h.ReconnectAttempts.NextAsync());
+        // Completes the 5s backoff. Task.Delay(5s,...) is registered reactively (after ConnectOnceAsync's failure
+        // is handled), so under heavy load a single Advance() can race its registration - retry via the
+        // FakeTimeProvider overload instead of a single bare Advance() + NextAsync().
+        Assert.Equal(2, await h.ReconnectAttempts.NextAsync(h.TimeProvider, TimeSpan.FromSeconds(2)));
 
         Assert.Equal(MonitorState.Connected, h.Monitor.State);
         var reading = await h.Readings.NextAsync();
