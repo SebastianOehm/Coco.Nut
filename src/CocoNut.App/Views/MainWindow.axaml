@@ -1,0 +1,9 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
+        x:Class="CocoNut.App.Views.MainWindow"
+        Icon="/Assets/coconut.ico"
+        Width="800" Height="500"
+        Title="{x:Static loc:Strings.AppName}">
+  <TextBlock Text="{x:Static loc:Strings.AppName}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+</Window>

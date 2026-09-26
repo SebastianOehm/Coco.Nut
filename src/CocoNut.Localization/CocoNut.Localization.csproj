@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>CocoNut.Localization</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Strongly typed accessor (CocoNut.Localization.Strings) generated at build time by the .NET SDK,
+         no Visual Studio designer needed. Culture-specific Strings.xx-YY.resx files become satellite assemblies. -->
+    <EmbeddedResource Update="Strings.resx">
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedClassName>Strings</StronglyTypedClassName>
+      <StronglyTypedNamespace>CocoNut.Localization</StronglyTypedNamespace>
+      <StronglyTypedFileName>$(IntermediateOutputPath)Strings.Designer.cs</StronglyTypedFileName>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
