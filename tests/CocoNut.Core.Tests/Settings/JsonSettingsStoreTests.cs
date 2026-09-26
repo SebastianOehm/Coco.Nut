@@ -213,6 +213,21 @@ public sealed class JsonSettingsStoreTests : IDisposable
     }
 
     [Fact]
+    public void Load_WithNullSections_UsesDefaultsForThem()
+    {
+        File.WriteAllText(_filePath, """
+            { "schemaVersion": 1, "connection": null, "power": null, "general": null }
+            """);
+        var store = CreateStore();
+
+        var settings = store.Load();
+
+        Assert.Equal(new ConnectionSettings().Host, settings.Connection.Host);
+        Assert.Equal(new PowerSettings().BatteryChargeFloor, settings.Power.BatteryChargeFloor);
+        Assert.NotNull(settings.General);
+    }
+
+    [Fact]
     public void Load_WhenSecretCannotBeDecrypted_LeavesItNullInsteadOfThrowing()
     {
         var store = CreateStore();

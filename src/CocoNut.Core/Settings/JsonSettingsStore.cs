@@ -52,7 +52,7 @@ public sealed class JsonSettingsStore : ISettingsStore
         {
             json = File.ReadAllText(FilePath);
         }
-        catch (IOException ex)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             _logger.LogWarning(ex, "Failed to read the settings file at {FilePath}; using defaults.", FilePath);
             return new AppSettings();
@@ -121,7 +121,8 @@ public sealed class JsonSettingsStore : ISettingsStore
 
     private AppSettings MapToAppSettings(SettingsFileModel model)
     {
-        var connection = model.Connection;
+        // Sections can be explicitly null in a hand-edited file.
+        var connection = model.Connection ?? new ConnectionSettingsFileModel();
         return new AppSettings
         {
             Connection = new ConnectionSettings

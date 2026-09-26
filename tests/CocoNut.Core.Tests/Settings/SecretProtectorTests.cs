@@ -89,6 +89,25 @@ public class AesKeyFileSecretProtectorTests
 
         Assert.Equal(UnixFileMode.UserRead | UnixFileMode.UserWrite, mode);
     }
+
+    [Fact]
+    public void Constructor_OnUnix_RegeneratedKeyFileIsRestrictedToOwner()
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        using var temp = new TempDirectory();
+        var keyPath = Path.Combine(temp.Path, AesKeyFileSecretProtector.KeyFileName);
+        File.WriteAllBytes(keyPath, [1, 2, 3]); // wrong length -> regenerated
+        File.SetUnixFileMode(keyPath, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.GroupRead | UnixFileMode.OtherRead);
+
+        var protector = new AesKeyFileSecretProtector(temp.Path);
+
+        Assert.Equal(32, File.ReadAllBytes(protector.KeyFilePath).Length);
+        Assert.Equal(UnixFileMode.UserRead | UnixFileMode.UserWrite, File.GetUnixFileMode(protector.KeyFilePath));
+    }
 }
 
 public class DpapiSecretProtectorTests

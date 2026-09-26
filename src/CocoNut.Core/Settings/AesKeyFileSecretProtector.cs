@@ -53,10 +53,21 @@ public sealed class AesKeyFileSecretProtector : ISecretProtector
 
         var key = RandomNumberGenerator.GetBytes(KeySizeBytes);
         Directory.CreateDirectory(Path.GetDirectoryName(keyFilePath)!);
-        File.WriteAllBytes(keyFilePath, key);
 
-        // Restrict the key file to the owning user. UnixFileMode/SetUnixFileMode has no effect on Windows,
-        // where DPAPI is used instead of this protector - guard it anyway since the API throws there.
+        // Create the file with owner-only permissions from the start, so the key is never readable by
+        // others, not even briefly. UnixCreateMode is not supported on Windows (where DPAPI is used instead).
+        var options = new FileStreamOptions { Mode = FileMode.Create, Access = FileAccess.Write, Share = FileShare.None };
+        if (!OperatingSystem.IsWindows())
+        {
+            options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
+        }
+
+        using (var stream = new FileStream(keyFilePath, options))
+        {
+            stream.Write(key);
+        }
+
+        // FileMode.Create keeps the permissions of an existing (wrong-length) file; enforce them.
         if (!OperatingSystem.IsWindows())
         {
             File.SetUnixFileMode(keyFilePath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
