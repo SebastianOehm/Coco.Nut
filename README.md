@@ -32,6 +32,15 @@ out. Expect rough edges and missing features until the first tagged release.
 - 7 languages: English, German, French, Russian, Ukrainian, Simplified Chinese, Traditional Chinese
 - Runs on Windows, Linux and macOS
 
+## Downloads and releases
+
+- **Pre-releases:** every push to the `preMain` branch builds and tests Coco.Nut and publishes a GitHub
+  **pre-release** (`v<version>-pre.<run number>`) with self-contained builds for Windows (x64), Linux (x64) and
+  macOS (Apple Silicon) as zip files. These are for testing: try them with `COCONUT_DRY_RUN=1` first.
+- **CI builds:** pushes to `main` and `v*` tags also produce the same builds as workflow artifacts.
+
+The base version comes from `<Version>` in `Directory.Build.props`.
+
 ## Building and running from source
 
 Prerequisites: [.NET 10 SDK](https://dotnet.microsoft.com/) (the exact version is pinned in

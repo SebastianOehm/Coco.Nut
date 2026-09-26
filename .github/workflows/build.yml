@@ -53,10 +53,43 @@ jobs:
           path: TestResults/**/*.trx
           if-no-files-found: warn
 
+  version:
+    name: Determine version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Base version from Directory.Build.props (<Version>). Pushes to preMain get a unique pre-release suffix;
+      # a v* tag uses the tag's version; everything else uses the base version.
+      - name: Compute version
+        id: version
+        shell: bash
+        run: |
+          base=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' Directory.Build.props | head -1)
+          prerelease=false
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            version="${GITHUB_REF#refs/tags/v}"
+            [[ "$version" == *-* ]] && prerelease=true
+          elif [[ "$GITHUB_REF" == refs/heads/preMain ]]; then
+            version="${base}-pre.${GITHUB_RUN_NUMBER}"
+            prerelease=true
+          else
+            version="$base"
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
+          echo "Version: $version (pre-release: $prerelease)"
+
   publish:
     name: Publish (${{ matrix.rid }})
-    needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    needs: [build, version]
+    if: >-
+      github.event_name == 'push' &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/preMain' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -86,6 +119,7 @@ jobs:
         run: >-
           dotnet publish src/CocoNut.App -c Release -r ${{ matrix.rid }}
           --self-contained -p:PublishSingleFile=true
+          -p:Version=${{ needs.version.outputs.version }}
           -o publish/${{ matrix.rid }}
 
       - name: Upload ${{ matrix.rid }} artifact
@@ -93,3 +127,40 @@ jobs:
         with:
           name: CocoNut-${{ matrix.rid }}
           path: publish/${{ matrix.rid }}
+
+  prerelease:
+    name: GitHub pre-release
+    needs: [publish, version]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/preMain'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the tag and the release
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+
+      - name: Package archives
+        shell: bash
+        run: |
+          mkdir -p release
+          for dir in artifacts/CocoNut-*; do
+            name=$(basename "$dir")
+            (cd "$dir" && zip -qr "../../release/${name}-${{ needs.version.outputs.version }}.zip" .)
+          done
+          ls -l release
+
+      - name: Create pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.version.outputs.version }}
+        shell: bash
+        run: |
+          gh release create "v${VERSION}" release/*.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --prerelease \
+            --title "Coco.Nut ${VERSION}" \
+            --notes "Automatic pre-release built from preMain at ${GITHUB_SHA}. Not for production use: test with COCONUT_DRY_RUN=1 first." \
+            --generate-notes
