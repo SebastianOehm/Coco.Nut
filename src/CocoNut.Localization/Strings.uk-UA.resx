@@ -12,8 +12,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_Description" xml:space="preserve">
+    <value>Відстежує ДБЖ через сервер Network UPS Tools (NUT) і вимикає комп'ютер, коли заряд батареї стає низьким.</value>
+  </data>
+  <data name="About_ProjectPage" xml:space="preserve">
+    <value>Сторінка проєкту</value>
+  </data>
   <data name="About_Title" xml:space="preserve">
     <value>Про додаток</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Версія {0}</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>Coco.Nut</value>
@@ -45,11 +54,8 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>Так</value>
   </data>
-  <data name="Language_System" xml:space="preserve">
-    <value>Системна (за умовчанням)</value>
-  </data>
   <data name="Log_ApplicationShutdownAt" xml:space="preserve">
-    <value>Програмне вимкнення о</value>
+    <value>Програмне вимкнення о {0}.</value>
   </data>
   <data name="Log_AutoReconnect" xml:space="preserve">
     <value>Автоматичне перепідключення</value>
@@ -123,11 +129,17 @@
   <data name="Main_Gauge_OutputVoltage" xml:space="preserve">
     <value>Вихідна напруга</value>
   </data>
+  <data name="Main_Gauge_Power" xml:space="preserve">
+    <value>Вихідна потужність</value>
+  </data>
   <data name="Main_Label_Firmware" xml:space="preserve">
     <value>Прошивка:</value>
   </data>
   <data name="Main_Label_Manufacturer" xml:space="preserve">
     <value>Виробник:</value>
+  </data>
+  <data name="Main_Label_Model" xml:space="preserve">
+    <value>Модель:</value>
   </data>
   <data name="Main_Label_Name" xml:space="preserve">
     <value>Назва:</value>
@@ -165,6 +177,9 @@
   <data name="Main_Menu_UpsVariables" xml:space="preserve">
     <value>Змінні ДБЖ</value>
   </data>
+  <data name="Main_RuntimeUnknown" xml:space="preserve">
+    <value>Невідомо</value>
+  </data>
   <data name="Main_Status_BatteryOk" xml:space="preserve">
     <value>Батарея ОК</value>
   </data>
@@ -172,7 +187,7 @@
     <value>Підключено</value>
   </data>
   <data name="Main_Status_EnteringSleep" xml:space="preserve">
-    <value>Очікування Windows. Coco.Nut вимкнеться.</value>
+    <value>Система переходить у режим сну. Coco.Nut відключиться.</value>
   </data>
   <data name="Main_Status_InvalidLogin" xml:space="preserve">
     <value>Невірні дані авторизації (логін або пароль)</value>
@@ -196,10 +211,13 @@
     <value>Перепідключення в процесі</value>
   </data>
   <data name="Main_Status_ResumedFromSleep" xml:space="preserve">
-    <value>Перезапуск Coco.Nut після пробудження Windows.</value>
+    <value>Перезапуск Coco.Nut після виходу з режиму сну.</value>
   </data>
   <data name="Main_Status_UnknownUps" xml:space="preserve">
     <value>Назва ДБЖ невідома</value>
+  </data>
+  <data name="Main_Status_WaitingForData" xml:space="preserve">
+    <value>Очікування даних…</value>
   </data>
   <data name="Notify_Title_Error" xml:space="preserve">
     <value>Помилка</value>
@@ -310,6 +328,9 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Prefs_Connection_Reconnect_ToolTip" xml:space="preserve">
     <value>Увімкнути автопіключення/перепідключення</value>
   </data>
+  <data name="Prefs_Connection_ShowPassword" xml:space="preserve">
+    <value>Показати пароль</value>
+  </data>
   <data name="Prefs_Connection_Tab" xml:space="preserve">
     <value>З'єднання</value>
   </data>
@@ -319,6 +340,18 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
     <value>Ім'я ДБЖ для моніторингу.
 Допустимі значення: Ім'я ДБЖ з конфігурації сервера NUT</value>
+  </data>
+  <data name="Prefs_Import_NotFound" xml:space="preserve">
+    <value>Налаштування WinNUT не знайдено.</value>
+  </data>
+  <data name="Prefs_Import_Success" xml:space="preserve">
+    <value>Налаштування імпортовано з {0}.</value>
+  </data>
+  <data name="Prefs_Import_WinNut" xml:space="preserve">
+    <value>Імпортувати налаштування WinNUT…</value>
+  </data>
+  <data name="Prefs_Logging_DeleteLog" xml:space="preserve">
+    <value>Видалити файли журналу</value>
   </data>
   <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
     <value>Видалити файл логу</value>
@@ -335,8 +368,8 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
     <value>Рівні ведення журналу.</value>
   </data>
-  <data name="Prefs_Logging_Tab" xml:space="preserve">
-    <value>Журналювання</value>
+  <data name="Prefs_Logging_ViewLog" xml:space="preserve">
+    <value>Відкрити файл журналу</value>
   </data>
   <data name="Prefs_Logging_ViewLog_ToolTip" xml:space="preserve">
     <value>Відкрити файл логу</value>
@@ -346,12 +379,6 @@ IPV4 / IPV6 / доменне ім'я.</value>
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>Згорнути у трей при закритті.</value>
-  </data>
-  <data name="Prefs_Misc_Language" xml:space="preserve">
-    <value>Мова</value>
-  </data>
-  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
-    <value>Зміни набудуть чинності після перезапуску Coco.Nut.</value>
   </data>
   <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
     <value>Згортати у трей</value>
@@ -366,10 +393,10 @@ IPV4 / IPV6 / доменне ім'я.</value>
     <value>Запускати Coco.Nut згорнутим</value>
   </data>
   <data name="Prefs_Misc_StartWithSystem" xml:space="preserve">
-    <value>Запускати з Windows</value>
+    <value>Запускати разом із системою</value>
   </data>
   <data name="Prefs_Misc_StartWithSystem_ToolTip" xml:space="preserve">
-    <value>Запуск Coco.Nut разом з Windows</value>
+    <value>Запускає Coco.Nut під час запуску системи.</value>
   </data>
   <data name="Prefs_Misc_Tab" xml:space="preserve">
     <value>Інше</value>
@@ -453,11 +480,17 @@ IPV4 / IPV6 / доменне ім'я.</value>
     <value>Частота перевірок</value>
   </data>
   <data name="Prefs_Update_Tab" xml:space="preserve">
-    <value>Оновити</value>
+    <value>Оновлення</value>
   </data>
   <data name="Shutdown_BatteryStatus" xml:space="preserve">
     <value>Заряд : {0}
 Залишилось часу : {1}</value>
+  </data>
+  <data name="Shutdown_Cancelled_Notify" xml:space="preserve">
+    <value>Живлення відновлено — вимкнення скасовано.</value>
+  </data>
+  <data name="Shutdown_Countdown" xml:space="preserve">
+    <value>{0} почнеться через {1}.</value>
   </data>
   <data name="Shutdown_GraceButton" xml:space="preserve">
     <value>Час затримки</value>
@@ -465,8 +498,17 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Shutdown_ImmediateButton" xml:space="preserve">
     <value>Негайне вимкнення</value>
   </data>
+  <data name="Shutdown_Reason_BatteryCharge" xml:space="preserve">
+    <value>Заряд батареї {0}% дорівнює або нижчий за межу {1}%.</value>
+  </data>
+  <data name="Shutdown_Reason_Fsd" xml:space="preserve">
+    <value>Сервер NUT запросив примусове вимкнення.</value>
+  </data>
+  <data name="Shutdown_Reason_Runtime" xml:space="preserve">
+    <value>Залишок часу роботи {0} дорівнює або менший за межу {1}.</value>
+  </data>
   <data name="Shutdown_Title" xml:space="preserve">
-    <value>Триває викнення</value>
+    <value>Триває вимкнення</value>
   </data>
   <data name="StopAction_Hibernate" xml:space="preserve">
     <value>Гібернація</value>
@@ -483,8 +525,14 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Tray_Menu_CheckForUpdate" xml:space="preserve">
     <value>Перевіряти оновлення</value>
   </data>
+  <data name="Tray_Menu_Exit" xml:space="preserve">
+    <value>Вихід</value>
+  </data>
   <data name="Tray_Menu_Settings" xml:space="preserve">
     <value>Налаштування</value>
+  </data>
+  <data name="Tray_Menu_Show" xml:space="preserve">
+    <value>Показати Coco.Nut</value>
   </data>
   <data name="UpdateChannel_PreRelease" xml:space="preserve">
     <value>Відлагоджувальна версія</value>
@@ -492,50 +540,62 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="UpdateChannel_Stable" xml:space="preserve">
     <value>Стабільна версія</value>
   </data>
-  <data name="UpsStatus_ALARM" xml:space="preserve">
-    <value>Тривога</value>
+  <data name="UpdateInterval_Daily" xml:space="preserve">
+    <value>Щодня</value>
+  </data>
+  <data name="UpdateInterval_Monthly" xml:space="preserve">
+    <value>Щомісяця</value>
+  </data>
+  <data name="UpdateInterval_Weekly" xml:space="preserve">
+    <value>Щотижня</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Не вдалося перевірити оновлення: {0}</value>
+  </data>
+  <data name="Update_Message" xml:space="preserve">
+    <value>Доступна версія {0}. Ви використовуєте версію {1}.</value>
+  </data>
+  <data name="Update_NoUpdate" xml:space="preserve">
+    <value>Ви використовуєте останню версію.</value>
+  </data>
+  <data name="Update_ReleaseNotes" xml:space="preserve">
+    <value>Примітки до випуску</value>
   </data>
   <data name="UpsStatus_CAL" xml:space="preserve">
     <value>Калібровка</value>
   </data>
-  <data name="UpsStatus_CHRG" xml:space="preserve">
-    <value>Заряджається</value>
-  </data>
-  <data name="UpsStatus_COMMLOST" xml:space="preserve">
-    <value>Зв'язок втрачено</value>
-  </data>
-  <data name="UpsStatus_DISCHRG" xml:space="preserve">
-    <value>Розряджається</value>
-  </data>
-  <data name="UpsStatus_FSD" xml:space="preserve">
-    <value>Примусове вимкнення</value>
-  </data>
-  <data name="UpsStatus_HB" xml:space="preserve">
-    <value>Високий заряд батареї</value>
-  </data>
   <data name="UpsStatus_LB" xml:space="preserve">
     <value>Низький заряд батареї</value>
-  </data>
-  <data name="UpsStatus_OB" xml:space="preserve">
-    <value>Від батареї</value>
-  </data>
-  <data name="UpsStatus_OFF" xml:space="preserve">
-    <value>Вихід вимкнено</value>
   </data>
   <data name="UpsStatus_OL" xml:space="preserve">
     <value>Від мережі</value>
   </data>
-  <data name="UpsStatus_OVER" xml:space="preserve">
-    <value>Перевантаження</value>
+  <data name="Validation_CalibrationMinLessThanMax" xml:space="preserve">
+    <value>Мінімальне значення має бути меншим за максимальне.</value>
   </data>
-  <data name="UpsStatus_RB" xml:space="preserve">
-    <value>Потрібна заміна батареї</value>
+  <data name="Validation_ChargeFloorRange" xml:space="preserve">
+    <value>Межа заряду батареї має бути від 0 до 100 %.</value>
   </data>
-  <data name="UpsStatus_TEST" xml:space="preserve">
-    <value>Виконується тестування</value>
+  <data name="Validation_DelayRange" xml:space="preserve">
+    <value>Затримка має бути від 1 до 3600 секунд.</value>
+  </data>
+  <data name="Validation_HostRequired" xml:space="preserve">
+    <value>Хост NUT є обов'язковим.</value>
+  </data>
+  <data name="Validation_PollIntervalRange" xml:space="preserve">
+    <value>Інтервал опитування має бути від 0,1 до 100 секунд.</value>
+  </data>
+  <data name="Validation_PortRange" xml:space="preserve">
+    <value>Порт має бути в діапазоні від 1 до 65535.</value>
+  </data>
+  <data name="Validation_RuntimeFloorRange" xml:space="preserve">
+    <value>Межа часу роботи має бути від 0 до 3600 секунд.</value>
   </data>
   <data name="Vars_Description" xml:space="preserve">
     <value>Опис:</value>
+  </data>
+  <data name="Vars_Filter_Watermark" xml:space="preserve">
+    <value>Фільтр змінних…</value>
   </data>
   <data name="Vars_GroupTitle" xml:space="preserve">
     <value>Властивості</value>

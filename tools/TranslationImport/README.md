@@ -42,17 +42,27 @@ For each key in `Strings.resx`, per culture:
    is immune to spelling differences between the English resx and the CSV translation tables.
 2. Otherwise (or if step 1 found nothing), the script looks up `EnglishSourceText` in
    `Translation/<culture>/<culture>.csv` (WinNUT's master translation table).
-3. Otherwise the key is left out of that culture's file entirely, and falls back to English at
+3. **`new_strings.csv`** (`Key,Culture,Translation`), if it has a row for this exact
+   (key, culture) pair: its value *replaces* whatever step 1/2 produced (or fills the gap, if
+   they produced nothing). Two situations put a row here: the key has no WinNUT equivalent at
+   all (a new Coco.Nut string, e.g. `Common_Yes`, the `UpsStatus_*` flags WinNUT never displayed
+   individually, or `Language_System`); or the key does have a WinNUT source, but the imported
+   translation turned out to be wrong for Coco.Nut in that one culture - most often because the
+   neutral English in `keys_data.py` was reworded to drop a Windows-specific mention (Coco.Nut
+   also runs on Linux/macOS) or to fix a mistranslation, and the old WinNUT wording no longer
+   matches (see `Log_ApplicationShutdownAt`, `Prefs_Misc_StartWithSystem*`,
+   `Main_Status_EnteringSleep`/`ResumedFromSleep`, `Log_Level_Warning`/`Notify_Title_Warning` for
+   examples, each with a comment above its entry in `new_strings.csv`). Only entries the author
+   was confident about are listed; anything else is intentionally left out and falls back to
+   English.
+4. Otherwise the key is left out of that culture's file entirely, and falls back to English at
    runtime through the normal satellite-assembly / `ResourceManager` fallback.
 
-Every translation resolved this way also gets the old product name fixed up (`WinNUT`, `WinNut`,
-`WinNUT-Client`, ... -> `Coco.Nut`) - a plain brand-name substitution, not a re-translation; see
-`apply_brand_fix()` in the script.
-
-2. **`new_strings.csv`** (`Key,Culture,Translation`) holds hand-provided translations for keys
-   that have no WinNUT equivalent at all (new Coco.Nut strings, e.g. `Common_Yes`, the
-   `UpsStatus_*` flags that WinNUT never displayed individually, or `Language_System`). Only
-   entries the author was confident about are listed; anything else is intentionally left out.
+Every translation resolved through step 1 or 2 also gets the old product name fixed up
+(`WinNUT`, `WinNut`, `WinNUT-Client`, ... -> `Coco.Nut`) - a plain brand-name substitution, not a
+re-translation; see `apply_brand_fix()` in the script. (The `Prefs_Import_*` strings are an
+intentional exception: they are *about* importing settings from the old WinNUT app, so they are
+meant to keep saying "WinNUT".)
 
 ## Adding or updating a language, as a translator
 
@@ -94,5 +104,5 @@ own touch-up of a WinNUT-sourced string - will be overwritten; move such a fix i
 |---|---|
 | `translation_import.py` | The importer described above. stdlib-only, Python 3. |
 | `key_map.csv` | `Key,EnglishSourceText,WinNutResxName` for every key that has a WinNUT source. |
-| `new_strings.csv` | `Key,Culture,Translation` hand-provided translations for brand-new keys. |
+| `new_strings.csv` | `Key,Culture,Translation`: hand-provided translations for brand-new keys, and corrections that override an imported WinNUT translation for one (key, culture) pair. |
 | `README.md` | This file. |

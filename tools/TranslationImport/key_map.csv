@@ -181,9 +181,13 @@ StopAction_Shutdown,Shutdown,Pref_Gui.resx#Cbx_TypeStop.Items
 StopAction_Suspend,Sleep,Pref_Gui.resx#Cbx_TypeStop.Items1
 Tray_Menu_About,About,WinNUT.resx#Menu_Sys_About.Text
 Tray_Menu_CheckForUpdate,Verify Update,WinNUT.resx#Menu_Sys_Update.Text
+Tray_Menu_Exit,Exit,WinNUT.resx#Menu_Sys_Exit.Text
 Tray_Menu_Settings,Settings,WinNUT.resx#Menu_Sys_Settings.Text
 UpdateChannel_PreRelease,Devellopement,Pref_Gui.resx#Cbx_Branch_Update.Items1
 UpdateChannel_Stable,Stable,Pref_Gui.resx#Cbx_Branch_Update.Items
+UpdateInterval_Daily,Daily,
+UpdateInterval_Monthly,Monthly,
+UpdateInterval_Weekly,Weekly,
 Update_Title,Update Available,Forms/UpdateAvailableForm.resx#$this.Text
 UpsStatus_CAL,Calibration,Pref_Gui.resx#Tab_Calibrage.Text
 UpsStatus_LB,Low Battery,My Project/Resources.resx#Frm_Main_Str_09

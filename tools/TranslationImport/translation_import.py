@@ -20,8 +20,14 @@ Inputs (read from this script's own directory):
                        be blank when only the CSV lookup applies.
 
     new_strings.csv   Key,Culture,Translation
-                       Hand-provided translations for keys that do not exist in WinNUT at all
-                       (new Coco.Nut strings such as language names or new UpsStatus flags).
+                       Hand-provided translations, applied after (and overriding) whatever step
+                       1/2 below produced for that exact (key, culture) pair. Two situations put
+                       a row here: (a) the key does not exist in WinNUT at all (new Coco.Nut
+                       strings such as language names or new UpsStatus flags), or (b) the key
+                       does have a WinNUT source, but the imported translation is wrong for
+                       Coco.Nut for that one culture (typically because the neutral English was
+                       rewritten to drop a Windows-specific mention or fix a mistranslation, and
+                       the old WinNUT wording no longer matches - see keys_data.py's comments).
                        Only entries the author was confident about are listed here; anything
                        else is intentionally left out and falls back to English.
 
@@ -35,14 +41,16 @@ Reads from the WinNUT checkout:
 Writes (relative to this script, i.e. tools/TranslationImport/../../):
     src/CocoNut.Localization/Strings.<culture>.resx   for every culture in CULTURES below.
 
-Resolution order per key, independently for each culture (see resolve_translation()):
+Resolution order per key, independently for each culture (see resolve_translation() and main()):
     1. WinNutResxName, if given: look up EntryName directly in that culture's copy of
        RelativeResxFile. Exact match on the WinNUT control/resource name, so it is immune to
        wording differences (typos, later rewordings) between the English resx and the CSV.
     2. Otherwise (or if step 1 found nothing): normalize EnglishSourceText (trim, collapse
        whitespace/newlines to single spaces) and look it up the same way in
        Translation/<culture>/<culture>.csv.
-    3. Otherwise the key is left out of that culture's resx: it falls back to English at
+    3. new_strings.csv, if it has a row for this exact (key, culture): its value replaces
+       whatever step 1/2 produced (or fills the gap, if they produced nothing).
+    4. Otherwise the key is left out of that culture's resx: it falls back to English at
        runtime through the normal satellite-assembly fallback.
 
 This script never invents a translation: every value it writes came verbatim from the WinNUT
@@ -263,7 +271,10 @@ def main() -> int:
     for culture in CULTURES:
         csv_table = load_csv_translations(winnut_root, culture)
         translated: dict[str, str] = {}
-        via_resx = via_csv = via_manual = 0
+        # Which of the three sources below the *final* value for each key came from, so a
+        # new_strings.csv override/correction of a key_map-resolved value is counted once, under
+        # "manual" - not twice (see the docstring's 4-step resolution order).
+        source: dict[str, str] = {}
 
         for row in key_map_rows:
             value = resolve_translation(row, culture, winnut_root, csv_table)
@@ -273,17 +284,18 @@ def main() -> int:
             if row["resx_file"]:
                 resx_path = culture_resx_path(winnut_root, row["resx_file"], culture)
                 entries = load_resx_entries(resx_path) or {}
-                if entries.get(row["resx_entry"]):
-                    via_resx += 1
-                else:
-                    via_csv += 1
+                source[row["key"]] = "resx" if entries.get(row["resx_entry"]) else "csv"
             else:
-                via_csv += 1
+                source[row["key"]] = "csv"
 
         for key, per_culture in new_strings.items():
             if culture in per_culture and per_culture[culture].strip():
                 translated[key] = per_culture[culture]
-                via_manual += 1
+                source[key] = "manual"
+
+        via_resx = sum(1 for s in source.values() if s == "resx")
+        via_csv = sum(1 for s in source.values() if s == "csv")
+        via_manual = sum(1 for s in source.values() if s == "manual")
 
         out_path = args.out_dir / f"Strings.{culture}.resx"
         write_culture_resx(out_path, translated)

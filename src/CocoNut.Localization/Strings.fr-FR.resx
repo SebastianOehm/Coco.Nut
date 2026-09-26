@@ -12,8 +12,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_Description" xml:space="preserve">
+    <value>Surveille un onduleur via un serveur Network UPS Tools (NUT) et arrête l'ordinateur lorsque la batterie est faible.</value>
+  </data>
+  <data name="About_ProjectPage" xml:space="preserve">
+    <value>Page du projet</value>
+  </data>
   <data name="About_Title" xml:space="preserve">
     <value>A Propos</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Version {0}</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>Coco.Nut</value>
@@ -42,11 +51,8 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>Oui</value>
   </data>
-  <data name="Language_System" xml:space="preserve">
-    <value>Système par défaut</value>
-  </data>
   <data name="Log_ApplicationShutdownAt" xml:space="preserve">
-    <value>Application arrêtée à </value>
+    <value>Application arrêtée à {0}.</value>
   </data>
   <data name="Log_AutoReconnect" xml:space="preserve">
     <value>Re-connexion Automatique</value>
@@ -73,7 +79,7 @@
     <value>Remarque</value>
   </data>
   <data name="Log_Level_Warning" xml:space="preserve">
-    <value>Alerte</value>
+    <value>Avertissement</value>
   </data>
   <data name="Log_NoUpdateAvailable" xml:space="preserve">
     <value>Pas de mise a jour disponible</value>
@@ -120,11 +126,17 @@
   <data name="Main_Gauge_OutputVoltage" xml:space="preserve">
     <value>Tension de Sortie</value>
   </data>
+  <data name="Main_Gauge_Power" xml:space="preserve">
+    <value>Puissance de sortie</value>
+  </data>
   <data name="Main_Label_Firmware" xml:space="preserve">
     <value>Firmware :</value>
   </data>
   <data name="Main_Label_Manufacturer" xml:space="preserve">
     <value>Fabricant :</value>
+  </data>
+  <data name="Main_Label_Model" xml:space="preserve">
+    <value>Modèle :</value>
   </data>
   <data name="Main_Label_Name" xml:space="preserve">
     <value>Nom :</value>
@@ -162,6 +174,9 @@
   <data name="Main_Menu_UpsVariables" xml:space="preserve">
     <value>Variable de l'UPS</value>
   </data>
+  <data name="Main_RuntimeUnknown" xml:space="preserve">
+    <value>Inconnu</value>
+  </data>
   <data name="Main_Status_BatteryOk" xml:space="preserve">
     <value>Batterie OK</value>
   </data>
@@ -169,7 +184,7 @@
     <value>Connecté</value>
   </data>
   <data name="Main_Status_EnteringSleep" xml:space="preserve">
-    <value>Mise en veille de Windows. Coco.Nut va se déconnecter.</value>
+    <value>Le système passe en veille. Coco.Nut va se déconnecter.</value>
   </data>
   <data name="Main_Status_InvalidLogin" xml:space="preserve">
     <value>ID de connexion incorrect (nom d'utilisateur ou mot de passe)</value>
@@ -193,10 +208,13 @@
     <value>Reconnexion en cours</value>
   </data>
   <data name="Main_Status_ResumedFromSleep" xml:space="preserve">
-    <value>Redémarrage de Coco.Nut après la sortie de veille de Windows.</value>
+    <value>Redémarrage de Coco.Nut après la sortie du mode veille.</value>
   </data>
   <data name="Main_Status_UnknownUps" xml:space="preserve">
     <value>Nom UPS Inconnu</value>
+  </data>
+  <data name="Main_Status_WaitingForData" xml:space="preserve">
+    <value>Attente des données…</value>
   </data>
   <data name="Notify_Title_Error" xml:space="preserve">
     <value>Erreur</value>
@@ -205,7 +223,7 @@
     <value>Remarque</value>
   </data>
   <data name="Notify_Title_Warning" xml:space="preserve">
-    <value>Alerte</value>
+    <value>Avertissement</value>
   </data>
   <data name="Prefs_Calibration_BatteryVoltage" xml:space="preserve">
     <value>Tension de Batterie</value>
@@ -308,6 +326,9 @@ Valeur acceptée: valeur numérique de 1 à 65535.</value>
   <data name="Prefs_Connection_Reconnect_ToolTip" xml:space="preserve">
     <value>Activer la connexion / reconnexion automatique</value>
   </data>
+  <data name="Prefs_Connection_ShowPassword" xml:space="preserve">
+    <value>Afficher le mot de passe</value>
+  </data>
   <data name="Prefs_Connection_Tab" xml:space="preserve">
     <value>Connexion</value>
   </data>
@@ -317,6 +338,18 @@ Valeur acceptée: valeur numérique de 1 à 65535.</value>
   <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
     <value>Nom de l'onduleur à surveiller.
 Valeur acceptée: nom de l'onduleur configuré dans le serveur Nut.</value>
+  </data>
+  <data name="Prefs_Import_NotFound" xml:space="preserve">
+    <value>Aucun paramètre WinNUT n'a été trouvé.</value>
+  </data>
+  <data name="Prefs_Import_Success" xml:space="preserve">
+    <value>Paramètres importés depuis {0}.</value>
+  </data>
+  <data name="Prefs_Import_WinNut" xml:space="preserve">
+    <value>Importer les paramètres WinNUT…</value>
+  </data>
+  <data name="Prefs_Logging_DeleteLog" xml:space="preserve">
+    <value>Supprimer les fichiers journaux</value>
   </data>
   <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
     <value>Supprimer le fichier journal.</value>
@@ -330,8 +363,8 @@ Valeur acceptée: nom de l'onduleur configuré dans le serveur Nut.</value>
   <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
     <value>Niveau de Journalisation</value>
   </data>
-  <data name="Prefs_Logging_Tab" xml:space="preserve">
-    <value>Journalisation</value>
+  <data name="Prefs_Logging_ViewLog" xml:space="preserve">
+    <value>Ouvrir le fichier journal</value>
   </data>
   <data name="Prefs_Logging_ViewLog_ToolTip" xml:space="preserve">
     <value>Ouvrez le fichier journal.</value>
@@ -341,12 +374,6 @@ Valeur acceptée: nom de l'onduleur configuré dans le serveur Nut.</value>
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>Envoie dans le Systray à la fermeture.</value>
-  </data>
-  <data name="Prefs_Misc_Language" xml:space="preserve">
-    <value>Langue</value>
-  </data>
-  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
-    <value>Les modifications prennent effet après le redémarrage de Coco.Nut.</value>
   </data>
   <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
     <value>Réduire au Systray</value>
@@ -361,10 +388,10 @@ Valeur acceptée: nom de l'onduleur configuré dans le serveur Nut.</value>
     <value>Démarre Coco.Nut minimisé.</value>
   </data>
   <data name="Prefs_Misc_StartWithSystem" xml:space="preserve">
-    <value>Démarrer avec Windows</value>
+    <value>Démarrer avec le système</value>
   </data>
   <data name="Prefs_Misc_StartWithSystem_ToolTip" xml:space="preserve">
-    <value>Démarre Coco.Nut au démarrage de Windows.</value>
+    <value>Démarre Coco.Nut au démarrage du système.</value>
   </data>
   <data name="Prefs_Misc_Tab" xml:space="preserve">
     <value>Divers</value>
@@ -459,11 +486,26 @@ Valeur acceptée: valeur numérique de 0 à 3600.</value>
     <value>Charge Batterie : {0}
 Temps restant : {1}</value>
   </data>
+  <data name="Shutdown_Cancelled_Notify" xml:space="preserve">
+    <value>Alimentation rétablie – arrêt annulé.</value>
+  </data>
+  <data name="Shutdown_Countdown" xml:space="preserve">
+    <value>{0} commencera dans {1}.</value>
+  </data>
   <data name="Shutdown_GraceButton" xml:space="preserve">
     <value>Temps de grâce</value>
   </data>
   <data name="Shutdown_ImmediateButton" xml:space="preserve">
     <value>Arrêt immédiat</value>
+  </data>
+  <data name="Shutdown_Reason_BatteryCharge" xml:space="preserve">
+    <value>La charge de la batterie ({0} %) est égale ou inférieure à la limite de {1} %.</value>
+  </data>
+  <data name="Shutdown_Reason_Fsd" xml:space="preserve">
+    <value>Le serveur NUT a demandé un arrêt forcé.</value>
+  </data>
+  <data name="Shutdown_Reason_Runtime" xml:space="preserve">
+    <value>Le temps restant ({0}) est égal ou inférieur à la limite de {1}.</value>
   </data>
   <data name="Shutdown_Title" xml:space="preserve">
     <value>Extinction en cours</value>
@@ -483,8 +525,14 @@ Temps restant : {1}</value>
   <data name="Tray_Menu_CheckForUpdate" xml:space="preserve">
     <value>Vérifier la mise à jour</value>
   </data>
+  <data name="Tray_Menu_Exit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
   <data name="Tray_Menu_Settings" xml:space="preserve">
     <value>Réglages</value>
+  </data>
+  <data name="Tray_Menu_Show" xml:space="preserve">
+    <value>Afficher Coco.Nut</value>
   </data>
   <data name="UpdateChannel_PreRelease" xml:space="preserve">
     <value>Développement</value>
@@ -492,51 +540,63 @@ Temps restant : {1}</value>
   <data name="UpdateChannel_Stable" xml:space="preserve">
     <value>Stable</value>
   </data>
-  <data name="UpsStatus_ALARM" xml:space="preserve">
-    <value>Alarme</value>
+  <data name="UpdateInterval_Daily" xml:space="preserve">
+    <value>Quotidien</value>
+  </data>
+  <data name="UpdateInterval_Monthly" xml:space="preserve">
+    <value>Mensuelle</value>
+  </data>
+  <data name="UpdateInterval_Weekly" xml:space="preserve">
+    <value>Hebdomadaire</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Impossible de vérifier les mises à jour : {0}</value>
+  </data>
+  <data name="Update_Message" xml:space="preserve">
+    <value>La version {0} est disponible. Vous utilisez actuellement la version {1}.</value>
+  </data>
+  <data name="Update_NoUpdate" xml:space="preserve">
+    <value>Vous utilisez la dernière version.</value>
+  </data>
+  <data name="Update_ReleaseNotes" xml:space="preserve">
+    <value>Notes de version</value>
   </data>
   <data name="UpsStatus_CAL" xml:space="preserve">
     <value>Calibrage
 </value>
   </data>
-  <data name="UpsStatus_CHRG" xml:space="preserve">
-    <value>En charge</value>
-  </data>
-  <data name="UpsStatus_COMMLOST" xml:space="preserve">
-    <value>Communication perdue</value>
-  </data>
-  <data name="UpsStatus_DISCHRG" xml:space="preserve">
-    <value>En décharge</value>
-  </data>
-  <data name="UpsStatus_FSD" xml:space="preserve">
-    <value>Arrêt forcé</value>
-  </data>
-  <data name="UpsStatus_HB" xml:space="preserve">
-    <value>Charge élevée</value>
-  </data>
   <data name="UpsStatus_LB" xml:space="preserve">
     <value>Batterie Basse</value>
-  </data>
-  <data name="UpsStatus_OB" xml:space="preserve">
-    <value>Sur batterie</value>
-  </data>
-  <data name="UpsStatus_OFF" xml:space="preserve">
-    <value>Sortie coupée</value>
   </data>
   <data name="UpsStatus_OL" xml:space="preserve">
     <value>Sur Secteur</value>
   </data>
-  <data name="UpsStatus_OVER" xml:space="preserve">
-    <value>Surcharge</value>
+  <data name="Validation_CalibrationMinLessThanMax" xml:space="preserve">
+    <value>La valeur minimale doit être inférieure à la valeur maximale.</value>
   </data>
-  <data name="UpsStatus_RB" xml:space="preserve">
-    <value>Remplacer la batterie</value>
+  <data name="Validation_ChargeFloorRange" xml:space="preserve">
+    <value>Le seuil de batterie doit être compris entre 0 et 100 %.</value>
   </data>
-  <data name="UpsStatus_TEST" xml:space="preserve">
-    <value>Test en cours</value>
+  <data name="Validation_DelayRange" xml:space="preserve">
+    <value>Le délai doit être compris entre 1 et 3600 secondes.</value>
+  </data>
+  <data name="Validation_HostRequired" xml:space="preserve">
+    <value>L'hôte NUT est requis.</value>
+  </data>
+  <data name="Validation_PollIntervalRange" xml:space="preserve">
+    <value>L'intervalle d'interrogation doit être compris entre 0,1 et 100 secondes.</value>
+  </data>
+  <data name="Validation_PortRange" xml:space="preserve">
+    <value>Le port doit être compris entre 1 et 65535.</value>
+  </data>
+  <data name="Validation_RuntimeFloorRange" xml:space="preserve">
+    <value>Le seuil d'autonomie doit être compris entre 0 et 3600 secondes.</value>
   </data>
   <data name="Vars_Description" xml:space="preserve">
     <value>Description :</value>
+  </data>
+  <data name="Vars_Filter_Watermark" xml:space="preserve">
+    <value>Filtrer les variables…</value>
   </data>
   <data name="Vars_GroupTitle" xml:space="preserve">
     <value>Propriétés</value>
