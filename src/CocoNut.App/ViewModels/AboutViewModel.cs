@@ -40,10 +40,16 @@ public sealed partial class AboutViewModel : ObservableObject
 
     /// <summary>Short, plain list of third-party projects Coco.Nut is built on or ported from (proper nouns, not translated).</summary>
     public string AcknowledgementsText { get; } =
-        "Avalonia UI" + Environment.NewLine +
-        "CommunityToolkit.Mvvm" + Environment.NewLine +
-        "WinNUT-Client (SebastianOehm/nutdotnet) - the project this client is ported from" + Environment.NewLine +
-        "Icons: WinNUT-Client's original icon set";
+        "Avalonia UI (MIT)" + Environment.NewLine +
+        "CommunityToolkit.Mvvm (MIT)" + Environment.NewLine +
+        "Microsoft.Extensions.* (MIT)" + Environment.NewLine +
+        "AGauge by Code-Artist (MIT) - inspiration for the gauge control";
+
+    /// <summary>Where Coco.Nut comes from: WinNUT-Client / nutdotnet by gbakeman (localized).</summary>
+    public string OriginText { get; } = Strings.About_Origin;
+
+    /// <summary>How AI was used to build Coco.Nut (localized).</summary>
+    public string AiUsageText { get; } = Strings.About_AiUsage;
 
     [RelayCommand]
     private void OpenProjectPage() => _shellLauncher.OpenUrl(ProjectPageUrl);

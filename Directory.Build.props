@@ -11,7 +11,7 @@
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <Company>NUT Dot Net project</Company>
     <Product>Coco.Nut</Product>
-    <Copyright>Copyright (C) 2019-2021 Gawindx (Decaux Nicolas), 2022+ NUT Dot Net project</Copyright>
+    <Copyright>Coco.Nut: Copyright (C) 2026 Sebastian Oehm, gbakeman. Based on WinNUT-Client: Copyright (C) 2019-2021 Gawindx (Decaux Nicolas), 2022+ gbakeman / NUT Dot Net project</Copyright>
     <Version>0.1.0</Version>
     <NeutralLanguage>en</NeutralLanguage>
     <SatelliteResourceLanguages>en;de-DE;fr-FR;ru-RU;uk-UA;zh-CN;zh-TW</SatelliteResourceLanguages>

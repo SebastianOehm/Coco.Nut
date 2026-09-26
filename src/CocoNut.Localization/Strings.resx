@@ -1084,4 +1084,20 @@ Remaining time: {1}</value>
     <value>Dark</value>
     <comment>Theme combo box option: dark theme.</comment>
   </data>
+  <data name="About_Origin_Title" xml:space="preserve">
+    <value>Origin</value>
+    <comment>About window: heading of the section naming the project Coco.Nut is based on.</comment>
+  </data>
+  <data name="About_Origin" xml:space="preserve">
+    <value>Coco.Nut is a C# port of WinNUT-Client. WinNUT-Client and the nutdotnet library are maintained by gbakeman and the NUT Dot Net project (github.com/nutdotnet); WinNUT was originally created by Gawindx (Decaux Nicolas). The icons are taken from WinNUT-Client.</value>
+    <comment>About window: credits for WinNUT-Client / nutdotnet. Keep the names and the URL unchanged.</comment>
+  </data>
+  <data name="About_AiUsage_Title" xml:space="preserve">
+    <value>Use of AI</value>
+    <comment>About window: heading of the section about AI-assisted development.</comment>
+  </data>
+  <data name="About_AiUsage" xml:space="preserve">
+    <value>Large parts of Coco.Nut were written with AI assistance (Claude by Anthropic, using Claude Code): an AI model planned and reviewed the work, AI sub-agents wrote most of the code. All changes were directed and checked by the maintainers and are covered by automated builds and tests. Please report problems on the project page.</value>
+    <comment>About window: disclosure of AI-assisted development. Keep the product names unchanged.</comment>
+  </data>
 </root>

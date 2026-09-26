@@ -540,3 +540,27 @@ Theme_Dark,ru-RU,Тёмная
 Theme_Dark,uk-UA,Темна
 Theme_Dark,zh-CN,深色
 Theme_Dark,zh-TW,深色
+About_Origin_Title,de-DE,Herkunft
+About_Origin_Title,fr-FR,Origine
+About_Origin_Title,ru-RU,Происхождение
+About_Origin_Title,uk-UA,Походження
+About_Origin_Title,zh-CN,来源
+About_Origin_Title,zh-TW,來源
+About_AiUsage_Title,de-DE,Einsatz von KI
+About_AiUsage_Title,fr-FR,Utilisation de l'IA
+About_AiUsage_Title,ru-RU,Использование ИИ
+About_AiUsage_Title,uk-UA,Використання ШІ
+About_AiUsage_Title,zh-CN,AI 的使用
+About_AiUsage_Title,zh-TW,AI 的使用
+About_Origin,de-DE,Coco.Nut ist eine C#-Portierung von WinNUT-Client. WinNUT-Client und die nutdotnet-Bibliothek werden von gbakeman und dem NUT-Dot-Net-Projekt (github.com/nutdotnet) gepflegt; WinNUT wurde ursprünglich von Gawindx (Decaux Nicolas) entwickelt. Die Symbole stammen aus WinNUT-Client.
+About_Origin,fr-FR,Coco.Nut est un portage en C# de WinNUT-Client. WinNUT-Client et la bibliothèque nutdotnet sont maintenus par gbakeman et le projet NUT Dot Net (github.com/nutdotnet) ; WinNUT a été créé à l'origine par Gawindx (Decaux Nicolas). Les icônes proviennent de WinNUT-Client.
+About_Origin,ru-RU,Coco.Nut — это порт WinNUT-Client на C#. WinNUT-Client и библиотеку nutdotnet сопровождают gbakeman и проект NUT Dot Net (github.com/nutdotnet); изначально WinNUT был создан Gawindx (Decaux Nicolas). Значки взяты из WinNUT-Client.
+About_Origin,uk-UA,Coco.Nut — це порт WinNUT-Client на C#. WinNUT-Client і бібліотеку nutdotnet супроводжують gbakeman і проєкт NUT Dot Net (github.com/nutdotnet); спочатку WinNUT створив Gawindx (Decaux Nicolas). Значки взято з WinNUT-Client.
+About_Origin,zh-CN,Coco.Nut 是 WinNUT-Client 的 C# 移植版本。WinNUT-Client 和 nutdotnet 库由 gbakeman 和 NUT Dot Net 项目（github.com/nutdotnet）维护；WinNUT 最初由 Gawindx (Decaux Nicolas) 创建。图标取自 WinNUT-Client。
+About_Origin,zh-TW,Coco.Nut 是 WinNUT-Client 的 C# 移植版本。WinNUT-Client 與 nutdotnet 程式庫由 gbakeman 和 NUT Dot Net 專案（github.com/nutdotnet）維護；WinNUT 最初由 Gawindx (Decaux Nicolas) 建立。圖示取自 WinNUT-Client。
+About_AiUsage,de-DE,"Große Teile von Coco.Nut wurden mit KI-Unterstützung geschrieben (Claude von Anthropic, mit Claude Code): Ein KI-Modell hat die Arbeit geplant und geprüft, KI-Sub-Agenten haben den Großteil des Codes geschrieben. Alle Änderungen wurden von den Maintainern gesteuert und geprüft und sind durch automatische Builds und Tests abgesichert. Bitte melde Probleme auf der Projektseite."
+About_AiUsage,fr-FR,"Une grande partie de Coco.Nut a été écrite avec l'aide de l'IA (Claude d'Anthropic, via Claude Code) : un modèle d'IA a planifié et relu le travail, des sous-agents d'IA ont écrit la majeure partie du code. Toutes les modifications ont été dirigées et vérifiées par les mainteneurs et sont couvertes par des compilations et des tests automatiques. Merci de signaler les problèmes sur la page du projet."
+About_AiUsage,ru-RU,"Значительная часть Coco.Nut написана с помощью ИИ (Claude от Anthropic, с использованием Claude Code): модель ИИ планировала и проверяла работу, а ИИ-субагенты написали большую часть кода. Все изменения направлялись и проверялись сопровождающими и покрыты автоматическими сборками и тестами. Пожалуйста, сообщайте о проблемах на странице проекта."
+About_AiUsage,uk-UA,"Значну частину Coco.Nut написано за допомогою ШІ (Claude від Anthropic, з використанням Claude Code): модель ШІ планувала й перевіряла роботу, а ШІ-субагенти написали більшу частину коду. Усі зміни спрямовувалися й перевірялися супровідниками та покриті автоматичними збірками й тестами. Будь ласка, повідомляйте про проблеми на сторінці проєкту."
+About_AiUsage,zh-CN,Coco.Nut 的大部分内容是在 AI 辅助下编写的（Anthropic 的 Claude，通过 Claude Code）：由一个 AI 模型规划和审查工作，由 AI 子代理编写大部分代码。所有更改均由维护者指导和检查，并有自动构建和测试保障。如有问题，请在项目页面反馈。
+About_AiUsage,zh-TW,Coco.Nut 的大部分內容是在 AI 輔助下撰寫的（Anthropic 的 Claude，透過 Claude Code）：由一個 AI 模型規劃並審查工作，由 AI 子代理撰寫大部分程式碼。所有變更均由維護者指導與檢查，並有自動建置與測試把關。如有問題，請在專案頁面回報。

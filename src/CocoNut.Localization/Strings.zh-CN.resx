@@ -15,8 +15,20 @@
   <data name="About_Acknowledgements" xml:space="preserve">
     <value>致谢</value>
   </data>
+  <data name="About_AiUsage" xml:space="preserve">
+    <value>Coco.Nut 的大部分内容是在 AI 辅助下编写的（Anthropic 的 Claude，通过 Claude Code）：由一个 AI 模型规划和审查工作，由 AI 子代理编写大部分代码。所有更改均由维护者指导和检查，并有自动构建和测试保障。如有问题，请在项目页面反馈。</value>
+  </data>
+  <data name="About_AiUsage_Title" xml:space="preserve">
+    <value>AI 的使用</value>
+  </data>
   <data name="About_Description" xml:space="preserve">
     <value>通过 Network UPS Tools (NUT) 服务器监控 UPS，并在电池电量过低时关闭计算机。</value>
+  </data>
+  <data name="About_Origin" xml:space="preserve">
+    <value>Coco.Nut 是 WinNUT-Client 的 C# 移植版本。WinNUT-Client 和 nutdotnet 库由 gbakeman 和 NUT Dot Net 项目（github.com/nutdotnet）维护；WinNUT 最初由 Gawindx (Decaux Nicolas) 创建。图标取自 WinNUT-Client。</value>
+  </data>
+  <data name="About_Origin_Title" xml:space="preserve">
+    <value>来源</value>
   </data>
   <data name="About_ProjectPage" xml:space="preserve">
     <value>项目主页</value>

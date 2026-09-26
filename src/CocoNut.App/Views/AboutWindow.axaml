@@ -6,7 +6,7 @@
         x:DataType="vm:AboutViewModel"
         Icon="/Assets/coconut.ico"
         Title="{x:Static loc:Strings.About_Title}"
-        Width="420" SizeToContent="Height"
+        Width="480" SizeToContent="Height"
         CanResize="False"
         WindowStartupLocation="CenterOwner">
   <StackPanel Margin="20" Spacing="12">
@@ -16,8 +16,12 @@
     <Button Content="{x:Static loc:Strings.About_ProjectPage}" Command="{Binding OpenProjectPageCommand}"
             HorizontalAlignment="Center" Classes="accent" />
     <Separator />
+    <TextBlock Text="{x:Static loc:Strings.About_Origin_Title}" FontWeight="Bold" />
+    <TextBlock Text="{Binding OriginText}" TextWrapping="Wrap" FontSize="12" Opacity="0.85" />
     <TextBlock Text="{x:Static loc:Strings.About_Acknowledgements}" FontWeight="Bold" />
     <TextBlock Text="{Binding AcknowledgementsText}" TextWrapping="Wrap" FontSize="12" Opacity="0.85" />
+    <TextBlock Text="{x:Static loc:Strings.About_AiUsage_Title}" FontWeight="Bold" />
+    <TextBlock Text="{Binding AiUsageText}" TextWrapping="Wrap" FontSize="12" Opacity="0.85" />
     <Separator />
     <TextBlock Text="{Binding CopyrightText}" TextWrapping="Wrap" FontSize="11" Opacity="0.7" />
     <ScrollViewer MaxHeight="120">

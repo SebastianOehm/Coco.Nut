@@ -47,6 +47,17 @@ public sealed class AboutViewModelTests
 
         Assert.Contains("Avalonia", vm.AcknowledgementsText, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("CommunityToolkit.Mvvm", vm.AcknowledgementsText, StringComparison.Ordinal);
-        Assert.Contains("WinNUT", vm.AcknowledgementsText, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Origin_credits_WinNUT_and_nutdotnet_to_gbakeman_and_ai_usage_is_disclosed()
+    {
+        var vm = new AboutViewModel(new FakeShellLauncher());
+
+        Assert.Contains("WinNUT-Client", vm.OriginText, StringComparison.Ordinal);
+        Assert.Contains("nutdotnet", vm.OriginText, StringComparison.Ordinal);
+        Assert.Contains("gbakeman", vm.OriginText, StringComparison.Ordinal);
+        Assert.Contains("Gawindx", vm.OriginText, StringComparison.Ordinal);
+        Assert.Contains("Claude", vm.AiUsageText, StringComparison.Ordinal);
     }
 }

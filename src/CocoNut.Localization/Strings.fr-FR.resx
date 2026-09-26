@@ -15,8 +15,20 @@
   <data name="About_Acknowledgements" xml:space="preserve">
     <value>Remerciements</value>
   </data>
+  <data name="About_AiUsage" xml:space="preserve">
+    <value>Une grande partie de Coco.Nut a été écrite avec l'aide de l'IA (Claude d'Anthropic, via Claude Code) : un modèle d'IA a planifié et relu le travail, des sous-agents d'IA ont écrit la majeure partie du code. Toutes les modifications ont été dirigées et vérifiées par les mainteneurs et sont couvertes par des compilations et des tests automatiques. Merci de signaler les problèmes sur la page du projet.</value>
+  </data>
+  <data name="About_AiUsage_Title" xml:space="preserve">
+    <value>Utilisation de l'IA</value>
+  </data>
   <data name="About_Description" xml:space="preserve">
     <value>Surveille un onduleur via un serveur Network UPS Tools (NUT) et arrête l'ordinateur lorsque la batterie est faible.</value>
+  </data>
+  <data name="About_Origin" xml:space="preserve">
+    <value>Coco.Nut est un portage en C# de WinNUT-Client. WinNUT-Client et la bibliothèque nutdotnet sont maintenus par gbakeman et le projet NUT Dot Net (github.com/nutdotnet) ; WinNUT a été créé à l'origine par Gawindx (Decaux Nicolas). Les icônes proviennent de WinNUT-Client.</value>
+  </data>
+  <data name="About_Origin_Title" xml:space="preserve">
+    <value>Origine</value>
   </data>
   <data name="About_ProjectPage" xml:space="preserve">
     <value>Page du projet</value>

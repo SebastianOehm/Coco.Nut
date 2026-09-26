@@ -15,8 +15,20 @@
   <data name="About_Acknowledgements" xml:space="preserve">
     <value>Danksagungen</value>
   </data>
+  <data name="About_AiUsage" xml:space="preserve">
+    <value>Große Teile von Coco.Nut wurden mit KI-Unterstützung geschrieben (Claude von Anthropic, mit Claude Code): Ein KI-Modell hat die Arbeit geplant und geprüft, KI-Sub-Agenten haben den Großteil des Codes geschrieben. Alle Änderungen wurden von den Maintainern gesteuert und geprüft und sind durch automatische Builds und Tests abgesichert. Bitte melde Probleme auf der Projektseite.</value>
+  </data>
+  <data name="About_AiUsage_Title" xml:space="preserve">
+    <value>Einsatz von KI</value>
+  </data>
   <data name="About_Description" xml:space="preserve">
     <value>Überwacht eine USV über einen Network-UPS-Tools-Server (NUT) und fährt den Computer herunter, wenn der Akku schwach wird.</value>
+  </data>
+  <data name="About_Origin" xml:space="preserve">
+    <value>Coco.Nut ist eine C#-Portierung von WinNUT-Client. WinNUT-Client und die nutdotnet-Bibliothek werden von gbakeman und dem NUT-Dot-Net-Projekt (github.com/nutdotnet) gepflegt; WinNUT wurde ursprünglich von Gawindx (Decaux Nicolas) entwickelt. Die Symbole stammen aus WinNUT-Client.</value>
+  </data>
+  <data name="About_Origin_Title" xml:space="preserve">
+    <value>Herkunft</value>
   </data>
   <data name="About_ProjectPage" xml:space="preserve">
     <value>Projektseite</value>

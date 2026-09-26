@@ -153,5 +153,15 @@ Coco.Nut is free software: you can redistribute it and/or modify it under the te
 License as published by the Free Software Foundation, either version 3 of the License, or any later version. See
 [`LICENSE`](LICENSE) for the full text.
 
-- Copyright (C) 2019-2021 Gawindx (Decaux Nicolas)
-- Copyright (C) 2022+ NUT Dot Net project
+- Coco.Nut: Copyright (C) 2026 Sebastian Oehm, gbakeman
+- Based on WinNUT-Client: Copyright (C) 2019-2021 Gawindx (Decaux Nicolas), Copyright (C) 2022+ gbakeman / NUT Dot Net project
+
+WinNUT-Client and the [nutdotnet](https://github.com/nutdotnet) library are maintained by gbakeman and the NUT Dot Net
+project.
+
+## Use of AI
+
+Large parts of Coco.Nut were written with AI assistance (Claude by Anthropic, using Claude Code): an AI model planned
+and reviewed the work, and AI sub-agents wrote most of the code. All changes were directed and checked by the
+maintainers and are covered by automated builds and tests (see the CI badge above). Please report problems as
+GitHub issues.

@@ -15,8 +15,20 @@
   <data name="About_Acknowledgements" xml:space="preserve">
     <value>Благодарности</value>
   </data>
+  <data name="About_AiUsage" xml:space="preserve">
+    <value>Значительная часть Coco.Nut написана с помощью ИИ (Claude от Anthropic, с использованием Claude Code): модель ИИ планировала и проверяла работу, а ИИ-субагенты написали большую часть кода. Все изменения направлялись и проверялись сопровождающими и покрыты автоматическими сборками и тестами. Пожалуйста, сообщайте о проблемах на странице проекта.</value>
+  </data>
+  <data name="About_AiUsage_Title" xml:space="preserve">
+    <value>Использование ИИ</value>
+  </data>
   <data name="About_Description" xml:space="preserve">
     <value>Отслеживает ИБП через сервер Network UPS Tools (NUT) и выключает компьютер при низком заряде батареи.</value>
+  </data>
+  <data name="About_Origin" xml:space="preserve">
+    <value>Coco.Nut — это порт WinNUT-Client на C#. WinNUT-Client и библиотеку nutdotnet сопровождают gbakeman и проект NUT Dot Net (github.com/nutdotnet); изначально WinNUT был создан Gawindx (Decaux Nicolas). Значки взяты из WinNUT-Client.</value>
+  </data>
+  <data name="About_Origin_Title" xml:space="preserve">
+    <value>Происхождение</value>
   </data>
   <data name="About_ProjectPage" xml:space="preserve">
     <value>Страница проекта</value>

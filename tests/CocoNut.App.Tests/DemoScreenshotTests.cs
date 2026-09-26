@@ -138,7 +138,10 @@ public class DemoScreenshotTests
         // windows, which otherwise have no other headless render coverage.
         var aboutWindow = new AboutWindow { DataContext = new AboutViewModel(new FakeShellLauncher()) };
         aboutWindow.Show();
-        Assert.NotNull(aboutWindow.CaptureRenderedFrame());
+        var aboutFrame = aboutWindow.CaptureRenderedFrame();
+        Assert.NotNull(aboutFrame);
+        Directory.CreateDirectory(ArtifactsDirectoryForAbout());
+        aboutFrame.Save(Path.Combine(ArtifactsDirectoryForAbout(), "about.png"));
 
         var result = UpdateCheckResult.FromRelease(true, new Version(1, 2, 0), new CocoNut.Core.Updates.GitHubRelease
         {
@@ -164,5 +167,16 @@ public class DemoScreenshotTests
         }
 
         return AppContext.BaseDirectory;
+    }
+
+    private static string ArtifactsDirectoryForAbout()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir is not null && !File.Exists(Path.Combine(dir.FullName, "CocoNut.sln")))
+        {
+            dir = dir.Parent;
+        }
+
+        return Path.Combine(dir?.FullName ?? AppContext.BaseDirectory, "artifacts");
     }
 }
