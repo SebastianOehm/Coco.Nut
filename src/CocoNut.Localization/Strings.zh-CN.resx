@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About_Title" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Coco.Nut</value>
+  </data>
+  <data name="Common_Apply" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Common_Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Common_Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Common_Unavailable" xml:space="preserve">
+    <value>参数无效</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>系统默认</value>
+  </data>
+  <data name="Log_ApplicationShutdownAt" xml:space="preserve">
+    <value>应用程序被关闭于</value>
+  </data>
+  <data name="Log_AutoReconnect" xml:space="preserve">
+    <value>自动重连</value>
+  </data>
+  <data name="Log_Connected" xml:space="preserve">
+    <value>至 Nut 主机 {0}:{1} 的连接建立成功</value>
+  </data>
+  <data name="Log_ConnectionFailed" xml:space="preserve">
+    <value>至 Nut 主机 {0}:{1} 的连接建立失败: {2}</value>
+  </data>
+  <data name="Log_Disconnected" xml:space="preserve">
+    <value>从 Nut 主机断开了连接</value>
+  </data>
+  <data name="Log_ForcedShutdownByServer" xml:space="preserve">
+    <value>NUT服务器施加的停止条件</value>
+  </data>
+  <data name="Log_Level_Debug" xml:space="preserve">
+    <value>调试</value>
+  </data>
+  <data name="Log_Level_Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Log_Level_Notice" xml:space="preserve">
+    <value>注意</value>
+  </data>
+  <data name="Log_Level_Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="Log_NoUpdateAvailable" xml:space="preserve">
+    <value>没有可用的更新</value>
+  </data>
+  <data name="Log_PreferencesChanged" xml:space="preserve">
+    <value>Coco.Nut 设置已修改</value>
+  </data>
+  <data name="Log_ShutdownCancelled" xml:space="preserve">
+    <value>取消关机进程</value>
+  </data>
+  <data name="Log_ShutdownStart" xml:space="preserve">
+    <value>触发关机流程所需满足的条件</value>
+  </data>
+  <data name="Log_UpdateAvailable" xml:space="preserve">
+    <value>新版本 {0} 可以更新</value>
+  </data>
+  <data name="Main_Flag_BatteryLow" xml:space="preserve">
+    <value>UPS 电池电量低</value>
+  </data>
+  <data name="Main_Flag_OnBattery" xml:space="preserve">
+    <value>UPS 使用电池工作</value>
+  </data>
+  <data name="Main_Flag_OnLine" xml:space="preserve">
+    <value>UPS 已接入市电</value>
+  </data>
+  <data name="Main_Flag_Overload" xml:space="preserve">
+    <value>UPS 过载</value>
+  </data>
+  <data name="Main_Gauge_BatteryCharge" xml:space="preserve">
+    <value>电池电量</value>
+  </data>
+  <data name="Main_Gauge_BatteryVoltage" xml:space="preserve">
+    <value>电池电压</value>
+  </data>
+  <data name="Main_Gauge_Frequency" xml:space="preserve">
+    <value>频率</value>
+  </data>
+  <data name="Main_Gauge_InputVoltage" xml:space="preserve">
+    <value>输入电压</value>
+  </data>
+  <data name="Main_Gauge_Load" xml:space="preserve">
+    <value>UPS 负载</value>
+  </data>
+  <data name="Main_Gauge_OutputVoltage" xml:space="preserve">
+    <value>输出电压</value>
+  </data>
+  <data name="Main_Label_Firmware" xml:space="preserve">
+    <value>固件：</value>
+  </data>
+  <data name="Main_Label_Manufacturer" xml:space="preserve">
+    <value>制造商：</value>
+  </data>
+  <data name="Main_Label_Name" xml:space="preserve">
+    <value>名称：</value>
+  </data>
+  <data name="Main_Label_RemainingTime" xml:space="preserve">
+    <value>剩余时间：</value>
+  </data>
+  <data name="Main_Label_Serial" xml:space="preserve">
+    <value>序列号：</value>
+  </data>
+  <data name="Main_Menu_About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Main_Menu_CheckForUpdate" xml:space="preserve">
+    <value>验证更新</value>
+  </data>
+  <data name="Main_Menu_Connection" xml:space="preserve">
+    <value>连接</value>
+  </data>
+  <data name="Main_Menu_Disconnect" xml:space="preserve">
+    <value>断开连接</value>
+  </data>
+  <data name="Main_Menu_Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Main_Menu_File" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="Main_Menu_Help" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Main_Menu_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Main_Menu_UpsVariables" xml:space="preserve">
+    <value>UPS 变量</value>
+  </data>
+  <data name="Main_Status_BatteryOk" xml:space="preserve">
+    <value>电池正常</value>
+  </data>
+  <data name="Main_Status_Connected" xml:space="preserve">
+    <value>已连接</value>
+  </data>
+  <data name="Main_Status_EnteringSleep" xml:space="preserve">
+    <value>Windows 待机。Coco.Nut 将断开连接。</value>
+  </data>
+  <data name="Main_Status_InvalidLogin" xml:space="preserve">
+    <value>错误的登录凭据（用户名或密码）</value>
+  </data>
+  <data name="Main_Status_LostConnection" xml:space="preserve">
+    <value>断开了至 {0} 的连接：{1}</value>
+  </data>
+  <data name="Main_Status_LowBattery" xml:space="preserve">
+    <value>电池电量过低</value>
+  </data>
+  <data name="Main_Status_NotConnected" xml:space="preserve">
+    <value>未连接</value>
+  </data>
+  <data name="Main_Status_OnBattery" xml:space="preserve">
+    <value>使用电池中 ({0}%)</value>
+  </data>
+  <data name="Main_Status_OnLine" xml:space="preserve">
+    <value>使用市电中</value>
+  </data>
+  <data name="Main_Status_Reconnecting" xml:space="preserve">
+    <value>重连中</value>
+  </data>
+  <data name="Main_Status_ResumedFromSleep" xml:space="preserve">
+    <value>重启计算机后自动运行 Coco.Nut。</value>
+  </data>
+  <data name="Main_Status_UnknownUps" xml:space="preserve">
+    <value>未知的 UPS 名称</value>
+  </data>
+  <data name="Notify_Title_Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Notify_Title_Info" xml:space="preserve">
+    <value>注意</value>
+  </data>
+  <data name="Notify_Title_Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage" xml:space="preserve">
+    <value>电池电压</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MaxToolTip" xml:space="preserve">
+    <value>最高电池电压。
+取值：0-100 之间的数值。</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MinToolTip" xml:space="preserve">
+    <value>最低电池电压。
+取值：0-100 之间的数值。</value>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply" xml:space="preserve">
+    <value>供电频率</value>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply_ToolTip" xml:space="preserve">
+    <value>设置输入频率（如果UPS未提供）</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency" xml:space="preserve">
+    <value>输入频率</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MaxToolTip" xml:space="preserve">
+    <value>最高输入频率。
+取值：0-100 之间的数值。</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MinToolTip" xml:space="preserve">
+    <value>最低输入频率。
+取值：0-100 之间的数值。</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage" xml:space="preserve">
+    <value>输入电压</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MaxToolTip" xml:space="preserve">
+    <value>最高输入电压。
+取值：0-999 之间的数值。</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MinToolTip" xml:space="preserve">
+    <value>最低输入电压。
+取值：0-999 之间的数值。</value>
+  </data>
+  <data name="Prefs_Calibration_Load" xml:space="preserve">
+    <value>UPS 负载</value>
+  </data>
+  <data name="Prefs_Calibration_Max" xml:space="preserve">
+    <value>最高</value>
+  </data>
+  <data name="Prefs_Calibration_Min" xml:space="preserve">
+    <value>最低</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage" xml:space="preserve">
+    <value>输出电压</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MaxToolTip" xml:space="preserve">
+    <value>最高输出电压。
+取值：0-999 之间的数值。</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MinToolTip" xml:space="preserve">
+    <value>最低输出电压。
+取值：0-999 之间的数值。</value>
+  </data>
+  <data name="Prefs_Calibration_Tab" xml:space="preserve">
+    <value>校准</value>
+  </data>
+  <data name="Prefs_Connection_CredentialsHint" xml:space="preserve">
+    <value>Nut服务器的登录凭据（如果不需要，请留空）</value>
+  </data>
+  <data name="Prefs_Connection_Host" xml:space="preserve">
+    <value>NUT 主机</value>
+  </data>
+  <data name="Prefs_Connection_Host_ToolTip" xml:space="preserve">
+    <value>服务器地址。
+取值：IPv4/IPv6/FQDN 地址</value>
+  </data>
+  <data name="Prefs_Connection_Login" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="Prefs_Connection_Login_ToolTip" xml:space="preserve">
+    <value>NUT服务器连接标识符</value>
+  </data>
+  <data name="Prefs_Connection_Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="Prefs_Connection_Password_ToolTip" xml:space="preserve">
+    <value>NUT服务器登录密码</value>
+  </data>
+  <data name="Prefs_Connection_PollingInterval" xml:space="preserve">
+    <value>轮询间隔</value>
+  </data>
+  <data name="Prefs_Connection_Port" xml:space="preserve">
+    <value>NUT 端口</value>
+  </data>
+  <data name="Prefs_Connection_Port_ToolTip" xml:space="preserve">
+    <value>Nut 服务Nut 服务器端口（默认为3493）。
+取值：1-65535 之间的数值</value>
+  </data>
+  <data name="Prefs_Connection_Reconnect" xml:space="preserve">
+    <value>重新建立连接</value>
+  </data>
+  <data name="Prefs_Connection_Reconnect_ToolTip" xml:space="preserve">
+    <value>启用自动连接/重连</value>
+  </data>
+  <data name="Prefs_Connection_Tab" xml:space="preserve">
+    <value>连接</value>
+  </data>
+  <data name="Prefs_Connection_UpsName" xml:space="preserve">
+    <value>UPS 名称</value>
+  </data>
+  <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
+    <value>监控的 UPS 名称。
+允许值：在 UPS 的 Nut 服务端所配置的名称。</value>
+  </data>
+  <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
+    <value>删除日志文件。</value>
+  </data>
+  <data name="Prefs_Logging_EnableFile" xml:space="preserve">
+    <value>创建日志文件</value>
+  </data>
+  <data name="Prefs_Logging_EnableFile_ToolTip" xml:space="preserve">
+    <value>将日志事件写入文件。</value>
+  </data>
+  <data name="Prefs_Logging_Level" xml:space="preserve">
+    <value>日志等级</value>
+  </data>
+  <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
+    <value>日志等级。</value>
+  </data>
+  <data name="Prefs_Logging_Tab" xml:space="preserve">
+    <value>日志记录</value>
+  </data>
+  <data name="Prefs_Logging_ViewLog_ToolTip" xml:space="preserve">
+    <value>打开日志文件。</value>
+  </data>
+  <data name="Prefs_Misc_CloseToTray" xml:space="preserve">
+    <value>靠近Systray</value>
+  </data>
+  <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
+    <value>关闭程序时缩小至托盘。</value>
+  </data>
+  <data name="Prefs_Misc_Language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
+    <value>更改将在重新启动 Coco.Nut 后生效。</value>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
+    <value>最小化到系统托盘</value>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray_ToolTip" xml:space="preserve">
+    <value>缩小至任务栏或系统托盘。</value>
+  </data>
+  <data name="Prefs_Misc_StartMinimized" xml:space="preserve">
+    <value>启动时最小化当前应用</value>
+  </data>
+  <data name="Prefs_Misc_StartMinimized_ToolTip" xml:space="preserve">
+    <value>启动时最小化 Coco.Nut。</value>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem" xml:space="preserve">
+    <value>随 Windows 启动当前应用</value>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem_ToolTip" xml:space="preserve">
+    <value>随 Windows 启动 Coco.Nut。</value>
+  </data>
+  <data name="Prefs_Misc_Tab" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="Prefs_Power_AllowExtend" xml:space="preserve">
+    <value>允许的延时关机时间</value>
+  </data>
+  <data name="Prefs_Power_AllowExtend_ToolTip" xml:space="preserve">
+    <value>在关机过程中允许的额外时间。
+注意: 
+这段额外时间可能超过 UPS 的续航时间 - 谨慎使用！！！</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit" xml:space="preserve">
+    <value>如果电池低于百分比则关机</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit_ToolTip" xml:space="preserve">
+    <value>触发停机流程的最低电池电量百分比。
+取值：0-100 之间的数值。</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit_Unit" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="Prefs_Power_FollowFsd" xml:space="preserve">
+    <value>关闭NUT的FSD信号</value>
+  </data>
+  <data name="Prefs_Power_FollowFsd_ToolTip" xml:space="preserve">
+    <value>指示当NUT服务器发出强制关机信号时是否应执行关机（FSD =强制关机）</value>
+  </data>
+  <data name="Prefs_Power_GraceTime" xml:space="preserve">
+    <value>关机的宽限延时（秒）：</value>
+  </data>
+  <data name="Prefs_Power_GraceTime_ToolTip" xml:space="preserve">
+    <value>额外的宽限期限制。取值：0-3600。</value>
+  </data>
+  <data name="Prefs_Power_Immediate" xml:space="preserve">
+    <value>即时停机操作</value>
+  </data>
+  <data name="Prefs_Power_Immediate_ToolTip" xml:space="preserve">
+    <value>立刻或定时执行关机流程。</value>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit" xml:space="preserve">
+    <value>如果续航时间低于则关机</value>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit_ToolTip" xml:space="preserve">
+    <value>触发停机流程的最低续航时间。
+取值：0-3600 之间的数值。</value>
+  </data>
+  <data name="Prefs_Power_StopDelay" xml:space="preserve">
+    <value>延时关机（秒）</value>
+  </data>
+  <data name="Prefs_Power_StopDelay_ToolTip" xml:space="preserve">
+    <value>停机流程延时。
+取值：0-3600 秒之间的数值。</value>
+  </data>
+  <data name="Prefs_Power_StopType" xml:space="preserve">
+    <value>停机类型</value>
+  </data>
+  <data name="Prefs_Power_StopType_ToolTip" xml:space="preserve">
+    <value>停机流程结束时的停机类型</value>
+  </data>
+  <data name="Prefs_Power_Tab" xml:space="preserve">
+    <value>关机选项</value>
+  </data>
+  <data name="Prefs_Title" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="Prefs_Update_Channel" xml:space="preserve">
+    <value>稳定或开发分支</value>
+  </data>
+  <data name="Prefs_Update_Channel_ToolTip" xml:space="preserve">
+    <value>在验证期间使用稳定或开发分支。</value>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup" xml:space="preserve">
+    <value>在启动时验证更新</value>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup_ToolTip" xml:space="preserve">
+    <value>在启动时检查更新。</value>
+  </data>
+  <data name="Prefs_Update_CheckInterval" xml:space="preserve">
+    <value>每次检验的延时</value>
+  </data>
+  <data name="Prefs_Update_CheckInterval_ToolTip" xml:space="preserve">
+    <value>检查更新频率。</value>
+  </data>
+  <data name="Prefs_Update_Tab" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="Shutdown_BatteryStatus" xml:space="preserve">
+    <value>电池电量 : {0}
+剩余时间 : {1}</value>
+  </data>
+  <data name="Shutdown_GraceButton" xml:space="preserve">
+    <value>宽限时间</value>
+  </data>
+  <data name="Shutdown_ImmediateButton" xml:space="preserve">
+    <value>立即关机</value>
+  </data>
+  <data name="Shutdown_Title" xml:space="preserve">
+    <value>正在关机</value>
+  </data>
+  <data name="StopAction_Hibernate" xml:space="preserve">
+    <value>休眠</value>
+  </data>
+  <data name="StopAction_Shutdown" xml:space="preserve">
+    <value>关机</value>
+  </data>
+  <data name="StopAction_Suspend" xml:space="preserve">
+    <value>睡眠</value>
+  </data>
+  <data name="Tray_Menu_About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Tray_Menu_CheckForUpdate" xml:space="preserve">
+    <value>验证更新</value>
+  </data>
+  <data name="Tray_Menu_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="UpdateChannel_PreRelease" xml:space="preserve">
+    <value>开发版</value>
+  </data>
+  <data name="UpdateChannel_Stable" xml:space="preserve">
+    <value>稳定</value>
+  </data>
+  <data name="UpsStatus_ALARM" xml:space="preserve">
+    <value>警报</value>
+  </data>
+  <data name="UpsStatus_CAL" xml:space="preserve">
+    <value>校准</value>
+  </data>
+  <data name="UpsStatus_CHRG" xml:space="preserve">
+    <value>正在充电</value>
+  </data>
+  <data name="UpsStatus_COMMLOST" xml:space="preserve">
+    <value>通信已中断</value>
+  </data>
+  <data name="UpsStatus_DISCHRG" xml:space="preserve">
+    <value>正在放电</value>
+  </data>
+  <data name="UpsStatus_FSD" xml:space="preserve">
+    <value>强制关机</value>
+  </data>
+  <data name="UpsStatus_HB" xml:space="preserve">
+    <value>电池电量过高</value>
+  </data>
+  <data name="UpsStatus_LB" xml:space="preserve">
+    <value>电池电量过低</value>
+  </data>
+  <data name="UpsStatus_OB" xml:space="preserve">
+    <value>电池供电中</value>
+  </data>
+  <data name="UpsStatus_OFF" xml:space="preserve">
+    <value>输出已关闭</value>
+  </data>
+  <data name="UpsStatus_OL" xml:space="preserve">
+    <value>使用市电中</value>
+  </data>
+  <data name="UpsStatus_OVER" xml:space="preserve">
+    <value>过载</value>
+  </data>
+  <data name="UpsStatus_RB" xml:space="preserve">
+    <value>需要更换电池</value>
+  </data>
+  <data name="UpsStatus_TEST" xml:space="preserve">
+    <value>正在测试</value>
+  </data>
+  <data name="Vars_Description" xml:space="preserve">
+    <value>描述：</value>
+  </data>
+  <data name="Vars_GroupTitle" xml:space="preserve">
+    <value>项目属性</value>
+  </data>
+  <data name="Vars_Name" xml:space="preserve">
+    <value>名称：</value>
+  </data>
+  <data name="Vars_Reload" xml:space="preserve">
+    <value>重载</value>
+  </data>
+  <data name="Vars_Title" xml:space="preserve">
+    <value>UPS变量列表</value>
+  </data>
+  <data name="Vars_Value" xml:space="preserve">
+    <value>值：</value>
+  </data>
+</root>

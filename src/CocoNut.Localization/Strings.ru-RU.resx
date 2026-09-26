@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About_Title" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Coco.Nut</value>
+  </data>
+  <data name="Common_Apply" xml:space="preserve">
+    <value>Применить</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Common_Copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="Common_Exit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>Ок</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Как в системе</value>
+  </data>
+  <data name="Log_ApplicationShutdownAt" xml:space="preserve">
+    <value>Программное отключение в</value>
+  </data>
+  <data name="Log_AutoReconnect" xml:space="preserve">
+    <value>Автоматическое переподключение</value>
+  </data>
+  <data name="Log_Connected" xml:space="preserve">
+    <value>Соединение с сервером NUT {0}:{1} Успех</value>
+  </data>
+  <data name="Log_ConnectionFailed" xml:space="preserve">
+    <value>Соединение с сервером NUT {0}:{1} Отказ: {2}</value>
+  </data>
+  <data name="Log_Disconnected" xml:space="preserve">
+    <value>Отключиться от сервера NUT</value>
+  </data>
+  <data name="Log_ForcedShutdownByServer" xml:space="preserve">
+    <value>Условие отключения наложенное сервером NUT</value>
+  </data>
+  <data name="Log_Level_Debug" xml:space="preserve">
+    <value>Отладка</value>
+  </data>
+  <data name="Log_Level_Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Log_Level_Notice" xml:space="preserve">
+    <value>Замечания</value>
+  </data>
+  <data name="Log_Level_Warning" xml:space="preserve">
+    <value>Предупреждения</value>
+  </data>
+  <data name="Log_NoUpdateAvailable" xml:space="preserve">
+    <value>Обновлений нет</value>
+  </data>
+  <data name="Log_PreferencesChanged" xml:space="preserve">
+    <value>Настройки Coco.Nut изменены</value>
+  </data>
+  <data name="Log_ShutdownCancelled" xml:space="preserve">
+    <value>Отмена процесса отключения</value>
+  </data>
+  <data name="Log_ShutdownStart" xml:space="preserve">
+    <value>Достигнуты условия для запуска процесса отключения</value>
+  </data>
+  <data name="Log_UpdateAvailable" xml:space="preserve">
+    <value>Доступна версия {0}</value>
+  </data>
+  <data name="Main_Flag_BatteryLow" xml:space="preserve">
+    <value>ИБП Низкий заряд батареи</value>
+  </data>
+  <data name="Main_Flag_OnBattery" xml:space="preserve">
+    <value>ИБП От батареи</value>
+  </data>
+  <data name="Main_Flag_OnLine" xml:space="preserve">
+    <value>ИБП От сети</value>
+  </data>
+  <data name="Main_Flag_Overload" xml:space="preserve">
+    <value>ИБП Перегрузка</value>
+  </data>
+  <data name="Main_Gauge_BatteryCharge" xml:space="preserve">
+    <value>Заряд батареи</value>
+  </data>
+  <data name="Main_Gauge_BatteryVoltage" xml:space="preserve">
+    <value>Напряжение батареи</value>
+  </data>
+  <data name="Main_Gauge_Frequency" xml:space="preserve">
+    <value>Частота</value>
+  </data>
+  <data name="Main_Gauge_InputVoltage" xml:space="preserve">
+    <value>Входное напряжение</value>
+  </data>
+  <data name="Main_Gauge_Load" xml:space="preserve">
+    <value>Нагрузка ИБП</value>
+  </data>
+  <data name="Main_Gauge_OutputVoltage" xml:space="preserve">
+    <value>Выходное напряжение</value>
+  </data>
+  <data name="Main_Label_Firmware" xml:space="preserve">
+    <value>Прошивка:</value>
+  </data>
+  <data name="Main_Label_Manufacturer" xml:space="preserve">
+    <value>Производитель:</value>
+  </data>
+  <data name="Main_Label_Name" xml:space="preserve">
+    <value>Название:</value>
+  </data>
+  <data name="Main_Label_RemainingTime" xml:space="preserve">
+    <value>Осталось времени:</value>
+  </data>
+  <data name="Main_Label_Serial" xml:space="preserve">
+    <value>Серийный номер:</value>
+  </data>
+  <data name="Main_Menu_About" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="Main_Menu_CheckForUpdate" xml:space="preserve">
+    <value>Проверять обновления</value>
+  </data>
+  <data name="Main_Menu_Connection" xml:space="preserve">
+    <value>Соединение</value>
+  </data>
+  <data name="Main_Menu_Disconnect" xml:space="preserve">
+    <value>Отключиться</value>
+  </data>
+  <data name="Main_Menu_Exit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="Main_Menu_File" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="Main_Menu_Help" xml:space="preserve">
+    <value>Помощь</value>
+  </data>
+  <data name="Main_Menu_Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Main_Menu_UpsVariables" xml:space="preserve">
+    <value>Переменные ИБП</value>
+  </data>
+  <data name="Main_Status_BatteryOk" xml:space="preserve">
+    <value>Батарея ОК</value>
+  </data>
+  <data name="Main_Status_Connected" xml:space="preserve">
+    <value>Подключено</value>
+  </data>
+  <data name="Main_Status_EnteringSleep" xml:space="preserve">
+    <value>Ожидание Windows. Coco.Nut отключится.</value>
+  </data>
+  <data name="Main_Status_InvalidLogin" xml:space="preserve">
+    <value>Неправильные данные авторизации (логин или пароль)</value>
+  </data>
+  <data name="Main_Status_LostConnection" xml:space="preserve">
+    <value>Потеря подключения к {0}:{1}</value>
+  </data>
+  <data name="Main_Status_LowBattery" xml:space="preserve">
+    <value>Низкий заряд батареи</value>
+  </data>
+  <data name="Main_Status_NotConnected" xml:space="preserve">
+    <value>Не подключено</value>
+  </data>
+  <data name="Main_Status_OnBattery" xml:space="preserve">
+    <value>От батареи ({0}%)</value>
+  </data>
+  <data name="Main_Status_OnLine" xml:space="preserve">
+    <value>От сети</value>
+  </data>
+  <data name="Main_Status_Reconnecting" xml:space="preserve">
+    <value>Переподключение в процессе</value>
+  </data>
+  <data name="Main_Status_ResumedFromSleep" xml:space="preserve">
+    <value>Перезапуск Coco.Nut после выхода из Windows.</value>
+  </data>
+  <data name="Main_Status_UnknownUps" xml:space="preserve">
+    <value>Название ИБП неизвестно</value>
+  </data>
+  <data name="Notify_Title_Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Notify_Title_Info" xml:space="preserve">
+    <value>Замечания</value>
+  </data>
+  <data name="Notify_Title_Warning" xml:space="preserve">
+    <value>Предупреждения</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage" xml:space="preserve">
+    <value>Напряжение батареи</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MaxToolTip" xml:space="preserve">
+    <value>Максимальное напряжение батареи.
+Число от 0 до 100.</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MinToolTip" xml:space="preserve">
+    <value>Минимальное напряжение батареи.
+Число от 0 до 100.</value>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply" xml:space="preserve">
+    <value>Частота сети</value>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply_ToolTip" xml:space="preserve">
+    <value>Установка частоты сети если не передаётся ИБП.</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency" xml:space="preserve">
+    <value>Входная частота</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MaxToolTip" xml:space="preserve">
+    <value>Максимальная частота.
+Число от 0 до 100.</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MinToolTip" xml:space="preserve">
+    <value>Минимальная частота.
+Число от 0 до 100.</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage" xml:space="preserve">
+    <value>Входное напряжение</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MaxToolTip" xml:space="preserve">
+    <value>Максимальное напряжение сети.
+Число от 0 до 999.</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MinToolTip" xml:space="preserve">
+    <value>Минимальное напряжение сети.
+Число от 0 до 999.</value>
+  </data>
+  <data name="Prefs_Calibration_Load" xml:space="preserve">
+    <value>Нагрузка ИБП</value>
+  </data>
+  <data name="Prefs_Calibration_Max" xml:space="preserve">
+    <value>Максимум</value>
+  </data>
+  <data name="Prefs_Calibration_Min" xml:space="preserve">
+    <value>Минимум</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage" xml:space="preserve">
+    <value>Выходное напряжение</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MaxToolTip" xml:space="preserve">
+    <value>Максимальное напряжение на выходе.
+Число от 0 до 100.</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MinToolTip" xml:space="preserve">
+    <value>Минимальное напряжение на выходе.
+Число от 0 до 100.</value>
+  </data>
+  <data name="Prefs_Calibration_Tab" xml:space="preserve">
+    <value>Калибровка</value>
+  </data>
+  <data name="Prefs_Connection_CredentialsHint" xml:space="preserve">
+    <value>Реквизиты для подключения к серверу NUT (оставьте пустыми если не требуются)</value>
+  </data>
+  <data name="Prefs_Connection_Host" xml:space="preserve">
+    <value>Север NUT</value>
+  </data>
+  <data name="Prefs_Connection_Host_ToolTip" xml:space="preserve">
+    <value>Адресс сервера NUT. 
+IPV4 / IPV6 / доменное имя.</value>
+  </data>
+  <data name="Prefs_Connection_Login" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="Prefs_Connection_Login_ToolTip" xml:space="preserve">
+    <value>Идентификатор подключения к серверу NUT</value>
+  </data>
+  <data name="Prefs_Connection_Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="Prefs_Connection_Password_ToolTip" xml:space="preserve">
+    <value>Пароль для входа на сервер NUT</value>
+  </data>
+  <data name="Prefs_Connection_PollingInterval" xml:space="preserve">
+    <value>Интервал запросов</value>
+  </data>
+  <data name="Prefs_Connection_Port" xml:space="preserve">
+    <value>Порт NUT</value>
+  </data>
+  <data name="Prefs_Connection_Port_ToolTip" xml:space="preserve">
+    <value>Порт сервера NUT (по умолчанию = 3493).
+Число от 1 до 65535.</value>
+  </data>
+  <data name="Prefs_Connection_Reconnect" xml:space="preserve">
+    <value>Переподключаться</value>
+  </data>
+  <data name="Prefs_Connection_Reconnect_ToolTip" xml:space="preserve">
+    <value>Включить автопоключение/переподключение</value>
+  </data>
+  <data name="Prefs_Connection_Tab" xml:space="preserve">
+    <value>Соединение</value>
+  </data>
+  <data name="Prefs_Connection_UpsName" xml:space="preserve">
+    <value>Имя ИБП</value>
+  </data>
+  <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
+    <value>Имя ИБП для мониторинга.
+Допустимые значения: Имя ИБП из конфиграции сервера NUT</value>
+  </data>
+  <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
+    <value>Удалить файл лога</value>
+  </data>
+  <data name="Prefs_Logging_EnableFile" xml:space="preserve">
+    <value>Создать файл лога</value>
+  </data>
+  <data name="Prefs_Logging_Level" xml:space="preserve">
+    <value>Уровень логирования</value>
+  </data>
+  <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
+    <value>Уровень логирования.</value>
+  </data>
+  <data name="Prefs_Logging_Tab" xml:space="preserve">
+    <value>Журналирование</value>
+  </data>
+  <data name="Prefs_Logging_ViewLog_ToolTip" xml:space="preserve">
+    <value>Откыть файл лога</value>
+  </data>
+  <data name="Prefs_Misc_CloseToTray" xml:space="preserve">
+    <value>Закрыть в трей</value>
+  </data>
+  <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
+    <value>Свернуть в трей при закрытии.</value>
+  </data>
+  <data name="Prefs_Misc_Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
+    <value>Изменения вступят в силу после перезапуска Coco.Nut.</value>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
+    <value>Сворачивать в трей</value>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray_ToolTip" xml:space="preserve">
+    <value>Свернуть в панель задач или трей.</value>
+  </data>
+  <data name="Prefs_Misc_StartMinimized" xml:space="preserve">
+    <value>Запускать свёрнутым</value>
+  </data>
+  <data name="Prefs_Misc_StartMinimized_ToolTip" xml:space="preserve">
+    <value>Запуск Coco.Nut свёрнутым</value>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem" xml:space="preserve">
+    <value>Запускать с Windows</value>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem_ToolTip" xml:space="preserve">
+    <value>Запуск Coco.Nut вместе с Windows</value>
+  </data>
+  <data name="Prefs_Misc_Tab" xml:space="preserve">
+    <value>Прочее</value>
+  </data>
+  <data name="Prefs_Power_AllowExtend" xml:space="preserve">
+    <value>Добавить дополнительное время при выключении.</value>
+  </data>
+  <data name="Prefs_Power_AllowExtend_ToolTip" xml:space="preserve">
+    <value>Добавить время при выключении.
+Важно:
+это дополнительное время может выйти за время работы ИБП - ИСПОЛЬЗОВАТЬ С ОСТОРОЖНОСТЬЮ!!!</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit" xml:space="preserve">
+    <value>Выключение если заряд меньше</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit_ToolTip" xml:space="preserve">
+    <value>Если значение заряда батареи меньше - будет запущена процедура выключения питания.
+Допустимые значения от 0 до 100.</value>
+  </data>
+  <data name="Prefs_Power_FollowFsd" xml:space="preserve">
+    <value>Выключение по запросу FSD сервера NUT</value>
+  </data>
+  <data name="Prefs_Power_FollowFsd_ToolTip" xml:space="preserve">
+    <value>Должжно ли быть выполнено принудительное выключение если  сервер NUT запрашивает FSD</value>
+  </data>
+  <data name="Prefs_Power_GraceTime" xml:space="preserve">
+    <value>Дополнительная задержка выключения (сек)</value>
+  </data>
+  <data name="Prefs_Power_GraceTime_ToolTip" xml:space="preserve">
+    <value>Дополнительное время.
+Допустимые значения от 0 до 3600.</value>
+  </data>
+  <data name="Prefs_Power_Immediate" xml:space="preserve">
+    <value>Немедленное отключение</value>
+  </data>
+  <data name="Prefs_Power_Immediate_ToolTip" xml:space="preserve">
+    <value>Выключение немедленно или с задержкой.</value>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit" xml:space="preserve">
+    <value>Выключение если время меньше (сек)</value>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit_ToolTip" xml:space="preserve">
+    <value>Если значение времени резервирования меньше - будет запущена процедура выключения питания.
+Допустимые значения от 0 до 3600.</value>
+  </data>
+  <data name="Prefs_Power_StopDelay" xml:space="preserve">
+    <value>Задержка выключения (сек)</value>
+  </data>
+  <data name="Prefs_Power_StopDelay_ToolTip" xml:space="preserve">
+    <value>Задержка процедуры отключения если необходимо.
+Число от 0 до 3600</value>
+  </data>
+  <data name="Prefs_Power_StopType" xml:space="preserve">
+    <value>Тип отключения</value>
+  </data>
+  <data name="Prefs_Power_StopType_ToolTip" xml:space="preserve">
+    <value>Тип отключения в конце процедуры отключения.</value>
+  </data>
+  <data name="Prefs_Power_Tab" xml:space="preserve">
+    <value>Настройка отключения</value>
+  </data>
+  <data name="Prefs_Title" xml:space="preserve">
+    <value>Опции</value>
+  </data>
+  <data name="Prefs_Update_Channel" xml:space="preserve">
+    <value>Стабильная или отладочная версия</value>
+  </data>
+  <data name="Prefs_Update_Channel_ToolTip" xml:space="preserve">
+    <value>Искать обновления до стабильной или отладочной версии.</value>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup" xml:space="preserve">
+    <value>Проверять при запуске</value>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup_ToolTip" xml:space="preserve">
+    <value>Проверяет обновления при запуске.</value>
+  </data>
+  <data name="Prefs_Update_CheckInterval" xml:space="preserve">
+    <value>Задержка между проверками</value>
+  </data>
+  <data name="Prefs_Update_CheckInterval_ToolTip" xml:space="preserve">
+    <value>Частота проверок</value>
+  </data>
+  <data name="Prefs_Update_Tab" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="Shutdown_BatteryStatus" xml:space="preserve">
+    <value>Заряд : {0}
+Осталось времени : {1}</value>
+  </data>
+  <data name="Shutdown_GraceButton" xml:space="preserve">
+    <value>Время задержки</value>
+  </data>
+  <data name="Shutdown_ImmediateButton" xml:space="preserve">
+    <value>Немедленное выключение</value>
+  </data>
+  <data name="Shutdown_Title" xml:space="preserve">
+    <value>Отключение в процессе</value>
+  </data>
+  <data name="StopAction_Hibernate" xml:space="preserve">
+    <value>Гибернация</value>
+  </data>
+  <data name="StopAction_Shutdown" xml:space="preserve">
+    <value>Выключение</value>
+  </data>
+  <data name="StopAction_Suspend" xml:space="preserve">
+    <value>Сон</value>
+  </data>
+  <data name="Tray_Menu_About" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="Tray_Menu_CheckForUpdate" xml:space="preserve">
+    <value>Проверять обновления</value>
+  </data>
+  <data name="Tray_Menu_Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="UpdateChannel_PreRelease" xml:space="preserve">
+    <value>Отладочная версия</value>
+  </data>
+  <data name="UpdateChannel_Stable" xml:space="preserve">
+    <value>Стабильная версия</value>
+  </data>
+  <data name="UpsStatus_ALARM" xml:space="preserve">
+    <value>Тревога</value>
+  </data>
+  <data name="UpsStatus_CAL" xml:space="preserve">
+    <value>Калибровка</value>
+  </data>
+  <data name="UpsStatus_CHRG" xml:space="preserve">
+    <value>Заряжается</value>
+  </data>
+  <data name="UpsStatus_COMMLOST" xml:space="preserve">
+    <value>Связь потеряна</value>
+  </data>
+  <data name="UpsStatus_DISCHRG" xml:space="preserve">
+    <value>Разряжается</value>
+  </data>
+  <data name="UpsStatus_FSD" xml:space="preserve">
+    <value>Принудительное отключение</value>
+  </data>
+  <data name="UpsStatus_HB" xml:space="preserve">
+    <value>Высокий заряд батареи</value>
+  </data>
+  <data name="UpsStatus_LB" xml:space="preserve">
+    <value>Низкий заряд батареи</value>
+  </data>
+  <data name="UpsStatus_OB" xml:space="preserve">
+    <value>От батареи</value>
+  </data>
+  <data name="UpsStatus_OFF" xml:space="preserve">
+    <value>Выход отключён</value>
+  </data>
+  <data name="UpsStatus_OL" xml:space="preserve">
+    <value>От сети</value>
+  </data>
+  <data name="UpsStatus_OVER" xml:space="preserve">
+    <value>Перегрузка</value>
+  </data>
+  <data name="UpsStatus_RB" xml:space="preserve">
+    <value>Требуется замена батареи</value>
+  </data>
+  <data name="UpsStatus_TEST" xml:space="preserve">
+    <value>Идёт тестирование</value>
+  </data>
+  <data name="Vars_Description" xml:space="preserve">
+    <value>Описание:</value>
+  </data>
+  <data name="Vars_GroupTitle" xml:space="preserve">
+    <value>Свойства</value>
+  </data>
+  <data name="Vars_Name" xml:space="preserve">
+    <value>Название:</value>
+  </data>
+  <data name="Vars_Reload" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="Vars_Title" xml:space="preserve">
+    <value>Список переменных ИБП</value>
+  </data>
+  <data name="Vars_Value" xml:space="preserve">
+    <value>Значение:</value>
+  </data>
+</root>
