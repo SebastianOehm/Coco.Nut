@@ -1,9 +1,48 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
+        xmlns:controls="clr-namespace:CocoNut.App.Controls"
         x:Class="CocoNut.App.Views.MainWindow"
         Icon="/Assets/coconut.ico"
-        Width="800" Height="500"
+        Width="860" Height="480"
         Title="{x:Static loc:Strings.AppName}">
-  <TextBlock Text="{x:Static loc:Strings.AppName}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+  <!--
+    WP-F demo: the six Gauge controls from Controls/Gauge.cs, wired up with GaugePresets range bands
+    (see MainWindow.axaml.cs) and sample readings, for the architect to review. The App-shell work
+    package (G) replaces this content with the real MainWindow/MainWindowViewModel.
+  -->
+  <ScrollViewer>
+    <WrapPanel Margin="16" HorizontalAlignment="Center">
+      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+        <controls:Gauge x:Name="InputVoltageGauge" Width="220" Height="220"
+                         Minimum="210" Maximum="270" Value="230"
+                         Caption="Input Voltage" Unit="V" />
+      </Border>
+      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+        <controls:Gauge x:Name="OutputVoltageGauge" Width="220" Height="220"
+                         Minimum="210" Maximum="270" Value="228"
+                         Caption="Output Voltage" Unit="V" />
+      </Border>
+      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+        <controls:Gauge x:Name="InputFrequencyGauge" Width="220" Height="220"
+                         Minimum="40" Maximum="60" Value="50"
+                         Caption="Input Frequency" Unit="Hz" />
+      </Border>
+      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+        <controls:Gauge x:Name="BatteryVoltageGauge" Width="220" Height="220"
+                         Minimum="6" Maximum="18" Value="13.2"
+                         Caption="Battery Voltage" Unit="V" />
+      </Border>
+      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+        <controls:Gauge x:Name="LoadGauge" Width="220" Height="220"
+                         Minimum="0" Maximum="100" Value="35"
+                         Caption="Load" Unit="%" />
+      </Border>
+      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+        <controls:Gauge x:Name="PowerGauge" Width="220" Height="220"
+                         Minimum="0" Maximum="600" Value="180"
+                         Caption="Power" Unit="W" />
+      </Border>
+    </WrapPanel>
+  </ScrollViewer>
 </Window>
