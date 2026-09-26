@@ -35,11 +35,12 @@ public class TrayIconSelectorTests
     [InlineData(true, false, UpsStatus.OB, 100.0, false, "1040.ico")] // on battery, 100%
     [InlineData(true, false, UpsStatus.OB, 50.0, true, "1092.ico")] // on battery, 50% bucket, dark
     [InlineData(true, false, UpsStatus.OB, 75.0, true, "1096.ico")] // on battery, 75% bucket, dark
-    [InlineData(true, false, UpsStatus.OB, 100.0, true, "1096.ico")] // WinNUT bug: GetIcon's "Case 1104" returns the 1096 resource, not 1104's own
-    [InlineData(true, false, UpsStatus.OB, 0.0, true, "1136.ico")] // WinNUT gap: index 1089 has no GetIcon case, falls to its Case Else default
-    [InlineData(true, false, UpsStatus.OB, 25.0, true, "1136.ico")] // WinNUT gap: index 1090 has no GetIcon case, falls to its Case Else default
-    [InlineData(true, false, UpsStatus.None, null, false, "1136.ico")] // connected, no ups.status/charge data yet -> default
-    [InlineData(true, false, UpsStatus.OB, null, false, "1136.ico")] // connected, on battery, charge unknown -> default (WinNUT has no case for a plain OB/OL index)
+    [InlineData(true, false, UpsStatus.OB, 100.0, true, "1104.ico")] // WinNUT showed the 75% icon here
+    [InlineData(true, false, UpsStatus.OB, 0.0, true, "1079.ico")] // index 1089, asset misnumbered in WinNUT
+    [InlineData(true, false, UpsStatus.OB, 25.0, true, "1080.ico")] // index 1090, asset misnumbered in WinNUT
+    [InlineData(true, false, UpsStatus.None, null, false, "1072.ico")] // connected, no data yet -> on-line, full (never looks like an outage)
+    [InlineData(true, false, UpsStatus.OB, null, false, "1040.ico")] // on battery, charge unknown -> on-battery, full
+    [InlineData(true, false, UpsStatus.OB | UpsStatus.OL, 50.0, false, "1028.ico")] // OB wins over OL
     public void SelectIconAsset_matches_WinNUT_mapping(bool connected, bool reconnecting, UpsStatus status, double? batteryCharge, bool darkTheme, string expectedFile)
     {
         string asset = TrayIconSelector.SelectIconAsset(connected, reconnecting, status, batteryCharge, darkTheme);
@@ -92,7 +93,7 @@ public class TrayIconSelectorTests
         [
             "1025.ico", "1026.ico", "1028.ico", "1032.ico", "1040.ico",
             "1057.ico", "1058.ico", "1060.ico", "1064.ico", "1072.ico",
-            "1092.ico", "1096.ico",
+            "1079.ico", "1080.ico", "1092.ico", "1096.ico", "1104.ico",
             "1121.ico", "1122.ico", "1124.ico", "1128.ico", "1136.ico",
             "1152.ico", "1216.ico", "1280.ico", "1344.ico",
         ];

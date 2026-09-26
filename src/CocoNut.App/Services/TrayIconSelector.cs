@@ -6,8 +6,8 @@ using CocoNut.Core.Ups;
 namespace CocoNut.App.Services;
 
 /// <summary>
-/// Picks the tray/window icon WinNUT would show, replicating <c>WinNUT.vb</c>'s <c>UpdateIcon_NotifyIcon</c>
-/// and <c>GetIcon</c> exactly (including their quirks - see the remarks below), and loads it as an Avalonia
+/// Picks the tray/window icon WinNUT would show, following <c>WinNUT.vb</c>'s <c>UpdateIcon_NotifyIcon</c>
+/// and <c>GetIcon</c> (with its icon bugs fixed - see the remarks below), and loads it as an Avalonia
 /// <see cref="WindowIcon"/> from the assets copied to <c>Assets/Icons/*.ico</c> (<c>avares://CocoNut/Assets/Icons/*.ico</c>,
 /// the app's assembly name is <c>CocoNut</c>, see <c>CocoNut.App.csproj</c>'s <c>AssemblyName</c>).
 /// </summary>
@@ -18,18 +18,17 @@ namespace CocoNut.App.Services;
 /// </para>
 /// <list type="bullet">
 /// <item><description><c>IDX_BATT_0/25/50/75/100 = 1/2/4/8/16</c> - battery charge bucket (0-10%, 11-25%, 26-39% and 40-50% both map to <c>IDX_BATT_50</c>, 51-75%, 76-100%; see <c>Update_UPS_Data</c>'s <c>Select Case UPS_BattCh</c>).</description></item>
-/// <item><description><c>IDX_OL = 32</c> - set when <c>ups.status</c> has <c>OL</c>; when it has <c>OB</c> instead the base index is <c>0</c> (and stays <c>0</c> for any other status, since WinNUT's <c>If/ElseIf</c> has no <c>Else</c> and this port has no persisted previous state to fall back to).</description></item>
+/// <item><description><c>IDX_OL = 32</c> - the "on mains" plug. Coco.Nut shows the on-battery variant only when <c>ups.status</c> contains <c>OB</c>; any other status (including no data yet) uses the on-line variant, so a missing reading never looks like a power outage.</description></item>
 /// <item><description><c>WIN_DARK = 64</c> - added when running under the OS/tray dark theme.</description></item>
 /// <item><description><c>IDX_ICO_OFFLINE = 128</c> and <c>IDX_ICO_RETRY = 256</c> - override everything above: not connected, or reconnecting.</description></item>
 /// <item><description><c>IDX_OFFSET = 1024</c> - always added; the sum is the resource/file index (e.g. <c>1057.ico</c>).</description></item>
 /// </list>
 /// <para>
-/// <c>GetIcon</c> only has cases for the combinations WinNUT can actually produce - the on-battery, dark-theme,
-/// 0-25% charge combinations (1089, 1090) are missing and fall through to its <c>Case Else</c>, and
-/// <c>Case 1104</c> (on-line... actually on-battery, 100% charge, dark) returns the <b>1096</b> resource instead
-/// of its own - both apparent bugs in WinNUT, reproduced here for exact parity. <c>1079.ico</c>/<c>1080.ico</c>
-/// exist as assets (and as dead <c>GetIcon</c> cases) but no reachable <c>AppIconIdx</c> combination selects them
-/// in WinNUT either.
+/// WinNUT bugs that are fixed here: the on-battery, dark-theme icons for 0% and 25% (indices 1089 and 1090) are
+/// stored as <c>1079.ico</c> and <c>1080.ico</c> (white battery, red plug), so WinNUT's <c>GetIcon</c> never found
+/// them and showed the "on-line, 100%" default instead; and <c>Case 1104</c> returned the 75% icon instead of
+/// <c>1104.ico</c>. An unknown battery charge shows the full battery of the right on-line/on-battery variant
+/// instead of the generic default.
 /// </para>
 /// </remarks>
 public static class TrayIconSelector
@@ -47,7 +46,7 @@ public static class TrayIconSelector
 
     private const string AssetBase = "avares://CocoNut/Assets/Icons/";
 
-    /// <summary>WinNUT's <c>GetIcon</c> switch, keyed by the final (with <see cref="Offset"/>) index. The default arm is WinNUT's <c>Case Else</c>.</summary>
+    /// <summary>WinNUT's <c>GetIcon</c> switch (bugs fixed), keyed by the final (with <see cref="Offset"/>) index.</summary>
     private static readonly Dictionary<int, string> IconFileByIndex = new()
     {
         [1025] = "1025.ico", // OB, 0%
@@ -60,16 +59,16 @@ public static class TrayIconSelector
         [1060] = "1060.ico", // OL, 50%
         [1064] = "1064.ico", // OL, 75%
         [1072] = "1072.ico", // OL, 100%
-        [1079] = "1079.ico", // unreachable in WinNUT itself; kept for parity with GetIcon's switch
-        [1080] = "1080.ico", // unreachable in WinNUT itself; kept for parity with GetIcon's switch
+        [1089] = "1079.ico", // OB, 0%, dark - asset is misnumbered in WinNUT
+        [1090] = "1080.ico", // OB, 25%, dark - asset is misnumbered in WinNUT
         [1092] = "1092.ico", // OB, 50%, dark
         [1096] = "1096.ico", // OB, 75%, dark
-        [1104] = "1096.ico", // OB, 100%, dark - WinNUT bug: returns the 1096 resource, not 1104's own
+        [1104] = "1104.ico", // OB, 100%, dark (WinNUT returned the 75% icon here)
         [1121] = "1121.ico", // OL, 0%, dark
         [1122] = "1122.ico", // OL, 25%, dark
         [1124] = "1124.ico", // OL, 50%, dark
         [1128] = "1128.ico", // OL, 75%, dark
-        [1136] = "1136.ico", // OL, 100%, dark (also the Case Else default)
+        [1136] = "1136.ico", // OL, 100%, dark
         [1152] = "1152.ico", // offline
         [1216] = "1216.ico", // offline, dark
         [1280] = "1280.ico", // retry
@@ -114,11 +113,8 @@ public static class TrayIconSelector
             return Offline | mode;
         }
 
-        int baseIndex = status.HasFlag(UpsStatus.OL) ? OnLine : 0;
-        if (batteryCharge is double charge)
-        {
-            baseIndex |= BatteryBucket(charge);
-        }
+        int baseIndex = status.HasFlag(UpsStatus.OB) ? 0 : OnLine;
+        baseIndex |= batteryCharge is double charge ? BatteryBucket(charge) : BatteryFull;
 
         return baseIndex | mode;
     }

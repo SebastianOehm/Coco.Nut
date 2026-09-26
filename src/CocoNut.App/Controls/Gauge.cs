@@ -324,19 +324,21 @@ public sealed class Gauge : Control
         {
             var captionText = new FormattedText(caption, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
                 typeface, Math.Max(7, 10 * scale), foreground);
-            var captionPoint = new Point(center.X - captionText.Width / 2, center.Y - radius * 0.42 - captionText.Height / 2);
+            // Below the hub, in the gap between the ends of the scale, so the needle never crosses it.
+            var captionPoint = new Point(center.X - captionText.Width / 2, center.Y + radius * 0.22 - captionText.Height / 2);
             context.DrawText(captionText, captionPoint);
         }
 
-        string valueString = value is double v ? v.ToString(ValueFormat, CultureInfo.InvariantCulture) : "—";
+        // The read-out uses the UI culture (e.g. "13,2 V" in German); the scale labels stay invariant.
+        string valueString = value is double v ? v.ToString(ValueFormat, CultureInfo.CurrentCulture) : "—";
         if (!string.IsNullOrEmpty(Unit) && value is not null)
         {
             valueString = $"{valueString} {Unit}";
         }
 
-        var valueText = new FormattedText(valueString, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
+        var valueText = new FormattedText(valueString, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
             boldTypeface, Math.Max(9, 13 * scale), foreground);
-        var valuePoint = new Point(center.X - valueText.Width / 2, center.Y + radius * 0.40 - valueText.Height / 2);
+        var valuePoint = new Point(center.X - valueText.Width / 2, center.Y + radius * 0.52 - valueText.Height / 2);
         context.DrawText(valueText, valuePoint);
     }
 
