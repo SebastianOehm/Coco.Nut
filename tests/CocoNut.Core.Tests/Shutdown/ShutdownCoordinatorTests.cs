@@ -369,8 +369,9 @@ public class ShutdownCoordinatorTests
         // Still critical (unchanged OB/low charge) but disarmed: must not have re-triggered either.
         await h.PowerActions.Executions.AssertNoneAsync();
 
-        h.TimeProvider.Advance(ShutdownCoordinator.ShutdownRearmDelay - ShutdownCoordinator.DefaultRearmDelay);
-        await h.Rearmed.NextAsync();
+        // Task.Delay for the rearm is registered reactively (after the restart completes), so under heavy load a
+        // single Advance() can race its registration - retry via the FakeTimeProvider overload.
+        await h.Rearmed.NextAsync(h.TimeProvider, ShutdownCoordinator.ShutdownRearmDelay - ShutdownCoordinator.DefaultRearmDelay);
     }
 
     [Fact]
@@ -387,8 +388,9 @@ public class ShutdownCoordinatorTests
         Assert.Equal(StopAction.Suspend, await h.PowerActions.Executions.NextAsync());
         await WaitForRestartAsync(h);
 
-        h.TimeProvider.Advance(ShutdownCoordinator.DefaultRearmDelay);
-        await h.Rearmed.NextAsync();
+        // Task.Delay for the rearm is registered reactively (after the restart completes), so under heavy load a
+        // single Advance() can race its registration - retry via the FakeTimeProvider overload.
+        await h.Rearmed.NextAsync(h.TimeProvider, ShutdownCoordinator.DefaultRearmDelay);
     }
 
     [Fact]
@@ -410,14 +412,14 @@ public class ShutdownCoordinatorTests
         Assert.Equal(MonitorState.Connected, h.Monitor.State);
         await h.PowerActions.Executions.AssertNoneAsync(); // the action never actually succeeded.
 
-        // A failure re-arms after 60s, not the 5-minute Shutdown-success delay.
-        h.TimeProvider.Advance(ShutdownCoordinator.DefaultRearmDelay);
-        await h.Rearmed.NextAsync();
+        // A failure re-arms after 60s, not the 5-minute Shutdown-success delay. Task.Delay for the rearm is
+        // registered reactively (after the restart completes), so under heavy load a single Advance() can race
+        // its registration - retry via the FakeTimeProvider overload.
+        await h.Rearmed.NextAsync(h.TimeProvider, ShutdownCoordinator.DefaultRearmDelay);
 
         // A big single Advance() coalesces the monitor's periodic poll ticks (it does not fire once per elapsed
         // second), so one more explicit tick is needed for the now-rearmed policy to actually observe a poll.
-        h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
-        await h.PowerActions.Executions.NextAsync(); // still-critical condition, now accepted again -> succeeds this time.
+        await h.PowerActions.Executions.NextAsync(h.TimeProvider, TimeSpan.FromSeconds(1)); // still-critical condition, now accepted again -> succeeds this time.
     }
 
     [Fact]
@@ -435,8 +437,9 @@ public class ShutdownCoordinatorTests
         await h.Executing.NextAsync();
         await WaitForRestartAsync(h);
 
-        h.TimeProvider.Advance(ShutdownCoordinator.DefaultRearmDelay);
-        await h.Rearmed.NextAsync();
+        // Task.Delay for the rearm is registered reactively (after the restart completes), so under heavy load a
+        // single Advance() can race its registration - retry via the FakeTimeProvider overload.
+        await h.Rearmed.NextAsync(h.TimeProvider, ShutdownCoordinator.DefaultRearmDelay);
     }
 
     [Fact]
@@ -463,11 +466,11 @@ public class ShutdownCoordinatorTests
 
         Assert.Equal(MonitorState.Connected, h.Monitor.State); // monitoring kept running throughout.
 
-        // Once re-armed, the same still-critical condition is accepted again. As above, a further explicit tick is
-        // needed since the big Advance() above coalesces the monitor's periodic poll ticks.
-        h.TimeProvider.Advance(ShutdownCoordinator.DefaultRearmDelay);
-        await h.Rearmed.NextAsync();
-        h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
-        await h.PowerActions.Executions.NextAsync();
+        // Once re-armed, the same still-critical condition is accepted again. Task.Delay for the rearm is
+        // registered reactively, so under heavy load a single Advance() can race its registration - retry via the
+        // FakeTimeProvider overload. A further explicit tick is then needed since a big Advance() coalesces the
+        // monitor's periodic poll ticks (it does not fire once per elapsed second).
+        await h.Rearmed.NextAsync(h.TimeProvider, ShutdownCoordinator.DefaultRearmDelay);
+        await h.PowerActions.Executions.NextAsync(h.TimeProvider, TimeSpan.FromSeconds(1));
     }
 }
