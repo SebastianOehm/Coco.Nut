@@ -1068,4 +1068,20 @@ Remaining time: {1}</value>
     <value>Value:</value>
     <comment>UPS variables window: label in front of the selected variable's value.</comment>
   </data>
+  <data name="Prefs_Misc_Theme" xml:space="preserve">
+    <value>Appearance</value>
+    <comment>Settings > Misc: label of the light/dark theme combo box.</comment>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Follow system</value>
+    <comment>Theme combo box option: use the operating system's light/dark setting.</comment>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Light</value>
+    <comment>Theme combo box option: light theme.</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Dark</value>
+    <comment>Theme combo box option: dark theme.</comment>
+  </data>
 </root>

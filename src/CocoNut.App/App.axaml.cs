@@ -47,6 +47,9 @@ public partial class App : Application, IDisposable
 
         // Must happen before any window is created (docs/PLAN.md's localization rules).
         LocalizationBootstrap.Apply(settingsService.Current.General.Language);
+        ThemeBootstrap.Apply(this, settingsService.Current.General.Theme);
+        settingsService.SettingsChanged += (_, settings) =>
+            Avalonia.Threading.Dispatcher.UIThread.Post(() => ThemeBootstrap.Apply(this, settings.General.Theme));
 
         services.GetRequiredService<CrashReporter>().Install();
 

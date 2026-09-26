@@ -101,6 +101,13 @@ public sealed partial class SettingsViewModel : ObservableObject
             new UpdateIntervalOption(30, Strings.UpdateInterval_Monthly),
         ];
 
+        ThemeOptions =
+        [
+            new ThemeOption(AppTheme.System, Strings.Theme_System),
+            new ThemeOption(AppTheme.Light, Strings.Theme_Light),
+            new ThemeOption(AppTheme.Dark, Strings.Theme_Dark),
+        ];
+
         LanguageOptions =
         [
             new LanguageOption(null, Strings.Language_System),
@@ -148,6 +155,9 @@ public sealed partial class SettingsViewModel : ObservableObject
     public IReadOnlyList<UpdateIntervalOption> CheckIntervalOptions { get; }
 
     public IReadOnlyList<LanguageOption> LanguageOptions { get; }
+
+    /// <summary>Options of the theme combo box (System / Light / Dark); applied immediately on save.</summary>
+    public IReadOnlyList<ThemeOption> ThemeOptions { get; }
 
     public IReadOnlyList<int> NominalFrequencyOptions { get; }
 
@@ -482,6 +492,11 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     partial void OnSelectedLanguageChanged(LanguageOption value) => _working.General.Language = value.CultureCode;
 
+    [ObservableProperty]
+    private ThemeOption _selectedTheme = null!;
+
+    partial void OnSelectedThemeChanged(ThemeOption value) => _working.General.Theme = value.Value;
+
     /// <summary>Shown once the selected language differs from the one the app is actually running with.</summary>
     public bool IsLanguageRestartHintVisible => !_isLoading && !string.Equals(SelectedLanguage?.CultureCode, _originalLanguage, StringComparison.Ordinal);
 
@@ -707,6 +722,7 @@ public sealed partial class SettingsViewModel : ObservableObject
             MinimizeToTray = _working.General.MinimizeToTray;
             CloseToTray = _working.General.CloseToTray;
             SelectedLanguage = LanguageOptions.FirstOrDefault(o => o.CultureCode == _working.General.Language) ?? LanguageOptions[0];
+            SelectedTheme = ThemeOptions.FirstOrDefault(o => o.Value == _working.General.Theme) ?? ThemeOptions[0];
 
             CheckAtStart = _working.Update.CheckAtStart;
             SelectedCheckInterval = CheckIntervalOptions.FirstOrDefault(o => o.Days == _working.Update.AutoCheckIntervalDays) ?? CheckIntervalOptions[1];

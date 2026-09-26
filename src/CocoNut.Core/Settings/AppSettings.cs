@@ -81,8 +81,19 @@ public sealed class GeneralSettings
     public bool MinimizeToTray { get; set; }
     /// <summary>UI culture name (e.g. "de-DE"); <see langword="null"/> = follow the operating system.</summary>
     public string? Language { get; set; }
+    /// <summary>Light/dark appearance (new in Coco.Nut).</summary>
+    public AppTheme Theme { get; set; } = AppTheme.System;
     /// <summary>IsFirstRun</summary>
     public bool IsFirstRun { get; set; } = true;
+}
+
+/// <summary>Light/dark appearance of the UI.</summary>
+public enum AppTheme
+{
+    /// <summary>Follow the operating system.</summary>
+    System = 0,
+    Light = 1,
+    Dark = 2,
 }
 
 public sealed class LoggingSettings

@@ -516,3 +516,27 @@ Vars_Save_ToolTip,ru-RU,Сохранить все данные в файл.
 Vars_Save_ToolTip,uk-UA,Зберегти всі дані у файл.
 Vars_Save_ToolTip,zh-CN,将所有信息保存到文件。
 Vars_Save_ToolTip,zh-TW,將所有資訊儲存到檔案。
+Prefs_Misc_Theme,de-DE,Darstellung
+Prefs_Misc_Theme,fr-FR,Apparence
+Prefs_Misc_Theme,ru-RU,Оформление
+Prefs_Misc_Theme,uk-UA,Оформлення
+Prefs_Misc_Theme,zh-CN,外观
+Prefs_Misc_Theme,zh-TW,外觀
+Theme_System,de-DE,Wie System
+Theme_System,fr-FR,Suivre le système
+Theme_System,ru-RU,Как в системе
+Theme_System,uk-UA,Як у системі
+Theme_System,zh-CN,跟随系统
+Theme_System,zh-TW,跟隨系統
+Theme_Light,de-DE,Hell
+Theme_Light,fr-FR,Clair
+Theme_Light,ru-RU,Светлая
+Theme_Light,uk-UA,Світла
+Theme_Light,zh-CN,浅色
+Theme_Light,zh-TW,淺色
+Theme_Dark,de-DE,Dunkel
+Theme_Dark,fr-FR,Sombre
+Theme_Dark,ru-RU,Тёмная
+Theme_Dark,uk-UA,Темна
+Theme_Dark,zh-CN,深色
+Theme_Dark,zh-TW,深色

@@ -2,7 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
+using System.Runtime.InteropServices;
 using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 using CocoNut.App.Controls;
 
 namespace CocoNut.App.Tests;
@@ -94,5 +96,40 @@ public class GaugeRenderTests
 
         // Re-rendering after mutating the shared Ranges list (rather than replacing it) must not throw.
         window.CaptureRenderedFrame();
+    }
+
+    [AvaloniaFact]
+    public void Gauge_in_dark_theme_draws_light_ticks_and_text()
+    {
+        // Regression: theme brushes were resolved without the theme variant, so ticks, labels, needle and read-out
+        // were black on black in dark mode. With Ranges empty, only those theme-coloured parts can be near-white.
+        var gauge = new Gauge { Width = 200, Height = 200, Minimum = 0, Maximum = 100, Value = 42, Caption = "Load", Unit = "%" };
+        var window = new Window { Content = gauge, Width = 200, Height = 200, RequestedThemeVariant = ThemeVariant.Dark };
+        window.Show();
+
+        WriteableBitmap frame = window.CaptureRenderedFrame()!;
+
+        Assert.True(CountLightPixels(frame) > 50, "Expected light (theme foreground) pixels on the dark background.");
+    }
+
+    private static int CountLightPixels(WriteableBitmap bitmap)
+    {
+        using var buffer = bitmap.Lock();
+        var bytes = new byte[buffer.RowBytes * buffer.Size.Height];
+        Marshal.Copy(buffer.Address, bytes, 0, bytes.Length);
+        var count = 0;
+        for (var y = 0; y < buffer.Size.Height; y++)
+        {
+            for (var x = 0; x < buffer.Size.Width; x++)
+            {
+                var i = y * buffer.RowBytes + x * 4; // BGRA/RGBA, 8 bits per channel
+                if (bytes[i] > 200 && bytes[i + 1] > 200 && bytes[i + 2] > 200)
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 }

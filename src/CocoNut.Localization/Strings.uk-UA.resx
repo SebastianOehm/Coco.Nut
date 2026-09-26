@@ -437,6 +437,9 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Prefs_Misc_Tab" xml:space="preserve">
     <value>Інше</value>
   </data>
+  <data name="Prefs_Misc_Theme" xml:space="preserve">
+    <value>Оформлення</value>
+  </data>
   <data name="Prefs_Power_AllowExtend" xml:space="preserve">
     <value>Додати додатковий час при вимкненні.</value>
   </data>
@@ -563,6 +566,15 @@ IPV4 / IPV6 / доменне ім'я.</value>
   </data>
   <data name="StopAction_Suspend" xml:space="preserve">
     <value>Сон</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Темна</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Світла</value>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Як у системі</value>
   </data>
   <data name="Tray_Menu_About" xml:space="preserve">
     <value>Про додаток</value>

@@ -92,6 +92,8 @@ public sealed class Gauge : Control
     public Gauge()
     {
         Ranges = [];
+        // Tick, label and needle brushes come from the theme; redraw when the light/dark variant changes.
+        ActualThemeVariantChanged += (_, _) => InvalidateVisual();
     }
 
     public double Minimum
@@ -343,8 +345,10 @@ public sealed class Gauge : Control
         context.DrawText(valueText, valuePoint);
     }
 
+    // The theme variant must be passed explicitly: without it the lookup resolves the light-theme value, which made
+    // ticks, labels, needle and read-out black on black in dark mode.
     private IBrush GetThemeBrush(string resourceKey, IBrush fallback) =>
-        this.TryFindResource(resourceKey, out object? resource) && resource is IBrush brush ? brush : fallback;
+        this.TryFindResource(resourceKey, ActualThemeVariant, out object? resource) && resource is IBrush brush ? brush : fallback;
 
     /// <summary>
     /// Draws an arc as a sequence of chords each spanning at most 179°, so <see cref="StreamGeometryContext.ArcTo"/>

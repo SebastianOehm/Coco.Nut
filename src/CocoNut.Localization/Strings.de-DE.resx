@@ -452,6 +452,9 @@ Wertebereich: Name der auf dem NUT-Server konfigurierten USV.</value>
   <data name="Prefs_Misc_Tab" xml:space="preserve">
     <value>Verschiedenes</value>
   </data>
+  <data name="Prefs_Misc_Theme" xml:space="preserve">
+    <value>Darstellung</value>
+  </data>
   <data name="Prefs_Power_AllowExtend" xml:space="preserve">
     <value>Längere Abschaltzeit zulassen</value>
   </data>
@@ -581,6 +584,15 @@ Verbleibende Zeit: {1}</value>
   </data>
   <data name="StopAction_Suspend" xml:space="preserve">
     <value>Energie sparen</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Dunkel</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Hell</value>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Wie System</value>
   </data>
   <data name="Tray_Menu_About" xml:space="preserve">
     <value>Über Coco.Nut</value>

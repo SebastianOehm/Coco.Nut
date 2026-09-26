@@ -432,6 +432,9 @@ Valeur acceptée: nom de l'onduleur configuré dans le serveur Nut.</value>
   <data name="Prefs_Misc_Tab" xml:space="preserve">
     <value>Divers</value>
   </data>
+  <data name="Prefs_Misc_Theme" xml:space="preserve">
+    <value>Apparence</value>
+  </data>
   <data name="Prefs_Power_AllowExtend" xml:space="preserve">
     <value>Autorise un temps supplémentaire</value>
   </data>
@@ -563,6 +566,15 @@ Temps restant : {1}</value>
   </data>
   <data name="StopAction_Suspend" xml:space="preserve">
     <value>Mettre en Veille</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Sombre</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Clair</value>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Suivre le système</value>
   </data>
   <data name="Tray_Menu_About" xml:space="preserve">
     <value>A Propos</value>

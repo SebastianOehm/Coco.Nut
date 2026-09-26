@@ -414,6 +414,9 @@
   <data name="Prefs_Misc_Tab" xml:space="preserve">
     <value>其他</value>
   </data>
+  <data name="Prefs_Misc_Theme" xml:space="preserve">
+    <value>外觀</value>
+  </data>
   <data name="Prefs_Power_AllowExtend" xml:space="preserve">
     <value>允許的延長停機時間</value>
   </data>
@@ -533,6 +536,15 @@
   </data>
   <data name="StopAction_Suspend" xml:space="preserve">
     <value>睡眠</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>淺色</value>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>跟隨系統</value>
   </data>
   <data name="Tray_Menu_About" xml:space="preserve">
     <value>關於</value>

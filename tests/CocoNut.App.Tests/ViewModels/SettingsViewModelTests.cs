@@ -277,6 +277,18 @@ public sealed class SettingsViewModelTests : IDisposable
     }
 
     [Fact]
+    public async Task Selected_theme_is_saved()
+    {
+        var f = Build();
+        Assert.Equal(AppTheme.System, f.ViewModel.SelectedTheme.Value);
+
+        f.ViewModel.SelectedTheme = f.ViewModel.ThemeOptions.First(o => o.Value == AppTheme.Dark);
+        await f.ViewModel.SaveCommand.ExecuteAsync(null);
+
+        Assert.Equal(AppTheme.Dark, f.Settings.Current.General.Theme);
+    }
+
+    [Fact]
     public void Language_restart_hint_is_hidden_until_the_selection_changes()
     {
         var f = Build();

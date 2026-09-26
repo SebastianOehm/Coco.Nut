@@ -44,3 +44,10 @@ public sealed record LanguageOption(string? CultureCode, string Text)
     /// <inheritdoc />
     public override string ToString() => Text;
 }
+
+/// <summary>One selectable entry of the Settings window's theme combo box (Settings &gt; Misc).</summary>
+public sealed record ThemeOption(AppTheme Value, string Text)
+{
+    /// <inheritdoc />
+    public override string ToString() => Text;
+}

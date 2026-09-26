@@ -196,6 +196,10 @@
             <CheckBox Content="{x:Static loc:Strings.Prefs_Misc_CloseToTray}" IsChecked="{Binding CloseToTray}"
                       ToolTip.Tip="{x:Static loc:Strings.Prefs_Misc_CloseToTray_ToolTip}" />
             <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Misc_Theme}" />
+              <ComboBox ItemsSource="{Binding ThemeOptions}" SelectedItem="{Binding SelectedTheme}" Width="200" HorizontalAlignment="Left" />
+            </StackPanel>
+            <StackPanel Spacing="2">
               <TextBlock Text="{x:Static loc:Strings.Prefs_Misc_Language}" />
               <ComboBox ItemsSource="{Binding LanguageOptions}" SelectedItem="{Binding SelectedLanguage}" Width="200" HorizontalAlignment="Left" />
               <TextBlock Text="{x:Static loc:Strings.Prefs_Misc_LanguageRestartHint}" FontStyle="Italic" FontSize="11"
