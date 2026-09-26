@@ -12,6 +12,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_Acknowledgements" xml:space="preserve">
+    <value>致謝</value>
+  </data>
   <data name="About_Description" xml:space="preserve">
     <value>透過 Network UPS Tools (NUT) 伺服器監控 UPS，並在電池電量過低時關閉電腦。</value>
   </data>
@@ -48,8 +51,14 @@
   <data name="Common_Ok" xml:space="preserve">
     <value>確定</value>
   </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>儲存</value>
+  </data>
   <data name="Common_Yes" xml:space="preserve">
     <value>是</value>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>系統預設</value>
   </data>
   <data name="Log_ApplicationShutdownAt" xml:space="preserve">
     <value>應用程式於 {0} 關閉。</value>
@@ -90,11 +99,23 @@
   <data name="Log_ShutdownCancelled" xml:space="preserve">
     <value>取消停機程序</value>
   </data>
+  <data name="Log_ShutdownExecuting" xml:space="preserve">
+    <value>正在執行停止動作：{0}</value>
+  </data>
+  <data name="Log_ShutdownExecuting_DryRun" xml:space="preserve">
+    <value>正在執行停止動作：{0}（演練）</value>
+  </data>
   <data name="Log_ShutdownStart" xml:space="preserve">
     <value>啟動停機程序的條件</value>
   </data>
   <data name="Log_UpdateAvailable" xml:space="preserve">
     <value>有新版本 {0} 可以使用</value>
+  </data>
+  <data name="Main_BatteryChargeEstimatedNote" xml:space="preserve">
+    <value>（估計）</value>
+  </data>
+  <data name="Main_BatteryRuntimeEstimatedNote" xml:space="preserve">
+    <value>（估計）</value>
   </data>
   <data name="Main_Flag_BatteryLow" xml:space="preserve">
     <value>UPS 低電池電量</value>
@@ -182,6 +203,9 @@
   </data>
   <data name="Main_Status_Connected" xml:space="preserve">
     <value>已連線</value>
+  </data>
+  <data name="Main_Status_Connecting" xml:space="preserve">
+    <value>正在連線…</value>
   </data>
   <data name="Main_Status_EnteringSleep" xml:space="preserve">
     <value>系統即將進入睡眠狀態，Coco.Nut 將中斷連線。</value>
@@ -333,6 +357,9 @@
   <data name="Prefs_Logging_DeleteLog" xml:space="preserve">
     <value>刪除日誌檔案</value>
   </data>
+  <data name="Prefs_Logging_DeleteLog_ConfirmMessage" xml:space="preserve">
+    <value>刪除所有 Coco.Nut 日誌檔案？此操作無法復原。</value>
+  </data>
   <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
     <value>刪除日誌檔案。</value>
   </data>
@@ -345,6 +372,9 @@
   <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
     <value>日誌等級。</value>
   </data>
+  <data name="Prefs_Logging_Tab" xml:space="preserve">
+    <value>日誌記錄</value>
+  </data>
   <data name="Prefs_Logging_ViewLog" xml:space="preserve">
     <value>開啟日誌檔案</value>
   </data>
@@ -356,6 +386,12 @@
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>關閉程式視窗時縮小到工作列系統匣。</value>
+  </data>
+  <data name="Prefs_Misc_Language" xml:space="preserve">
+    <value>語言</value>
+  </data>
+  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
+    <value>變更將在重新啟動 Coco.Nut 後生效。</value>
   </data>
   <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
     <value>最小化至系統匣</value>
@@ -429,6 +465,9 @@
   <data name="Prefs_Power_Tab" xml:space="preserve">
     <value>停機選項</value>
   </data>
+  <data name="Prefs_SaveError_Title" xml:space="preserve">
+    <value>儲存時發生錯誤</value>
+  </data>
   <data name="Prefs_Title" xml:space="preserve">
     <value>選項</value>
   </data>
@@ -462,6 +501,9 @@
   <data name="Shutdown_Countdown" xml:space="preserve">
     <value>{0} 將在 {1} 後開始。</value>
   </data>
+  <data name="Shutdown_Failed_Notify" xml:space="preserve">
+    <value>停止動作失敗：{0}</value>
+  </data>
   <data name="Shutdown_GraceButton" xml:space="preserve">
     <value>延遲停機</value>
   </data>
@@ -476,6 +518,9 @@
   </data>
   <data name="Shutdown_Reason_Runtime" xml:space="preserve">
     <value>剩餘運行時間 {0} 已達到或低於 {1} 的限制。</value>
+  </data>
+  <data name="Shutdown_Reason_UpsLowBattery" xml:space="preserve">
+    <value>UPS 回報電池電量處於嚴重不足狀態（ups.status 包含 OB 和 LB）。</value>
   </data>
   <data name="Shutdown_Title" xml:space="preserve">
     <value>正在進行停機程序</value>
@@ -528,17 +573,68 @@
   <data name="Update_NoUpdate" xml:space="preserve">
     <value>您正在使用最新版本。</value>
   </data>
+  <data name="Update_PublishedDate" xml:space="preserve">
+    <value>發布日期:</value>
+  </data>
+  <data name="Update_ReleaseName" xml:space="preserve">
+    <value>版本:</value>
+  </data>
   <data name="Update_ReleaseNotes" xml:space="preserve">
     <value>版本說明</value>
+  </data>
+  <data name="UpsStatus_ALARM" xml:space="preserve">
+    <value>警報</value>
+  </data>
+  <data name="UpsStatus_BOOST" xml:space="preserve">
+    <value>升壓</value>
+  </data>
+  <data name="UpsStatus_BYPASS" xml:space="preserve">
+    <value>旁路</value>
   </data>
   <data name="UpsStatus_CAL" xml:space="preserve">
     <value>校正</value>
   </data>
+  <data name="UpsStatus_CHRG" xml:space="preserve">
+    <value>正在充電</value>
+  </data>
+  <data name="UpsStatus_COMMLOST" xml:space="preserve">
+    <value>通訊已中斷</value>
+  </data>
+  <data name="UpsStatus_DISCHRG" xml:space="preserve">
+    <value>正在放電</value>
+  </data>
+  <data name="UpsStatus_ECO" xml:space="preserve">
+    <value>節能模式</value>
+  </data>
+  <data name="UpsStatus_FSD" xml:space="preserve">
+    <value>強制關機</value>
+  </data>
+  <data name="UpsStatus_HB" xml:space="preserve">
+    <value>電池電量過高</value>
+  </data>
   <data name="UpsStatus_LB" xml:space="preserve">
     <value>電池電量過低</value>
   </data>
+  <data name="UpsStatus_OB" xml:space="preserve">
+    <value>電池供電中</value>
+  </data>
+  <data name="UpsStatus_OFF" xml:space="preserve">
+    <value>輸出已關閉</value>
+  </data>
   <data name="UpsStatus_OL" xml:space="preserve">
     <value>由市電供電</value>
+  </data>
+  <data name="UpsStatus_OVER" xml:space="preserve">
+    <value>過載</value>
+  </data>
+  <data name="UpsStatus_RB" xml:space="preserve">
+    <value>需要更換電池</value>
+  </data>
+  <data name="UpsStatus_TEST" xml:space="preserve">
+    <value>正在測試</value>
+  </data>
+  <data name="UpsStatus_TRIM" xml:space="preserve">
+    <value>降壓</value>
   </data>
   <data name="Validation_CalibrationMinLessThanMax" xml:space="preserve">
     <value>最小值必須小於最大值。</value>
@@ -561,6 +657,21 @@
   <data name="Validation_RuntimeFloorRange" xml:space="preserve">
     <value>運行時間下限必須介於 0 到 3600 秒之間。</value>
   </data>
+  <data name="Vars_Clipboard_Error" xml:space="preserve">
+    <value>將 UPS 資料複製到剪貼簿時發生錯誤：{0}</value>
+  </data>
+  <data name="Vars_Clipboard_Error_Title" xml:space="preserve">
+    <value>剪貼簿錯誤</value>
+  </data>
+  <data name="Vars_Clipboard_Success" xml:space="preserve">
+    <value>已成功將 UPS 資料複製到剪貼簿。</value>
+  </data>
+  <data name="Vars_Close_ToolTip" xml:space="preserve">
+    <value>關閉此視窗。</value>
+  </data>
+  <data name="Vars_Copy_ToolTip" xml:space="preserve">
+    <value>將所有資訊複製到剪貼簿。</value>
+  </data>
   <data name="Vars_Description" xml:space="preserve">
     <value>描述：</value>
   </data>
@@ -570,11 +681,35 @@
   <data name="Vars_GroupTitle" xml:space="preserve">
     <value>項目屬性</value>
   </data>
+  <data name="Vars_LoadError_Text" xml:space="preserve">
+    <value>嘗試從 UPS 取得變數時發生錯誤：{0}</value>
+  </data>
+  <data name="Vars_LoadError_Title" xml:space="preserve">
+    <value>發生錯誤</value>
+  </data>
   <data name="Vars_Name" xml:space="preserve">
     <value>名稱：</value>
   </data>
+  <data name="Vars_NotConnected" xml:space="preserve">
+    <value>請連線至 NUT 伺服器以檢視 UPS 變數。</value>
+  </data>
   <data name="Vars_Reload" xml:space="preserve">
     <value>重新載入</value>
+  </data>
+  <data name="Vars_Reload_ToolTip" xml:space="preserve">
+    <value>重新載入來自 UPS 的所有資訊。</value>
+  </data>
+  <data name="Vars_SaveFile_Error" xml:space="preserve">
+    <value>將 UPS 資料儲存到檔案時發生錯誤：{0}</value>
+  </data>
+  <data name="Vars_SaveFile_Success" xml:space="preserve">
+    <value>已成功將 UPS 資料儲存到檔案：{0}</value>
+  </data>
+  <data name="Vars_SaveFile_Title" xml:space="preserve">
+    <value>將 UPS 資料儲存到檔案</value>
+  </data>
+  <data name="Vars_Save_ToolTip" xml:space="preserve">
+    <value>將所有資訊儲存到檔案。</value>
   </data>
   <data name="Vars_Title" xml:space="preserve">
     <value>UPS 變數清單</value>

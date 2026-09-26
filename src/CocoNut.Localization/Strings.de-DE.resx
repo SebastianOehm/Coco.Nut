@@ -12,6 +12,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_Acknowledgements" xml:space="preserve">
+    <value>Danksagungen</value>
+  </data>
   <data name="About_Description" xml:space="preserve">
     <value>Überwacht eine USV über einen Network-UPS-Tools-Server (NUT) und fährt den Computer herunter, wenn der Akku schwach wird.</value>
   </data>
@@ -48,11 +51,17 @@
   <data name="Common_Ok" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
   <data name="Common_Unavailable" xml:space="preserve">
     <value>Nicht verfügbar</value>
   </data>
   <data name="Common_Yes" xml:space="preserve">
     <value>Ja</value>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Systemstandard</value>
   </data>
   <data name="Log_ApplicationShutdownAt" xml:space="preserve">
     <value>Anwendung heruntergefahren um {0}.</value>
@@ -96,11 +105,23 @@
   <data name="Log_ShutdownCancelled" xml:space="preserve">
     <value>Abbruch des Stoppvorgangs</value>
   </data>
+  <data name="Log_ShutdownExecuting" xml:space="preserve">
+    <value>Stopp-Aktion wird ausgeführt: {0}</value>
+  </data>
+  <data name="Log_ShutdownExecuting_DryRun" xml:space="preserve">
+    <value>Stopp-Aktion wird ausgeführt: {0} (Testlauf)</value>
+  </data>
   <data name="Log_ShutdownStart" xml:space="preserve">
     <value>Voraussetzungen für den Beginn des Stoppvorgangs liegen vor</value>
   </data>
   <data name="Log_UpdateAvailable" xml:space="preserve">
     <value>Version {0} verfügbar</value>
+  </data>
+  <data name="Main_BatteryChargeEstimatedNote" xml:space="preserve">
+    <value>(geschätzt)</value>
+  </data>
+  <data name="Main_BatteryRuntimeEstimatedNote" xml:space="preserve">
+    <value>(geschätzt)</value>
   </data>
   <data name="Main_Flag_BatteryLow" xml:space="preserve">
     <value>USV-Akkuladung niedrig</value>
@@ -194,6 +215,9 @@
   </data>
   <data name="Main_Status_Connected" xml:space="preserve">
     <value>Verbunden</value>
+  </data>
+  <data name="Main_Status_Connecting" xml:space="preserve">
+    <value>Verbinde…</value>
   </data>
   <data name="Main_Status_EnteringSleep" xml:space="preserve">
     <value>Das System wechselt in den Energiesparmodus. Coco.Nut trennt die Verbindung.</value>
@@ -368,6 +392,9 @@ Wertebereich: Name der auf dem NUT-Server konfigurierten USV.</value>
   <data name="Prefs_Logging_DeleteLog" xml:space="preserve">
     <value>Protokolldateien löschen</value>
   </data>
+  <data name="Prefs_Logging_DeleteLog_ConfirmMessage" xml:space="preserve">
+    <value>Alle Coco.Nut-Protokolldateien löschen? Dies kann nicht widerrufen werden.</value>
+  </data>
   <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
     <value>Logdatei löschen.</value>
   </data>
@@ -383,6 +410,9 @@ Wertebereich: Name der auf dem NUT-Server konfigurierten USV.</value>
   <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
     <value>Detailstufe des Logs.</value>
   </data>
+  <data name="Prefs_Logging_Tab" xml:space="preserve">
+    <value>Protokollierung</value>
+  </data>
   <data name="Prefs_Logging_ViewLog" xml:space="preserve">
     <value>Protokolldatei öffnen</value>
   </data>
@@ -394,6 +424,12 @@ Wertebereich: Name der auf dem NUT-Server konfigurierten USV.</value>
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>Ins Systray minimieren, anstatt zu schliessen.</value>
+  </data>
+  <data name="Prefs_Misc_Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
+    <value>Änderungen werden erst nach einem Neustart von Coco.Nut wirksam.</value>
   </data>
   <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
     <value>In den Systray minimieren</value>
@@ -473,6 +509,9 @@ Wertebereich: Numerischer Wert von 0 bis 3600.</value>
   <data name="Prefs_Power_Tab" xml:space="preserve">
     <value>Optionen zum Herunterfahren</value>
   </data>
+  <data name="Prefs_SaveError_Title" xml:space="preserve">
+    <value>Fehler beim Speichern</value>
+  </data>
   <data name="Prefs_Title" xml:space="preserve">
     <value>Optionen</value>
   </data>
@@ -510,6 +549,9 @@ Verbleibende Zeit: {1}</value>
   <data name="Shutdown_Countdown" xml:space="preserve">
     <value>{0} beginnt in {1}.</value>
   </data>
+  <data name="Shutdown_Failed_Notify" xml:space="preserve">
+    <value>Die Stopp-Aktion ist fehlgeschlagen: {0}</value>
+  </data>
   <data name="Shutdown_GraceButton" xml:space="preserve">
     <value>Aufschub</value>
   </data>
@@ -524,6 +566,9 @@ Verbleibende Zeit: {1}</value>
   </data>
   <data name="Shutdown_Reason_Runtime" xml:space="preserve">
     <value>Die verbleibende Laufzeit {0} liegt bei oder unter dem Grenzwert von {1}.</value>
+  </data>
+  <data name="Shutdown_Reason_UpsLowBattery" xml:space="preserve">
+    <value>Die USV meldet einen kritischen Akkuzustand (ups.status enthält OB und LB).</value>
   </data>
   <data name="Shutdown_Title" xml:space="preserve">
     <value>Stoppvorgang von Coco.Nut eingeleitet</value>
@@ -576,20 +621,71 @@ Verbleibende Zeit: {1}</value>
   <data name="Update_NoUpdate" xml:space="preserve">
     <value>Sie verwenden die aktuellste Version.</value>
   </data>
+  <data name="Update_PublishedDate" xml:space="preserve">
+    <value>Veröffentlicht:</value>
+  </data>
+  <data name="Update_ReleaseName" xml:space="preserve">
+    <value>Release:</value>
+  </data>
   <data name="Update_ReleaseNotes" xml:space="preserve">
     <value>Versionshinweise</value>
   </data>
   <data name="Update_Title" xml:space="preserve">
     <value>Update verfügbar</value>
   </data>
+  <data name="UpsStatus_ALARM" xml:space="preserve">
+    <value>Alarm</value>
+  </data>
+  <data name="UpsStatus_BOOST" xml:space="preserve">
+    <value>Spannung wird erhöht</value>
+  </data>
+  <data name="UpsStatus_BYPASS" xml:space="preserve">
+    <value>Bypass</value>
+  </data>
   <data name="UpsStatus_CAL" xml:space="preserve">
     <value>Kalibrierung</value>
+  </data>
+  <data name="UpsStatus_CHRG" xml:space="preserve">
+    <value>Lädt</value>
+  </data>
+  <data name="UpsStatus_COMMLOST" xml:space="preserve">
+    <value>Kommunikation unterbrochen</value>
+  </data>
+  <data name="UpsStatus_DISCHRG" xml:space="preserve">
+    <value>Entlädt</value>
+  </data>
+  <data name="UpsStatus_ECO" xml:space="preserve">
+    <value>Eco-Modus</value>
+  </data>
+  <data name="UpsStatus_FSD" xml:space="preserve">
+    <value>Erzwungenes Herunterfahren</value>
+  </data>
+  <data name="UpsStatus_HB" xml:space="preserve">
+    <value>Hohe Akkuladung</value>
   </data>
   <data name="UpsStatus_LB" xml:space="preserve">
     <value>Niedrige Akkuladung</value>
   </data>
+  <data name="UpsStatus_OB" xml:space="preserve">
+    <value>Im Akkubetrieb</value>
+  </data>
+  <data name="UpsStatus_OFF" xml:space="preserve">
+    <value>Ausgang aus</value>
+  </data>
   <data name="UpsStatus_OL" xml:space="preserve">
     <value>Im Netzbetrieb</value>
+  </data>
+  <data name="UpsStatus_OVER" xml:space="preserve">
+    <value>Überlastung</value>
+  </data>
+  <data name="UpsStatus_RB" xml:space="preserve">
+    <value>Akku ersetzen</value>
+  </data>
+  <data name="UpsStatus_TEST" xml:space="preserve">
+    <value>Test läuft</value>
+  </data>
+  <data name="UpsStatus_TRIM" xml:space="preserve">
+    <value>Spannung wird reduziert</value>
   </data>
   <data name="Validation_CalibrationMinLessThanMax" xml:space="preserve">
     <value>Der Minimalwert muss kleiner als der Maximalwert sein.</value>
@@ -612,6 +708,21 @@ Verbleibende Zeit: {1}</value>
   <data name="Validation_RuntimeFloorRange" xml:space="preserve">
     <value>Die Laufzeit-Grenze muss zwischen 0 und 3600 Sekunden liegen.</value>
   </data>
+  <data name="Vars_Clipboard_Error" xml:space="preserve">
+    <value>Beim Kopieren der USV-Daten in die Zwischenablage ist ein Fehler aufgetreten: {0}</value>
+  </data>
+  <data name="Vars_Clipboard_Error_Title" xml:space="preserve">
+    <value>Fehler in der Zwischenablage</value>
+  </data>
+  <data name="Vars_Clipboard_Success" xml:space="preserve">
+    <value>USV-Daten wurden erfolgreich in die Zwischenablage kopiert.</value>
+  </data>
+  <data name="Vars_Close_ToolTip" xml:space="preserve">
+    <value>Dieses Fenster schließen.</value>
+  </data>
+  <data name="Vars_Copy_ToolTip" xml:space="preserve">
+    <value>Alle Informationen in die Zwischenablage kopieren.</value>
+  </data>
   <data name="Vars_Description" xml:space="preserve">
     <value>Beschreibung:</value>
   </data>
@@ -621,11 +732,35 @@ Verbleibende Zeit: {1}</value>
   <data name="Vars_GroupTitle" xml:space="preserve">
     <value>Element-Eigenschaften</value>
   </data>
+  <data name="Vars_LoadError_Text" xml:space="preserve">
+    <value>Beim Abrufen der Variablen von der USV ist ein Fehler aufgetreten: {0}</value>
+  </data>
+  <data name="Vars_LoadError_Title" xml:space="preserve">
+    <value>Fehler aufgetreten</value>
+  </data>
   <data name="Vars_Name" xml:space="preserve">
     <value>Name:</value>
   </data>
+  <data name="Vars_NotConnected" xml:space="preserve">
+    <value>Mit dem NUT-Server verbinden, um USV-Variablen anzuzeigen.</value>
+  </data>
   <data name="Vars_Reload" xml:space="preserve">
     <value>Neu laden</value>
+  </data>
+  <data name="Vars_Reload_ToolTip" xml:space="preserve">
+    <value>Lädt alle Informationen von der USV neu.</value>
+  </data>
+  <data name="Vars_SaveFile_Error" xml:space="preserve">
+    <value>Beim Speichern der USV-Daten in eine Datei ist ein Fehler aufgetreten: {0}</value>
+  </data>
+  <data name="Vars_SaveFile_Success" xml:space="preserve">
+    <value>USV-Daten wurden erfolgreich in Datei gespeichert: {0}</value>
+  </data>
+  <data name="Vars_SaveFile_Title" xml:space="preserve">
+    <value>USV-Daten in Datei speichern</value>
+  </data>
+  <data name="Vars_Save_ToolTip" xml:space="preserve">
+    <value>Alle Informationen in eine Datei speichern.</value>
   </data>
   <data name="Vars_Title" xml:space="preserve">
     <value>Liste der USV-Variablen</value>
