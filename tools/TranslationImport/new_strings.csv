@@ -1,4 +1,22 @@
 Key,Culture,Translation
+About_Description,de-DE,"Überwacht eine USV über einen Network-UPS-Tools-Server (NUT) und fährt den Computer herunter, wenn der Akku schwach wird."
+About_Description,fr-FR,Surveille un onduleur via un serveur Network UPS Tools (NUT) et arrête l'ordinateur lorsque la batterie est faible.
+About_Description,ru-RU,Отслеживает ИБП через сервер Network UPS Tools (NUT) и выключает компьютер при низком заряде батареи.
+About_Description,uk-UA,"Відстежує ДБЖ через сервер Network UPS Tools (NUT) і вимикає комп'ютер, коли заряд батареї стає низьким."
+About_Description,zh-CN,通过 Network UPS Tools (NUT) 服务器监控 UPS，并在电池电量过低时关闭计算机。
+About_Description,zh-TW,透過 Network UPS Tools (NUT) 伺服器監控 UPS，並在電池電量過低時關閉電腦。
+About_ProjectPage,de-DE,Projektseite
+About_ProjectPage,fr-FR,Page du projet
+About_ProjectPage,ru-RU,Страница проекта
+About_ProjectPage,uk-UA,Сторінка проєкту
+About_ProjectPage,zh-CN,项目主页
+About_ProjectPage,zh-TW,專案首頁
+About_Version,de-DE,Version {0}
+About_Version,fr-FR,Version {0}
+About_Version,ru-RU,Версия {0}
+About_Version,uk-UA,Версія {0}
+About_Version,zh-CN,版本 {0}
+About_Version,zh-TW,版本 {0}
 AppName,de-DE,Coco.Nut
 AppName,fr-FR,Coco.Nut
 AppName,ru-RU,Coco.Nut
@@ -17,93 +35,214 @@ Common_Yes,ru-RU,Да
 Common_Yes,uk-UA,Так
 Common_Yes,zh-CN,是
 Common_Yes,zh-TW,是
-Language_System,de-DE,Systemstandard
-Language_System,fr-FR,Système par défaut
-Language_System,ru-RU,Как в системе
-Language_System,uk-UA,Системна (за умовчанням)
-Language_System,zh-CN,系统默认
-Language_System,zh-TW,系統預設
-Prefs_Logging_Tab,de-DE,Protokollierung
-Prefs_Logging_Tab,fr-FR,Journalisation
-Prefs_Logging_Tab,ru-RU,Журналирование
-Prefs_Logging_Tab,uk-UA,Журналювання
-Prefs_Logging_Tab,zh-CN,日志记录
-Prefs_Logging_Tab,zh-TW,日誌記錄
-Prefs_Misc_Language,de-DE,Sprache
-Prefs_Misc_Language,fr-FR,Langue
-Prefs_Misc_Language,ru-RU,Язык
-Prefs_Misc_Language,uk-UA,Мова
-Prefs_Misc_Language,zh-CN,语言
-Prefs_Misc_Language,zh-TW,語言
-Prefs_Misc_LanguageRestartHint,de-DE,Änderungen werden erst nach einem Neustart von Coco.Nut wirksam.
-Prefs_Misc_LanguageRestartHint,fr-FR,Les modifications prennent effet après le redémarrage de Coco.Nut.
-Prefs_Misc_LanguageRestartHint,ru-RU,Изменения вступят в силу после перезапуска Coco.Nut.
-Prefs_Misc_LanguageRestartHint,uk-UA,Зміни набудуть чинності після перезапуску Coco.Nut.
-Prefs_Misc_LanguageRestartHint,zh-CN,更改将在重新启动 Coco.Nut 后生效。
-Prefs_Misc_LanguageRestartHint,zh-TW,變更將在重新啟動 Coco.Nut 後生效。
-UpsStatus_ALARM,de-DE,Alarm
-UpsStatus_ALARM,fr-FR,Alarme
-UpsStatus_ALARM,ru-RU,Тревога
-UpsStatus_ALARM,uk-UA,Тривога
-UpsStatus_ALARM,zh-CN,警报
-UpsStatus_ALARM,zh-TW,警報
-UpsStatus_CHRG,de-DE,Lädt
-UpsStatus_CHRG,fr-FR,En charge
-UpsStatus_CHRG,ru-RU,Заряжается
-UpsStatus_CHRG,uk-UA,Заряджається
-UpsStatus_CHRG,zh-CN,正在充电
-UpsStatus_CHRG,zh-TW,正在充電
-UpsStatus_COMMLOST,de-DE,Kommunikation unterbrochen
-UpsStatus_COMMLOST,fr-FR,Communication perdue
-UpsStatus_COMMLOST,ru-RU,Связь потеряна
-UpsStatus_COMMLOST,uk-UA,Зв'язок втрачено
-UpsStatus_COMMLOST,zh-CN,通信已中断
-UpsStatus_COMMLOST,zh-TW,通訊已中斷
-UpsStatus_DISCHRG,de-DE,Entlädt
-UpsStatus_DISCHRG,fr-FR,En décharge
-UpsStatus_DISCHRG,ru-RU,Разряжается
-UpsStatus_DISCHRG,uk-UA,Розряджається
-UpsStatus_DISCHRG,zh-CN,正在放电
-UpsStatus_DISCHRG,zh-TW,正在放電
-UpsStatus_FSD,de-DE,Erzwungenes Herunterfahren
-UpsStatus_FSD,fr-FR,Arrêt forcé
-UpsStatus_FSD,ru-RU,Принудительное отключение
-UpsStatus_FSD,uk-UA,Примусове вимкнення
-UpsStatus_FSD,zh-CN,强制关机
-UpsStatus_FSD,zh-TW,強制關機
-UpsStatus_HB,de-DE,Hohe Akkuladung
-UpsStatus_HB,fr-FR,Charge élevée
-UpsStatus_HB,ru-RU,Высокий заряд батареи
-UpsStatus_HB,uk-UA,Високий заряд батареї
-UpsStatus_HB,zh-CN,电池电量过高
-UpsStatus_HB,zh-TW,電池電量過高
-UpsStatus_OB,de-DE,Im Akkubetrieb
-UpsStatus_OB,fr-FR,Sur batterie
-UpsStatus_OB,ru-RU,От батареи
-UpsStatus_OB,uk-UA,Від батареї
-UpsStatus_OB,zh-CN,电池供电中
-UpsStatus_OB,zh-TW,電池供電中
-UpsStatus_OFF,de-DE,Ausgang aus
-UpsStatus_OFF,fr-FR,Sortie coupée
-UpsStatus_OFF,ru-RU,Выход отключён
-UpsStatus_OFF,uk-UA,Вихід вимкнено
-UpsStatus_OFF,zh-CN,输出已关闭
-UpsStatus_OFF,zh-TW,輸出已關閉
-UpsStatus_OVER,de-DE,Überlastung
-UpsStatus_OVER,fr-FR,Surcharge
-UpsStatus_OVER,ru-RU,Перегрузка
-UpsStatus_OVER,uk-UA,Перевантаження
-UpsStatus_OVER,zh-CN,过载
-UpsStatus_OVER,zh-TW,過載
-UpsStatus_RB,de-DE,Akku ersetzen
-UpsStatus_RB,fr-FR,Remplacer la batterie
-UpsStatus_RB,ru-RU,Требуется замена батареи
-UpsStatus_RB,uk-UA,Потрібна заміна батареї
-UpsStatus_RB,zh-CN,需要更换电池
-UpsStatus_RB,zh-TW,需要更換電池
-UpsStatus_TEST,de-DE,Test läuft
-UpsStatus_TEST,fr-FR,Test en cours
-UpsStatus_TEST,ru-RU,Идёт тестирование
-UpsStatus_TEST,uk-UA,Виконується тестування
-UpsStatus_TEST,zh-CN,正在测试
-UpsStatus_TEST,zh-TW,正在測試
+Log_ApplicationShutdownAt,de-DE,Anwendung heruntergefahren um {0}.
+Log_ApplicationShutdownAt,fr-FR,Application arrêtée à {0}.
+Log_ApplicationShutdownAt,ru-RU,Программное отключение в {0}.
+Log_ApplicationShutdownAt,uk-UA,Програмне вимкнення о {0}.
+Log_ApplicationShutdownAt,zh-CN,应用程序于 {0} 关闭。
+Log_ApplicationShutdownAt,zh-TW,應用程式於 {0} 關閉。
+Log_Level_Warning,de-DE,Warnung
+Log_Level_Warning,fr-FR,Avertissement
+Log_Level_Warning,ru-RU,Предупреждение
+Main_Gauge_Power,de-DE,Ausgangsleistung
+Main_Gauge_Power,fr-FR,Puissance de sortie
+Main_Gauge_Power,ru-RU,Выходная мощность
+Main_Gauge_Power,uk-UA,Вихідна потужність
+Main_Gauge_Power,zh-CN,输出功率
+Main_Gauge_Power,zh-TW,輸出功率
+Main_Label_Model,de-DE,Modell:
+Main_Label_Model,fr-FR,Modèle :
+Main_Label_Model,ru-RU,Модель:
+Main_Label_Model,uk-UA,Модель:
+Main_Label_Model,zh-CN,型号:
+Main_Label_Model,zh-TW,型號:
+Main_RuntimeUnknown,de-DE,Unbekannt
+Main_RuntimeUnknown,fr-FR,Inconnu
+Main_RuntimeUnknown,ru-RU,Неизвестно
+Main_RuntimeUnknown,uk-UA,Невідомо
+Main_RuntimeUnknown,zh-CN,未知
+Main_RuntimeUnknown,zh-TW,未知
+Main_Status_EnteringSleep,de-DE,Das System wechselt in den Energiesparmodus. Coco.Nut trennt die Verbindung.
+Main_Status_EnteringSleep,fr-FR,Le système passe en veille. Coco.Nut va se déconnecter.
+Main_Status_EnteringSleep,ru-RU,Система переходит в режим сна. Coco.Nut отключится.
+Main_Status_EnteringSleep,uk-UA,Система переходить у режим сну. Coco.Nut відключиться.
+Main_Status_EnteringSleep,zh-CN,系统即将进入睡眠状态，Coco.Nut 将断开连接。
+Main_Status_EnteringSleep,zh-TW,系統即將進入睡眠狀態，Coco.Nut 將中斷連線。
+Main_Status_ResumedFromSleep,de-DE,Coco.Nut wird nach dem Aufwachen aus dem Energiesparmodus neu gestartet.
+Main_Status_ResumedFromSleep,fr-FR,Redémarrage de Coco.Nut après la sortie du mode veille.
+Main_Status_ResumedFromSleep,ru-RU,Перезапуск Coco.Nut после выхода из режима сна.
+Main_Status_ResumedFromSleep,uk-UA,Перезапуск Coco.Nut після виходу з режиму сну.
+Main_Status_ResumedFromSleep,zh-TW,從睡眠中喚醒後重新啟動 Coco.Nut。
+Main_Status_WaitingForData,de-DE,Warte auf Daten…
+Main_Status_WaitingForData,fr-FR,Attente des données…
+Main_Status_WaitingForData,ru-RU,Ожидание данных…
+Main_Status_WaitingForData,uk-UA,Очікування даних…
+Main_Status_WaitingForData,zh-CN,正在等待数据…
+Main_Status_WaitingForData,zh-TW,正在等待資料…
+Notify_Title_Warning,de-DE,Warnung
+Notify_Title_Warning,fr-FR,Avertissement
+Notify_Title_Warning,ru-RU,Предупреждение
+Prefs_Connection_ShowPassword,de-DE,Passwort anzeigen
+Prefs_Connection_ShowPassword,fr-FR,Afficher le mot de passe
+Prefs_Connection_ShowPassword,ru-RU,Показать пароль
+Prefs_Connection_ShowPassword,uk-UA,Показати пароль
+Prefs_Connection_ShowPassword,zh-CN,显示密码
+Prefs_Connection_ShowPassword,zh-TW,顯示密碼
+Prefs_Import_NotFound,de-DE,Es wurden keine WinNUT-Einstellungen gefunden.
+Prefs_Import_NotFound,fr-FR,Aucun paramètre WinNUT n'a été trouvé.
+Prefs_Import_NotFound,ru-RU,Настройки WinNUT не найдены.
+Prefs_Import_NotFound,uk-UA,Налаштування WinNUT не знайдено.
+Prefs_Import_NotFound,zh-CN,未找到 WinNUT 设置。
+Prefs_Import_NotFound,zh-TW,找不到 WinNUT 設定。
+Prefs_Import_Success,de-DE,Einstellungen aus {0} importiert.
+Prefs_Import_Success,fr-FR,Paramètres importés depuis {0}.
+Prefs_Import_Success,ru-RU,Настройки импортированы из {0}.
+Prefs_Import_Success,uk-UA,Налаштування імпортовано з {0}.
+Prefs_Import_Success,zh-CN,已从 {0} 导入设置。
+Prefs_Import_Success,zh-TW,已從 {0} 匯入設定。
+Prefs_Import_WinNut,de-DE,WinNUT-Einstellungen importieren…
+Prefs_Import_WinNut,fr-FR,Importer les paramètres WinNUT…
+Prefs_Import_WinNut,ru-RU,Импортировать настройки WinNUT…
+Prefs_Import_WinNut,uk-UA,Імпортувати налаштування WinNUT…
+Prefs_Import_WinNut,zh-CN,导入 WinNUT 设置…
+Prefs_Import_WinNut,zh-TW,匯入 WinNUT 設定…
+Prefs_Logging_DeleteLog,de-DE,Protokolldateien löschen
+Prefs_Logging_DeleteLog,fr-FR,Supprimer les fichiers journaux
+Prefs_Logging_DeleteLog,ru-RU,Удалить файлы журнала
+Prefs_Logging_DeleteLog,uk-UA,Видалити файли журналу
+Prefs_Logging_DeleteLog,zh-CN,删除日志文件
+Prefs_Logging_DeleteLog,zh-TW,刪除日誌檔案
+Prefs_Logging_ViewLog,de-DE,Protokolldatei öffnen
+Prefs_Logging_ViewLog,fr-FR,Ouvrir le fichier journal
+Prefs_Logging_ViewLog,ru-RU,Открыть файл журнала
+Prefs_Logging_ViewLog,uk-UA,Відкрити файл журналу
+Prefs_Logging_ViewLog,zh-CN,打开日志文件
+Prefs_Logging_ViewLog,zh-TW,開啟日誌檔案
+Prefs_Misc_StartWithSystem,de-DE,Mit dem System starten
+Prefs_Misc_StartWithSystem,fr-FR,Démarrer avec le système
+Prefs_Misc_StartWithSystem,ru-RU,Запускать вместе с системой
+Prefs_Misc_StartWithSystem,uk-UA,Запускати разом із системою
+Prefs_Misc_StartWithSystem,zh-CN,随系统启动
+Prefs_Misc_StartWithSystem,zh-TW,隨系統啟動
+Prefs_Misc_StartWithSystem_ToolTip,de-DE,"Startet Coco.Nut, wenn das System startet."
+Prefs_Misc_StartWithSystem_ToolTip,fr-FR,Démarre Coco.Nut au démarrage du système.
+Prefs_Misc_StartWithSystem_ToolTip,ru-RU,Запускает Coco.Nut при запуске системы.
+Prefs_Misc_StartWithSystem_ToolTip,uk-UA,Запускає Coco.Nut під час запуску системи.
+Prefs_Misc_StartWithSystem_ToolTip,zh-CN,系统启动时启动 Coco.Nut。
+Prefs_Misc_StartWithSystem_ToolTip,zh-TW,系統啟動時啟動 Coco.Nut。
+Prefs_Update_Tab,de-DE,Updates
+Prefs_Update_Tab,ru-RU,Обновления
+Prefs_Update_Tab,uk-UA,Оновлення
+Shutdown_Cancelled_Notify,de-DE,Stromversorgung wiederhergestellt – Herunterfahren abgebrochen.
+Shutdown_Cancelled_Notify,fr-FR,Alimentation rétablie – arrêt annulé.
+Shutdown_Cancelled_Notify,ru-RU,Питание восстановлено — отключение отменено.
+Shutdown_Cancelled_Notify,uk-UA,Живлення відновлено — вимкнення скасовано.
+Shutdown_Cancelled_Notify,zh-CN,电源已恢复 – 关机已取消。
+Shutdown_Cancelled_Notify,zh-TW,電源已恢復 – 關機已取消。
+Shutdown_Countdown,de-DE,{0} beginnt in {1}.
+Shutdown_Countdown,fr-FR,{0} commencera dans {1}.
+Shutdown_Countdown,ru-RU,{0} начнётся через {1}.
+Shutdown_Countdown,uk-UA,{0} почнеться через {1}.
+Shutdown_Countdown,zh-CN,{0} 将在 {1} 后开始。
+Shutdown_Countdown,zh-TW,{0} 將在 {1} 後開始。
+Shutdown_GraceButton,de-DE,Aufschub
+Shutdown_Reason_BatteryCharge,de-DE,Der Akkustand {0}% liegt bei oder unter dem Grenzwert von {1}%.
+Shutdown_Reason_BatteryCharge,fr-FR,La charge de la batterie ({0} %) est égale ou inférieure à la limite de {1} %.
+Shutdown_Reason_BatteryCharge,ru-RU,Заряд батареи {0}% равен или ниже порога {1}%.
+Shutdown_Reason_BatteryCharge,uk-UA,Заряд батареї {0}% дорівнює або нижчий за межу {1}%.
+Shutdown_Reason_BatteryCharge,zh-CN,电池电量 {0}% 已达到或低于 {1}% 的限制。
+Shutdown_Reason_BatteryCharge,zh-TW,電池電量 {0}% 已達到或低於 {1}% 的限制。
+Shutdown_Reason_Fsd,de-DE,Der NUT-Server hat ein erzwungenes Herunterfahren angefordert.
+Shutdown_Reason_Fsd,fr-FR,Le serveur NUT a demandé un arrêt forcé.
+Shutdown_Reason_Fsd,ru-RU,Сервер NUT запросил принудительное отключение.
+Shutdown_Reason_Fsd,uk-UA,Сервер NUT запросив примусове вимкнення.
+Shutdown_Reason_Fsd,zh-CN,NUT 服务器请求强制关机。
+Shutdown_Reason_Fsd,zh-TW,NUT 伺服器請求強制關機。
+Shutdown_Reason_Runtime,de-DE,Die verbleibende Laufzeit {0} liegt bei oder unter dem Grenzwert von {1}.
+Shutdown_Reason_Runtime,fr-FR,Le temps restant ({0}) est égal ou inférieur à la limite de {1}.
+Shutdown_Reason_Runtime,ru-RU,Оставшееся время работы {0} равно или меньше порога {1}.
+Shutdown_Reason_Runtime,uk-UA,Залишок часу роботи {0} дорівнює або менший за межу {1}.
+Shutdown_Reason_Runtime,zh-CN,剩余运行时间 {0} 已达到或低于 {1} 的限制。
+Shutdown_Reason_Runtime,zh-TW,剩餘運行時間 {0} 已達到或低於 {1} 的限制。
+Shutdown_Title,uk-UA,Триває вимкнення
+Tray_Menu_Show,de-DE,Coco.Nut anzeigen
+Tray_Menu_Show,fr-FR,Afficher Coco.Nut
+Tray_Menu_Show,ru-RU,Показать Coco.Nut
+Tray_Menu_Show,uk-UA,Показати Coco.Nut
+Tray_Menu_Show,zh-CN,显示 Coco.Nut
+Tray_Menu_Show,zh-TW,顯示 Coco.Nut
+UpdateInterval_Daily,uk-UA,Щодня
+UpdateInterval_Monthly,uk-UA,Щомісяця
+UpdateInterval_Weekly,uk-UA,Щотижня
+Update_CheckFailed,de-DE,Update-Prüfung fehlgeschlagen: {0}
+Update_CheckFailed,fr-FR,Impossible de vérifier les mises à jour : {0}
+Update_CheckFailed,ru-RU,Не удалось проверить обновления: {0}
+Update_CheckFailed,uk-UA,Не вдалося перевірити оновлення: {0}
+Update_CheckFailed,zh-CN,无法检查更新：{0}
+Update_CheckFailed,zh-TW,無法檢查更新：{0}
+Update_Message,de-DE,Version {0} ist verfügbar. Sie verwenden derzeit Version {1}.
+Update_Message,fr-FR,La version {0} est disponible. Vous utilisez actuellement la version {1}.
+Update_Message,ru-RU,Доступна версия {0}. Вы используете версию {1}.
+Update_Message,uk-UA,Доступна версія {0}. Ви використовуєте версію {1}.
+Update_Message,zh-CN,有新版本 {0} 可用。您当前使用的是版本 {1}。
+Update_Message,zh-TW,有新版本 {0} 可用。您目前使用的是版本 {1}。
+Update_NoUpdate,de-DE,Sie verwenden die aktuellste Version.
+Update_NoUpdate,fr-FR,Vous utilisez la dernière version.
+Update_NoUpdate,ru-RU,Вы используете последнюю версию.
+Update_NoUpdate,uk-UA,Ви використовуєте останню версію.
+Update_NoUpdate,zh-CN,您正在使用最新版本。
+Update_NoUpdate,zh-TW,您正在使用最新版本。
+Update_ReleaseNotes,de-DE,Versionshinweise
+Update_ReleaseNotes,fr-FR,Notes de version
+Update_ReleaseNotes,ru-RU,Заметки о выпуске
+Update_ReleaseNotes,uk-UA,Примітки до випуску
+Update_ReleaseNotes,zh-CN,更新说明
+Update_ReleaseNotes,zh-TW,版本說明
+Validation_CalibrationMinLessThanMax,de-DE,Der Minimalwert muss kleiner als der Maximalwert sein.
+Validation_CalibrationMinLessThanMax,fr-FR,La valeur minimale doit être inférieure à la valeur maximale.
+Validation_CalibrationMinLessThanMax,ru-RU,Минимальное значение должно быть меньше максимального.
+Validation_CalibrationMinLessThanMax,uk-UA,Мінімальне значення має бути меншим за максимальне.
+Validation_CalibrationMinLessThanMax,zh-CN,最小值必须小于最大值。
+Validation_CalibrationMinLessThanMax,zh-TW,最小值必須小於最大值。
+Validation_ChargeFloorRange,de-DE,Die Akku-Grenze muss zwischen 0 und 100 % liegen.
+Validation_ChargeFloorRange,fr-FR,Le seuil de batterie doit être compris entre 0 et 100 %.
+Validation_ChargeFloorRange,ru-RU,Порог заряда батареи должен быть от 0 до 100 %.
+Validation_ChargeFloorRange,uk-UA,Межа заряду батареї має бути від 0 до 100 %.
+Validation_ChargeFloorRange,zh-CN,电池电量下限必须介于 0% 到 100% 之间。
+Validation_ChargeFloorRange,zh-TW,電池電量下限必須介於 0% 到 100% 之間。
+Validation_DelayRange,de-DE,Die Verzögerung muss zwischen 1 und 3600 Sekunden liegen.
+Validation_DelayRange,fr-FR,Le délai doit être compris entre 1 et 3600 secondes.
+Validation_DelayRange,ru-RU,Задержка должна быть от 1 до 3600 секунд.
+Validation_DelayRange,uk-UA,Затримка має бути від 1 до 3600 секунд.
+Validation_DelayRange,zh-CN,延迟必须介于 1 到 3600 秒之间。
+Validation_DelayRange,zh-TW,延遲必須介於 1 到 3600 秒之間。
+Validation_HostRequired,de-DE,Der NUT-Host ist erforderlich.
+Validation_HostRequired,fr-FR,L'hôte NUT est requis.
+Validation_HostRequired,ru-RU,Необходимо указать хост NUT.
+Validation_HostRequired,uk-UA,Хост NUT є обов'язковим.
+Validation_HostRequired,zh-CN,必须填写 NUT 主机。
+Validation_HostRequired,zh-TW,必須填寫 NUT 主機。
+Validation_PollIntervalRange,de-DE,"Das Abrufintervall muss zwischen 0,1 und 100 Sekunden liegen."
+Validation_PollIntervalRange,fr-FR,"L'intervalle d'interrogation doit être compris entre 0,1 et 100 secondes."
+Validation_PollIntervalRange,ru-RU,"Интервал опроса должен быть от 0,1 до 100 секунд."
+Validation_PollIntervalRange,uk-UA,"Інтервал опитування має бути від 0,1 до 100 секунд."
+Validation_PollIntervalRange,zh-CN,轮询间隔必须介于 0.1 到 100 秒之间。
+Validation_PollIntervalRange,zh-TW,輪詢間隔必須介於 0.1 到 100 秒之間。
+Validation_PortRange,de-DE,Der Port muss zwischen 1 und 65535 liegen.
+Validation_PortRange,fr-FR,Le port doit être compris entre 1 et 65535.
+Validation_PortRange,ru-RU,Порт должен быть в диапазоне от 1 до 65535.
+Validation_PortRange,uk-UA,Порт має бути в діапазоні від 1 до 65535.
+Validation_PortRange,zh-CN,端口必须介于 1 到 65535 之间。
+Validation_PortRange,zh-TW,連接埠必須介於 1 到 65535 之間。
+Validation_RuntimeFloorRange,de-DE,Die Laufzeit-Grenze muss zwischen 0 und 3600 Sekunden liegen.
+Validation_RuntimeFloorRange,fr-FR,Le seuil d'autonomie doit être compris entre 0 et 3600 secondes.
+Validation_RuntimeFloorRange,ru-RU,Порог времени работы должен быть от 0 до 3600 секунд.
+Validation_RuntimeFloorRange,uk-UA,Межа часу роботи має бути від 0 до 3600 секунд.
+Validation_RuntimeFloorRange,zh-CN,运行时间下限必须介于 0 到 3600 秒之间。
+Validation_RuntimeFloorRange,zh-TW,運行時間下限必須介於 0 到 3600 秒之間。
+Vars_Filter_Watermark,de-DE,Variablen filtern…
+Vars_Filter_Watermark,fr-FR,Filtrer les variables…
+Vars_Filter_Watermark,ru-RU,Фильтр переменных…
+Vars_Filter_Watermark,uk-UA,Фільтр змінних…
+Vars_Filter_Watermark,zh-CN,筛选变量…
+Vars_Filter_Watermark,zh-TW,篩選變數…
