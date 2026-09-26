@@ -10,6 +10,9 @@ namespace CocoNut.App.Services;
 /// </summary>
 public interface IShutdownEvents
 {
+    /// <inheritdoc cref="ShutdownCoordinator.DryRun"/>
+    bool DryRun { get; }
+
     /// <inheritdoc cref="ShutdownCoordinator.ShutdownPending"/>
     event EventHandler<ShutdownPendingEventArgs>? ShutdownPending;
 
@@ -30,6 +33,9 @@ public sealed class ShutdownEventsAdapter : IShutdownEvents
 
     public ShutdownEventsAdapter(ShutdownCoordinator coordinator) =>
         _coordinator = coordinator ?? throw new ArgumentNullException(nameof(coordinator));
+
+    /// <inheritdoc />
+    public bool DryRun => _coordinator.DryRun;
 
     /// <inheritdoc />
     public event EventHandler<ShutdownPendingEventArgs>? ShutdownPending

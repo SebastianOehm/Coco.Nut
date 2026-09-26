@@ -1,0 +1,35 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
+        xmlns:vm="clr-namespace:CocoNut.App.ViewModels"
+        x:Class="CocoNut.App.Views.UpdateAvailableWindow"
+        x:DataType="vm:UpdateAvailableViewModel"
+        Icon="/Assets/coconut.ico"
+        Title="{x:Static loc:Strings.Update_Title}"
+        Width="480" Height="420" MinWidth="380" MinHeight="300"
+        WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="16">
+    <TextBlock Grid.Row="0" Text="{Binding MessageText}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+    <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" IsVisible="{Binding HasReleaseName}" Margin="0,0,0,4">
+      <TextBlock Text="{x:Static loc:Strings.Update_ReleaseName}" FontWeight="SemiBold" />
+      <TextBlock Text="{Binding ReleaseName}" TextWrapping="Wrap" />
+    </StackPanel>
+
+    <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" IsVisible="{Binding HasPublishedDate}" Margin="0,0,0,10">
+      <TextBlock Text="{x:Static loc:Strings.Update_PublishedDate}" FontWeight="SemiBold" />
+      <TextBlock Text="{Binding PublishedDateText}" />
+    </StackPanel>
+
+    <DockPanel Grid.Row="3">
+      <TextBlock DockPanel.Dock="Top" Text="{x:Static loc:Strings.Update_ReleaseNotes}" FontWeight="Bold" Margin="0,0,0,6" />
+      <TextBox Text="{Binding ReleaseNotes}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"
+               VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+    </DockPanel>
+
+    <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" Margin="0,12,0,0">
+      <Button Content="{x:Static loc:Strings.Prefs_Update_OpenReleasePage}" Command="{Binding OpenReleasePageCommand}" Classes="accent" />
+      <Button Content="{x:Static loc:Strings.Common_Close}" Click="OnCloseClick" />
+    </StackPanel>
+  </Grid>
+</Window>

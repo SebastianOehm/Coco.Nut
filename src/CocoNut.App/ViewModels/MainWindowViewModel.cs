@@ -65,6 +65,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         _shutdownEvents.ShutdownPending += OnShutdownPending;
         _shutdownEvents.ShutdownCancelled += OnShutdownCancelled;
+        _shutdownEvents.ShutdownExecuting += OnShutdownExecuting;
         _shutdownEvents.ShutdownFailed += OnShutdownFailed;
 
         _settingsService.SettingsChanged += OnSettingsChanged;
@@ -250,6 +251,13 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             AddLogEntry(Strings.Log_ShutdownCancelled);
             _notifications.Notify(Strings.Notify_Title_Info, Strings.Shutdown_Cancelled_Notify, NotificationKind.Info);
         });
+
+    private void OnShutdownExecuting(object? sender, ShutdownReason reason) => _dispatcher.Post(() =>
+    {
+        var stopActionText = StopActionFormatter.ToLocalizedText(_settingsService.Current.Power.StopAction);
+        var template = _shutdownEvents.DryRun ? Strings.Log_ShutdownExecuting_DryRun : Strings.Log_ShutdownExecuting;
+        AddLogEntry(string.Format(CultureInfo.CurrentCulture, template, stopActionText));
+    });
 
     private void OnShutdownFailed(object? sender, Exception error) =>
         _dispatcher.Post(() => _notifications.Notify(
@@ -481,6 +489,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         _shutdownEvents.ShutdownPending -= OnShutdownPending;
         _shutdownEvents.ShutdownCancelled -= OnShutdownCancelled;
+        _shutdownEvents.ShutdownExecuting -= OnShutdownExecuting;
         _shutdownEvents.ShutdownFailed -= OnShutdownFailed;
 
         _settingsService.SettingsChanged -= OnSettingsChanged;

@@ -1,0 +1,16 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
+        x:Class="CocoNut.App.Views.ConfirmDialogWindow"
+        Width="380" SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+  <StackPanel Margin="20" Spacing="16">
+    <TextBlock Name="MessageTextBlock" TextWrapping="Wrap" />
+    <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+      <Button Name="NoButton" Content="{x:Static loc:Strings.Common_No}" />
+      <Button Name="YesButton" Content="{x:Static loc:Strings.Common_Yes}" Classes="accent" />
+    </StackPanel>
+  </StackPanel>
+</Window>

@@ -31,11 +31,20 @@ public sealed class FakeUpsMonitorEvents : IUpsMonitorEvents
 
     public int StopCount { get; private set; }
 
+    /// <summary>Result returned by <see cref="GetAllVariablesAsync"/>, unless <see cref="ThrowOnGetVariables"/> is set.</summary>
+    public IReadOnlyList<NutVariable> Variables { get; set; } = [];
+
+    /// <summary>When set, <see cref="GetAllVariablesAsync"/> fails with this exception instead of returning <see cref="Variables"/>.</summary>
+    public Exception? ThrowOnGetVariables { get; set; }
+
+    /// <summary>When set, <see cref="StartAsync"/> fails with this exception instead of succeeding.</summary>
+    public Exception? ThrowOnStart { get; set; }
+
     public Task StartAsync(ConnectionSettings connection, double nominalFrequency, CancellationToken cancellationToken = default)
     {
         StartCount++;
         Settings = connection;
-        return Task.CompletedTask;
+        return ThrowOnStart is { } error ? Task.FromException(error) : Task.CompletedTask;
     }
 
     public Task StopAsync()
@@ -45,7 +54,7 @@ public sealed class FakeUpsMonitorEvents : IUpsMonitorEvents
     }
 
     public Task<IReadOnlyList<NutVariable>> GetAllVariablesAsync(bool includeDescriptions, CancellationToken cancellationToken = default) =>
-        Task.FromResult<IReadOnlyList<NutVariable>>([]);
+        ThrowOnGetVariables is { } error ? Task.FromException<IReadOnlyList<NutVariable>>(error) : Task.FromResult(Variables);
 
     public void RaiseStateChanged(MonitorState oldState, MonitorState newState, Exception? error = null)
     {
