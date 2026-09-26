@@ -67,8 +67,10 @@ public partial class App : Application, IDisposable
         trayIconController.Attach(this, mainWindow);
         trayIconController.CheckForUpdatesRequested += (_, _) => mainWindowViewModel.CheckForUpdatesCommand.Execute(null);
 
-        // Instantiate the shutdown-window controller now so it starts watching the coordinator right away,
-        // even before any window is shown.
+        // Safety-critical: the coordinator only evaluates stop conditions once it exists (it subscribes to the
+        // monitor in its constructor), so create it explicitly here instead of relying on another service to pull
+        // it in. Then instantiate the shutdown-window controller so it watches the coordinator from the start.
+        services.GetRequiredService<Core.Shutdown.ShutdownCoordinator>();
         services.GetRequiredService<ShutdownWindowController>();
 
         _ = RunStartupSequenceAsync(services, settingsService, mainWindow, mainWindowViewModel);

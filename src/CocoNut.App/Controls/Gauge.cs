@@ -253,7 +253,8 @@ public sealed class Gauge : Control
             DrawNeedle(context, center, radius, ValueToAngle(v, minimum, range), needleBrush, scale);
         }
 
-        DrawCaptionAndValue(context, center, radius, clampedValue, foreground, scale);
+        // The needle is clamped to the scale, but the read-out shows the real value (e.g. 0 V input during an outage).
+        DrawCaptionAndValue(context, center, radius, Value, foreground, scale);
     }
 
     private double ValueToAngle(double value, double minimum, double range) => StartAngle + SweepAngle * NormalizedPosition(value, minimum, range);

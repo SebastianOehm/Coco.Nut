@@ -18,7 +18,9 @@ public partial class ShutdownWindow : Window
 
     private void OnClosing(object? sender, WindowClosingEventArgs e)
     {
-        if (DataContext is ShutdownViewModel { IsRunning: true })
+        // Only the user is prevented from closing a running countdown (like WinNUT). The controller closes the
+        // window programmatically when the shutdown is cancelled or executed, and that must always succeed.
+        if (!e.IsProgrammatic && DataContext is ShutdownViewModel { IsRunning: true })
         {
             e.Cancel = true;
         }
