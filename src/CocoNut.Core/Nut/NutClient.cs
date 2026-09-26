@@ -19,6 +19,9 @@ public sealed class NutClient : INutClient
     private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(5);
     private static readonly TimeSpan LogoutTimeout = TimeSpan.FromSeconds(1);
 
+    /// <summary>Upper bound for one protocol line; protects against a misbehaving server.</summary>
+    internal const int MaxLineLength = 64 * 1024;
+
     private readonly ILogger<NutClient>? _logger;
     private readonly TimeSpan _timeout;
     private readonly SemaphoreSlim _sendLock = new(1, 1);
@@ -314,6 +317,8 @@ public sealed class NutClient : INutClient
             throw new NutTimeoutException($"Timed out waiting to send '{NutResponseParser.MaskCommand(command)}'.");
         }
 
+        // ConnectionLost is raised only after the lock is released, so handlers may call back into the client.
+        Exception? connectionLostError = null;
         try
         {
             if (!_connected)
@@ -328,26 +333,38 @@ public sealed class NutClient : INutClient
         {
             // The connection's state is unknown after a cancelled write/read; close it, but this was
             // requested by the caller, not an unexpected break, so ConnectionLost does not fire.
-            CloseConnection(raiseConnectionLost: false, error: null);
+            CloseConnection(markLost: false);
             throw;
         }
         catch (OperationCanceledException)
         {
             var timeoutEx = new NutTimeoutException(
                 $"Timed out waiting for a response to '{NutResponseParser.MaskCommand(command)}'.");
-            CloseConnection(raiseConnectionLost: true, timeoutEx);
+            if (CloseConnection(markLost: true))
+            {
+                connectionLostError = timeoutEx;
+            }
+
             throw timeoutEx;
         }
         catch (Exception ex) when (ex is IOException or SocketException)
         {
             IOException io = ex as IOException
                 ?? new IOException($"NUT request '{NutResponseParser.MaskCommand(command)}' failed: {ex.Message}", ex);
-            CloseConnection(raiseConnectionLost: true, io);
+            if (CloseConnection(markLost: true))
+            {
+                connectionLostError = io;
+            }
+
             throw io;
         }
         finally
         {
             _sendLock.Release();
+            if (connectionLostError is not null)
+            {
+                RaiseConnectionLost(connectionLostError);
+            }
         }
     }
 
@@ -467,15 +484,29 @@ public sealed class NutClient : INutClient
         return line;
     }
 
-    private void CloseConnection(bool raiseConnectionLost, Exception? error)
+    /// <summary>
+    /// Closes the socket. Returns <see langword="true"/> when <paramref name="markLost"/> is set and this is the
+    /// first unexpected loss of the current connection, i.e. the caller must raise <see cref="ConnectionLost"/>.
+    /// </summary>
+    private bool CloseConnection(bool markLost)
     {
         bool wasConnected = _connected;
         CloseSocketCore();
+        return markLost && wasConnected && Interlocked.Exchange(ref _connectionLostRaised, 1) == 0;
+    }
 
-        if (raiseConnectionLost && wasConnected && Interlocked.Exchange(ref _connectionLostRaised, 1) == 0)
+    private void RaiseConnectionLost(Exception error)
+    {
+        _logger?.LogInformation(error, "NUT connection lost.");
+        try
         {
-            _logger?.LogInformation(error, "NUT connection lost.");
             ConnectionLost?.Invoke(this, error);
+        }
+#pragma warning disable CA1031 // A faulty subscriber must not replace the transport error thrown to the caller.
+        catch (Exception handlerEx)
+#pragma warning restore CA1031
+        {
+            _logger?.LogError(handlerEx, "A ConnectionLost handler threw an exception.");
         }
     }
 
@@ -520,6 +551,11 @@ public sealed class NutClient : INutClient
                 int newlineIndex = Array.IndexOf(_buffer, (byte)'\n', _offset, _length - _offset);
                 if (newlineIndex < 0)
                 {
+                    if ((overflow?.Count ?? 0) + (_length - _offset) > MaxLineLength)
+                    {
+                        throw new IOException($"The NUT server sent a line longer than {MaxLineLength} bytes.");
+                    }
+
                     overflow ??= new List<byte>();
                     overflow.AddRange(_buffer.AsSpan(_offset, _length - _offset).ToArray());
                     _offset = _length;
@@ -528,6 +564,11 @@ public sealed class NutClient : INutClient
 
                 ReadOnlySpan<byte> chunk = _buffer.AsSpan(_offset, newlineIndex - _offset);
                 _offset = newlineIndex + 1;
+
+                if ((overflow?.Count ?? 0) + chunk.Length > MaxLineLength)
+                {
+                    throw new IOException($"The NUT server sent a line longer than {MaxLineLength} bytes.");
+                }
 
                 if (overflow is null)
                 {

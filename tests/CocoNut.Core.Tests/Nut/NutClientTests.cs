@@ -243,6 +243,51 @@ public class NutClientTests
     }
 
     [Fact]
+    public async Task ConnectionLost_HandlerCallingBackIntoClient_DoesNotDeadlock()
+    {
+        await using Fixture fx = await ConnectAsync();
+        fx.Server.SetHandler(_ =>
+        {
+            fx.Server.DropConnection();
+            return [];
+        });
+
+        // A synchronous call back into the client from the handler would deadlock if the event were raised
+        // while the request lock is still held.
+        fx.Client.ConnectionLost += (_, _) => fx.Client.DisconnectAsync().Wait(TimeSpan.FromSeconds(2));
+
+        Task call = Assert.ThrowsAsync<IOException>(() => fx.Client.GetVarAsync("ups1", "x"));
+        Task winner = await Task.WhenAny(call, Task.Delay(TimeSpan.FromSeconds(5)));
+
+        Assert.Same(call, winner);
+        await call;
+    }
+
+    [Fact]
+    public async Task ConnectionLost_ThrowingHandler_DoesNotReplaceTransportError()
+    {
+        await using Fixture fx = await ConnectAsync();
+        fx.Server.SetHandler(_ =>
+        {
+            fx.Server.DropConnection();
+            return [];
+        });
+        fx.Client.ConnectionLost += (_, _) => throw new InvalidOperationException("subscriber bug");
+
+        await Assert.ThrowsAsync<IOException>(() => fx.Client.GetVarAsync("ups1", "x"));
+    }
+
+    [Fact]
+    public async Task GetVarAsync_ServerSendsOverlongLine_ThrowsIOException()
+    {
+        await using Fixture fx = await ConnectAsync();
+        fx.Server.SetHandler(_ => [new string('x', NutClient.MaxLineLength + 10)]);
+
+        await Assert.ThrowsAsync<IOException>(() => fx.Client.GetVarAsync("ups1", "x"));
+        Assert.False(fx.Client.IsConnected);
+    }
+
+    [Fact]
     public async Task GetVarAsync_TimesOut_ThrowsTimeoutIOExceptionAndRaisesConnectionLost()
     {
         await using Fixture fx = await ConnectAsync(timeout: TimeSpan.FromMilliseconds(100));
