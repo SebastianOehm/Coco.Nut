@@ -15,6 +15,9 @@ rewrite exists, and [`docs/PLAN.md`](docs/PLAN.md) for the detailed migration pl
 platform layer are implemented and tested; the Avalonia UI (windows beyond the main dashboard) is still being built
 out. Expect rough edges and missing features until the first tagged release.
 
+See [`docs/ROADMAP.md`](docs/ROADMAP.md) for planned features (data history, multiple NUT servers/UPSes, an actions
+system) and the change log.
+
 ## Features
 
 - Live monitoring of UPS values (input/output voltage, load, frequency, battery voltage, battery charge, estimated
