@@ -179,6 +179,18 @@ along with this program. If not, see https://www.gnu.org/licenses/.</value>
     <value>Version {0} available</value>
     <comment>In-app log entry after an update check finds a newer release. {0} = version.</comment>
   </data>
+  <data name="Main_BatteryChargeEstimatedNote" xml:space="preserve">
+    <value>(estimated)</value>
+    <comment>Main window: small note appended after the battery charge percentage when UpsReading.BatteryChargeEstimated is true (charge derived from voltage, not reported directly by the UPS). New in Coco.Nut.</comment>
+  </data>
+  <data name="Main_BatteryRuntimeEstimatedNote" xml:space="preserve">
+    <value>(estimated)</value>
+    <comment>Main window: small note appended after the remaining runtime when UpsReading.BatteryRuntimeEstimated is true (runtime calculated, not reported directly by the UPS). New in Coco.Nut.</comment>
+  </data>
+  <data name="Main_FeatureNotImplemented" xml:space="preserve">
+    <value>{0} is not available yet.</value>
+    <comment>Notification shown by WindowNavigator when a secondary window (Settings/UPS variables/About/Update available) is opened before the Secondary windows work package (WP-H) implements it. {0} = the localized window/menu name. New in Coco.Nut.</comment>
+  </data>
   <data name="Main_Flag_BatteryLow" xml:space="preserve">
     <value>UPS battery low</value>
     <comment>Main window: indicator lit when the UPS reports a low battery.</comment>
@@ -302,6 +314,10 @@ along with this program. If not, see https://www.gnu.org/licenses/.</value>
   <data name="Main_Status_Connected" xml:space="preserve">
     <value>Connected</value>
     <comment>Main window/tray status text when connected to the NUT server.</comment>
+  </data>
+  <data name="Main_Status_Connecting" xml:space="preserve">
+    <value>Connecting…</value>
+    <comment>Main window/tray status text while the first connection attempt (connect/authenticate/login) is in progress, before UpsMonitor.State becomes Connected or Reconnecting. New in Coco.Nut (WinNUT had no separate state for this).</comment>
   </data>
   <data name="Main_Status_EnteringSleep" xml:space="preserve">
     <value>System is suspending. Coco.Nut will disconnect.</value>
@@ -736,6 +752,10 @@ Remaining time: {1}</value>
     <value>{0} will start in {1}.</value>
     <comment>Shutdown countdown window: remaining-time line. {0} = localized stop action name (one of the StopAction_* strings), {1} = remaining time formatted mm:ss. New in Coco.Nut.</comment>
   </data>
+  <data name="Shutdown_Failed_Notify" xml:space="preserve">
+    <value>The stop action failed: {0}</value>
+    <comment>Notification shown when ShutdownCoordinator.ShutdownFailed fires (the configured power action threw). {0} = the underlying error message (not localized). New in Coco.Nut.</comment>
+  </data>
   <data name="Shutdown_GraceButton" xml:space="preserve">
     <value>Grace time</value>
     <comment>Shutdown countdown window: button granting a one-time extra delay.</comment>
@@ -755,6 +775,10 @@ Remaining time: {1}</value>
   <data name="Shutdown_Reason_Runtime" xml:space="preserve">
     <value>Remaining runtime {0} is at or below the limit of {1}.</value>
     <comment>Shutdown window/log: why the shutdown procedure started (Power.RuntimeFloorSeconds). {0} = current remaining runtime, {1} = configured floor, both pre-formatted by the caller (e.g. mm:ss). New in Coco.Nut.</comment>
+  </data>
+  <data name="Shutdown_Reason_UpsLowBattery" xml:space="preserve">
+    <value>The UPS reports a critical low-battery condition (ups.status contains OB and LB).</value>
+    <comment>Shutdown window/log: why the shutdown procedure started (ShutdownReason.UpsLowBattery - NUT's own OB+LB critical condition, which WinNUT did not check). New in Coco.Nut.</comment>
   </data>
   <data name="Shutdown_Title" xml:space="preserve">
     <value>Shutdown in progress</value>
