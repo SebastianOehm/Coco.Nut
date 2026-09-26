@@ -1,0 +1,109 @@
+Key,Culture,Translation
+AppName,de-DE,Coco.Nut
+AppName,fr-FR,Coco.Nut
+AppName,ru-RU,Coco.Nut
+AppName,uk-UA,Coco.Nut
+AppName,zh-CN,Coco.Nut
+AppName,zh-TW,Coco.Nut
+Common_No,de-DE,Nein
+Common_No,fr-FR,Non
+Common_No,ru-RU,Нет
+Common_No,uk-UA,Ні
+Common_No,zh-CN,否
+Common_No,zh-TW,否
+Common_Yes,de-DE,Ja
+Common_Yes,fr-FR,Oui
+Common_Yes,ru-RU,Да
+Common_Yes,uk-UA,Так
+Common_Yes,zh-CN,是
+Common_Yes,zh-TW,是
+Language_System,de-DE,Systemstandard
+Language_System,fr-FR,Système par défaut
+Language_System,ru-RU,Как в системе
+Language_System,uk-UA,Системна (за умовчанням)
+Language_System,zh-CN,系统默认
+Language_System,zh-TW,系統預設
+Prefs_Logging_Tab,de-DE,Protokollierung
+Prefs_Logging_Tab,fr-FR,Journalisation
+Prefs_Logging_Tab,ru-RU,Журналирование
+Prefs_Logging_Tab,uk-UA,Журналювання
+Prefs_Logging_Tab,zh-CN,日志记录
+Prefs_Logging_Tab,zh-TW,日誌記錄
+Prefs_Misc_Language,de-DE,Sprache
+Prefs_Misc_Language,fr-FR,Langue
+Prefs_Misc_Language,ru-RU,Язык
+Prefs_Misc_Language,uk-UA,Мова
+Prefs_Misc_Language,zh-CN,语言
+Prefs_Misc_Language,zh-TW,語言
+Prefs_Misc_LanguageRestartHint,de-DE,Änderungen werden erst nach einem Neustart von Coco.Nut wirksam.
+Prefs_Misc_LanguageRestartHint,fr-FR,Les modifications prennent effet après le redémarrage de Coco.Nut.
+Prefs_Misc_LanguageRestartHint,ru-RU,Изменения вступят в силу после перезапуска Coco.Nut.
+Prefs_Misc_LanguageRestartHint,uk-UA,Зміни набудуть чинності після перезапуску Coco.Nut.
+Prefs_Misc_LanguageRestartHint,zh-CN,更改将在重新启动 Coco.Nut 后生效。
+Prefs_Misc_LanguageRestartHint,zh-TW,變更將在重新啟動 Coco.Nut 後生效。
+UpsStatus_ALARM,de-DE,Alarm
+UpsStatus_ALARM,fr-FR,Alarme
+UpsStatus_ALARM,ru-RU,Тревога
+UpsStatus_ALARM,uk-UA,Тривога
+UpsStatus_ALARM,zh-CN,警报
+UpsStatus_ALARM,zh-TW,警報
+UpsStatus_CHRG,de-DE,Lädt
+UpsStatus_CHRG,fr-FR,En charge
+UpsStatus_CHRG,ru-RU,Заряжается
+UpsStatus_CHRG,uk-UA,Заряджається
+UpsStatus_CHRG,zh-CN,正在充电
+UpsStatus_CHRG,zh-TW,正在充電
+UpsStatus_COMMLOST,de-DE,Kommunikation unterbrochen
+UpsStatus_COMMLOST,fr-FR,Communication perdue
+UpsStatus_COMMLOST,ru-RU,Связь потеряна
+UpsStatus_COMMLOST,uk-UA,Зв'язок втрачено
+UpsStatus_COMMLOST,zh-CN,通信已中断
+UpsStatus_COMMLOST,zh-TW,通訊已中斷
+UpsStatus_DISCHRG,de-DE,Entlädt
+UpsStatus_DISCHRG,fr-FR,En décharge
+UpsStatus_DISCHRG,ru-RU,Разряжается
+UpsStatus_DISCHRG,uk-UA,Розряджається
+UpsStatus_DISCHRG,zh-CN,正在放电
+UpsStatus_DISCHRG,zh-TW,正在放電
+UpsStatus_FSD,de-DE,Erzwungenes Herunterfahren
+UpsStatus_FSD,fr-FR,Arrêt forcé
+UpsStatus_FSD,ru-RU,Принудительное отключение
+UpsStatus_FSD,uk-UA,Примусове вимкнення
+UpsStatus_FSD,zh-CN,强制关机
+UpsStatus_FSD,zh-TW,強制關機
+UpsStatus_HB,de-DE,Hohe Akkuladung
+UpsStatus_HB,fr-FR,Charge élevée
+UpsStatus_HB,ru-RU,Высокий заряд батареи
+UpsStatus_HB,uk-UA,Високий заряд батареї
+UpsStatus_HB,zh-CN,电池电量过高
+UpsStatus_HB,zh-TW,電池電量過高
+UpsStatus_OB,de-DE,Im Akkubetrieb
+UpsStatus_OB,fr-FR,Sur batterie
+UpsStatus_OB,ru-RU,От батареи
+UpsStatus_OB,uk-UA,Від батареї
+UpsStatus_OB,zh-CN,电池供电中
+UpsStatus_OB,zh-TW,電池供電中
+UpsStatus_OFF,de-DE,Ausgang aus
+UpsStatus_OFF,fr-FR,Sortie coupée
+UpsStatus_OFF,ru-RU,Выход отключён
+UpsStatus_OFF,uk-UA,Вихід вимкнено
+UpsStatus_OFF,zh-CN,输出已关闭
+UpsStatus_OFF,zh-TW,輸出已關閉
+UpsStatus_OVER,de-DE,Überlastung
+UpsStatus_OVER,fr-FR,Surcharge
+UpsStatus_OVER,ru-RU,Перегрузка
+UpsStatus_OVER,uk-UA,Перевантаження
+UpsStatus_OVER,zh-CN,过载
+UpsStatus_OVER,zh-TW,過載
+UpsStatus_RB,de-DE,Akku ersetzen
+UpsStatus_RB,fr-FR,Remplacer la batterie
+UpsStatus_RB,ru-RU,Требуется замена батареи
+UpsStatus_RB,uk-UA,Потрібна заміна батареї
+UpsStatus_RB,zh-CN,需要更换电池
+UpsStatus_RB,zh-TW,需要更換電池
+UpsStatus_TEST,de-DE,Test läuft
+UpsStatus_TEST,fr-FR,Test en cours
+UpsStatus_TEST,ru-RU,Идёт тестирование
+UpsStatus_TEST,uk-UA,Виконується тестування
+UpsStatus_TEST,zh-CN,正在测试
+UpsStatus_TEST,zh-TW,正在測試

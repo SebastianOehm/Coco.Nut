@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About_Title" xml:space="preserve">
+    <value>A Propos</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Coco.Nut</value>
+  </data>
+  <data name="Common_Apply" xml:space="preserve">
+    <value>Appliquer</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Common_Copy" xml:space="preserve">
+    <value>Copier</value>
+  </data>
+  <data name="Common_Exit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Système par défaut</value>
+  </data>
+  <data name="Log_ApplicationShutdownAt" xml:space="preserve">
+    <value>Application arrêtée à </value>
+  </data>
+  <data name="Log_AutoReconnect" xml:space="preserve">
+    <value>Re-connexion Automatique</value>
+  </data>
+  <data name="Log_Connected" xml:space="preserve">
+    <value>Connexion au Serveur NUT {0}:{1} établie</value>
+  </data>
+  <data name="Log_ConnectionFailed" xml:space="preserve">
+    <value>Connexion au Serveur NUT {0}:{1} échouée : {2}</value>
+  </data>
+  <data name="Log_Disconnected" xml:space="preserve">
+    <value>Déconnectée du serveur NUT</value>
+  </data>
+  <data name="Log_ForcedShutdownByServer" xml:space="preserve">
+    <value>Condition d'arrêt forcée signalée par le serveur NUT</value>
+  </data>
+  <data name="Log_Level_Debug" xml:space="preserve">
+    <value>Débogue</value>
+  </data>
+  <data name="Log_Level_Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Log_Level_Notice" xml:space="preserve">
+    <value>Remarque</value>
+  </data>
+  <data name="Log_Level_Warning" xml:space="preserve">
+    <value>Alerte</value>
+  </data>
+  <data name="Log_NoUpdateAvailable" xml:space="preserve">
+    <value>Pas de mise a jour disponible</value>
+  </data>
+  <data name="Log_PreferencesChanged" xml:space="preserve">
+    <value>Préférences de Coco.Nut Modifiées</value>
+  </data>
+  <data name="Log_ShutdownCancelled" xml:space="preserve">
+    <value>Annulation du Processus d'Extinction</value>
+  </data>
+  <data name="Log_ShutdownStart" xml:space="preserve">
+    <value>Conditions atteintes pour le lancement du Processus d'Extinction</value>
+  </data>
+  <data name="Log_UpdateAvailable" xml:space="preserve">
+    <value>Version {0} disponible</value>
+  </data>
+  <data name="Main_Flag_BatteryLow" xml:space="preserve">
+    <value>Batteries Basse UPS</value>
+  </data>
+  <data name="Main_Flag_OnBattery" xml:space="preserve">
+    <value>UPS Sur Batteries</value>
+  </data>
+  <data name="Main_Flag_OnLine" xml:space="preserve">
+    <value>UPS Sur Secteur</value>
+  </data>
+  <data name="Main_Flag_Overload" xml:space="preserve">
+    <value>Surcharge UPS</value>
+  </data>
+  <data name="Main_Gauge_BatteryCharge" xml:space="preserve">
+    <value>Charge Batterie</value>
+  </data>
+  <data name="Main_Gauge_BatteryVoltage" xml:space="preserve">
+    <value>Tension de Batterie</value>
+  </data>
+  <data name="Main_Gauge_Frequency" xml:space="preserve">
+    <value>Fréquence</value>
+  </data>
+  <data name="Main_Gauge_InputVoltage" xml:space="preserve">
+    <value>Tension d'Entrée</value>
+  </data>
+  <data name="Main_Gauge_Load" xml:space="preserve">
+    <value>Charge UPS</value>
+  </data>
+  <data name="Main_Gauge_OutputVoltage" xml:space="preserve">
+    <value>Tension de Sortie</value>
+  </data>
+  <data name="Main_Label_Firmware" xml:space="preserve">
+    <value>Firmware :</value>
+  </data>
+  <data name="Main_Label_Manufacturer" xml:space="preserve">
+    <value>Fabricant :</value>
+  </data>
+  <data name="Main_Label_Name" xml:space="preserve">
+    <value>Nom :</value>
+  </data>
+  <data name="Main_Label_RemainingTime" xml:space="preserve">
+    <value>Temps de Sauvegarde :</value>
+  </data>
+  <data name="Main_Label_Serial" xml:space="preserve">
+    <value>Serial :</value>
+  </data>
+  <data name="Main_Menu_About" xml:space="preserve">
+    <value>A Propos</value>
+  </data>
+  <data name="Main_Menu_CheckForUpdate" xml:space="preserve">
+    <value>Vérifier la mise à jour</value>
+  </data>
+  <data name="Main_Menu_Connection" xml:space="preserve">
+    <value>Connexion</value>
+  </data>
+  <data name="Main_Menu_Disconnect" xml:space="preserve">
+    <value>Déconnecter</value>
+  </data>
+  <data name="Main_Menu_Exit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="Main_Menu_File" xml:space="preserve">
+    <value>Fichier</value>
+  </data>
+  <data name="Main_Menu_Help" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="Main_Menu_Settings" xml:space="preserve">
+    <value>Réglages</value>
+  </data>
+  <data name="Main_Menu_UpsVariables" xml:space="preserve">
+    <value>Variable de l'UPS</value>
+  </data>
+  <data name="Main_Status_BatteryOk" xml:space="preserve">
+    <value>Batterie OK</value>
+  </data>
+  <data name="Main_Status_Connected" xml:space="preserve">
+    <value>Connecté</value>
+  </data>
+  <data name="Main_Status_EnteringSleep" xml:space="preserve">
+    <value>Mise en veille de Windows. Coco.Nut va se déconnecter.</value>
+  </data>
+  <data name="Main_Status_InvalidLogin" xml:space="preserve">
+    <value>ID de connexion incorrect (nom d'utilisateur ou mot de passe)</value>
+  </data>
+  <data name="Main_Status_LostConnection" xml:space="preserve">
+    <value>Connexion perdue à {0}:{1}</value>
+  </data>
+  <data name="Main_Status_LowBattery" xml:space="preserve">
+    <value>Batterie Basse</value>
+  </data>
+  <data name="Main_Status_NotConnected" xml:space="preserve">
+    <value>Non connecté</value>
+  </data>
+  <data name="Main_Status_OnBattery" xml:space="preserve">
+    <value>Sur Batterie ({0}%)</value>
+  </data>
+  <data name="Main_Status_OnLine" xml:space="preserve">
+    <value>Sur Secteur</value>
+  </data>
+  <data name="Main_Status_Reconnecting" xml:space="preserve">
+    <value>Reconnexion en cours</value>
+  </data>
+  <data name="Main_Status_ResumedFromSleep" xml:space="preserve">
+    <value>Redémarrage de Coco.Nut après la sortie de veille de Windows.</value>
+  </data>
+  <data name="Main_Status_UnknownUps" xml:space="preserve">
+    <value>Nom UPS Inconnu</value>
+  </data>
+  <data name="Notify_Title_Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Notify_Title_Info" xml:space="preserve">
+    <value>Remarque</value>
+  </data>
+  <data name="Notify_Title_Warning" xml:space="preserve">
+    <value>Alerte</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage" xml:space="preserve">
+    <value>Tension de Batterie</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MaxToolTip" xml:space="preserve">
+    <value>Tension maximale de la batterie.
+Valeur acceptée: valeur numérique de 0 à 100.</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MinToolTip" xml:space="preserve">
+    <value>Tension minimale de la batterie.
+Valeur acceptée: valeur numérique de 0 à 100.</value>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply" xml:space="preserve">
+    <value>Fréquence Alimentation</value>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply_ToolTip" xml:space="preserve">
+    <value>Règle la fréquence d'entrée si elle n'est pas fournie par l'onduleur.</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency" xml:space="preserve">
+    <value>Fréquence d'Entrée</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MaxToolTip" xml:space="preserve">
+    <value>Fréquence d'entrée maximale.
+Valeur acceptée: valeur numérique de 0 à 100.</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MinToolTip" xml:space="preserve">
+    <value>Fréquence d'entrée minimale.
+Valeur acceptée: valeur numérique de 0 à 100.</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage" xml:space="preserve">
+    <value>Tension d'Entrée</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MaxToolTip" xml:space="preserve">
+    <value>Tension d'entrée maximale.
+Valeur acceptée: valeur numérique de 0 à 999.</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MinToolTip" xml:space="preserve">
+    <value>Tension d'entrée minimale.
+Valeur acceptée: valeur numérique de 0 à 999.</value>
+  </data>
+  <data name="Prefs_Calibration_Load" xml:space="preserve">
+    <value>Charge UPS</value>
+  </data>
+  <data name="Prefs_Calibration_Max" xml:space="preserve">
+    <value>Maxi</value>
+  </data>
+  <data name="Prefs_Calibration_Min" xml:space="preserve">
+    <value>Mini</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage" xml:space="preserve">
+    <value>Tension de Sortie</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MaxToolTip" xml:space="preserve">
+    <value>Tension de sortie maximale.
+Valeur acceptée: valeur numérique de 0 à 999.</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MinToolTip" xml:space="preserve">
+    <value>Tension de sortie minimale.
+Valeur acceptée: valeur numérique de 0 à 999.</value>
+  </data>
+  <data name="Prefs_Calibration_Tab" xml:space="preserve">
+    <value>Calibrage
+</value>
+  </data>
+  <data name="Prefs_Connection_CredentialsHint" xml:space="preserve">
+    <value>Identifiants de connexion au server Nut (laisser vide si non requis)</value>
+  </data>
+  <data name="Prefs_Connection_Host" xml:space="preserve">
+    <value>Serveur NUT</value>
+  </data>
+  <data name="Prefs_Connection_Host_ToolTip" xml:space="preserve">
+    <value>Adresse du serveur Nut.
+Valeur acceptée: adresse IPV4 / IPV6 / FQDN.</value>
+  </data>
+  <data name="Prefs_Connection_Login" xml:space="preserve">
+    <value>Identifiant</value>
+  </data>
+  <data name="Prefs_Connection_Login_ToolTip" xml:space="preserve">
+    <value>Identifiant de connexion au serveur NUT</value>
+  </data>
+  <data name="Prefs_Connection_Password" xml:space="preserve">
+    <value>Mot de Passe</value>
+  </data>
+  <data name="Prefs_Connection_Password_ToolTip" xml:space="preserve">
+    <value>Mot de Passe de connexion au serveur NUT</value>
+  </data>
+  <data name="Prefs_Connection_PollingInterval" xml:space="preserve">
+    <value>Intervalle d'interrogation</value>
+  </data>
+  <data name="Prefs_Connection_Port" xml:space="preserve">
+    <value>Port NUT</value>
+  </data>
+  <data name="Prefs_Connection_Port_ToolTip" xml:space="preserve">
+    <value>Numéro de port du serveur Nut (par défaut = 3493).
+Valeur acceptée: valeur numérique de 1 à 65535.</value>
+  </data>
+  <data name="Prefs_Connection_Reconnect" xml:space="preserve">
+    <value>Reconnecter</value>
+  </data>
+  <data name="Prefs_Connection_Reconnect_ToolTip" xml:space="preserve">
+    <value>Activer la connexion / reconnexion automatique</value>
+  </data>
+  <data name="Prefs_Connection_Tab" xml:space="preserve">
+    <value>Connexion</value>
+  </data>
+  <data name="Prefs_Connection_UpsName" xml:space="preserve">
+    <value>Nom UPS</value>
+  </data>
+  <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
+    <value>Nom de l'onduleur à surveiller.
+Valeur acceptée: nom de l'onduleur configuré dans le serveur Nut.</value>
+  </data>
+  <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
+    <value>Supprimer le fichier journal.</value>
+  </data>
+  <data name="Prefs_Logging_EnableFile" xml:space="preserve">
+    <value>Créer Fichier Journal</value>
+  </data>
+  <data name="Prefs_Logging_Level" xml:space="preserve">
+    <value>Niveau de Journalisation</value>
+  </data>
+  <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
+    <value>Niveau de Journalisation</value>
+  </data>
+  <data name="Prefs_Logging_Tab" xml:space="preserve">
+    <value>Journalisation</value>
+  </data>
+  <data name="Prefs_Logging_ViewLog_ToolTip" xml:space="preserve">
+    <value>Ouvrez le fichier journal.</value>
+  </data>
+  <data name="Prefs_Misc_CloseToTray" xml:space="preserve">
+    <value>Fermer vers le Systray</value>
+  </data>
+  <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
+    <value>Envoie dans le Systray à la fermeture.</value>
+  </data>
+  <data name="Prefs_Misc_Language" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
+    <value>Les modifications prennent effet après le redémarrage de Coco.Nut.</value>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
+    <value>Réduire au Systray</value>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray_ToolTip" xml:space="preserve">
+    <value>Réduit à la barre des tâches ou Systray.</value>
+  </data>
+  <data name="Prefs_Misc_StartMinimized" xml:space="preserve">
+    <value>Démarrer Réduit</value>
+  </data>
+  <data name="Prefs_Misc_StartMinimized_ToolTip" xml:space="preserve">
+    <value>Démarre Coco.Nut minimisé.</value>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem" xml:space="preserve">
+    <value>Démarrer avec Windows</value>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem_ToolTip" xml:space="preserve">
+    <value>Démarre Coco.Nut au démarrage de Windows.</value>
+  </data>
+  <data name="Prefs_Misc_Tab" xml:space="preserve">
+    <value>Divers</value>
+  </data>
+  <data name="Prefs_Power_AllowExtend" xml:space="preserve">
+    <value>Autorise un temps supplémentaire</value>
+  </data>
+  <data name="Prefs_Power_AllowExtend_ToolTip" xml:space="preserve">
+    <value>Accordez du temps supplémentaire pendant la procédure d'arrêt.
+Remarque:
+Ce temps supplémentaire pourrait dépasser le temps de sauvegarde de l'onduleur - À UTILISER AVEC PRECAUTION !!!</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit" xml:space="preserve">
+    <value>Arrêter si le niveau de batterie est
+inférieur à</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit_ToolTip" xml:space="preserve">
+    <value>Limite inférieure du niveau de la batterie déclenchant la procédure d'arrêt.
+Valeur acceptée: valeur numérique de 0 à 100.</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit_Unit" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="Prefs_Power_FollowFsd" xml:space="preserve">
+    <value>Arrêt sur le signal FSD de NUT</value>
+  </data>
+  <data name="Prefs_Power_FollowFsd_ToolTip" xml:space="preserve">
+    <value>Indique si une extinction doit être executé lorsque le serveur NUT signal une extinction forcée (FSD=Force ShutDown)</value>
+  </data>
+  <data name="Prefs_Power_GraceTime" xml:space="preserve">
+    <value>Temps supplémentaire (sec)</value>
+  </data>
+  <data name="Prefs_Power_GraceTime_ToolTip" xml:space="preserve">
+    <value>Limite de délai de grâce supplémentaire.
+Valeur acceptée: valeur numérique de 0 à 3600.</value>
+  </data>
+  <data name="Prefs_Power_Immediate" xml:space="preserve">
+    <value>Action d'arrêt Immediate</value>
+  </data>
+  <data name="Prefs_Power_Immediate_ToolTip" xml:space="preserve">
+    <value>Démarre la procédure d'arrêt immédiatement ou temporisée.</value>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit" xml:space="preserve">
+    <value>Arrêter si le temps de maintien est 
+inférieur à (secondes)</value>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit_ToolTip" xml:space="preserve">
+    <value>Délai de sauvegarde inférieur déclenchant la procédure d'arrêt.
+Valeur acceptée: valeur numérique de 0 à 3600.</value>
+  </data>
+  <data name="Prefs_Power_StopDelay" xml:space="preserve">
+    <value>Temporiser l'Arrêt (sec)</value>
+  </data>
+  <data name="Prefs_Power_StopDelay_ToolTip" xml:space="preserve">
+    <value>Arrêter le délai de la procédure en cas de retard.
+Valeur acceptée: valeur numérique de 0 à 3600.</value>
+  </data>
+  <data name="Prefs_Power_StopType" xml:space="preserve">
+    <value>Type d'Arrêt</value>
+  </data>
+  <data name="Prefs_Power_StopType_ToolTip" xml:space="preserve">
+    <value>Type d'arrêt à la fin de la procédure d'arrêt.</value>
+  </data>
+  <data name="Prefs_Power_Tab" xml:space="preserve">
+    <value>Options d'Arrêt</value>
+  </data>
+  <data name="Prefs_Title" xml:space="preserve">
+    <value>Préférences</value>
+  </data>
+  <data name="Prefs_Update_Channel" xml:space="preserve">
+    <value>Branche Stable ou Développement</value>
+  </data>
+  <data name="Prefs_Update_Channel_ToolTip" xml:space="preserve">
+    <value>Utilisez la branche Stable ou Dev lors de la vérification.</value>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup" xml:space="preserve">
+    <value>Vérifier la mise à jour au Démarrage</value>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup_ToolTip" xml:space="preserve">
+    <value>Vérifie les mises à jour au démarrage.</value>
+  </data>
+  <data name="Prefs_Update_CheckInterval" xml:space="preserve">
+    <value>Délai entre vérification</value>
+  </data>
+  <data name="Prefs_Update_CheckInterval_ToolTip" xml:space="preserve">
+    <value>Fréquence de vérification.</value>
+  </data>
+  <data name="Prefs_Update_Tab" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
+  <data name="Shutdown_BatteryStatus" xml:space="preserve">
+    <value>Charge Batterie : {0}
+Temps restant : {1}</value>
+  </data>
+  <data name="Shutdown_GraceButton" xml:space="preserve">
+    <value>Temps de grâce</value>
+  </data>
+  <data name="Shutdown_ImmediateButton" xml:space="preserve">
+    <value>Arrêt immédiat</value>
+  </data>
+  <data name="Shutdown_Title" xml:space="preserve">
+    <value>Extinction en cours</value>
+  </data>
+  <data name="StopAction_Hibernate" xml:space="preserve">
+    <value>Mettre en Veille Prolongée</value>
+  </data>
+  <data name="StopAction_Shutdown" xml:space="preserve">
+    <value>Arrêter</value>
+  </data>
+  <data name="StopAction_Suspend" xml:space="preserve">
+    <value>Mettre en Veille</value>
+  </data>
+  <data name="Tray_Menu_About" xml:space="preserve">
+    <value>A Propos</value>
+  </data>
+  <data name="Tray_Menu_CheckForUpdate" xml:space="preserve">
+    <value>Vérifier la mise à jour</value>
+  </data>
+  <data name="Tray_Menu_Settings" xml:space="preserve">
+    <value>Réglages</value>
+  </data>
+  <data name="UpdateChannel_PreRelease" xml:space="preserve">
+    <value>Développement</value>
+  </data>
+  <data name="UpdateChannel_Stable" xml:space="preserve">
+    <value>Stable</value>
+  </data>
+  <data name="UpsStatus_ALARM" xml:space="preserve">
+    <value>Alarme</value>
+  </data>
+  <data name="UpsStatus_CAL" xml:space="preserve">
+    <value>Calibrage
+</value>
+  </data>
+  <data name="UpsStatus_CHRG" xml:space="preserve">
+    <value>En charge</value>
+  </data>
+  <data name="UpsStatus_COMMLOST" xml:space="preserve">
+    <value>Communication perdue</value>
+  </data>
+  <data name="UpsStatus_DISCHRG" xml:space="preserve">
+    <value>En décharge</value>
+  </data>
+  <data name="UpsStatus_FSD" xml:space="preserve">
+    <value>Arrêt forcé</value>
+  </data>
+  <data name="UpsStatus_HB" xml:space="preserve">
+    <value>Charge élevée</value>
+  </data>
+  <data name="UpsStatus_LB" xml:space="preserve">
+    <value>Batterie Basse</value>
+  </data>
+  <data name="UpsStatus_OB" xml:space="preserve">
+    <value>Sur batterie</value>
+  </data>
+  <data name="UpsStatus_OFF" xml:space="preserve">
+    <value>Sortie coupée</value>
+  </data>
+  <data name="UpsStatus_OL" xml:space="preserve">
+    <value>Sur Secteur</value>
+  </data>
+  <data name="UpsStatus_OVER" xml:space="preserve">
+    <value>Surcharge</value>
+  </data>
+  <data name="UpsStatus_RB" xml:space="preserve">
+    <value>Remplacer la batterie</value>
+  </data>
+  <data name="UpsStatus_TEST" xml:space="preserve">
+    <value>Test en cours</value>
+  </data>
+  <data name="Vars_Description" xml:space="preserve">
+    <value>Description :</value>
+  </data>
+  <data name="Vars_GroupTitle" xml:space="preserve">
+    <value>Propriétés</value>
+  </data>
+  <data name="Vars_Name" xml:space="preserve">
+    <value>Nom :</value>
+  </data>
+  <data name="Vars_Reload" xml:space="preserve">
+    <value>Recharger</value>
+  </data>
+  <data name="Vars_Title" xml:space="preserve">
+    <value>Liste des Variables de L'UPS</value>
+  </data>
+  <data name="Vars_Value" xml:space="preserve">
+    <value>Valeur :</value>
+  </data>
+</root>

@@ -1,0 +1,206 @@
+Key,EnglishSourceText,WinNutResxName
+About_License,"This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published 
+by the Free Software Foundation, either version 3 of the License, or
+any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see https://www.gnu.org/licenses/.",About_Gui.resx#Label_License.Text
+About_Title,About,WinNUT.resx#Menu_About.Text
+Common_Apply,Apply,Pref_Gui.resx#Btn_Apply.Text
+Common_Cancel,Cancel,Pref_Gui.resx#Btn_Cancel.Text
+Common_Close,Close,List_Var_Gui.resx#Btn_Close.Text
+Common_Copy,Copy,List_Var_Gui.resx#Btn_Clip.Text
+Common_Exit,Exit,WinNUT.resx#Menu_Sys_Exit.Text
+Common_Ok,Ok,Pref_Gui.resx#Btn_Ok.Text
+Common_Save,Save,List_Var_Gui.resx#Btn_Save.Text
+Common_Unavailable,Unavailable,My Project/Resources.resx#VariableUnavailable
+Log_ApplicationShutdownAt,Application shut down at,My Project/Resources.resx#App_Event_Str_01
+Log_AutoReconnect,Automatic Reconnection,My Project/Resources.resx#Log_Str_04
+Log_Checking,Checking for update...,My Project/Resources.resx#LogCheckingForUpdate
+Log_Connected,Connection to Nut Host {0}:{1} Established,My Project/Resources.resx#Log_Str_02
+Log_ConnectionFailed,Connection to Nut Host {0}:{1} Failed: {2},My Project/Resources.resx#Log_Str_03
+Log_Disconnected,Disconnected from Nut Host,My Project/Resources.resx#Log_Str_05
+Log_ForcedShutdownByServer,Stop condition imposed by the NUT server,My Project/Resources.resx#Log_Str_12
+Log_Level_Debug,Debug,Pref_Gui.resx#Cbx_LogLevel.Items3
+Log_Level_Error,Error,Pref_Gui.resx#Cbx_LogLevel.Items2
+Log_Level_Notice,Notice,Pref_Gui.resx#Cbx_LogLevel.Items
+Log_Level_Warning,Alert,Pref_Gui.resx#Cbx_LogLevel.Items1
+Log_NoUpdateAvailable,No Update Available,My Project/Resources.resx#Log_Str_10
+Log_PreferencesChanged,WinNut Preferences Changed,My Project/Resources.resx#Log_Str_01
+Log_ShutdownCancelled,Cancellation of the Extinguishing Process,My Project/Resources.resx#Log_Str_09
+Log_ShutdownStart,Conditions met for launching the Extinguishing Process,My Project/Resources.resx#Log_Str_08
+Log_UpdateAvailable,Version {0} Available,My Project/Resources.resx#Log_Str_11
+Main_Flag_BatteryLow,UPS Battery Low,WinNUT.resx#Lbl_BL.Text
+Main_Flag_OnBattery,UPS On Battery,WinNUT.resx#Lbl_OB.Text
+Main_Flag_OnLine,UPS On Line,WinNUT.resx#Lbl_OL.Text
+Main_Flag_Overload,UPS Overload,WinNUT.resx#Lbl_OLoad.Text
+Main_Gauge_BatteryCharge,Battery Charge,WinNUT.resx#Lbl_BattCh_Dial.Text
+Main_Gauge_BatteryVoltage,Battery Voltage,WinNUT.resx#Lbl_BattV_Dial.Text
+Main_Gauge_Frequency,Frequency,WinNUT.resx#Lbl_InF_Dial.Text
+Main_Gauge_InputVoltage,Input Voltage,WinNUT.resx#Lbl_InV_Dial.Text
+Main_Gauge_Load,UPS Load,WinNUT.resx#Lbl_Load_Dial.Text
+Main_Gauge_OutputVoltage,Output Voltage,WinNUT.resx#Lbl_OutV_Dial.Text
+Main_Label_Firmware,Firmware :,WinNUT.resx#Lbl_Firmware.Text
+Main_Label_Manufacturer,Manufacturer :,WinNUT.resx#Lbl_Mfr.Text
+Main_Label_Name,Name :,WinNUT.resx#Lbl_Name.Text
+Main_Label_RemainingTime,Remaining Time :,WinNUT.resx#Lbl_RTime.Text
+Main_Label_Serial,Serial :,WinNUT.resx#Lbl_Serial.Text
+Main_Menu_About,About,WinNUT.resx#Menu_About.Text
+Main_Menu_CheckForUpdate,Verify Update,WinNUT.resx#Menu_Update.Text
+Main_Menu_Connect,Connect,WinNUT.resx#Menu_Connect.Text
+Main_Menu_Connection,Connection,WinNUT.resx#Menu_Connection.Text
+Main_Menu_Disconnect,Disconnect,WinNUT.resx#Menu_Disconnect.Text
+Main_Menu_Exit,Exit,WinNUT.resx#Menu_Quit.Text
+Main_Menu_File,File,WinNUT.resx#Menu_File.Text
+Main_Menu_Help,Help,WinNUT.resx#Menu_Help.Text
+Main_Menu_Persist,Persist,WinNUT.resx#Menu_Persist.Text
+Main_Menu_Settings,Settings,WinNUT.resx#Menu_Settings.Text
+Main_Menu_UpsVariables,UPS Variable,WinNUT.resx#Menu_UPS_Var.Text
+Main_Status_BatteryOk,Battery OK,My Project/Resources.resx#Frm_Main_Str_10
+Main_Status_Connected,Connected,My Project/Resources.resx#Frm_Main_Str_06
+Main_Status_EnteringSleep,Windows standby. WinNUT will disconnect.,My Project/Resources.resx#Frm_Main_Str_15
+Main_Status_InvalidLogin,Wrong Login ID (Username or Password),My Project/Resources.resx#Frm_Main_Str_13
+Main_Status_LostConnection,Lost Connect To {0}:{1},My Project/Resources.resx#Frm_Main_Str_12
+Main_Status_LowBattery,Low Battery,My Project/Resources.resx#Frm_Main_Str_09
+Main_Status_NotConnected,Not Connected,My Project/Resources.resx#Frm_Main_Str_05
+Main_Status_OnBattery,On Battery ({0}%),My Project/Resources.resx#Frm_Main_Str_08
+Main_Status_OnLine,On Line,My Project/Resources.resx#Frm_Main_Str_07
+Main_Status_Reconnecting,Reconnection In Progress,My Project/Resources.resx#Frm_Main_Str_03
+Main_Status_ResumedFromSleep,Restarting WinNUT after waking up from Windows.,My Project/Resources.resx#Frm_Main_Str_14
+Main_Status_UnknownUps,Unknown UPS Name,My Project/Resources.resx#Frm_Main_Str_11
+Notify_Title_Error,Error,Pref_Gui.resx#Cbx_LogLevel.Items2
+Notify_Title_Info,Notice,Pref_Gui.resx#Cbx_LogLevel.Items
+Notify_Title_Warning,Alert,Pref_Gui.resx#Cbx_LogLevel.Items1
+Prefs_Calibration_BatteryVoltage,Battery Voltage,Pref_Gui.resx#Lbl_BattV.Text
+Prefs_Calibration_BatteryVoltage_MaxToolTip,"Maximum Battery Voltage.
+Accepted value: Numeric value from 0 to 100.",Pref_Gui.resx#Tb_BattV_Max.ToolTip
+Prefs_Calibration_BatteryVoltage_MinToolTip,"Minimum Battery Voltage.
+Accepted value: Numeric value from 0 to 100.",Pref_Gui.resx#Tb_BattV_Min.ToolTip
+Prefs_Calibration_FrequencySupply,Frequency Supply,Pref_Gui.resx#Lbl_PowerF.Text
+Prefs_Calibration_FrequencySupply_ToolTip,Sets the input frequency if not supplied by the UPS.,Pref_Gui.resx#Cbx_Freq_Input.ToolTip
+Prefs_Calibration_InputFrequency,Input Frequency,Pref_Gui.resx#Lbl_InputF.Text
+Prefs_Calibration_InputFrequency_MaxToolTip,"Maximum input frequency.
+Accepted value: Numeric value from 0 to 100.",Pref_Gui.resx#Tb_InF_Max.ToolTip
+Prefs_Calibration_InputFrequency_MinToolTip,"Minimum input frequency.
+Accepted value: Numeric value from 0 to 100.",Pref_Gui.resx#Tb_InF_Min.ToolTip
+Prefs_Calibration_InputVoltage,Input Voltage,Pref_Gui.resx#Lbl_InputV.Text
+Prefs_Calibration_InputVoltage_MaxToolTip,"Maximum input voltage.
+Accepted value: Numeric value from 0 to 999.",Pref_Gui.resx#Tb_InV_Max.ToolTip
+Prefs_Calibration_InputVoltage_MinToolTip,"Minimum input voltage.
+Accepted value: Numeric value from 0 to 999.",Pref_Gui.resx#Tb_InV_Min.ToolTip
+Prefs_Calibration_Load,UPS Load,Pref_Gui.resx#Lbl_LoadUPS.Text
+Prefs_Calibration_Max,Max,Pref_Gui.resx#Lbl_Maxi.Text
+Prefs_Calibration_Min,Min,Pref_Gui.resx#Lbl_Mini.Text
+Prefs_Calibration_OutputVoltage,Output Voltage,Pref_Gui.resx#Lbl_OutputV.Text
+Prefs_Calibration_OutputVoltage_MaxToolTip,"Maximum Output Voltage.
+Accepted value: Numeric value from 0 to 999.",Pref_Gui.resx#Tb_OutV_Max.ToolTip
+Prefs_Calibration_OutputVoltage_MinToolTip,"Minimum Output Voltage.
+Accepted value: Numeric value from 0 to 999.",Pref_Gui.resx#Tb_OutV_Min.ToolTip
+Prefs_Calibration_Tab,Calibration,Pref_Gui.resx#Tab_Calibrage.Text
+Prefs_Connection_CredentialsHint,Login credentials to the Nut server (leave blank if not required),Pref_Gui.resx#Label3.Text
+Prefs_Connection_Host,NUT host,Pref_Gui.resx#Lbl_Server_IP.Text
+Prefs_Connection_Host_ToolTip,"Nut server address.
+Accepted value: IPV4 / IPV6 / FQDN address.",Pref_Gui.resx#Tb_Server_IP.ToolTip
+Prefs_Connection_Login,Login,Pref_Gui.resx#Lbl_Login_Nut.Text
+Prefs_Connection_Login_ToolTip,NUT server connection identifier,Pref_Gui.resx#Tb_Login_Nut.ToolTip
+Prefs_Connection_Password,Password,Pref_Gui.resx#Lbl_Pwd_Nut.Text
+Prefs_Connection_Password_ToolTip,NUT server login password,Pref_Gui.resx#Tb_Pwd_Nut.ToolTip
+Prefs_Connection_PollingInterval,Polling Interval,Pref_Gui.resx#Lbl_Delay_Com.Text
+Prefs_Connection_PollingInterval_ToolTip,How often WinNUT refreshes data from the NUT server.,Pref_Gui.resx#pollingIntervalValue.ToolTip
+Prefs_Connection_PollingInterval_Unit,Seconds,Pref_Gui.resx#pollingIntervalUnitLabel.Text
+Prefs_Connection_Port,NUT Port,Pref_Gui.resx#Lbl_Port.Text
+Prefs_Connection_Port_ToolTip,"Nut Server Port Number (default = 3493).
+Accepted value: Numeric value from 1 to 65535.",Pref_Gui.resx#Tb_Port.ToolTip
+Prefs_Connection_Reconnect,Re-establish connection,Pref_Gui.resx#Cb_Reconnect.Text
+Prefs_Connection_Reconnect_ToolTip,Activate automatic connection / reconnection,Pref_Gui.resx#Cb_Reconnect.ToolTip
+Prefs_Connection_Tab,Connection,Pref_Gui.resx#Tab_Connexion.Text
+Prefs_Connection_UpsName,UPS Name,Pref_Gui.resx#Lbl_Name_UPS.Text
+Prefs_Connection_UpsName_ToolTip,"UPS name to monitor.
+Accepted Value: Name of the UPS configured in the Nut server.",Pref_Gui.resx#Tb_UPS_Name.ToolTip
+Prefs_Logging_DeleteLog_ToolTip,Delete log file.,Pref_Gui.resx#Btn_DeleteLog.ToolTip
+Prefs_Logging_EnableFile,Create LogFile,Pref_Gui.resx#CB_Use_Logfile.Text
+Prefs_Logging_EnableFile_ToolTip,Write logging events to a file.,Pref_Gui.resx#CB_Use_Logfile.ToolTip
+Prefs_Logging_Level,Logging level,Pref_Gui.resx#Lbl_LevelLog.Text
+Prefs_Logging_Level_ToolTip,Logging level.,Pref_Gui.resx#Cbx_LogLevel.ToolTip
+Prefs_Logging_ViewLog_ToolTip,Open the log file.,Pref_Gui.resx#Btn_ViewLog.ToolTip
+Prefs_Misc_CloseToTray,Close to Systray,Pref_Gui.resx#CB_Close_Tray.Text
+Prefs_Misc_CloseToTray_ToolTip,Sends in Systray at closing.,Pref_Gui.resx#CB_Close_Tray.ToolTip
+Prefs_Misc_MinimizeToTray,Minimize to Systray,Pref_Gui.resx#CB_Systray.Text
+Prefs_Misc_MinimizeToTray_ToolTip,Reduced to the taskbar or Systray.,Pref_Gui.resx#CB_Systray.ToolTip
+Prefs_Misc_StartMinimized,Start Minimized,Pref_Gui.resx#CB_Start_Mini.Text
+Prefs_Misc_StartMinimized_ToolTip,Starts WinNut Minimized.,Pref_Gui.resx#CB_Start_Mini.ToolTip
+Prefs_Misc_StartWithSystem,Start with Windows,Pref_Gui.resx#CB_Start_W_Win.Text
+Prefs_Misc_StartWithSystem_ToolTip,Starts WinNUT when Windows starts.,Pref_Gui.resx#CB_Start_W_Win.ToolTip
+Prefs_Misc_Tab,Miscellanous,Pref_Gui.resx#Tab_Miscellanous.Text
+Prefs_Power_AllowExtend,Allow Extended Shutdown Time,Pref_Gui.resx#Cb_ExtendTime.Text
+Prefs_Power_AllowExtend_ToolTip,"Allow additional time during the shutdown procedure.
+Note: 
+This additional time could go beyond the UPS backup time - USE WITH CAUTION!!!",Pref_Gui.resx#Cb_ExtendTime.ToolTip
+Prefs_Power_BatteryLimit,Shutdown if battery lower than,Pref_Gui.resx#Lbl_BattLimit_Load.Text
+Prefs_Power_BatteryLimit_ToolTip,"Lower limit of the battery level triggering the shutdown procedure.
+Accepted value: Numeric value from 0 to 100.",Pref_Gui.resx#Tb_BattLimit_Load.ToolTip
+Prefs_Power_BatteryLimit_Unit,%,Pref_Gui.resx#Lbl_Percent.Text
+Prefs_Power_FollowFsd,Shutdown on Nut's FSD Signal,Pref_Gui.resx#CB_Follow_FSD.Text
+Prefs_Power_FollowFsd_ToolTip,Indicates whether a shutdown should be performed when the NUT server signals a forced shutdown (FSD = Force ShutDown),Pref_Gui.resx#CB_Follow_FSD.ToolTip
+Prefs_Power_GraceTime,Grace Delay to Shutdown (sec),Pref_Gui.resx#Lbl_GraceTime.Text
+Prefs_Power_GraceTime_ToolTip,"Additional grace period limit.
+Accepted value: Numeric value from 0 to 3600.",Pref_Gui.resx#Tb_GraceTime.ToolTip
+Prefs_Power_Immediate,Immediate stop action,Pref_Gui.resx#Cb_ImmediateStop.Text
+Prefs_Power_Immediate_ToolTip,Starts the shutdown procedure immediately or timed.,Pref_Gui.resx#Cb_ImmediateStop.ToolTip
+Prefs_Power_RuntimeLimit,Shutdown if runtime lower than (sec),Pref_Gui.resx#Lbl_BattLimit_Time.Text
+Prefs_Power_RuntimeLimit_ToolTip,"Lower backup time limit triggering the shutdown procedure.
+Accepted value: Numeric value from 0 to 3600.",Pref_Gui.resx#Tb_BattLimit_Time.ToolTip
+Prefs_Power_StopDelay,Delay to Shutdown (sec),Pref_Gui.resx#Lbl_Delay_Stop.Text
+Prefs_Power_StopDelay_ToolTip,"Stop procedure delay if delayed.
+Accepted value: Numeric value from 0 to 3600.",Pref_Gui.resx#Tb_Delay_Stop.ToolTip
+Prefs_Power_StopType,Type of Stop,Pref_Gui.resx#Lbl_StopType.Text
+Prefs_Power_StopType_ToolTip,Type of stop at the end of the stop procedure.,Pref_Gui.resx#Cbx_TypeStop.ToolTip
+Prefs_Power_Tab,Shutdown Options,Pref_Gui.resx#Tab_Shutdown.Text
+Prefs_Title,Options,Pref_Gui.resx#$this.Text
+Prefs_Update_Channel,Stable Or Dev Branch,Pref_Gui.resx#Lbl_Branch_Update.Text
+Prefs_Update_Channel_ToolTip,Use the Stable or Devellop branch during verification.,Pref_Gui.resx#Cbx_Branch_Update.ToolTip
+Prefs_Update_CheckAtStartup,Verify Update At Start,Pref_Gui.resx#Cb_Update_At_Start.Text
+Prefs_Update_CheckAtStartup_ToolTip,Checks for updates at startup.,Pref_Gui.resx#Cb_Update_At_Start.ToolTip
+Prefs_Update_CheckInterval,Delay Between Verification,Pref_Gui.resx#Lbl_Delay_Verif.Text
+Prefs_Update_CheckInterval_ToolTip,Frequency of verification.,Pref_Gui.resx#Cbx_Delay_Verif.ToolTip
+Prefs_Update_OpenReleasePage,Visit Page,Forms/UpdateAvailableForm.resx#VisitPageButton.Text
+Prefs_Update_Tab,Update,Pref_Gui.resx#Tab_Update.Text
+Shutdown_BatteryStatus,"Battery_Charge : {0}
+Remaining Time : {1}",My Project/Resources.resx#Frm_Shutdown_Str_01
+Shutdown_GraceButton,Grace Time,Shutdown_Gui.resx#Grace_Button.Text
+Shutdown_ImmediateButton,Immediate Shutdown,Shutdown_Gui.resx#ShutDown_Btn.Text
+Shutdown_Title,Extinction In Progress,Shutdown_Gui.resx#$this.Text
+StopAction_Hibernate,Hibernate,Pref_Gui.resx#Cbx_TypeStop.Items2
+StopAction_Shutdown,Shutdown,Pref_Gui.resx#Cbx_TypeStop.Items
+StopAction_Suspend,Sleep,Pref_Gui.resx#Cbx_TypeStop.Items1
+Tray_Menu_About,About,WinNUT.resx#Menu_Sys_About.Text
+Tray_Menu_CheckForUpdate,Verify Update,WinNUT.resx#Menu_Sys_Update.Text
+Tray_Menu_Settings,Settings,WinNUT.resx#Menu_Sys_Settings.Text
+UpdateChannel_PreRelease,Devellopement,Pref_Gui.resx#Cbx_Branch_Update.Items1
+UpdateChannel_Stable,Stable,Pref_Gui.resx#Cbx_Branch_Update.Items
+Update_Title,Update Available,Forms/UpdateAvailableForm.resx#$this.Text
+UpsStatus_CAL,Calibration,Pref_Gui.resx#Tab_Calibrage.Text
+UpsStatus_LB,Low Battery,My Project/Resources.resx#Frm_Main_Str_09
+UpsStatus_OL,On Line,My Project/Resources.resx#Frm_Main_Str_07
+Vars_Clipboard_Error,Error encountered when copying UPS data to the Clipboard: {0},My Project/Resources.resx#List_Var_Gui__SetCpbTextError_Text
+Vars_Clipboard_Error_Title,Clipboard Error,My Project/Resources.resx#List_Var_Gui__SetCpbTextError_Caption
+Vars_Clipboard_Success,Successfully copied UPS data to the Clipboard.,My Project/Resources.resx#List_Var_Gui__SetCpbTextSuccess
+Vars_Close_ToolTip,Close this form.,List_Var_Gui.resx#Btn_Close.ToolTip
+Vars_Copy_ToolTip,Copy all information to the Clipboard.,List_Var_Gui.resx#Btn_Clip.ToolTip
+Vars_Description,Description :,List_Var_Gui.resx#Lbl_D.Text
+Vars_GroupTitle,Item Properties,List_Var_Gui.resx#GB1.Text
+Vars_Name,Name :,List_Var_Gui.resx#Lbl_Name.Text
+Vars_Reload,Reload,List_Var_Gui.resx#Btn_Reload.Text
+Vars_Reload_ToolTip,Reloads all information from the UPS.,List_Var_Gui.resx#Btn_Reload.ToolTip
+Vars_SaveFile_Error,Error encountered when saving UPS data to file: {0},My Project/Resources.resx#List_Var_Gui__SaveFileError_Text
+Vars_SaveFile_Success,Successfully saved UPS data to file: {0},My Project/Resources.resx#List_Var_Gui__SaveFileSuccess
+Vars_SaveFile_Title,Save UPS Data to File,My Project/Resources.resx#List_Var_Gui__SaveFile_Caption
+Vars_Save_ToolTip,Save all information to a file.,List_Var_Gui.resx#Btn_Save.ToolTip
+Vars_Title,List UPS Variables,List_Var_Gui.resx#$this.Text
+Vars_Value,Value :,List_Var_Gui.resx#Lbl_V.Text

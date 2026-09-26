@@ -12,7 +12,861 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_License" xml:space="preserve">
+    <value>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published 
+by the Free Software Foundation, either version 3 of the License, or
+any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see https://www.gnu.org/licenses/.</value>
+    <comment>About window: GNU GPLv3 notice. WinNUT never translated this text in any language (its About_Gui.&lt;culture&gt;.resx files are empty); kept English-only for the same reason.</comment>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>About</value>
+    <comment>About window title.</comment>
+  </data>
   <data name="AppName" xml:space="preserve">
     <value>Coco.Nut</value>
+    <comment>Application name, used as the default window/tray title and in About. New in Coco.Nut (was 'WinNUT' / 'WinNUT Client'); the name is identical in every language, see new_strings.csv.</comment>
+  </data>
+  <data name="Common_Apply" xml:space="preserve">
+    <value>Apply</value>
+    <comment>Generic Apply button, saves without closing the dialog.</comment>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Generic Cancel button.</comment>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Close</value>
+    <comment>Generic Close button.</comment>
+  </data>
+  <data name="Common_Copy" xml:space="preserve">
+    <value>Copy</value>
+    <comment>Generic Copy (to clipboard) button.</comment>
+  </data>
+  <data name="Common_Exit" xml:space="preserve">
+    <value>Exit</value>
+    <comment>Generic Exit action, used by both the main menu and the tray menu.</comment>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>No</value>
+    <comment>Generic negative answer for Yes/No prompts. New in Coco.Nut (WinNUT had no Yes/No dialog).</comment>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>OK</value>
+    <comment>Generic OK button, used to confirm and close a dialog.</comment>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Save</value>
+    <comment>Generic Save button.</comment>
+  </data>
+  <data name="Common_Unavailable" xml:space="preserve">
+    <value>Unavailable</value>
+    <comment>Shown in place of a UPS value that the server does not report.</comment>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Yes</value>
+    <comment>Generic affirmative answer for Yes/No prompts. New in Coco.Nut (WinNUT had no Yes/No dialog).</comment>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>System default</value>
+    <comment>Language selector entry that follows the operating system's language. New in Coco.Nut.</comment>
+  </data>
+  <data name="Language_de_DE" xml:space="preserve">
+    <value>Deutsch</value>
+    <comment>Native name of German, shown identically regardless of the active UI language. New in Coco.Nut; intentionally defined only in the neutral resx (see README).</comment>
+  </data>
+  <data name="Language_fr_FR" xml:space="preserve">
+    <value>Français</value>
+    <comment>Native name of French, shown identically regardless of the active UI language. New in Coco.Nut; intentionally defined only in the neutral resx (see README).</comment>
+  </data>
+  <data name="Language_ru_RU" xml:space="preserve">
+    <value>Русский</value>
+    <comment>Native name of Russian, shown identically regardless of the active UI language. New in Coco.Nut; intentionally defined only in the neutral resx (see README).</comment>
+  </data>
+  <data name="Language_uk_UA" xml:space="preserve">
+    <value>Українська</value>
+    <comment>Native name of Ukrainian, shown identically regardless of the active UI language. New in Coco.Nut; intentionally defined only in the neutral resx (see README).</comment>
+  </data>
+  <data name="Language_zh_CN" xml:space="preserve">
+    <value>简体中文</value>
+    <comment>Native name of Simplified Chinese, shown identically regardless of the active UI language. New in Coco.Nut; intentionally defined only in the neutral resx (see README).</comment>
+  </data>
+  <data name="Language_zh_TW" xml:space="preserve">
+    <value>繁體中文</value>
+    <comment>Native name of Traditional Chinese, shown identically regardless of the active UI language. New in Coco.Nut; intentionally defined only in the neutral resx (see README).</comment>
+  </data>
+  <data name="Log_ApplicationShutdownAt" xml:space="preserve">
+    <value>Application shut down at</value>
+    <comment>In-app log entry recorded on exit. The caller appends a formatted timestamp after this text (kept as a plain phrase, not a {0} placeholder, so every translation's existing word order is preserved).</comment>
+  </data>
+  <data name="Log_AutoReconnect" xml:space="preserve">
+    <value>Automatic Reconnection</value>
+    <comment>In-app log entry when an automatic reconnection attempt starts.</comment>
+  </data>
+  <data name="Log_Checking" xml:space="preserve">
+    <value>Checking for updates...</value>
+    <comment>In-app log entry shown while an update check is in flight.</comment>
+  </data>
+  <data name="Log_Connected" xml:space="preserve">
+    <value>Connection to Nut Host {0}:{1} Established</value>
+    <comment>In-app log entry when the connection is established. {0} = host, {1} = port.</comment>
+  </data>
+  <data name="Log_ConnectionFailed" xml:space="preserve">
+    <value>Connection to Nut Host {0}:{1} Failed: {2}</value>
+    <comment>In-app log entry when the connection fails. {0} = host, {1} = port, {2} = error.</comment>
+  </data>
+  <data name="Log_Disconnected" xml:space="preserve">
+    <value>Disconnected from Nut Host</value>
+    <comment>In-app log entry when the client disconnects from the NUT server.</comment>
+  </data>
+  <data name="Log_ForcedShutdownByServer" xml:space="preserve">
+    <value>Stop condition imposed by the NUT server</value>
+    <comment>In-app log entry when the NUT server signals FSD (forced shutdown).</comment>
+  </data>
+  <data name="Log_Level_Debug" xml:space="preserve">
+    <value>Debug</value>
+    <comment>Log level option shown in Settings &gt; Logging.</comment>
+  </data>
+  <data name="Log_Level_Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>Log level option shown in Settings &gt; Logging.</comment>
+  </data>
+  <data name="Log_Level_Notice" xml:space="preserve">
+    <value>Notice</value>
+    <comment>Log level option shown in Settings &gt; Logging.</comment>
+  </data>
+  <data name="Log_Level_Warning" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Log level option shown in Settings &gt; Logging (WinNUT displayed this level as 'Alert').</comment>
+  </data>
+  <data name="Log_NoUpdateAvailable" xml:space="preserve">
+    <value>No Update Available</value>
+    <comment>In-app log entry after an update check finds no newer release.</comment>
+  </data>
+  <data name="Log_PreferencesChanged" xml:space="preserve">
+    <value>Coco.Nut preferences changed</value>
+    <comment>In-app log entry recorded after Settings are saved.</comment>
+  </data>
+  <data name="Log_ShutdownCancelled" xml:space="preserve">
+    <value>Cancellation of the Extinguishing Process</value>
+    <comment>In-app log entry when the shutdown procedure is cancelled (e.g. power restored).</comment>
+  </data>
+  <data name="Log_ShutdownStart" xml:space="preserve">
+    <value>Conditions met for launching the Extinguishing Process</value>
+    <comment>In-app log entry when the shutdown procedure starts.</comment>
+  </data>
+  <data name="Log_UpdateAvailable" xml:space="preserve">
+    <value>Version {0} Available</value>
+    <comment>In-app log entry after an update check finds a newer release. {0} = version.</comment>
+  </data>
+  <data name="Main_Flag_BatteryLow" xml:space="preserve">
+    <value>UPS Battery Low</value>
+    <comment>Main window: indicator lit when the UPS reports a low battery.</comment>
+  </data>
+  <data name="Main_Flag_OnBattery" xml:space="preserve">
+    <value>UPS On Battery</value>
+    <comment>Main window: indicator lit when the UPS is running on battery.</comment>
+  </data>
+  <data name="Main_Flag_OnLine" xml:space="preserve">
+    <value>UPS On Line</value>
+    <comment>Main window: indicator lit when the UPS is on mains power.</comment>
+  </data>
+  <data name="Main_Flag_Overload" xml:space="preserve">
+    <value>UPS Overload</value>
+    <comment>Main window: indicator lit when the UPS reports an overload.</comment>
+  </data>
+  <data name="Main_Gauge_BatteryCharge" xml:space="preserve">
+    <value>Battery Charge</value>
+    <comment>Main window: title under the battery charge gauge.</comment>
+  </data>
+  <data name="Main_Gauge_BatteryVoltage" xml:space="preserve">
+    <value>Battery Voltage</value>
+    <comment>Main window: title under the battery voltage gauge.</comment>
+  </data>
+  <data name="Main_Gauge_Frequency" xml:space="preserve">
+    <value>Frequency</value>
+    <comment>Main window: title under the input frequency gauge.</comment>
+  </data>
+  <data name="Main_Gauge_InputVoltage" xml:space="preserve">
+    <value>Input Voltage</value>
+    <comment>Main window: title under the input voltage gauge.</comment>
+  </data>
+  <data name="Main_Gauge_Load" xml:space="preserve">
+    <value>UPS Load</value>
+    <comment>Main window: title under the UPS load gauge.</comment>
+  </data>
+  <data name="Main_Gauge_OutputVoltage" xml:space="preserve">
+    <value>Output Voltage</value>
+    <comment>Main window: title under the output voltage gauge.</comment>
+  </data>
+  <data name="Main_Label_Firmware" xml:space="preserve">
+    <value>Firmware :</value>
+    <comment>Main window: label in front of the UPS firmware version.</comment>
+  </data>
+  <data name="Main_Label_Manufacturer" xml:space="preserve">
+    <value>Manufacturer :</value>
+    <comment>Main window: label in front of the UPS manufacturer name.</comment>
+  </data>
+  <data name="Main_Label_Name" xml:space="preserve">
+    <value>Name :</value>
+    <comment>Main window: label in front of the UPS model name.</comment>
+  </data>
+  <data name="Main_Label_RemainingTime" xml:space="preserve">
+    <value>Remaining Time :</value>
+    <comment>Main window: label in front of the estimated runtime remaining.</comment>
+  </data>
+  <data name="Main_Label_Serial" xml:space="preserve">
+    <value>Serial :</value>
+    <comment>Main window: label in front of the UPS serial number.</comment>
+  </data>
+  <data name="Main_Menu_About" xml:space="preserve">
+    <value>About</value>
+    <comment>Main window Help menu: opens the About window.</comment>
+  </data>
+  <data name="Main_Menu_CheckForUpdate" xml:space="preserve">
+    <value>Verify Update</value>
+    <comment>Main window Help menu: checks for a new Coco.Nut release.</comment>
+  </data>
+  <data name="Main_Menu_Connect" xml:space="preserve">
+    <value>Connect</value>
+    <comment>Main window Connection menu: connect to the NUT server.</comment>
+  </data>
+  <data name="Main_Menu_Connection" xml:space="preserve">
+    <value>Connection</value>
+    <comment>Main window menu bar: 'Connection' top-level menu.</comment>
+  </data>
+  <data name="Main_Menu_Disconnect" xml:space="preserve">
+    <value>Disconnect</value>
+    <comment>Main window Connection menu: disconnect from the NUT server.</comment>
+  </data>
+  <data name="Main_Menu_Exit" xml:space="preserve">
+    <value>Exit</value>
+    <comment>Main window File menu: exits the application.</comment>
+  </data>
+  <data name="Main_Menu_File" xml:space="preserve">
+    <value>File</value>
+    <comment>Main window menu bar: 'File' top-level menu.</comment>
+  </data>
+  <data name="Main_Menu_Help" xml:space="preserve">
+    <value>Help</value>
+    <comment>Main window menu bar: 'Help' top-level menu.</comment>
+  </data>
+  <data name="Main_Menu_Persist" xml:space="preserve">
+    <value>Persist</value>
+    <comment>Main window Connection menu checkbox: toggles automatic reconnection.</comment>
+  </data>
+  <data name="Main_Menu_Settings" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Main window menu bar: opens the Settings window.</comment>
+  </data>
+  <data name="Main_Menu_UpsVariables" xml:space="preserve">
+    <value>UPS Variable</value>
+    <comment>Main window File menu: opens the UPS variables window.</comment>
+  </data>
+  <data name="Main_Status_BatteryOk" xml:space="preserve">
+    <value>Battery OK</value>
+    <comment>Main window/tray status text appended when the battery charge is not low.</comment>
+  </data>
+  <data name="Main_Status_Connected" xml:space="preserve">
+    <value>Connected</value>
+    <comment>Main window/tray status text when connected to the NUT server.</comment>
+  </data>
+  <data name="Main_Status_EnteringSleep" xml:space="preserve">
+    <value>System is suspending. Coco.Nut will disconnect.</value>
+    <comment>Logged/shown when the OS is about to suspend and Coco.Nut disconnects.</comment>
+  </data>
+  <data name="Main_Status_InvalidLogin" xml:space="preserve">
+    <value>Wrong Login ID (Username or Password)</value>
+    <comment>Main window/tray status text when the NUT server rejects the username/password.</comment>
+  </data>
+  <data name="Main_Status_LostConnection" xml:space="preserve">
+    <value>Lost Connect To {0}:{1}</value>
+    <comment>Main window/tray status text when the connection drops. {0} = host, {1} = port.</comment>
+  </data>
+  <data name="Main_Status_LowBattery" xml:space="preserve">
+    <value>Low Battery</value>
+    <comment>Main window/tray status text appended when the battery charge is low.</comment>
+  </data>
+  <data name="Main_Status_NotConnected" xml:space="preserve">
+    <value>Not Connected</value>
+    <comment>Main window/tray status text when there is no connection to the NUT server.</comment>
+  </data>
+  <data name="Main_Status_OnBattery" xml:space="preserve">
+    <value>On Battery ({0}%)</value>
+    <comment>Main window/tray status text when the UPS is on battery. {0} = battery charge percentage.</comment>
+  </data>
+  <data name="Main_Status_OnLine" xml:space="preserve">
+    <value>On Line</value>
+    <comment>Main window/tray status text when the UPS is on mains power.</comment>
+  </data>
+  <data name="Main_Status_Reconnecting" xml:space="preserve">
+    <value>Reconnection In Progress</value>
+    <comment>Main window/tray status text while an automatic reconnection attempt is running.</comment>
+  </data>
+  <data name="Main_Status_ResumedFromSleep" xml:space="preserve">
+    <value>Restarting Coco.Nut after waking up from sleep.</value>
+    <comment>Logged/shown when the OS resumes from sleep and Coco.Nut reconnects.</comment>
+  </data>
+  <data name="Main_Status_UnknownUps" xml:space="preserve">
+    <value>Unknown UPS Name</value>
+    <comment>Main window/tray status text when the configured UPS name is not found on the server.</comment>
+  </data>
+  <data name="Notify_Title_Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>Title of an error desktop notification (NotificationKind.Error).</comment>
+  </data>
+  <data name="Notify_Title_Info" xml:space="preserve">
+    <value>Notice</value>
+    <comment>Title of an informational desktop notification (NotificationKind.Info).</comment>
+  </data>
+  <data name="Notify_Title_Warning" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Title of a warning desktop notification (NotificationKind.Warning).</comment>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage" xml:space="preserve">
+    <value>Battery Voltage</value>
+    <comment>Settings &gt; Calibration: row label for battery voltage calibration.</comment>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MaxToolTip" xml:space="preserve">
+    <value>Maximum Battery Voltage.
+Accepted value: Numeric value from 0 to 100.</value>
+    <comment>Settings &gt; Calibration: tooltip for the maximum battery voltage field.</comment>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MinToolTip" xml:space="preserve">
+    <value>Minimum Battery Voltage.
+Accepted value: Numeric value from 0 to 100.</value>
+    <comment>Settings &gt; Calibration: tooltip for the minimum battery voltage field.</comment>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply" xml:space="preserve">
+    <value>Frequency Supply</value>
+    <comment>Settings &gt; Calibration: row label for the nominal supply frequency selector.</comment>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply_ToolTip" xml:space="preserve">
+    <value>Sets the input frequency if not supplied by the UPS.</value>
+    <comment>Settings &gt; Calibration: tooltip for the nominal supply frequency selector.</comment>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency" xml:space="preserve">
+    <value>Input Frequency</value>
+    <comment>Settings &gt; Calibration: row label for input frequency calibration.</comment>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MaxToolTip" xml:space="preserve">
+    <value>Maximum input frequency.
+Accepted value: Numeric value from 0 to 100.</value>
+    <comment>Settings &gt; Calibration: tooltip for the maximum input frequency field.</comment>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MinToolTip" xml:space="preserve">
+    <value>Minimum input frequency.
+Accepted value: Numeric value from 0 to 100.</value>
+    <comment>Settings &gt; Calibration: tooltip for the minimum input frequency field.</comment>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage" xml:space="preserve">
+    <value>Input Voltage</value>
+    <comment>Settings &gt; Calibration: row label for input voltage calibration.</comment>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MaxToolTip" xml:space="preserve">
+    <value>Maximum input voltage.
+Accepted value: Numeric value from 0 to 999.</value>
+    <comment>Settings &gt; Calibration: tooltip for the maximum input voltage field.</comment>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MinToolTip" xml:space="preserve">
+    <value>Minimum input voltage.
+Accepted value: Numeric value from 0 to 999.</value>
+    <comment>Settings &gt; Calibration: tooltip for the minimum input voltage field.</comment>
+  </data>
+  <data name="Prefs_Calibration_Load" xml:space="preserve">
+    <value>UPS Load</value>
+    <comment>Settings &gt; Calibration: row label for the UPS load gauge (no min/max, always 0-100%).</comment>
+  </data>
+  <data name="Prefs_Calibration_Max" xml:space="preserve">
+    <value>Max</value>
+    <comment>Settings &gt; Calibration: column header for maximum values.</comment>
+  </data>
+  <data name="Prefs_Calibration_Min" xml:space="preserve">
+    <value>Min</value>
+    <comment>Settings &gt; Calibration: column header for minimum values.</comment>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage" xml:space="preserve">
+    <value>Output Voltage</value>
+    <comment>Settings &gt; Calibration: row label for output voltage calibration.</comment>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MaxToolTip" xml:space="preserve">
+    <value>Maximum Output Voltage.
+Accepted value: Numeric value from 0 to 999.</value>
+    <comment>Settings &gt; Calibration: tooltip for the maximum output voltage field.</comment>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MinToolTip" xml:space="preserve">
+    <value>Minimum Output Voltage.
+Accepted value: Numeric value from 0 to 999.</value>
+    <comment>Settings &gt; Calibration: tooltip for the minimum output voltage field.</comment>
+  </data>
+  <data name="Prefs_Calibration_Tab" xml:space="preserve">
+    <value>Calibration</value>
+    <comment>Settings window: 'Calibration' tab title.</comment>
+  </data>
+  <data name="Prefs_Connection_CredentialsHint" xml:space="preserve">
+    <value>Login credentials to the Nut server (leave blank if not required)</value>
+    <comment>Settings &gt; Connection: hint above the login/password fields.</comment>
+  </data>
+  <data name="Prefs_Connection_Host" xml:space="preserve">
+    <value>NUT host</value>
+    <comment>Settings &gt; Connection: label for the NUT server address field.</comment>
+  </data>
+  <data name="Prefs_Connection_Host_ToolTip" xml:space="preserve">
+    <value>Nut server address.
+Accepted value: IPV4 / IPV6 / FQDN address.</value>
+    <comment>Settings &gt; Connection: tooltip for the NUT server address field.</comment>
+  </data>
+  <data name="Prefs_Connection_Login" xml:space="preserve">
+    <value>Login</value>
+    <comment>Settings &gt; Connection: label for the NUT login field.</comment>
+  </data>
+  <data name="Prefs_Connection_Login_ToolTip" xml:space="preserve">
+    <value>NUT server connection identifier</value>
+    <comment>Settings &gt; Connection: tooltip for the NUT login field.</comment>
+  </data>
+  <data name="Prefs_Connection_Password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Settings &gt; Connection: label for the NUT password field.</comment>
+  </data>
+  <data name="Prefs_Connection_Password_ToolTip" xml:space="preserve">
+    <value>NUT server login password</value>
+    <comment>Settings &gt; Connection: tooltip for the NUT password field.</comment>
+  </data>
+  <data name="Prefs_Connection_PollingInterval" xml:space="preserve">
+    <value>Polling Interval</value>
+    <comment>Settings &gt; Connection: label for the polling interval field.</comment>
+  </data>
+  <data name="Prefs_Connection_PollingInterval_ToolTip" xml:space="preserve">
+    <value>How often Coco.Nut refreshes data from the NUT server.</value>
+    <comment>Settings &gt; Connection: tooltip for the polling interval field.</comment>
+  </data>
+  <data name="Prefs_Connection_PollingInterval_Unit" xml:space="preserve">
+    <value>Seconds</value>
+    <comment>Settings &gt; Connection: unit label after the polling interval field.</comment>
+  </data>
+  <data name="Prefs_Connection_Port" xml:space="preserve">
+    <value>NUT Port</value>
+    <comment>Settings &gt; Connection: label for the NUT server port field.</comment>
+  </data>
+  <data name="Prefs_Connection_Port_ToolTip" xml:space="preserve">
+    <value>Nut Server Port Number (default = 3493).
+Accepted value: Numeric value from 1 to 65535.</value>
+    <comment>Settings &gt; Connection: tooltip for the NUT server port field.</comment>
+  </data>
+  <data name="Prefs_Connection_Reconnect" xml:space="preserve">
+    <value>Re-establish connection</value>
+    <comment>Settings &gt; Connection: checkbox enabling automatic reconnection.</comment>
+  </data>
+  <data name="Prefs_Connection_Reconnect_ToolTip" xml:space="preserve">
+    <value>Activate automatic connection / reconnection</value>
+    <comment>Settings &gt; Connection: tooltip for the automatic reconnection checkbox.</comment>
+  </data>
+  <data name="Prefs_Connection_Tab" xml:space="preserve">
+    <value>Connection</value>
+    <comment>Settings window: 'Connection' tab title.</comment>
+  </data>
+  <data name="Prefs_Connection_UpsName" xml:space="preserve">
+    <value>UPS Name</value>
+    <comment>Settings &gt; Connection: label for the UPS name field.</comment>
+  </data>
+  <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
+    <value>UPS name to monitor.
+Accepted Value: Name of the UPS configured in the Nut server.</value>
+    <comment>Settings &gt; Connection: tooltip for the UPS name field.</comment>
+  </data>
+  <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
+    <value>Delete log file.</value>
+    <comment>Settings &gt; Logging: tooltip for the (icon-only) delete log button.</comment>
+  </data>
+  <data name="Prefs_Logging_EnableFile" xml:space="preserve">
+    <value>Create LogFile</value>
+    <comment>Settings &gt; Logging: checkbox enabling the log file.</comment>
+  </data>
+  <data name="Prefs_Logging_EnableFile_ToolTip" xml:space="preserve">
+    <value>Write logging events to a file.</value>
+    <comment>Settings &gt; Logging: tooltip for the log file checkbox.</comment>
+  </data>
+  <data name="Prefs_Logging_Level" xml:space="preserve">
+    <value>Logging level</value>
+    <comment>Settings &gt; Logging: label for the log level selector.</comment>
+  </data>
+  <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
+    <value>Logging level.</value>
+    <comment>Settings &gt; Logging: tooltip for the log level selector.</comment>
+  </data>
+  <data name="Prefs_Logging_Tab" xml:space="preserve">
+    <value>Logging</value>
+    <comment>Settings window: 'Logging' tab title. New in Coco.Nut: WinNUT mixed logging controls into its 'Miscellanous' tab; Coco.Nut splits them into their own tab.</comment>
+  </data>
+  <data name="Prefs_Logging_ViewLog_ToolTip" xml:space="preserve">
+    <value>Open the log file.</value>
+    <comment>Settings &gt; Logging: tooltip for the (icon-only) view log button.</comment>
+  </data>
+  <data name="Prefs_Misc_CloseToTray" xml:space="preserve">
+    <value>Close to Systray</value>
+    <comment>Settings &gt; Misc: checkbox to send the app to the tray instead of closing it.</comment>
+  </data>
+  <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
+    <value>Sends in Systray at closing.</value>
+    <comment>Settings &gt; Misc: tooltip for the close-to-tray checkbox.</comment>
+  </data>
+  <data name="Prefs_Misc_Language" xml:space="preserve">
+    <value>Language</value>
+    <comment>Settings &gt; Misc: label for the UI language selector. New in Coco.Nut (WinNUT had no in-app language switch; language followed the OS).</comment>
+  </data>
+  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
+    <value>Changes take effect after restarting Coco.Nut.</value>
+    <comment>Settings &gt; Misc: hint shown under the language selector. New in Coco.Nut.</comment>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
+    <value>Minimize to Systray</value>
+    <comment>Settings &gt; Misc: checkbox to minimize to the tray instead of the taskbar.</comment>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray_ToolTip" xml:space="preserve">
+    <value>Reduced to the taskbar or Systray.</value>
+    <comment>Settings &gt; Misc: tooltip for the minimize-to-tray checkbox.</comment>
+  </data>
+  <data name="Prefs_Misc_StartMinimized" xml:space="preserve">
+    <value>Start Minimized</value>
+    <comment>Settings &gt; Misc: checkbox to start the app minimized.</comment>
+  </data>
+  <data name="Prefs_Misc_StartMinimized_ToolTip" xml:space="preserve">
+    <value>Starts Coco.Nut minimized.</value>
+    <comment>Settings &gt; Misc: tooltip for the start-minimized checkbox.</comment>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem" xml:space="preserve">
+    <value>Start with system</value>
+    <comment>Settings &gt; Misc: checkbox to start Coco.Nut with the operating system.</comment>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem_ToolTip" xml:space="preserve">
+    <value>Starts Coco.Nut when the system starts.</value>
+    <comment>Settings &gt; Misc: tooltip for the start-with-system checkbox.</comment>
+  </data>
+  <data name="Prefs_Misc_Tab" xml:space="preserve">
+    <value>Miscellaneous</value>
+    <comment>Settings window: 'Misc' tab title (fixes a spelling typo in the WinNUT source text).</comment>
+  </data>
+  <data name="Prefs_Power_AllowExtend" xml:space="preserve">
+    <value>Allow Extended Shutdown Time</value>
+    <comment>Settings &gt; Power: checkbox allowing a one-time grace-period extension.</comment>
+  </data>
+  <data name="Prefs_Power_AllowExtend_ToolTip" xml:space="preserve">
+    <value>Allow additional time during the shutdown procedure.
+Note: 
+This additional time could go beyond the UPS backup time - USE WITH CAUTION!!!</value>
+    <comment>Settings &gt; Power: tooltip for the grace-period extension checkbox.</comment>
+  </data>
+  <data name="Prefs_Power_BatteryLimit" xml:space="preserve">
+    <value>Shutdown if battery lower than</value>
+    <comment>Settings &gt; Power: label for the battery-charge shutdown threshold.</comment>
+  </data>
+  <data name="Prefs_Power_BatteryLimit_ToolTip" xml:space="preserve">
+    <value>Lower limit of the battery level triggering the shutdown procedure.
+Accepted value: Numeric value from 0 to 100.</value>
+    <comment>Settings &gt; Power: tooltip for the battery-charge shutdown threshold.</comment>
+  </data>
+  <data name="Prefs_Power_BatteryLimit_Unit" xml:space="preserve">
+    <value>%</value>
+    <comment>Settings &gt; Power: unit label after the battery-charge shutdown threshold.</comment>
+  </data>
+  <data name="Prefs_Power_FollowFsd" xml:space="preserve">
+    <value>Shutdown on Nut's FSD Signal</value>
+    <comment>Settings &gt; Power: checkbox to shut down when the NUT server signals FSD (Forced Shutdown).</comment>
+  </data>
+  <data name="Prefs_Power_FollowFsd_ToolTip" xml:space="preserve">
+    <value>Indicates whether a shutdown should be performed when the NUT server signals a forced shutdown (FSD = Force ShutDown)</value>
+    <comment>Settings &gt; Power: tooltip for the FSD checkbox.</comment>
+  </data>
+  <data name="Prefs_Power_GraceTime" xml:space="preserve">
+    <value>Grace Delay to Shutdown (sec)</value>
+    <comment>Settings &gt; Power: label for the grace-period extension length.</comment>
+  </data>
+  <data name="Prefs_Power_GraceTime_ToolTip" xml:space="preserve">
+    <value>Additional grace period limit.
+Accepted value: Numeric value from 0 to 3600.</value>
+    <comment>Settings &gt; Power: tooltip for the grace-period extension length.</comment>
+  </data>
+  <data name="Prefs_Power_Immediate" xml:space="preserve">
+    <value>Immediate stop action</value>
+    <comment>Settings &gt; Power: checkbox to skip the countdown and stop immediately.</comment>
+  </data>
+  <data name="Prefs_Power_Immediate_ToolTip" xml:space="preserve">
+    <value>Starts the shutdown procedure immediately or timed.</value>
+    <comment>Settings &gt; Power: tooltip for the immediate stop checkbox.</comment>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit" xml:space="preserve">
+    <value>Shutdown if runtime lower than (sec)</value>
+    <comment>Settings &gt; Power: label for the runtime shutdown threshold.</comment>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit_ToolTip" xml:space="preserve">
+    <value>Lower backup time limit triggering the shutdown procedure.
+Accepted value: Numeric value from 0 to 3600.</value>
+    <comment>Settings &gt; Power: tooltip for the runtime shutdown threshold.</comment>
+  </data>
+  <data name="Prefs_Power_StopDelay" xml:space="preserve">
+    <value>Delay to Shutdown (sec)</value>
+    <comment>Settings &gt; Power: label for the shutdown countdown delay.</comment>
+  </data>
+  <data name="Prefs_Power_StopDelay_ToolTip" xml:space="preserve">
+    <value>Stop procedure delay if delayed.
+Accepted value: Numeric value from 0 to 3600.</value>
+    <comment>Settings &gt; Power: tooltip for the shutdown countdown delay.</comment>
+  </data>
+  <data name="Prefs_Power_StopType" xml:space="preserve">
+    <value>Type of Stop</value>
+    <comment>Settings &gt; Power: label for the stop action selector.</comment>
+  </data>
+  <data name="Prefs_Power_StopType_ToolTip" xml:space="preserve">
+    <value>Type of stop at the end of the stop procedure.</value>
+    <comment>Settings &gt; Power: tooltip for the stop action selector.</comment>
+  </data>
+  <data name="Prefs_Power_Tab" xml:space="preserve">
+    <value>Shutdown Options</value>
+    <comment>Settings window: 'Power' tab title (WinNUT called it 'Shutdown Options').</comment>
+  </data>
+  <data name="Prefs_SaveError_Title" xml:space="preserve">
+    <value>Error while saving</value>
+    <comment>Title of the error dialog when saving Settings fails. New in Coco.Nut: WinNUT's Pref_Gui.vb had this hard-coded in English with no translation.</comment>
+  </data>
+  <data name="Prefs_Title" xml:space="preserve">
+    <value>Options</value>
+    <comment>Settings window title.</comment>
+  </data>
+  <data name="Prefs_Update_Channel" xml:space="preserve">
+    <value>Stable Or Dev Branch</value>
+    <comment>Settings &gt; Update: label for the update channel selector.</comment>
+  </data>
+  <data name="Prefs_Update_Channel_ToolTip" xml:space="preserve">
+    <value>Use the Stable or Devellop branch during verification.</value>
+    <comment>Settings &gt; Update: tooltip for the update channel selector.</comment>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup" xml:space="preserve">
+    <value>Verify Update At Start</value>
+    <comment>Settings &gt; Update: checkbox to check for updates when Coco.Nut starts.</comment>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup_ToolTip" xml:space="preserve">
+    <value>Checks for updates at startup.</value>
+    <comment>Settings &gt; Update: tooltip for the check-at-startup checkbox.</comment>
+  </data>
+  <data name="Prefs_Update_CheckInterval" xml:space="preserve">
+    <value>Delay Between Verification</value>
+    <comment>Settings &gt; Update: label for the update check interval.</comment>
+  </data>
+  <data name="Prefs_Update_CheckInterval_ToolTip" xml:space="preserve">
+    <value>Frequency of verification.</value>
+    <comment>Settings &gt; Update: tooltip for the update check interval.</comment>
+  </data>
+  <data name="Prefs_Update_OpenReleasePage" xml:space="preserve">
+    <value>Open release page</value>
+    <comment>Button that opens the release page in a browser. Used both in Settings &gt; Update and in the Update Available window (WinNUT had no self-install in Coco.Nut's design, so the old download/self-install button was dropped).</comment>
+  </data>
+  <data name="Prefs_Update_Tab" xml:space="preserve">
+    <value>Update</value>
+    <comment>Settings window: 'Update' tab title.</comment>
+  </data>
+  <data name="Shutdown_BatteryStatus" xml:space="preserve">
+    <value>Battery_Charge : {0}
+Remaining Time : {1}</value>
+    <comment>Shutdown countdown window: battery status line. {0} = charge %, {1} = remaining time. WinNUT's designer-only placeholder text used '{WinNUT.UPS_BattCh}' / '{WinNUT.Lbl_VRTime.Text}' tokens for this same string; both are replaced here by plain {0}/{1} composite-format placeholders.</comment>
+  </data>
+  <data name="Shutdown_GraceButton" xml:space="preserve">
+    <value>Grace Time</value>
+    <comment>Shutdown countdown window: button granting a one-time extra delay.</comment>
+  </data>
+  <data name="Shutdown_ImmediateButton" xml:space="preserve">
+    <value>Immediate Shutdown</value>
+    <comment>Shutdown countdown window: button that stops immediately, skipping the countdown.</comment>
+  </data>
+  <data name="Shutdown_Title" xml:space="preserve">
+    <value>Extinction In Progress</value>
+    <comment>Shutdown countdown window title.</comment>
+  </data>
+  <data name="StopAction_Hibernate" xml:space="preserve">
+    <value>Hibernate</value>
+    <comment>Stop action option: hibernate the system.</comment>
+  </data>
+  <data name="StopAction_Shutdown" xml:space="preserve">
+    <value>Shutdown</value>
+    <comment>Stop action option: shut the system down.</comment>
+  </data>
+  <data name="StopAction_Suspend" xml:space="preserve">
+    <value>Suspend</value>
+    <comment>Stop action option: suspend the system (WinNUT called this 'Sleep').</comment>
+  </data>
+  <data name="Tray_Menu_About" xml:space="preserve">
+    <value>About</value>
+    <comment>System tray context menu: opens the About window.</comment>
+  </data>
+  <data name="Tray_Menu_CheckForUpdate" xml:space="preserve">
+    <value>Verify Update</value>
+    <comment>System tray context menu: checks for a new Coco.Nut release.</comment>
+  </data>
+  <data name="Tray_Menu_Settings" xml:space="preserve">
+    <value>Settings</value>
+    <comment>System tray context menu: opens the Settings window.</comment>
+  </data>
+  <data name="UpdateChannel_PreRelease" xml:space="preserve">
+    <value>Pre-release</value>
+    <comment>Update channel option: also include pre-releases (WinNUT called this 'Development').</comment>
+  </data>
+  <data name="UpdateChannel_Stable" xml:space="preserve">
+    <value>Stable</value>
+    <comment>Update channel option: only stable releases.</comment>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Update Available</value>
+    <comment>Update available window title.</comment>
+  </data>
+  <data name="UpsStatus_ALARM" xml:space="preserve">
+    <value>Alarm</value>
+    <comment>Display name of the ups.status flag ALARM (an alarm is active, see ups.alarm).</comment>
+  </data>
+  <data name="UpsStatus_BOOST" xml:space="preserve">
+    <value>Boost</value>
+    <comment>Display name of the ups.status flag BOOST (boosting incoming voltage). English-only: no confident translation provided, see report.</comment>
+  </data>
+  <data name="UpsStatus_BYPASS" xml:space="preserve">
+    <value>Bypass</value>
+    <comment>Display name of the ups.status flag BYPASS (on bypass). English-only: no confident translation provided, see report.</comment>
+  </data>
+  <data name="UpsStatus_CAL" xml:space="preserve">
+    <value>Calibration</value>
+    <comment>Display name of the ups.status flag CAL (runtime calibration in progress).</comment>
+  </data>
+  <data name="UpsStatus_CHRG" xml:space="preserve">
+    <value>Charging</value>
+    <comment>Display name of the ups.status flag CHRG (battery charging).</comment>
+  </data>
+  <data name="UpsStatus_COMMLOST" xml:space="preserve">
+    <value>Communication lost</value>
+    <comment>Display name of the ups.status flag COMMLOST (communication with the UPS driver was lost).</comment>
+  </data>
+  <data name="UpsStatus_DISCHRG" xml:space="preserve">
+    <value>Discharging</value>
+    <comment>Display name of the ups.status flag DISCHRG (battery discharging).</comment>
+  </data>
+  <data name="UpsStatus_ECO" xml:space="preserve">
+    <value>Eco mode</value>
+    <comment>Display name of the ups.status flag ECO (eConversion / ECO mode). English-only: no confident translation provided, see report.</comment>
+  </data>
+  <data name="UpsStatus_FSD" xml:space="preserve">
+    <value>Forced shutdown</value>
+    <comment>Display name of the ups.status flag FSD (forced shutdown requested by the server).</comment>
+  </data>
+  <data name="UpsStatus_HB" xml:space="preserve">
+    <value>High battery</value>
+    <comment>Display name of the ups.status flag HB (high battery).</comment>
+  </data>
+  <data name="UpsStatus_LB" xml:space="preserve">
+    <value>Low battery</value>
+    <comment>Display name of the ups.status flag LB (low battery).</comment>
+  </data>
+  <data name="UpsStatus_OB" xml:space="preserve">
+    <value>On battery</value>
+    <comment>Display name of the ups.status flag OB (on battery).</comment>
+  </data>
+  <data name="UpsStatus_OFF" xml:space="preserve">
+    <value>Output off</value>
+    <comment>Display name of the ups.status flag OFF (UPS output is off).</comment>
+  </data>
+  <data name="UpsStatus_OL" xml:space="preserve">
+    <value>Online</value>
+    <comment>Display name of the ups.status flag OL (on line / mains power).</comment>
+  </data>
+  <data name="UpsStatus_OVER" xml:space="preserve">
+    <value>Overload</value>
+    <comment>Display name of the ups.status flag OVER (overloaded).</comment>
+  </data>
+  <data name="UpsStatus_RB" xml:space="preserve">
+    <value>Replace battery</value>
+    <comment>Display name of the ups.status flag RB (battery needs replacement).</comment>
+  </data>
+  <data name="UpsStatus_TEST" xml:space="preserve">
+    <value>Test in progress</value>
+    <comment>Display name of the ups.status flag TEST (test in progress).</comment>
+  </data>
+  <data name="UpsStatus_TRIM" xml:space="preserve">
+    <value>Trim</value>
+    <comment>Display name of the ups.status flag TRIM (trimming incoming voltage). English-only: no confident translation provided, see report.</comment>
+  </data>
+  <data name="Vars_Clipboard_Error" xml:space="preserve">
+    <value>Error encountered when copying UPS data to the Clipboard: {0}</value>
+    <comment>Error message when copying UPS data to the clipboard fails. {0} = error message.</comment>
+  </data>
+  <data name="Vars_Clipboard_Error_Title" xml:space="preserve">
+    <value>Clipboard Error</value>
+    <comment>Title of the error dialog when copying UPS data to the clipboard fails.</comment>
+  </data>
+  <data name="Vars_Clipboard_Success" xml:space="preserve">
+    <value>Successfully copied UPS data to the Clipboard.</value>
+    <comment>Confirmation after copying UPS data to the clipboard.</comment>
+  </data>
+  <data name="Vars_Close_ToolTip" xml:space="preserve">
+    <value>Close this form.</value>
+    <comment>UPS variables window: tooltip for the Close button (label uses Common_Close).</comment>
+  </data>
+  <data name="Vars_Copy_ToolTip" xml:space="preserve">
+    <value>Copy all information to the Clipboard.</value>
+    <comment>UPS variables window: tooltip for the Copy button (label uses Common_Copy).</comment>
+  </data>
+  <data name="Vars_Description" xml:space="preserve">
+    <value>Description :</value>
+    <comment>UPS variables window: label in front of the selected variable's description.</comment>
+  </data>
+  <data name="Vars_GroupTitle" xml:space="preserve">
+    <value>Item Properties</value>
+    <comment>UPS variables window: group box title around the selected variable's details.</comment>
+  </data>
+  <data name="Vars_LoadError_Text" xml:space="preserve">
+    <value>Error encountered trying to get variables from the UPS: {0}</value>
+    <comment>Body of the error dialog when the UPS variables cannot be loaded. {0} = error message. New in Coco.Nut, see Vars_LoadError_Title.</comment>
+  </data>
+  <data name="Vars_LoadError_Title" xml:space="preserve">
+    <value>Error Encountered</value>
+    <comment>Title of the error dialog when the UPS variables cannot be loaded. New in Coco.Nut: WinNUT's List_Var_Gui.vb had this hard-coded in English with a 'TODO: Internationalize?' comment, so no WinNUT translation exists.</comment>
+  </data>
+  <data name="Vars_Name" xml:space="preserve">
+    <value>Name :</value>
+    <comment>UPS variables window: label in front of the selected variable's name.</comment>
+  </data>
+  <data name="Vars_Reload" xml:space="preserve">
+    <value>Reload</value>
+    <comment>UPS variables window: button that reloads the variable list from the UPS.</comment>
+  </data>
+  <data name="Vars_Reload_ToolTip" xml:space="preserve">
+    <value>Reloads all information from the UPS.</value>
+    <comment>UPS variables window: tooltip for the Reload button.</comment>
+  </data>
+  <data name="Vars_SaveFile_Error" xml:space="preserve">
+    <value>Error encountered when saving UPS data to file: {0}</value>
+    <comment>Error message when saving UPS data to a file fails. {0} = error message.</comment>
+  </data>
+  <data name="Vars_SaveFile_Success" xml:space="preserve">
+    <value>Successfully saved UPS data to file: {0}</value>
+    <comment>Confirmation after saving UPS data to a file. {0} = file path.</comment>
+  </data>
+  <data name="Vars_SaveFile_Title" xml:space="preserve">
+    <value>Save UPS Data to File</value>
+    <comment>Title of the save-file dialog opened from the UPS variables window.</comment>
+  </data>
+  <data name="Vars_Save_ToolTip" xml:space="preserve">
+    <value>Save all information to a file.</value>
+    <comment>UPS variables window: tooltip for the Save button (label uses Common_Save).</comment>
+  </data>
+  <data name="Vars_Title" xml:space="preserve">
+    <value>List UPS Variables</value>
+    <comment>UPS variables window title.</comment>
+  </data>
+  <data name="Vars_Value" xml:space="preserve">
+    <value>Value :</value>
+    <comment>UPS variables window: label in front of the selected variable's value.</comment>
   </data>
 </root>
