@@ -280,8 +280,10 @@ public class UpsMonitorTests
     }
 
     [Fact]
-    public async Task TimeGap_ForcesReconnect_WithoutRaisingConnectionLost()
+    public async Task TimeGap_ImmediateReconnectSucceeds_ResumesPolling_WithoutRaisingConnectionLostOrReconnectAttempt()
     {
+        // The forced attempt is not part of the AutoReconnect backoff loop, so no ReconnectAttempt is raised for
+        // it, and since nothing actually broke, ConnectionLost is not raised either (see UpsMonitor.ExitPollingAsync).
         await using var h = CreateHarness();
         await h.Monitor.StartAsync(NewSettings(autoReconnect: true, pollIntervalMs: 1000), nominalFrequency: 50);
         await h.Readings.NextAsync();
@@ -289,13 +291,70 @@ public class UpsMonitorTests
         // gapThreshold = max(3 * 1s, 30s) = 30s.
         h.TimeProvider.Advance(TimeSpan.FromSeconds(45));
 
-        var attempt = await h.ReconnectAttempts.NextAsync();
-        Assert.Equal(1, attempt);
         var reading = await h.Readings.NextAsync();
         Assert.Equal(UpsStatus.OL, reading.Status);
         Assert.Equal(MonitorState.Connected, h.Monitor.State);
 
         await h.ConnectionLosses.AssertNoneAsync();
+        await h.ReconnectAttempts.AssertNoneAsync();
+    }
+
+    [Fact]
+    public async Task TimeGap_WithoutAutoReconnect_StillMakesOneReconnectAttempt_AndSucceeds()
+    {
+        // Unlike an ordinary transport failure, a detected resume-from-sleep gap always gets one immediate
+        // reconnect attempt, even when AutoReconnect is off - leaving the user unprotected after every resume
+        // would be worse than WinNUT's behaviour (which always reconnected on PowerModes.Resume).
+        await using var h = CreateHarness();
+        await h.Monitor.StartAsync(NewSettings(autoReconnect: false, pollIntervalMs: 1000), nominalFrequency: 50);
+        await h.Readings.NextAsync();
+
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(45));
+
+        var reading = await h.Readings.NextAsync();
+        Assert.Equal(UpsStatus.OL, reading.Status);
+        Assert.Equal(MonitorState.Connected, h.Monitor.State);
+        await h.ConnectionLosses.AssertNoneAsync();
+    }
+
+    [Fact]
+    public async Task TimeGap_WithoutAutoReconnect_ForcedAttemptFails_GoesDisconnected_WithNoFurtherRetries()
+    {
+        await using var h = CreateHarness();
+        await h.Monitor.StartAsync(NewSettings(autoReconnect: false, pollIntervalMs: 1000), nominalFrequency: 50);
+        await h.Readings.NextAsync();
+        await h.StateChanges.NextAsync(); // Disconnected -> Connecting
+        await h.StateChanges.NextAsync(); // Connecting -> Connected
+
+        h.Client.ConnectResults.Enqueue(new System.Net.Sockets.SocketException());
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(45));
+
+        var change = await h.StateChanges.NextAsync(); // Connected -> Reconnecting (the forced attempt starting)
+        Assert.Equal(MonitorState.Reconnecting, change.NewState);
+        change = await h.StateChanges.NextAsync(); // Reconnecting -> Disconnected (the forced attempt failed)
+        Assert.Equal(MonitorState.Disconnected, change.NewState);
+        Assert.IsType<System.Net.Sockets.SocketException>(change.Error);
+
+        await h.StateChanges.AssertNoneAsync();
+        await h.ReconnectAttempts.AssertNoneAsync();
+        await h.ConnectionLosses.AssertNoneAsync();
+    }
+
+    [Fact]
+    public async Task TimeGap_WithAutoReconnect_ForcedAttemptFails_FallsBackToTheNormalBackoffLoop()
+    {
+        await using var h = CreateHarness();
+        await h.Monitor.StartAsync(NewSettings(autoReconnect: true, pollIntervalMs: 1000), nominalFrequency: 50);
+        await h.Readings.NextAsync();
+
+        h.Client.ConnectResults.Enqueue(new System.Net.Sockets.SocketException()); // the forced gap attempt fails
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(45));
+
+        // Falls back into the normal backoff loop, which succeeds on its first (real) attempt.
+        Assert.Equal(1, await h.ReconnectAttempts.NextAsync());
+        var reading = await h.Readings.NextAsync();
+        Assert.Equal(UpsStatus.OL, reading.Status);
+        Assert.Equal(MonitorState.Connected, h.Monitor.State);
     }
 
     [Fact]

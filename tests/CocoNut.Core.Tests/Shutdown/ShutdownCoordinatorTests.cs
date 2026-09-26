@@ -15,10 +15,21 @@ public class ShutdownCoordinatorTests
     {
         public EventCollector<StopAction> Executions { get; } = new();
 
+        /// <summary>When set, the next <see cref="ExecuteAsync"/> call throws this instead of "succeeding", then
+        /// clears itself so a later call succeeds normally.</summary>
+        public Exception? ThrowOnExecute { get; set; }
+
         public bool IsSupported(StopAction action) => true;
 
         public Task ExecuteAsync(StopAction action, CancellationToken cancellationToken = default)
         {
+            var toThrow = ThrowOnExecute;
+            if (toThrow is not null)
+            {
+                ThrowOnExecute = null;
+                throw toThrow;
+            }
+
             Executions.Add(action);
             return Task.CompletedTask;
         }
@@ -38,7 +49,10 @@ public class ShutdownCoordinatorTests
         MutableSettings Settings,
         EventCollector<ShutdownPendingEventArgs> Pending,
         EventCollector<ShutdownReason> Cancelled,
-        EventCollector<ShutdownReason> Executing) : IAsyncDisposable
+        EventCollector<ShutdownReason> Executing,
+        EventCollector<Exception> Failed,
+        EventCollector<int> Rearmed,
+        EventCollector<MonitorStateChangedEventArgs> StateChanges) : IAsyncDisposable
     {
         public async ValueTask DisposeAsync()
         {
@@ -67,17 +81,25 @@ public class ShutdownCoordinatorTests
         var pending = new EventCollector<ShutdownPendingEventArgs>();
         var cancelled = new EventCollector<ShutdownReason>();
         var executing = new EventCollector<ShutdownReason>();
+        var failed = new EventCollector<Exception>();
+        var rearmed = new EventCollector<int>();
         coordinator.ShutdownPending += (_, e) => pending.Add(e);
         coordinator.ShutdownCancelled += (_, r) => cancelled.Add(r);
         coordinator.ShutdownExecuting += (_, r) => executing.Add(r);
+        coordinator.ShutdownFailed += (_, ex) => failed.Add(ex);
+        coordinator.Rearmed += (_, _) => rearmed.Add(0);
 
         var readings = new EventCollector<int>();
         monitor.ReadingUpdated += (_, _) => readings.Add(0);
+        var stateChanges = new EventCollector<MonitorStateChangedEventArgs>();
+        monitor.StateChanged += (_, e) => stateChanges.Add(e);
 
         await monitor.StartAsync(new ConnectionSettings { PollIntervalMs = 1000, AutoReconnect = false }, nominalFrequency: 50);
         await readings.NextAsync(); // initial OL reading, consumed so later NextAsync calls line up with later polls.
+        await stateChanges.NextAsync(); // Disconnected -> Connecting
+        await stateChanges.NextAsync(); // Connecting -> Connected
 
-        return new Harness(monitor, client, timeProvider, coordinator, powerActions, mutableSettings, pending, cancelled, executing);
+        return new Harness(monitor, client, timeProvider, coordinator, powerActions, mutableSettings, pending, cancelled, executing, failed, rearmed, stateChanges);
     }
 
     private static async Task PushReadingAsync(Harness h, string status, string? batteryCharge = null)
@@ -91,8 +113,20 @@ public class ShutdownCoordinatorTests
         h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
     }
 
+    /// <summary>
+    /// Waits for the three <see cref="MonitorState"/> transitions a restart produces (Connected -> Disconnected via
+    /// the LOGOUT before the action, then Disconnected -> Connecting -> Connected via <see cref="UpsMonitor.RestartAsync"/>
+    /// after it), which is how the tests confirm <see cref="ShutdownCoordinator"/> restarted the monitor.
+    /// </summary>
+    private static async Task WaitForRestartAsync(Harness h)
+    {
+        await h.StateChanges.NextAsync(); // Connected -> Disconnected (StopAsync, before the action)
+        await h.StateChanges.NextAsync(); // Disconnected -> Connecting (RestartAsync, after the action)
+        await h.StateChanges.NextAsync(); // Connecting -> Connected
+    }
+
     [Fact]
-    public async Task ImmediateMode_BelowChargeFloor_CallsPowerActionOnce()
+    public async Task ImmediateMode_BelowChargeFloor_CallsPowerActionOnce_ThenRestartsTheMonitor()
     {
         await using var h = await CreateStartedHarnessAsync(new PowerSettings
         {
@@ -104,10 +138,11 @@ public class ShutdownCoordinatorTests
 
         var action = await h.PowerActions.Executions.NextAsync();
         Assert.Equal(StopAction.Shutdown, action);
-
         await h.Executing.NextAsync();
-        Assert.Equal(MonitorState.Disconnected, h.Monitor.State);
-        await h.PowerActions.Executions.AssertNoneAsync(); // executed exactly once.
+
+        await WaitForRestartAsync(h);
+        Assert.Equal(MonitorState.Connected, h.Monitor.State);
+        await h.PowerActions.Executions.AssertNoneAsync(); // executed exactly once so far.
     }
 
     [Fact]
@@ -160,7 +195,36 @@ public class ShutdownCoordinatorTests
     }
 
     [Fact]
-    public async Task DryRun_DoesNotCallThePowerAction_ButStillStopsTheMonitor()
+    public async Task CancelPending_IgnoredOnceExecutionHasStarted_EvenFromTheRestartsOwnFirstPoll()
+    {
+        // Regression coverage for the case that motivated guarding CancelPending on _executed: without it, the
+        // monitor restart's own immediate first poll (run synchronously as part of RestartAsync, before ExecuteAsync
+        // resets its state) could observe "back online" and cancel a shutdown that has already run.
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = false,
+            StopDelaySeconds = 30,
+            BatteryChargeFloor = 30,
+        });
+
+        await PushReadingAsync(h, "OB", "10");
+        await h.Pending.NextAsync();
+
+        // By the time the monitor restarts (as part of executing), mains power is back - the restart's own first
+        // poll observes this, but must not be allowed to cancel an execution that has already started.
+        h.Client.Variables["ups.status"] = "OL";
+        h.Client.Variables["battery.charge"] = "80";
+
+        await h.Coordinator.ExecuteNowAsync();
+
+        await h.PowerActions.Executions.NextAsync();
+        await h.Cancelled.AssertNoneAsync();
+        Assert.False(h.Coordinator.IsShutdownPending);
+        Assert.Equal(MonitorState.Connected, h.Monitor.State);
+    }
+
+    [Fact]
+    public async Task DryRun_DoesNotCallThePowerAction_ButStillStopsAndRestartsTheMonitor()
     {
         await using var h = await CreateStartedHarnessAsync(new PowerSettings
         {
@@ -172,8 +236,9 @@ public class ShutdownCoordinatorTests
         await PushReadingAsync(h, "OB", "10");
 
         await h.Executing.NextAsync();
+        await WaitForRestartAsync(h);
         await h.PowerActions.Executions.AssertNoneAsync();
-        Assert.Equal(MonitorState.Disconnected, h.Monitor.State);
+        Assert.Equal(MonitorState.Connected, h.Monitor.State);
     }
 
     [Fact]
@@ -201,7 +266,7 @@ public class ShutdownCoordinatorTests
     }
 
     [Fact]
-    public async Task ExecuteNowAsync_CalledTwice_ExecutesOnlyOnce()
+    public async Task ExecuteNowAsync_ConcurrentCalls_ExecuteOnlyOnce()
     {
         await using var h = await CreateStartedHarnessAsync(new PowerSettings
         {
@@ -213,13 +278,14 @@ public class ShutdownCoordinatorTests
         await PushReadingAsync(h, "OB", "10");
         await h.Pending.NextAsync();
 
-        await h.Coordinator.ExecuteNowAsync();
-        await h.PowerActions.Executions.NextAsync();
-        await h.Executing.NextAsync();
+        // _executed is set synchronously as the very first step of ExecuteAsync, before either call reaches a real
+        // await, so calling this twice without awaiting in between still deterministically exercises the guard.
+        var first = h.Coordinator.ExecuteNowAsync();
+        var second = h.Coordinator.ExecuteNowAsync();
+        await Task.WhenAll(first, second);
 
-        await h.Coordinator.ExecuteNowAsync();
+        await h.PowerActions.Executions.NextAsync();
         await h.PowerActions.Executions.AssertNoneAsync();
-        await h.Executing.AssertNoneAsync();
     }
 
     [Fact]
@@ -281,5 +347,127 @@ public class ShutdownCoordinatorTests
         await h.Pending.NextAsync();
 
         Assert.False(h.Coordinator.TryExtend());
+    }
+
+    [Fact]
+    public async Task Rearm_AfterSuccessfulShutdownAction_UsesFiveMinuteDelay()
+    {
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = true,
+            BatteryChargeFloor = 30,
+            StopAction = StopAction.Shutdown,
+        });
+
+        await PushReadingAsync(h, "OB", "10");
+        await h.PowerActions.Executions.NextAsync();
+        await WaitForRestartAsync(h);
+
+        // Not yet - a successful Shutdown re-arms after 5 minutes, not 60 seconds.
+        h.TimeProvider.Advance(ShutdownCoordinator.DefaultRearmDelay);
+        await h.Rearmed.AssertNoneAsync();
+        // Still critical (unchanged OB/low charge) but disarmed: must not have re-triggered either.
+        await h.PowerActions.Executions.AssertNoneAsync();
+
+        h.TimeProvider.Advance(ShutdownCoordinator.ShutdownRearmDelay - ShutdownCoordinator.DefaultRearmDelay);
+        await h.Rearmed.NextAsync();
+    }
+
+    [Fact]
+    public async Task Rearm_AfterSuccessfulSuspendAction_UsesSixtySecondDelay()
+    {
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = true,
+            BatteryChargeFloor = 30,
+            StopAction = StopAction.Suspend,
+        });
+
+        await PushReadingAsync(h, "OB", "10");
+        Assert.Equal(StopAction.Suspend, await h.PowerActions.Executions.NextAsync());
+        await WaitForRestartAsync(h);
+
+        h.TimeProvider.Advance(ShutdownCoordinator.DefaultRearmDelay);
+        await h.Rearmed.NextAsync();
+    }
+
+    [Fact]
+    public async Task Rearm_AfterFailedAction_RaisesShutdownFailed_RestartsTheMonitor_AndUsesSixtySecondDelay()
+    {
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = true,
+            BatteryChargeFloor = 30,
+            StopAction = StopAction.Shutdown,
+        });
+        h.PowerActions.ThrowOnExecute = new InvalidOperationException("power action unavailable");
+
+        await PushReadingAsync(h, "OB", "10");
+
+        var failure = await h.Failed.NextAsync();
+        Assert.IsType<InvalidOperationException>(failure);
+        await WaitForRestartAsync(h);
+        Assert.Equal(MonitorState.Connected, h.Monitor.State);
+        await h.PowerActions.Executions.AssertNoneAsync(); // the action never actually succeeded.
+
+        // A failure re-arms after 60s, not the 5-minute Shutdown-success delay.
+        h.TimeProvider.Advance(ShutdownCoordinator.DefaultRearmDelay);
+        await h.Rearmed.NextAsync();
+
+        // A big single Advance() coalesces the monitor's periodic poll ticks (it does not fire once per elapsed
+        // second), so one more explicit tick is needed for the now-rearmed policy to actually observe a poll.
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
+        await h.PowerActions.Executions.NextAsync(); // still-critical condition, now accepted again -> succeeds this time.
+    }
+
+    [Fact]
+    public async Task Rearm_AfterDryRun_UsesSixtySecondDelay()
+    {
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = true,
+            BatteryChargeFloor = 30,
+            StopAction = StopAction.Shutdown,
+        });
+        h.Coordinator.DryRun = true;
+
+        await PushReadingAsync(h, "OB", "10");
+        await h.Executing.NextAsync();
+        await WaitForRestartAsync(h);
+
+        h.TimeProvider.Advance(ShutdownCoordinator.DefaultRearmDelay);
+        await h.Rearmed.NextAsync();
+    }
+
+    [Fact]
+    public async Task NoRestartLoop_StillCriticalConditionAfterRestart_DoesNotRetriggerUntilRearmed()
+    {
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = true,
+            BatteryChargeFloor = 30,
+            StopAction = StopAction.Suspend,
+        });
+
+        await PushReadingAsync(h, "OB", "10"); // triggers Start -> immediate execute -> restart.
+        await h.PowerActions.Executions.NextAsync();
+        await WaitForRestartAsync(h);
+
+        // The UPS is still reporting the exact same critical condition (unchanged Variables) on every poll after
+        // the restart; none of them may re-trigger until the policy re-arms.
+        for (var i = 0; i < 5; i++)
+        {
+            h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
+            await h.PowerActions.Executions.AssertNoneAsync(TimeSpan.FromMilliseconds(20));
+        }
+
+        Assert.Equal(MonitorState.Connected, h.Monitor.State); // monitoring kept running throughout.
+
+        // Once re-armed, the same still-critical condition is accepted again. As above, a further explicit tick is
+        // needed since the big Advance() above coalesces the monitor's periodic poll ticks.
+        h.TimeProvider.Advance(ShutdownCoordinator.DefaultRearmDelay);
+        await h.Rearmed.NextAsync();
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
+        await h.PowerActions.Executions.NextAsync();
     }
 }

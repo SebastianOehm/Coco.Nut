@@ -323,6 +323,7 @@ public sealed class UpsMonitor : IAsyncDisposable
     {
         Cancelled,
         ReconnectRequested,
+        AlreadyReconnected,
         StopRequested,
     }
 
@@ -343,12 +344,17 @@ public sealed class UpsMonitor : IAsyncDisposable
                 }
 
                 var reason = await PollUntilDisconnectedAsync(ct).ConfigureAwait(false);
-                if (reason != PollExitReason.ReconnectRequested)
+                switch (reason)
                 {
-                    return;
+                    case PollExitReason.ReconnectRequested:
+                        connected = false;
+                        continue;
+                    case PollExitReason.AlreadyReconnected:
+                        connected = true;
+                        continue;
+                    default:
+                        return;
                 }
-
-                connected = false;
             }
         }
         catch (OperationCanceledException)
@@ -415,7 +421,7 @@ public sealed class UpsMonitor : IAsyncDisposable
         switch (firstOutcome)
         {
             case PollOutcome.TransportFailure:
-                return await ExitPollingAsync(_lastError, forcedByGap: false).ConfigureAwait(false);
+                return await ExitPollingAsync(_lastError, forcedByGap: false, ct).ConfigureAwait(false);
             case PollOutcome.Cancelled:
                 return PollExitReason.Cancelled;
         }
@@ -446,7 +452,7 @@ public sealed class UpsMonitor : IAsyncDisposable
                     "Detected a {Gap} gap since the last poll (system likely suspended and resumed); forcing a reconnect.",
                     now - lastPollAt);
                 lastPollAt = now;
-                return await ExitPollingAsync(null, forcedByGap: true).ConfigureAwait(false);
+                return await ExitPollingAsync(null, forcedByGap: true, ct).ConfigureAwait(false);
             }
 
             lastPollAt = now;
@@ -455,18 +461,50 @@ public sealed class UpsMonitor : IAsyncDisposable
             switch (outcome)
             {
                 case PollOutcome.TransportFailure:
-                    return await ExitPollingAsync(_lastError, forcedByGap: false).ConfigureAwait(false);
+                    return await ExitPollingAsync(_lastError, forcedByGap: false, ct).ConfigureAwait(false);
                 case PollOutcome.Cancelled:
                     return PollExitReason.Cancelled;
             }
         }
     }
 
-    private async Task<PollExitReason> ExitPollingAsync(Exception? error, bool forcedByGap)
+    /// <summary>
+    /// Disconnects the current client and decides what happens next. For an ordinary transport failure
+    /// (<paramref name="forcedByGap"/> false) this raises <see cref="ConnectionLost"/> once and then either starts
+    /// the normal backoff reconnect loop (<see cref="ConnectionSettings.AutoReconnect"/>) or stops.
+    /// </summary>
+    /// <param name="forcedByGap">
+    /// <see langword="true"/> for the deliberate reconnect forced by a detected clock gap (system resume). WinNUT's
+    /// <c>SystemEvents_PowerModeChanged</c> handler always reconnected on <c>PowerModes.Resume</c>, regardless of
+    /// <see cref="ConnectionSettings.AutoReconnect"/> (that setting only gated it there too, but leaving the user
+    /// unprotected after every resume is worse than one extra connection attempt) - so this makes exactly one
+    /// immediate reconnect attempt unconditionally; only if that single attempt itself fails does the normal
+    /// <see cref="ConnectionSettings.AutoReconnect"/>-gated behaviour below apply. This is not treated as a
+    /// "connection lost" (no error, <see cref="ConnectionLost"/> is not raised) since nothing actually broke.
+    /// </param>
+    private async Task<PollExitReason> ExitPollingAsync(Exception? error, bool forcedByGap, CancellationToken ct)
     {
         await DisconnectClientAsync().ConfigureAwait(false);
 
-        if (!forcedByGap)
+        if (forcedByGap)
+        {
+            SetState(MonitorState.Reconnecting, null);
+            var outcome = await ConnectOnceAsync(ct).ConfigureAwait(false);
+            switch (outcome)
+            {
+                case ConnectOutcome.Connected:
+                    SetState(MonitorState.Connected, null);
+                    return PollExitReason.AlreadyReconnected;
+                case ConnectOutcome.FatalStop:
+                    SetState(MonitorState.Disconnected, _lastError);
+                    return PollExitReason.StopRequested;
+                case ConnectOutcome.TransportFailure:
+                    // Fall through to the configured AutoReconnect behaviour below, using this attempt's error.
+                    error = _lastError;
+                    break;
+            }
+        }
+        else
         {
             Raise(ConnectionLost, error);
         }

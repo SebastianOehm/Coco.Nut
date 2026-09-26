@@ -53,6 +53,15 @@ public static class ShutdownPolicy
                 "The NUT server requested a forced shutdown (ups.status contains FSD).");
         }
 
+        // NUT's own critical condition (the one upsmon itself acts on): OB and LB together. WinNUT ignored this and
+        // relied solely on the floors below, which can be unavailable or wrong; many UPS units report LB reliably
+        // even then, so this is checked before them.
+        if (reading.Status.HasFlag(UpsStatus.OB) && reading.Status.HasFlag(UpsStatus.LB))
+        {
+            return new ShutdownDecision(ShutdownDecisionKind.Start, ShutdownReason.UpsLowBattery,
+                "The UPS reports a low battery condition (ups.status contains OB and LB).");
+        }
+
         if (reading.Status.HasFlag(UpsStatus.OB))
         {
             // WinNUT: "(.Batt_Charge <> -1 AndAlso .Batt_Charge <= Floor) Or (.Batt_Runtime <> -1 AndAlso .Batt_Runtime <= Floor)".

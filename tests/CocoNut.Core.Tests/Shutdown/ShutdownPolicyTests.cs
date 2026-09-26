@@ -23,6 +23,41 @@ public class ShutdownPolicyTests
     };
 
     [Fact]
+    public void Evaluate_OnBatteryAndLowBattery_StartsWithUpsLowBatteryReason()
+    {
+        // Charge/runtime are both comfortably above their floors - LB alone must still trigger the stop.
+        var reading = Reading(UpsStatus.OB | UpsStatus.LB, charge: 90, runtime: TimeSpan.FromMinutes(30));
+
+        var decision = ShutdownPolicy.Evaluate(reading, null, NewSettings(), shutdownPending: false);
+
+        Assert.Equal(ShutdownDecisionKind.Start, decision.Kind);
+        Assert.Equal(ShutdownReason.UpsLowBattery, decision.Reason);
+    }
+
+    [Fact]
+    public void Evaluate_OnBatteryAndLowBattery_TakesPrecedenceOverFloorChecks()
+    {
+        // Even when a floor is also breached, LB is checked first and wins (the two aren't mutually exclusive, so
+        // this just fixes which single reason is reported).
+        var reading = Reading(UpsStatus.OB | UpsStatus.LB, charge: 1);
+
+        var decision = ShutdownPolicy.Evaluate(reading, null, NewSettings(chargeFloor: 30), shutdownPending: false);
+
+        Assert.Equal(ShutdownReason.UpsLowBattery, decision.Reason);
+    }
+
+    [Fact]
+    public void Evaluate_LowBatteryWithoutOnBattery_DoesNotStart()
+    {
+        // LB without OB (e.g. a battery test) is not the "running out of power on battery" condition.
+        var reading = Reading(UpsStatus.OL | UpsStatus.LB, charge: 90);
+
+        var decision = ShutdownPolicy.Evaluate(reading, null, NewSettings(), shutdownPending: false);
+
+        Assert.Equal(ShutdownDecisionKind.None, decision.Kind);
+    }
+
+    [Fact]
     public void Evaluate_OnBattery_ChargeAtOrBelowFloor_StartsWithBatteryChargeFloorReason()
     {
         var reading = Reading(UpsStatus.OB, charge: 30);

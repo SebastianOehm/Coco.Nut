@@ -14,16 +14,34 @@ namespace CocoNut.Core.Shutdown;
 /// </summary>
 public sealed class ShutdownCoordinator : IAsyncDisposable
 {
+    /// <summary>
+    /// How long the stop policy stays disarmed after a successful <see cref="StopAction.Shutdown"/>: the machine is
+    /// on its way down (writing to disk, powering off), so there is no rush and no risk of re-triggering while it
+    /// is still up.
+    /// </summary>
+    internal static readonly TimeSpan ShutdownRearmDelay = TimeSpan.FromMinutes(5);
+
+    /// <summary>
+    /// How long the stop policy stays disarmed after anything else that still leaves the machine running: a
+    /// successful <see cref="StopAction.Suspend"/>/<see cref="StopAction.Hibernate"/> (which wakes back up), a
+    /// failed action, or <see cref="DryRun"/>. Short, because the machine needs protecting again soon, but long
+    /// enough to avoid immediately re-triggering on the very next poll while the same condition (e.g. still on
+    /// battery, still low) is observed right after the monitor restarts.
+    /// </summary>
+    internal static readonly TimeSpan DefaultRearmDelay = TimeSpan.FromSeconds(60);
+
     private readonly UpsMonitor _monitor;
     private readonly IPowerActions _powerActions;
     private readonly Func<PowerSettings> _settingsProvider;
     private readonly TimeProvider _timeProvider;
     private readonly ILogger _logger;
     private readonly Lock _gate = new();
+    private readonly CancellationTokenSource _disposeCts = new();
 
     private ShutdownCountdown? _countdown;
     private bool _shutdownPending;
     private bool _executed;
+    private bool _armed = true;
     private ShutdownReason _pendingReason;
 
     public ShutdownCoordinator(
@@ -92,6 +110,13 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
     /// <summary>Raised when <see cref="IPowerActions.ExecuteAsync"/> throws.</summary>
     public event EventHandler<Exception>? ShutdownFailed;
 
+    /// <summary>
+    /// Raised when the stop policy becomes willing to react to a new stop condition again, once the re-arm delay
+    /// after the previous action has elapsed (see <see cref="ShutdownRearmDelay"/>/<see cref="DefaultRearmDelay"/>).
+    /// Purely informational; the coordinator enforces the cooldown itself either way.
+    /// </summary>
+    public event EventHandler? Rearmed;
+
     private void OnReadingUpdated(object? sender, UpsReading reading) => Evaluate(reading, null);
 
     private void OnStatusChanged(object? sender, UpsStatusChangedEventArgs e) => Evaluate(_monitor.LastReading, e);
@@ -126,6 +151,16 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
                 return;
             }
 
+            if (!_armed)
+            {
+                // Still cooling down after the previous action restarted the monitor - without this, the same
+                // still-critical condition observed on the very next poll would start (and execute) a shutdown
+                // again immediately, in a tight loop.
+                _logger.LogDebug(
+                    "Ignoring a new stop condition ({Reason}) - the stop policy is still re-arming.", decision.Reason);
+                return;
+            }
+
             _shutdownPending = true;
             _pendingReason = decision.Reason;
         }
@@ -154,6 +189,13 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
         ShutdownCountdown? countdown;
         lock (_gate)
         {
+            if (_executed)
+            {
+                // Execution has already started (LOGOUT in progress or done, the action may already be running) -
+                // it is too late to cancel; let ExecuteAsync run to completion and re-arm afterwards.
+                return;
+            }
+
             if (!_shutdownPending)
             {
                 return;
@@ -210,6 +252,18 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
         return ExecuteAsync(reason);
     }
 
+    /// <summary>
+    /// Stops the monitor (LOGOUT - the NUT primary waits for secondaries to log out before cutting power),
+    /// executes (or, in <see cref="DryRun"/>, logs) the power action, then restarts the monitor and resets the
+    /// coordinator's state, regardless of whether the action succeeded, failed, or was skipped: a
+    /// <see cref="StopAction.Suspend"/>/<see cref="StopAction.Hibernate"/> wakes the machine back up, a failed
+    /// action and <see cref="DryRun"/> never took the machine down at all, and even a genuine
+    /// <see cref="StopAction.Shutdown"/> is not guaranteed to actually happen (the OS can refuse it) - in every
+    /// case, Coco.Nut must keep protecting the machine rather than staying disconnected forever. A new stop
+    /// decision is only accepted again once the re-arm delay has elapsed (see <see cref="ShutdownRearmDelay"/>/
+    /// <see cref="DefaultRearmDelay"/>), so the same still-critical condition observed right after the restart does
+    /// not immediately re-trigger a loop of shutdown attempts.
+    /// </summary>
     private async Task ExecuteAsync(ShutdownReason reason)
     {
         lock (_gate)
@@ -234,21 +288,68 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
             _logger.LogWarning(ex, "Error stopping the UPS monitor before shutting down.");
         }
 
+        var succeeded = false;
         if (DryRun)
         {
             _logger.LogWarning("DRY RUN ({Reason}): would execute power action {Action} now.", reason, settings.StopAction);
-            return;
+        }
+        else
+        {
+            try
+            {
+                await _powerActions.ExecuteAsync(settings.StopAction).ConfigureAwait(false);
+                succeeded = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to execute power action {Action}.", settings.StopAction);
+                RaiseSafe(ShutdownFailed, ex);
+            }
         }
 
         try
         {
-            await _powerActions.ExecuteAsync(settings.StopAction).ConfigureAwait(false);
+            await _monitor.RestartAsync().ConfigureAwait(false);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to execute power action {Action}.", settings.StopAction);
-            RaiseSafe(ShutdownFailed, ex);
+            _logger.LogWarning(ex, "Failed to restart the UPS monitor after a shutdown action.");
         }
+
+        ShutdownCountdown? countdown;
+        lock (_gate)
+        {
+            _shutdownPending = false;
+            countdown = _countdown;
+            _countdown = null;
+            _executed = false;
+            _armed = false;
+        }
+
+        countdown?.Dispose();
+
+        var rearmDelay = succeeded && settings.StopAction == StopAction.Shutdown ? ShutdownRearmDelay : DefaultRearmDelay;
+        _ = RearmAfterDelayAsync(rearmDelay);
+    }
+
+    private async Task RearmAfterDelayAsync(TimeSpan delay)
+    {
+        try
+        {
+            await Task.Delay(delay, _timeProvider, _disposeCts.Token).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException)
+        {
+            return; // Disposed before the cooldown elapsed.
+        }
+
+        lock (_gate)
+        {
+            _armed = true;
+        }
+
+        _logger.LogInformation("The stop policy is re-armed.");
+        RaiseSafe(Rearmed, EventArgs.Empty);
     }
 
     /// <inheritdoc/>
@@ -256,6 +357,9 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
     {
         _monitor.ReadingUpdated -= OnReadingUpdated;
         _monitor.StatusChanged -= OnStatusChanged;
+
+        _disposeCts.Cancel();
+        _disposeCts.Dispose();
 
         lock (_gate)
         {
@@ -278,6 +382,26 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
             try
             {
                 ((EventHandler<TArgs>)invocation)(this, args);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unhandled exception in a ShutdownCoordinator event handler.");
+            }
+        }
+    }
+
+    private void RaiseSafe(EventHandler? handler, EventArgs args)
+    {
+        if (handler is null)
+        {
+            return;
+        }
+
+        foreach (var invocation in handler.GetInvocationList())
+        {
+            try
+            {
+                ((EventHandler)invocation)(this, args);
             }
             catch (Exception ex)
             {
