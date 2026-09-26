@@ -98,6 +98,42 @@ again fully regenerates the six `Strings.<culture>.resx` files from `key_map.csv
 own touch-up of a WinNUT-sourced string - will be overwritten; move such a fix into
 `new_strings.csv` first if you want it to survive a re-run).
 
+## `Strings.resx` is shared - other work packages add keys to it too
+
+`Strings.resx` (the neutral, English file) is not only edited here: as the rest of Coco.Nut is
+built, other work packages add the keys they need directly to it (e.g. WP-G/H added
+`Main_Status_Connecting`, `Vars_NotConnected`, `Update_ReleaseName`, and others while building the
+app shell and secondary windows). That is expected and fine. What follows from it:
+
+- `translation_import.py` never writes `Strings.resx`; it only *reads* it, to know the full set of
+  keys a culture file may legitimately contain and to compute the coverage report. Nothing in this
+  directory regenerates that file.
+- A key added this way has no WinNUT source, so it starts out English-only, exactly like a
+  brand-new key added here - translate it (where confident) via a `new_strings.csv` entry, the
+  same as any other new key.
+- If you maintain a personal script or notes mirroring `Strings.resx`'s key list (as this
+  project's author did, in `keys_data.py`, to build `key_map.csv`), remember it will drift behind
+  the committed file whenever another work package adds a key - diff it against the real file
+  before trusting it, rather than regenerating `Strings.resx` from it.
+
+## Regression guard
+
+`tests/CocoNut.Core.Tests/Localization/StringsResxTests.cs` has a
+`CultureResx_MeetsMinimumCoverageFloor` test per culture that fails the build if that culture's
+`Strings.<culture>.resx` translates fewer than **90%** of the neutral keys. This exists because a
+WP-B follow-up once rewrote `new_strings_data.py` (the script that generates `new_strings.csv`)
+wholesale instead of editing it, and silently dropped 15 keys' worth of translations (90 strings)
+from every culture - nothing caught it until a manual per-commit diff of the culture resx files
+during review. The 90% floor is set comfortably below every culture's actual coverage at the time
+it was added (91.4% for zh-TW, the lowest, up to 95.7% for de-DE) so it only trips on a real,
+sizeable loss, not on the normal trickle of newly-added keys nobody has translated yet.
+
+If you deliberately lower a culture's coverage below 90% (e.g. dropping an unmaintained language,
+or a large batch of new keys legitimately landing untranslated), lower the constant in that test
+and explain why in a comment there, and update the numbers in this section to match. If coverage
+instead drops unintentionally, do not lower the floor - restore the missing translations via
+`new_strings.csv` (see above), then re-run `translation_import.py`.
+
 ## Files
 
 | File | Purpose |

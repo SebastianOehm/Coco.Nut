@@ -1,4 +1,10 @@
 Key,Culture,Translation
+About_Acknowledgements,de-DE,Danksagungen
+About_Acknowledgements,fr-FR,Remerciements
+About_Acknowledgements,ru-RU,Благодарности
+About_Acknowledgements,uk-UA,Подяки
+About_Acknowledgements,zh-CN,致谢
+About_Acknowledgements,zh-TW,致謝
 About_Description,de-DE,"Überwacht eine USV über einen Network-UPS-Tools-Server (NUT) und fährt den Computer herunter, wenn der Akku schwach wird."
 About_Description,fr-FR,Surveille un onduleur via un serveur Network UPS Tools (NUT) et arrête l'ordinateur lorsque la batterie est faible.
 About_Description,ru-RU,Отслеживает ИБП через сервер Network UPS Tools (NUT) и выключает компьютер при низком заряде батареи.
@@ -29,12 +35,24 @@ Common_No,ru-RU,Нет
 Common_No,uk-UA,Ні
 Common_No,zh-CN,否
 Common_No,zh-TW,否
+Common_Save,de-DE,Speichern
+Common_Save,fr-FR,Enregistrer
+Common_Save,ru-RU,Сохранить
+Common_Save,uk-UA,Зберегти
+Common_Save,zh-CN,保存
+Common_Save,zh-TW,儲存
 Common_Yes,de-DE,Ja
 Common_Yes,fr-FR,Oui
 Common_Yes,ru-RU,Да
 Common_Yes,uk-UA,Так
 Common_Yes,zh-CN,是
 Common_Yes,zh-TW,是
+Language_System,de-DE,Systemstandard
+Language_System,fr-FR,Système par défaut
+Language_System,ru-RU,Как в системе
+Language_System,uk-UA,Системна (за умовчанням)
+Language_System,zh-CN,系统默认
+Language_System,zh-TW,系統預設
 Log_ApplicationShutdownAt,de-DE,Anwendung heruntergefahren um {0}.
 Log_ApplicationShutdownAt,fr-FR,Application arrêtée à {0}.
 Log_ApplicationShutdownAt,ru-RU,Программное отключение в {0}.
@@ -44,6 +62,30 @@ Log_ApplicationShutdownAt,zh-TW,應用程式於 {0} 關閉。
 Log_Level_Warning,de-DE,Warnung
 Log_Level_Warning,fr-FR,Avertissement
 Log_Level_Warning,ru-RU,Предупреждение
+Log_ShutdownExecuting,de-DE,Stopp-Aktion wird ausgeführt: {0}
+Log_ShutdownExecuting,fr-FR,Exécution de l'action d'arrêt : {0}
+Log_ShutdownExecuting,ru-RU,Выполняется действие остановки: {0}
+Log_ShutdownExecuting,uk-UA,Виконується дія зупинення: {0}
+Log_ShutdownExecuting,zh-CN,正在执行停止操作：{0}
+Log_ShutdownExecuting,zh-TW,正在執行停止動作：{0}
+Log_ShutdownExecuting_DryRun,de-DE,Stopp-Aktion wird ausgeführt: {0} (Testlauf)
+Log_ShutdownExecuting_DryRun,fr-FR,Exécution de l'action d'arrêt : {0} (simulation)
+Log_ShutdownExecuting_DryRun,ru-RU,Выполняется действие остановки: {0} (пробный запуск)
+Log_ShutdownExecuting_DryRun,uk-UA,Виконується дія зупинення: {0} (пробний запуск)
+Log_ShutdownExecuting_DryRun,zh-CN,正在执行停止操作：{0}（演练）
+Log_ShutdownExecuting_DryRun,zh-TW,正在執行停止動作：{0}（演練）
+Main_BatteryChargeEstimatedNote,de-DE,(geschätzt)
+Main_BatteryChargeEstimatedNote,fr-FR,(estimé)
+Main_BatteryChargeEstimatedNote,ru-RU,(приблизительно)
+Main_BatteryChargeEstimatedNote,uk-UA,(приблизно)
+Main_BatteryChargeEstimatedNote,zh-CN,（估计）
+Main_BatteryChargeEstimatedNote,zh-TW,（估計）
+Main_BatteryRuntimeEstimatedNote,de-DE,(geschätzt)
+Main_BatteryRuntimeEstimatedNote,fr-FR,(estimé)
+Main_BatteryRuntimeEstimatedNote,ru-RU,(приблизительно)
+Main_BatteryRuntimeEstimatedNote,uk-UA,(приблизно)
+Main_BatteryRuntimeEstimatedNote,zh-CN,（估计）
+Main_BatteryRuntimeEstimatedNote,zh-TW,（估計）
 Main_Gauge_Power,de-DE,Ausgangsleistung
 Main_Gauge_Power,fr-FR,Puissance de sortie
 Main_Gauge_Power,ru-RU,Выходная мощность
@@ -62,6 +104,12 @@ Main_RuntimeUnknown,ru-RU,Неизвестно
 Main_RuntimeUnknown,uk-UA,Невідомо
 Main_RuntimeUnknown,zh-CN,未知
 Main_RuntimeUnknown,zh-TW,未知
+Main_Status_Connecting,de-DE,Verbinde…
+Main_Status_Connecting,fr-FR,Connexion…
+Main_Status_Connecting,ru-RU,Подключение…
+Main_Status_Connecting,uk-UA,Підключення…
+Main_Status_Connecting,zh-CN,正在连接…
+Main_Status_Connecting,zh-TW,正在連線…
 Main_Status_EnteringSleep,de-DE,Das System wechselt in den Energiesparmodus. Coco.Nut trennt die Verbindung.
 Main_Status_EnteringSleep,fr-FR,Le système passe en veille. Coco.Nut va se déconnecter.
 Main_Status_EnteringSleep,ru-RU,Система переходит в режим сна. Coco.Nut отключится.
@@ -112,12 +160,36 @@ Prefs_Logging_DeleteLog,ru-RU,Удалить файлы журнала
 Prefs_Logging_DeleteLog,uk-UA,Видалити файли журналу
 Prefs_Logging_DeleteLog,zh-CN,删除日志文件
 Prefs_Logging_DeleteLog,zh-TW,刪除日誌檔案
+Prefs_Logging_DeleteLog_ConfirmMessage,de-DE,Alle Coco.Nut-Protokolldateien löschen? Dies kann nicht widerrufen werden.
+Prefs_Logging_DeleteLog_ConfirmMessage,fr-FR,Supprimer tous les fichiers journaux de Coco.Nut ? Cette action est irréversible.
+Prefs_Logging_DeleteLog_ConfirmMessage,ru-RU,Удалить все файлы журнала Coco.Nut? Это действие невозможно отменить.
+Prefs_Logging_DeleteLog_ConfirmMessage,uk-UA,Видалити всі файли журналу Coco.Nut? Цю дію не можна скасувати.
+Prefs_Logging_DeleteLog_ConfirmMessage,zh-CN,删除所有 Coco.Nut 日志文件？此操作无法撤消。
+Prefs_Logging_DeleteLog_ConfirmMessage,zh-TW,刪除所有 Coco.Nut 日誌檔案？此操作無法復原。
+Prefs_Logging_Tab,de-DE,Protokollierung
+Prefs_Logging_Tab,fr-FR,Journalisation
+Prefs_Logging_Tab,ru-RU,Журналирование
+Prefs_Logging_Tab,uk-UA,Журналювання
+Prefs_Logging_Tab,zh-CN,日志记录
+Prefs_Logging_Tab,zh-TW,日誌記錄
 Prefs_Logging_ViewLog,de-DE,Protokolldatei öffnen
 Prefs_Logging_ViewLog,fr-FR,Ouvrir le fichier journal
 Prefs_Logging_ViewLog,ru-RU,Открыть файл журнала
 Prefs_Logging_ViewLog,uk-UA,Відкрити файл журналу
 Prefs_Logging_ViewLog,zh-CN,打开日志文件
 Prefs_Logging_ViewLog,zh-TW,開啟日誌檔案
+Prefs_Misc_Language,de-DE,Sprache
+Prefs_Misc_Language,fr-FR,Langue
+Prefs_Misc_Language,ru-RU,Язык
+Prefs_Misc_Language,uk-UA,Мова
+Prefs_Misc_Language,zh-CN,语言
+Prefs_Misc_Language,zh-TW,語言
+Prefs_Misc_LanguageRestartHint,de-DE,Änderungen werden erst nach einem Neustart von Coco.Nut wirksam.
+Prefs_Misc_LanguageRestartHint,fr-FR,Les modifications prennent effet après le redémarrage de Coco.Nut.
+Prefs_Misc_LanguageRestartHint,ru-RU,Изменения вступят в силу после перезапуска Coco.Nut.
+Prefs_Misc_LanguageRestartHint,uk-UA,Зміни набудуть чинності після перезапуску Coco.Nut.
+Prefs_Misc_LanguageRestartHint,zh-CN,更改将在重新启动 Coco.Nut 后生效。
+Prefs_Misc_LanguageRestartHint,zh-TW,變更將在重新啟動 Coco.Nut 後生效。
 Prefs_Misc_StartWithSystem,de-DE,Mit dem System starten
 Prefs_Misc_StartWithSystem,fr-FR,Démarrer avec le système
 Prefs_Misc_StartWithSystem,ru-RU,Запускать вместе с системой
@@ -130,6 +202,12 @@ Prefs_Misc_StartWithSystem_ToolTip,ru-RU,Запускает Coco.Nut при за
 Prefs_Misc_StartWithSystem_ToolTip,uk-UA,Запускає Coco.Nut під час запуску системи.
 Prefs_Misc_StartWithSystem_ToolTip,zh-CN,系统启动时启动 Coco.Nut。
 Prefs_Misc_StartWithSystem_ToolTip,zh-TW,系統啟動時啟動 Coco.Nut。
+Prefs_SaveError_Title,de-DE,Fehler beim Speichern
+Prefs_SaveError_Title,fr-FR,Erreur lors de l'enregistrement
+Prefs_SaveError_Title,ru-RU,Ошибка при сохранении
+Prefs_SaveError_Title,uk-UA,Помилка під час збереження
+Prefs_SaveError_Title,zh-CN,保存时出错
+Prefs_SaveError_Title,zh-TW,儲存時發生錯誤
 Prefs_Update_Tab,de-DE,Updates
 Prefs_Update_Tab,ru-RU,Обновления
 Prefs_Update_Tab,uk-UA,Оновлення
@@ -145,6 +223,12 @@ Shutdown_Countdown,ru-RU,{0} начнётся через {1}.
 Shutdown_Countdown,uk-UA,{0} почнеться через {1}.
 Shutdown_Countdown,zh-CN,{0} 将在 {1} 后开始。
 Shutdown_Countdown,zh-TW,{0} 將在 {1} 後開始。
+Shutdown_Failed_Notify,de-DE,Die Stopp-Aktion ist fehlgeschlagen: {0}
+Shutdown_Failed_Notify,fr-FR,L'action d'arrêt a échoué : {0}
+Shutdown_Failed_Notify,ru-RU,Действие остановки не выполнено: {0}
+Shutdown_Failed_Notify,uk-UA,Дію зупинення не вдалося виконати: {0}
+Shutdown_Failed_Notify,zh-CN,停止操作失败：{0}
+Shutdown_Failed_Notify,zh-TW,停止動作失敗：{0}
 Shutdown_GraceButton,de-DE,Aufschub
 Shutdown_Reason_BatteryCharge,de-DE,Der Akkustand {0}% liegt bei oder unter dem Grenzwert von {1}%.
 Shutdown_Reason_BatteryCharge,fr-FR,La charge de la batterie ({0} %) est égale ou inférieure à la limite de {1} %.
@@ -164,6 +248,12 @@ Shutdown_Reason_Runtime,ru-RU,Оставшееся время работы {0} �
 Shutdown_Reason_Runtime,uk-UA,Залишок часу роботи {0} дорівнює або менший за межу {1}.
 Shutdown_Reason_Runtime,zh-CN,剩余运行时间 {0} 已达到或低于 {1} 的限制。
 Shutdown_Reason_Runtime,zh-TW,剩餘運行時間 {0} 已達到或低於 {1} 的限制。
+Shutdown_Reason_UpsLowBattery,de-DE,Die USV meldet einen kritischen Akkuzustand (ups.status enthält OB und LB).
+Shutdown_Reason_UpsLowBattery,fr-FR,L'onduleur signale un état de batterie critique (ups.status contient OB et LB).
+Shutdown_Reason_UpsLowBattery,ru-RU,ИБП сообщает о критическом состоянии батареи (ups.status содержит OB и LB).
+Shutdown_Reason_UpsLowBattery,uk-UA,ДБЖ повідомляє про критичний стан батареї (ups.status містить OB і LB).
+Shutdown_Reason_UpsLowBattery,zh-CN,UPS 报告电池电量处于严重不足状态（ups.status 包含 OB 和 LB）。
+Shutdown_Reason_UpsLowBattery,zh-TW,UPS 回報電池電量處於嚴重不足狀態（ups.status 包含 OB 和 LB）。
 Shutdown_Title,uk-UA,Триває вимкнення
 Tray_Menu_Show,de-DE,Coco.Nut anzeigen
 Tray_Menu_Show,fr-FR,Afficher Coco.Nut
@@ -192,12 +282,114 @@ Update_NoUpdate,ru-RU,Вы используете последнюю верси�
 Update_NoUpdate,uk-UA,Ви використовуєте останню версію.
 Update_NoUpdate,zh-CN,您正在使用最新版本。
 Update_NoUpdate,zh-TW,您正在使用最新版本。
+Update_PublishedDate,de-DE,Veröffentlicht:
+Update_PublishedDate,fr-FR,Publié le :
+Update_PublishedDate,ru-RU,Опубликовано:
+Update_PublishedDate,uk-UA,Опубліковано:
+Update_PublishedDate,zh-CN,发布日期:
+Update_PublishedDate,zh-TW,發布日期:
+Update_ReleaseName,de-DE,Release:
+Update_ReleaseName,fr-FR,Version :
+Update_ReleaseName,ru-RU,Релиз:
+Update_ReleaseName,uk-UA,Реліз:
+Update_ReleaseName,zh-CN,版本:
+Update_ReleaseName,zh-TW,版本:
 Update_ReleaseNotes,de-DE,Versionshinweise
 Update_ReleaseNotes,fr-FR,Notes de version
 Update_ReleaseNotes,ru-RU,Заметки о выпуске
 Update_ReleaseNotes,uk-UA,Примітки до випуску
 Update_ReleaseNotes,zh-CN,更新说明
 Update_ReleaseNotes,zh-TW,版本說明
+UpsStatus_ALARM,de-DE,Alarm
+UpsStatus_ALARM,fr-FR,Alarme
+UpsStatus_ALARM,ru-RU,Тревога
+UpsStatus_ALARM,uk-UA,Тривога
+UpsStatus_ALARM,zh-CN,警报
+UpsStatus_ALARM,zh-TW,警報
+UpsStatus_BOOST,de-DE,Spannung wird erhöht
+UpsStatus_BOOST,fr-FR,Augmentation de tension
+UpsStatus_BOOST,ru-RU,Повышение напряжения
+UpsStatus_BOOST,uk-UA,Підвищення напруги
+UpsStatus_BOOST,zh-CN,升压
+UpsStatus_BOOST,zh-TW,升壓
+UpsStatus_BYPASS,de-DE,Bypass
+UpsStatus_BYPASS,fr-FR,Bypass
+UpsStatus_BYPASS,ru-RU,Байпас
+UpsStatus_BYPASS,uk-UA,Байпас
+UpsStatus_BYPASS,zh-CN,旁路
+UpsStatus_BYPASS,zh-TW,旁路
+UpsStatus_CHRG,de-DE,Lädt
+UpsStatus_CHRG,fr-FR,En charge
+UpsStatus_CHRG,ru-RU,Заряжается
+UpsStatus_CHRG,uk-UA,Заряджається
+UpsStatus_CHRG,zh-CN,正在充电
+UpsStatus_CHRG,zh-TW,正在充電
+UpsStatus_COMMLOST,de-DE,Kommunikation unterbrochen
+UpsStatus_COMMLOST,fr-FR,Communication perdue
+UpsStatus_COMMLOST,ru-RU,Связь потеряна
+UpsStatus_COMMLOST,uk-UA,Зв'язок втрачено
+UpsStatus_COMMLOST,zh-CN,通信已中断
+UpsStatus_COMMLOST,zh-TW,通訊已中斷
+UpsStatus_DISCHRG,de-DE,Entlädt
+UpsStatus_DISCHRG,fr-FR,En décharge
+UpsStatus_DISCHRG,ru-RU,Разряжается
+UpsStatus_DISCHRG,uk-UA,Розряджається
+UpsStatus_DISCHRG,zh-CN,正在放电
+UpsStatus_DISCHRG,zh-TW,正在放電
+UpsStatus_ECO,de-DE,Eco-Modus
+UpsStatus_ECO,fr-FR,Mode éco
+UpsStatus_ECO,ru-RU,Эко-режим
+UpsStatus_ECO,uk-UA,Еко-режим
+UpsStatus_ECO,zh-CN,节能模式
+UpsStatus_ECO,zh-TW,節能模式
+UpsStatus_FSD,de-DE,Erzwungenes Herunterfahren
+UpsStatus_FSD,fr-FR,Arrêt forcé
+UpsStatus_FSD,ru-RU,Принудительное отключение
+UpsStatus_FSD,uk-UA,Примусове вимкнення
+UpsStatus_FSD,zh-CN,强制关机
+UpsStatus_FSD,zh-TW,強制關機
+UpsStatus_HB,de-DE,Hohe Akkuladung
+UpsStatus_HB,fr-FR,Charge élevée
+UpsStatus_HB,ru-RU,Высокий заряд батареи
+UpsStatus_HB,uk-UA,Високий заряд батареї
+UpsStatus_HB,zh-CN,电池电量过高
+UpsStatus_HB,zh-TW,電池電量過高
+UpsStatus_OB,de-DE,Im Akkubetrieb
+UpsStatus_OB,fr-FR,Sur batterie
+UpsStatus_OB,ru-RU,От батареи
+UpsStatus_OB,uk-UA,Від батареї
+UpsStatus_OB,zh-CN,电池供电中
+UpsStatus_OB,zh-TW,電池供電中
+UpsStatus_OFF,de-DE,Ausgang aus
+UpsStatus_OFF,fr-FR,Sortie coupée
+UpsStatus_OFF,ru-RU,Выход отключён
+UpsStatus_OFF,uk-UA,Вихід вимкнено
+UpsStatus_OFF,zh-CN,输出已关闭
+UpsStatus_OFF,zh-TW,輸出已關閉
+UpsStatus_OVER,de-DE,Überlastung
+UpsStatus_OVER,fr-FR,Surcharge
+UpsStatus_OVER,ru-RU,Перегрузка
+UpsStatus_OVER,uk-UA,Перевантаження
+UpsStatus_OVER,zh-CN,过载
+UpsStatus_OVER,zh-TW,過載
+UpsStatus_RB,de-DE,Akku ersetzen
+UpsStatus_RB,fr-FR,Remplacer la batterie
+UpsStatus_RB,ru-RU,Требуется замена батареи
+UpsStatus_RB,uk-UA,Потрібна заміна батареї
+UpsStatus_RB,zh-CN,需要更换电池
+UpsStatus_RB,zh-TW,需要更換電池
+UpsStatus_TEST,de-DE,Test läuft
+UpsStatus_TEST,fr-FR,Test en cours
+UpsStatus_TEST,ru-RU,Идёт тестирование
+UpsStatus_TEST,uk-UA,Виконується тестування
+UpsStatus_TEST,zh-CN,正在测试
+UpsStatus_TEST,zh-TW,正在測試
+UpsStatus_TRIM,de-DE,Spannung wird reduziert
+UpsStatus_TRIM,fr-FR,Réduction de tension
+UpsStatus_TRIM,ru-RU,Понижение напряжения
+UpsStatus_TRIM,uk-UA,Зниження напруги
+UpsStatus_TRIM,zh-CN,降压
+UpsStatus_TRIM,zh-TW,降壓
 Validation_CalibrationMinLessThanMax,de-DE,Der Minimalwert muss kleiner als der Maximalwert sein.
 Validation_CalibrationMinLessThanMax,fr-FR,La valeur minimale doit être inférieure à la valeur maximale.
 Validation_CalibrationMinLessThanMax,ru-RU,Минимальное значение должно быть меньше максимального.
@@ -240,9 +432,87 @@ Validation_RuntimeFloorRange,ru-RU,Порог времени работы дол
 Validation_RuntimeFloorRange,uk-UA,Межа часу роботи має бути від 0 до 3600 секунд.
 Validation_RuntimeFloorRange,zh-CN,运行时间下限必须介于 0 到 3600 秒之间。
 Validation_RuntimeFloorRange,zh-TW,運行時間下限必須介於 0 到 3600 秒之間。
+Vars_Clipboard_Error,de-DE,Beim Kopieren der USV-Daten in die Zwischenablage ist ein Fehler aufgetreten: {0}
+Vars_Clipboard_Error,fr-FR,Erreur lors de la copie des données de l'onduleur dans le presse-papiers : {0}
+Vars_Clipboard_Error,ru-RU,Ошибка при копировании данных ИБП в буфер обмена: {0}
+Vars_Clipboard_Error,uk-UA,Помилка під час копіювання даних ДБЖ у буфер обміну: {0}
+Vars_Clipboard_Error,zh-CN,将 UPS 数据复制到剪贴板时出错：{0}
+Vars_Clipboard_Error,zh-TW,將 UPS 資料複製到剪貼簿時發生錯誤：{0}
+Vars_Clipboard_Error_Title,de-DE,Fehler in der Zwischenablage
+Vars_Clipboard_Error_Title,fr-FR,Erreur du presse-papiers
+Vars_Clipboard_Error_Title,ru-RU,Ошибка буфера обмена
+Vars_Clipboard_Error_Title,uk-UA,Помилка буфера обміну
+Vars_Clipboard_Error_Title,zh-CN,剪贴板错误
+Vars_Clipboard_Error_Title,zh-TW,剪貼簿錯誤
+Vars_Clipboard_Success,de-DE,USV-Daten wurden erfolgreich in die Zwischenablage kopiert.
+Vars_Clipboard_Success,fr-FR,Les données de l'onduleur ont été copiées dans le presse-papiers.
+Vars_Clipboard_Success,ru-RU,Данные ИБП успешно скопированы в буфер обмена.
+Vars_Clipboard_Success,uk-UA,Дані ДБЖ успішно скопійовано в буфер обміну.
+Vars_Clipboard_Success,zh-CN,已成功将 UPS 数据复制到剪贴板。
+Vars_Clipboard_Success,zh-TW,已成功將 UPS 資料複製到剪貼簿。
+Vars_Close_ToolTip,de-DE,Dieses Fenster schließen.
+Vars_Close_ToolTip,fr-FR,Fermer cette fenêtre.
+Vars_Close_ToolTip,ru-RU,Закрыть это окно.
+Vars_Close_ToolTip,uk-UA,Закрити це вікно.
+Vars_Close_ToolTip,zh-CN,关闭此窗口。
+Vars_Close_ToolTip,zh-TW,關閉此視窗。
+Vars_Copy_ToolTip,de-DE,Alle Informationen in die Zwischenablage kopieren.
+Vars_Copy_ToolTip,fr-FR,Copier toutes les informations dans le presse-papiers.
+Vars_Copy_ToolTip,ru-RU,Скопировать все данные в буфер обмена.
+Vars_Copy_ToolTip,uk-UA,Скопіювати всі дані в буфер обміну.
+Vars_Copy_ToolTip,zh-CN,将所有信息复制到剪贴板。
+Vars_Copy_ToolTip,zh-TW,將所有資訊複製到剪貼簿。
 Vars_Filter_Watermark,de-DE,Variablen filtern…
 Vars_Filter_Watermark,fr-FR,Filtrer les variables…
 Vars_Filter_Watermark,ru-RU,Фильтр переменных…
 Vars_Filter_Watermark,uk-UA,Фільтр змінних…
 Vars_Filter_Watermark,zh-CN,筛选变量…
 Vars_Filter_Watermark,zh-TW,篩選變數…
+Vars_LoadError_Text,de-DE,Beim Abrufen der Variablen von der USV ist ein Fehler aufgetreten: {0}
+Vars_LoadError_Text,fr-FR,Erreur lors de la récupération des variables de l'onduleur : {0}
+Vars_LoadError_Text,ru-RU,Ошибка при получении переменных от ИБП: {0}
+Vars_LoadError_Text,uk-UA,Помилка під час отримання змінних від ДБЖ: {0}
+Vars_LoadError_Text,zh-CN,尝试从 UPS 获取变量时出错：{0}
+Vars_LoadError_Text,zh-TW,嘗試從 UPS 取得變數時發生錯誤：{0}
+Vars_LoadError_Title,de-DE,Fehler aufgetreten
+Vars_LoadError_Title,fr-FR,Une erreur s'est produite
+Vars_LoadError_Title,ru-RU,Произошла ошибка
+Vars_LoadError_Title,uk-UA,Виникла помилка
+Vars_LoadError_Title,zh-CN,发生错误
+Vars_LoadError_Title,zh-TW,發生錯誤
+Vars_NotConnected,de-DE,"Mit dem NUT-Server verbinden, um USV-Variablen anzuzeigen."
+Vars_NotConnected,fr-FR,Connectez-vous au serveur NUT pour afficher les variables de l'onduleur.
+Vars_NotConnected,ru-RU,"Подключитесь к серверу NUT, чтобы просмотреть переменные ИБП."
+Vars_NotConnected,uk-UA,"Підключіться до сервера NUT, щоб переглянути змінні ДБЖ."
+Vars_NotConnected,zh-CN,请连接到 NUT 服务器以查看 UPS 变量。
+Vars_NotConnected,zh-TW,請連線至 NUT 伺服器以檢視 UPS 變數。
+Vars_Reload_ToolTip,de-DE,Lädt alle Informationen von der USV neu.
+Vars_Reload_ToolTip,fr-FR,Recharge toutes les informations depuis l'onduleur.
+Vars_Reload_ToolTip,ru-RU,Обновляет все данные от ИБП.
+Vars_Reload_ToolTip,uk-UA,Повторно завантажує всі дані від ДБЖ.
+Vars_Reload_ToolTip,zh-CN,重新加载来自 UPS 的所有信息。
+Vars_Reload_ToolTip,zh-TW,重新載入來自 UPS 的所有資訊。
+Vars_SaveFile_Error,de-DE,Beim Speichern der USV-Daten in eine Datei ist ein Fehler aufgetreten: {0}
+Vars_SaveFile_Error,fr-FR,Erreur lors de l'enregistrement des données de l'onduleur dans un fichier : {0}
+Vars_SaveFile_Error,ru-RU,Ошибка при сохранении данных ИБП в файл: {0}
+Vars_SaveFile_Error,uk-UA,Помилка під час збереження даних ДБЖ у файл: {0}
+Vars_SaveFile_Error,zh-CN,将 UPS 数据保存到文件时出错：{0}
+Vars_SaveFile_Error,zh-TW,將 UPS 資料儲存到檔案時發生錯誤：{0}
+Vars_SaveFile_Success,de-DE,USV-Daten wurden erfolgreich in Datei gespeichert: {0}
+Vars_SaveFile_Success,fr-FR,Les données de l'onduleur ont été enregistrées dans le fichier : {0}
+Vars_SaveFile_Success,ru-RU,Данные ИБП успешно сохранены в файл: {0}
+Vars_SaveFile_Success,uk-UA,Дані ДБЖ успішно збережено у файл: {0}
+Vars_SaveFile_Success,zh-CN,已成功将 UPS 数据保存到文件：{0}
+Vars_SaveFile_Success,zh-TW,已成功將 UPS 資料儲存到檔案：{0}
+Vars_SaveFile_Title,de-DE,USV-Daten in Datei speichern
+Vars_SaveFile_Title,fr-FR,Enregistrer les données de l'onduleur dans un fichier
+Vars_SaveFile_Title,ru-RU,Сохранить данные ИБП в файл
+Vars_SaveFile_Title,uk-UA,Зберегти дані ДБЖ у файл
+Vars_SaveFile_Title,zh-CN,将 UPS 数据保存到文件
+Vars_SaveFile_Title,zh-TW,將 UPS 資料儲存到檔案
+Vars_Save_ToolTip,de-DE,Alle Informationen in eine Datei speichern.
+Vars_Save_ToolTip,fr-FR,Enregistrer toutes les informations dans un fichier.
+Vars_Save_ToolTip,ru-RU,Сохранить все данные в файл.
+Vars_Save_ToolTip,uk-UA,Зберегти всі дані у файл.
+Vars_Save_ToolTip,zh-CN,将所有信息保存到文件。
+Vars_Save_ToolTip,zh-TW,將所有資訊儲存到檔案。

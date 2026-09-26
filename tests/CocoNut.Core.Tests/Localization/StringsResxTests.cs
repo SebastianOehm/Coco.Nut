@@ -104,10 +104,10 @@ public sealed class StringsResxTests
     [Fact]
     public void TranslationCoverage_IsReportedPerCulture()
     {
-        // This is a report, not a gate: a culture legitimately covers less than 100% of the
-        // neutral keys (missing entries fall back to English at runtime), so no minimum
-        // percentage is enforced here. See tools/TranslationImport for the same report
-        // computed straight from the WinNUT checkout.
+        // This is a report, not a gate (100% is not required - missing entries legitimately
+        // fall back to English at runtime); see CultureResx_MeetsMinimumCoverageFloor below for
+        // the regression gate, and tools/TranslationImport for the same report computed straight
+        // from the WinNUT checkout.
         var neutral = LoadValues(NeutralResxPath);
         var total = neutral.Count;
         Assert.NotEqual(0, total);
@@ -119,6 +119,37 @@ public sealed class StringsResxTests
             _output.WriteLine(
                 $"{culture}: {translated.Count}/{total} keys translated ({coverage:F1}%)");
         }
+    }
+
+    /// <summary>
+    /// Regression guard: a WP-B follow-up (commit 51b5f35) rewrote new_strings.csv's generator
+    /// input wholesale instead of editing it, and silently dropped 15 keys' worth of translations
+    /// (90 strings) from every culture in the process - a plain per-culture diff against the
+    /// previous commit was the only thing that caught it. This floor makes a drop like that fail
+    /// the build instead. 90% is set well below every culture's actual coverage (91.4% for
+    /// zh-TW, the lowest, up to 95.7% for de-DE, as of the fix - see
+    /// tools/TranslationImport/README.md's "Regression guard" section) so it only trips on a
+    /// real, sizeable loss, not on the ordinary trickle of not-yet-translated new keys.
+    /// </summary>
+    [Theory]
+    [MemberData(nameof(CultureNames))]
+    public void CultureResx_MeetsMinimumCoverageFloor(string culture)
+    {
+        const double MinimumCoveragePercent = 90.0;
+
+        var neutral = LoadValues(NeutralResxPath);
+        var translated = LoadValues(CultureResxPath(culture));
+        var coverage = 100.0 * translated.Count / neutral.Count;
+
+        Assert.True(
+            coverage >= MinimumCoveragePercent,
+            $"{culture} translates only {translated.Count}/{neutral.Count} keys ({coverage:F1}%), "
+                + $"below the {MinimumCoveragePercent:F0}% regression floor. If this drop is "
+                + "deliberate (e.g. a batch of brand-new keys was just added and not yet "
+                + "translated), lower the floor here and explain why, and update "
+                + "tools/TranslationImport/README.md's \"Regression guard\" section to match; "
+                + "otherwise restore the missing translations via new_strings.csv, not by "
+                + "hand-editing the generated Strings.<culture>.resx files.");
     }
 
     private static string NeutralResxPath => Path.Combine(LocalizationDirectory, "Strings.resx");

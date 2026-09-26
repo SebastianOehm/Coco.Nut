@@ -12,6 +12,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_Acknowledgements" xml:space="preserve">
+    <value>Благодарности</value>
+  </data>
   <data name="About_Description" xml:space="preserve">
     <value>Отслеживает ИБП через сервер Network UPS Tools (NUT) и выключает компьютер при низком заряде батареи.</value>
   </data>
@@ -48,8 +51,14 @@
   <data name="Common_Ok" xml:space="preserve">
     <value>Ок</value>
   </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
   <data name="Common_Yes" xml:space="preserve">
     <value>Да</value>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Как в системе</value>
   </data>
   <data name="Log_ApplicationShutdownAt" xml:space="preserve">
     <value>Программное отключение в {0}.</value>
@@ -90,11 +99,23 @@
   <data name="Log_ShutdownCancelled" xml:space="preserve">
     <value>Отмена процесса отключения</value>
   </data>
+  <data name="Log_ShutdownExecuting" xml:space="preserve">
+    <value>Выполняется действие остановки: {0}</value>
+  </data>
+  <data name="Log_ShutdownExecuting_DryRun" xml:space="preserve">
+    <value>Выполняется действие остановки: {0} (пробный запуск)</value>
+  </data>
   <data name="Log_ShutdownStart" xml:space="preserve">
     <value>Достигнуты условия для запуска процесса отключения</value>
   </data>
   <data name="Log_UpdateAvailable" xml:space="preserve">
     <value>Доступна версия {0}</value>
+  </data>
+  <data name="Main_BatteryChargeEstimatedNote" xml:space="preserve">
+    <value>(приблизительно)</value>
+  </data>
+  <data name="Main_BatteryRuntimeEstimatedNote" xml:space="preserve">
+    <value>(приблизительно)</value>
   </data>
   <data name="Main_Flag_BatteryLow" xml:space="preserve">
     <value>ИБП Низкий заряд батареи</value>
@@ -182,6 +203,9 @@
   </data>
   <data name="Main_Status_Connected" xml:space="preserve">
     <value>Подключено</value>
+  </data>
+  <data name="Main_Status_Connecting" xml:space="preserve">
+    <value>Подключение…</value>
   </data>
   <data name="Main_Status_EnteringSleep" xml:space="preserve">
     <value>Система переходит в режим сна. Coco.Nut отключится.</value>
@@ -350,6 +374,9 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Prefs_Logging_DeleteLog" xml:space="preserve">
     <value>Удалить файлы журнала</value>
   </data>
+  <data name="Prefs_Logging_DeleteLog_ConfirmMessage" xml:space="preserve">
+    <value>Удалить все файлы журнала Coco.Nut? Это действие невозможно отменить.</value>
+  </data>
   <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
     <value>Удалить файл лога</value>
   </data>
@@ -362,6 +389,9 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
     <value>Уровень логирования.</value>
   </data>
+  <data name="Prefs_Logging_Tab" xml:space="preserve">
+    <value>Журналирование</value>
+  </data>
   <data name="Prefs_Logging_ViewLog" xml:space="preserve">
     <value>Открыть файл журнала</value>
   </data>
@@ -373,6 +403,12 @@ IPV4 / IPV6 / доменное имя.</value>
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>Свернуть в трей при закрытии.</value>
+  </data>
+  <data name="Prefs_Misc_Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
+    <value>Изменения вступят в силу после перезапуска Coco.Nut.</value>
   </data>
   <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
     <value>Сворачивать в трей</value>
@@ -452,6 +488,9 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Prefs_Power_Tab" xml:space="preserve">
     <value>Настройка отключения</value>
   </data>
+  <data name="Prefs_SaveError_Title" xml:space="preserve">
+    <value>Ошибка при сохранении</value>
+  </data>
   <data name="Prefs_Title" xml:space="preserve">
     <value>Опции</value>
   </data>
@@ -486,6 +525,9 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Shutdown_Countdown" xml:space="preserve">
     <value>{0} начнётся через {1}.</value>
   </data>
+  <data name="Shutdown_Failed_Notify" xml:space="preserve">
+    <value>Действие остановки не выполнено: {0}</value>
+  </data>
   <data name="Shutdown_GraceButton" xml:space="preserve">
     <value>Время задержки</value>
   </data>
@@ -500,6 +542,9 @@ IPV4 / IPV6 / доменное имя.</value>
   </data>
   <data name="Shutdown_Reason_Runtime" xml:space="preserve">
     <value>Оставшееся время работы {0} равно или меньше порога {1}.</value>
+  </data>
+  <data name="Shutdown_Reason_UpsLowBattery" xml:space="preserve">
+    <value>ИБП сообщает о критическом состоянии батареи (ups.status содержит OB и LB).</value>
   </data>
   <data name="Shutdown_Title" xml:space="preserve">
     <value>Отключение в процессе</value>
@@ -552,17 +597,68 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Update_NoUpdate" xml:space="preserve">
     <value>Вы используете последнюю версию.</value>
   </data>
+  <data name="Update_PublishedDate" xml:space="preserve">
+    <value>Опубликовано:</value>
+  </data>
+  <data name="Update_ReleaseName" xml:space="preserve">
+    <value>Релиз:</value>
+  </data>
   <data name="Update_ReleaseNotes" xml:space="preserve">
     <value>Заметки о выпуске</value>
+  </data>
+  <data name="UpsStatus_ALARM" xml:space="preserve">
+    <value>Тревога</value>
+  </data>
+  <data name="UpsStatus_BOOST" xml:space="preserve">
+    <value>Повышение напряжения</value>
+  </data>
+  <data name="UpsStatus_BYPASS" xml:space="preserve">
+    <value>Байпас</value>
   </data>
   <data name="UpsStatus_CAL" xml:space="preserve">
     <value>Калибровка</value>
   </data>
+  <data name="UpsStatus_CHRG" xml:space="preserve">
+    <value>Заряжается</value>
+  </data>
+  <data name="UpsStatus_COMMLOST" xml:space="preserve">
+    <value>Связь потеряна</value>
+  </data>
+  <data name="UpsStatus_DISCHRG" xml:space="preserve">
+    <value>Разряжается</value>
+  </data>
+  <data name="UpsStatus_ECO" xml:space="preserve">
+    <value>Эко-режим</value>
+  </data>
+  <data name="UpsStatus_FSD" xml:space="preserve">
+    <value>Принудительное отключение</value>
+  </data>
+  <data name="UpsStatus_HB" xml:space="preserve">
+    <value>Высокий заряд батареи</value>
+  </data>
   <data name="UpsStatus_LB" xml:space="preserve">
     <value>Низкий заряд батареи</value>
   </data>
+  <data name="UpsStatus_OB" xml:space="preserve">
+    <value>От батареи</value>
+  </data>
+  <data name="UpsStatus_OFF" xml:space="preserve">
+    <value>Выход отключён</value>
+  </data>
   <data name="UpsStatus_OL" xml:space="preserve">
     <value>От сети</value>
+  </data>
+  <data name="UpsStatus_OVER" xml:space="preserve">
+    <value>Перегрузка</value>
+  </data>
+  <data name="UpsStatus_RB" xml:space="preserve">
+    <value>Требуется замена батареи</value>
+  </data>
+  <data name="UpsStatus_TEST" xml:space="preserve">
+    <value>Идёт тестирование</value>
+  </data>
+  <data name="UpsStatus_TRIM" xml:space="preserve">
+    <value>Понижение напряжения</value>
   </data>
   <data name="Validation_CalibrationMinLessThanMax" xml:space="preserve">
     <value>Минимальное значение должно быть меньше максимального.</value>
@@ -585,6 +681,21 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Validation_RuntimeFloorRange" xml:space="preserve">
     <value>Порог времени работы должен быть от 0 до 3600 секунд.</value>
   </data>
+  <data name="Vars_Clipboard_Error" xml:space="preserve">
+    <value>Ошибка при копировании данных ИБП в буфер обмена: {0}</value>
+  </data>
+  <data name="Vars_Clipboard_Error_Title" xml:space="preserve">
+    <value>Ошибка буфера обмена</value>
+  </data>
+  <data name="Vars_Clipboard_Success" xml:space="preserve">
+    <value>Данные ИБП успешно скопированы в буфер обмена.</value>
+  </data>
+  <data name="Vars_Close_ToolTip" xml:space="preserve">
+    <value>Закрыть это окно.</value>
+  </data>
+  <data name="Vars_Copy_ToolTip" xml:space="preserve">
+    <value>Скопировать все данные в буфер обмена.</value>
+  </data>
   <data name="Vars_Description" xml:space="preserve">
     <value>Описание:</value>
   </data>
@@ -594,11 +705,35 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Vars_GroupTitle" xml:space="preserve">
     <value>Свойства</value>
   </data>
+  <data name="Vars_LoadError_Text" xml:space="preserve">
+    <value>Ошибка при получении переменных от ИБП: {0}</value>
+  </data>
+  <data name="Vars_LoadError_Title" xml:space="preserve">
+    <value>Произошла ошибка</value>
+  </data>
   <data name="Vars_Name" xml:space="preserve">
     <value>Название:</value>
   </data>
+  <data name="Vars_NotConnected" xml:space="preserve">
+    <value>Подключитесь к серверу NUT, чтобы просмотреть переменные ИБП.</value>
+  </data>
   <data name="Vars_Reload" xml:space="preserve">
     <value>Обновить</value>
+  </data>
+  <data name="Vars_Reload_ToolTip" xml:space="preserve">
+    <value>Обновляет все данные от ИБП.</value>
+  </data>
+  <data name="Vars_SaveFile_Error" xml:space="preserve">
+    <value>Ошибка при сохранении данных ИБП в файл: {0}</value>
+  </data>
+  <data name="Vars_SaveFile_Success" xml:space="preserve">
+    <value>Данные ИБП успешно сохранены в файл: {0}</value>
+  </data>
+  <data name="Vars_SaveFile_Title" xml:space="preserve">
+    <value>Сохранить данные ИБП в файл</value>
+  </data>
+  <data name="Vars_Save_ToolTip" xml:space="preserve">
+    <value>Сохранить все данные в файл.</value>
   </data>
   <data name="Vars_Title" xml:space="preserve">
     <value>Список переменных ИБП</value>

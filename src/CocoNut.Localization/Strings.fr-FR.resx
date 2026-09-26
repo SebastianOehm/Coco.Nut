@@ -12,6 +12,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_Acknowledgements" xml:space="preserve">
+    <value>Remerciements</value>
+  </data>
   <data name="About_Description" xml:space="preserve">
     <value>Surveille un onduleur via un serveur Network UPS Tools (NUT) et arrête l'ordinateur lorsque la batterie est faible.</value>
   </data>
@@ -48,8 +51,14 @@
   <data name="Common_Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
   <data name="Common_Yes" xml:space="preserve">
     <value>Oui</value>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Système par défaut</value>
   </data>
   <data name="Log_ApplicationShutdownAt" xml:space="preserve">
     <value>Application arrêtée à {0}.</value>
@@ -90,11 +99,23 @@
   <data name="Log_ShutdownCancelled" xml:space="preserve">
     <value>Annulation du Processus d'Extinction</value>
   </data>
+  <data name="Log_ShutdownExecuting" xml:space="preserve">
+    <value>Exécution de l'action d'arrêt : {0}</value>
+  </data>
+  <data name="Log_ShutdownExecuting_DryRun" xml:space="preserve">
+    <value>Exécution de l'action d'arrêt : {0} (simulation)</value>
+  </data>
   <data name="Log_ShutdownStart" xml:space="preserve">
     <value>Conditions atteintes pour le lancement du Processus d'Extinction</value>
   </data>
   <data name="Log_UpdateAvailable" xml:space="preserve">
     <value>Version {0} disponible</value>
+  </data>
+  <data name="Main_BatteryChargeEstimatedNote" xml:space="preserve">
+    <value>(estimé)</value>
+  </data>
+  <data name="Main_BatteryRuntimeEstimatedNote" xml:space="preserve">
+    <value>(estimé)</value>
   </data>
   <data name="Main_Flag_BatteryLow" xml:space="preserve">
     <value>Batteries Basse UPS</value>
@@ -182,6 +203,9 @@
   </data>
   <data name="Main_Status_Connected" xml:space="preserve">
     <value>Connecté</value>
+  </data>
+  <data name="Main_Status_Connecting" xml:space="preserve">
+    <value>Connexion…</value>
   </data>
   <data name="Main_Status_EnteringSleep" xml:space="preserve">
     <value>Le système passe en veille. Coco.Nut va se déconnecter.</value>
@@ -351,6 +375,9 @@ Valeur acceptée: nom de l'onduleur configuré dans le serveur Nut.</value>
   <data name="Prefs_Logging_DeleteLog" xml:space="preserve">
     <value>Supprimer les fichiers journaux</value>
   </data>
+  <data name="Prefs_Logging_DeleteLog_ConfirmMessage" xml:space="preserve">
+    <value>Supprimer tous les fichiers journaux de Coco.Nut ? Cette action est irréversible.</value>
+  </data>
   <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
     <value>Supprimer le fichier journal.</value>
   </data>
@@ -363,6 +390,9 @@ Valeur acceptée: nom de l'onduleur configuré dans le serveur Nut.</value>
   <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
     <value>Niveau de Journalisation</value>
   </data>
+  <data name="Prefs_Logging_Tab" xml:space="preserve">
+    <value>Journalisation</value>
+  </data>
   <data name="Prefs_Logging_ViewLog" xml:space="preserve">
     <value>Ouvrir le fichier journal</value>
   </data>
@@ -374,6 +404,12 @@ Valeur acceptée: nom de l'onduleur configuré dans le serveur Nut.</value>
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>Envoie dans le Systray à la fermeture.</value>
+  </data>
+  <data name="Prefs_Misc_Language" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
+    <value>Les modifications prennent effet après le redémarrage de Coco.Nut.</value>
   </data>
   <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
     <value>Réduire au Systray</value>
@@ -458,6 +494,9 @@ Valeur acceptée: valeur numérique de 0 à 3600.</value>
   <data name="Prefs_Power_Tab" xml:space="preserve">
     <value>Options d'Arrêt</value>
   </data>
+  <data name="Prefs_SaveError_Title" xml:space="preserve">
+    <value>Erreur lors de l'enregistrement</value>
+  </data>
   <data name="Prefs_Title" xml:space="preserve">
     <value>Préférences</value>
   </data>
@@ -492,6 +531,9 @@ Temps restant : {1}</value>
   <data name="Shutdown_Countdown" xml:space="preserve">
     <value>{0} commencera dans {1}.</value>
   </data>
+  <data name="Shutdown_Failed_Notify" xml:space="preserve">
+    <value>L'action d'arrêt a échoué : {0}</value>
+  </data>
   <data name="Shutdown_GraceButton" xml:space="preserve">
     <value>Temps de grâce</value>
   </data>
@@ -506,6 +548,9 @@ Temps restant : {1}</value>
   </data>
   <data name="Shutdown_Reason_Runtime" xml:space="preserve">
     <value>Le temps restant ({0}) est égal ou inférieur à la limite de {1}.</value>
+  </data>
+  <data name="Shutdown_Reason_UpsLowBattery" xml:space="preserve">
+    <value>L'onduleur signale un état de batterie critique (ups.status contient OB et LB).</value>
   </data>
   <data name="Shutdown_Title" xml:space="preserve">
     <value>Extinction en cours</value>
@@ -558,18 +603,69 @@ Temps restant : {1}</value>
   <data name="Update_NoUpdate" xml:space="preserve">
     <value>Vous utilisez la dernière version.</value>
   </data>
+  <data name="Update_PublishedDate" xml:space="preserve">
+    <value>Publié le :</value>
+  </data>
+  <data name="Update_ReleaseName" xml:space="preserve">
+    <value>Version :</value>
+  </data>
   <data name="Update_ReleaseNotes" xml:space="preserve">
     <value>Notes de version</value>
+  </data>
+  <data name="UpsStatus_ALARM" xml:space="preserve">
+    <value>Alarme</value>
+  </data>
+  <data name="UpsStatus_BOOST" xml:space="preserve">
+    <value>Augmentation de tension</value>
+  </data>
+  <data name="UpsStatus_BYPASS" xml:space="preserve">
+    <value>Bypass</value>
   </data>
   <data name="UpsStatus_CAL" xml:space="preserve">
     <value>Calibrage
 </value>
   </data>
+  <data name="UpsStatus_CHRG" xml:space="preserve">
+    <value>En charge</value>
+  </data>
+  <data name="UpsStatus_COMMLOST" xml:space="preserve">
+    <value>Communication perdue</value>
+  </data>
+  <data name="UpsStatus_DISCHRG" xml:space="preserve">
+    <value>En décharge</value>
+  </data>
+  <data name="UpsStatus_ECO" xml:space="preserve">
+    <value>Mode éco</value>
+  </data>
+  <data name="UpsStatus_FSD" xml:space="preserve">
+    <value>Arrêt forcé</value>
+  </data>
+  <data name="UpsStatus_HB" xml:space="preserve">
+    <value>Charge élevée</value>
+  </data>
   <data name="UpsStatus_LB" xml:space="preserve">
     <value>Batterie Basse</value>
   </data>
+  <data name="UpsStatus_OB" xml:space="preserve">
+    <value>Sur batterie</value>
+  </data>
+  <data name="UpsStatus_OFF" xml:space="preserve">
+    <value>Sortie coupée</value>
+  </data>
   <data name="UpsStatus_OL" xml:space="preserve">
     <value>Sur Secteur</value>
+  </data>
+  <data name="UpsStatus_OVER" xml:space="preserve">
+    <value>Surcharge</value>
+  </data>
+  <data name="UpsStatus_RB" xml:space="preserve">
+    <value>Remplacer la batterie</value>
+  </data>
+  <data name="UpsStatus_TEST" xml:space="preserve">
+    <value>Test en cours</value>
+  </data>
+  <data name="UpsStatus_TRIM" xml:space="preserve">
+    <value>Réduction de tension</value>
   </data>
   <data name="Validation_CalibrationMinLessThanMax" xml:space="preserve">
     <value>La valeur minimale doit être inférieure à la valeur maximale.</value>
@@ -592,6 +688,21 @@ Temps restant : {1}</value>
   <data name="Validation_RuntimeFloorRange" xml:space="preserve">
     <value>Le seuil d'autonomie doit être compris entre 0 et 3600 secondes.</value>
   </data>
+  <data name="Vars_Clipboard_Error" xml:space="preserve">
+    <value>Erreur lors de la copie des données de l'onduleur dans le presse-papiers : {0}</value>
+  </data>
+  <data name="Vars_Clipboard_Error_Title" xml:space="preserve">
+    <value>Erreur du presse-papiers</value>
+  </data>
+  <data name="Vars_Clipboard_Success" xml:space="preserve">
+    <value>Les données de l'onduleur ont été copiées dans le presse-papiers.</value>
+  </data>
+  <data name="Vars_Close_ToolTip" xml:space="preserve">
+    <value>Fermer cette fenêtre.</value>
+  </data>
+  <data name="Vars_Copy_ToolTip" xml:space="preserve">
+    <value>Copier toutes les informations dans le presse-papiers.</value>
+  </data>
   <data name="Vars_Description" xml:space="preserve">
     <value>Description :</value>
   </data>
@@ -601,11 +712,35 @@ Temps restant : {1}</value>
   <data name="Vars_GroupTitle" xml:space="preserve">
     <value>Propriétés</value>
   </data>
+  <data name="Vars_LoadError_Text" xml:space="preserve">
+    <value>Erreur lors de la récupération des variables de l'onduleur : {0}</value>
+  </data>
+  <data name="Vars_LoadError_Title" xml:space="preserve">
+    <value>Une erreur s'est produite</value>
+  </data>
   <data name="Vars_Name" xml:space="preserve">
     <value>Nom :</value>
   </data>
+  <data name="Vars_NotConnected" xml:space="preserve">
+    <value>Connectez-vous au serveur NUT pour afficher les variables de l'onduleur.</value>
+  </data>
   <data name="Vars_Reload" xml:space="preserve">
     <value>Recharger</value>
+  </data>
+  <data name="Vars_Reload_ToolTip" xml:space="preserve">
+    <value>Recharge toutes les informations depuis l'onduleur.</value>
+  </data>
+  <data name="Vars_SaveFile_Error" xml:space="preserve">
+    <value>Erreur lors de l'enregistrement des données de l'onduleur dans un fichier : {0}</value>
+  </data>
+  <data name="Vars_SaveFile_Success" xml:space="preserve">
+    <value>Les données de l'onduleur ont été enregistrées dans le fichier : {0}</value>
+  </data>
+  <data name="Vars_SaveFile_Title" xml:space="preserve">
+    <value>Enregistrer les données de l'onduleur dans un fichier</value>
+  </data>
+  <data name="Vars_Save_ToolTip" xml:space="preserve">
+    <value>Enregistrer toutes les informations dans un fichier.</value>
   </data>
   <data name="Vars_Title" xml:space="preserve">
     <value>Liste des Variables de L'UPS</value>
