@@ -56,7 +56,7 @@ public sealed partial class ShutdownViewModel : ObservableObject, IDisposable
         _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 
         TitleText = dryRun ? $"{Strings.Shutdown_Title} [DRY RUN]" : Strings.Shutdown_Title;
-        StopActionText = StopActionTextFor(stopAction);
+        StopActionText = StopActionFormatter.ToLocalizedText(stopAction);
         ReasonText = BuildReasonText(reason, batteryChargeFloor, runtimeFloorSeconds, readingAtStart);
         CanShowGraceButton = allowExtend;
 
@@ -137,13 +137,6 @@ public sealed partial class ShutdownViewModel : ObservableObject, IDisposable
         var runtimeText = RuntimeFormatter.FormatRuntime(reading?.BatteryRuntime);
         BatteryStatusText = string.Format(CultureInfo.CurrentCulture, Strings.Shutdown_BatteryStatus, chargeText, runtimeText);
     }
-
-    private static string StopActionTextFor(StopAction action) => action switch
-    {
-        StopAction.Suspend => Strings.StopAction_Suspend,
-        StopAction.Hibernate => Strings.StopAction_Hibernate,
-        _ => Strings.StopAction_Shutdown,
-    };
 
     private static string BuildReasonText(ShutdownReason reason, int chargeFloor, int runtimeFloorSeconds, UpsReading? reading) => reason switch
     {

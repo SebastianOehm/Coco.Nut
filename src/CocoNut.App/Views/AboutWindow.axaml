@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
+        xmlns:vm="clr-namespace:CocoNut.App.ViewModels"
+        x:Class="CocoNut.App.Views.AboutWindow"
+        x:DataType="vm:AboutViewModel"
+        Icon="/Assets/coconut.ico"
+        Title="{x:Static loc:Strings.About_Title}"
+        Width="420" SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner">
+  <StackPanel Margin="20" Spacing="12">
+    <TextBlock Text="{x:Static loc:Strings.AppName}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" />
+    <TextBlock Text="{Binding VersionText}" HorizontalAlignment="Center" />
+    <TextBlock Text="{x:Static loc:Strings.About_Description}" TextWrapping="Wrap" TextAlignment="Center" />
+    <Button Content="{x:Static loc:Strings.About_ProjectPage}" Command="{Binding OpenProjectPageCommand}"
+            HorizontalAlignment="Center" Classes="accent" />
+    <Separator />
+    <TextBlock Text="{x:Static loc:Strings.About_Acknowledgements}" FontWeight="Bold" />
+    <TextBlock Text="{Binding AcknowledgementsText}" TextWrapping="Wrap" FontSize="12" Opacity="0.85" />
+    <Separator />
+    <TextBlock Text="{Binding CopyrightText}" TextWrapping="Wrap" FontSize="11" Opacity="0.7" />
+    <ScrollViewer MaxHeight="120">
+      <TextBlock Text="{x:Static loc:Strings.About_License}" TextWrapping="Wrap" FontSize="10" Opacity="0.6" />
+    </ScrollViewer>
+    <Button Content="{x:Static loc:Strings.Common_Close}" Click="OnCloseClick" HorizontalAlignment="Right" />
+  </StackPanel>
+</Window>

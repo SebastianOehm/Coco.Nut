@@ -83,9 +83,15 @@ public sealed class AppHost : IAsyncDisposable
 
         services.AddSingleton<IUiDispatcher, AvaloniaUiDispatcher>();
         services.AddSingleton<INotificationService, PopupNotificationService>();
+        services.AddSingleton<IShellLauncher, ShellLauncher>();
 
         services.AddSingleton<WindowNavigator>();
         services.AddSingleton<IWindowNavigator>(sp => sp.GetRequiredService<WindowNavigator>());
+
+        // Transient: the navigator resolves a fresh instance every time a secondary window is (re-)opened.
+        services.AddTransient<SettingsViewModel>();
+        services.AddTransient<UpsVariablesViewModel>();
+        services.AddTransient<AboutViewModel>();
 
         services.AddSingleton(sp => new TrayIconController(
             sp.GetRequiredService<IUpsMonitorEvents>(),

@@ -31,6 +31,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see https://www.gnu.org/licenses/.</value>
     <comment>About window: GNU GPLv3 notice. WinNUT never translated this text in any language (its About_Gui.&lt;culture&gt;.resx files are empty); kept English-only for the same reason.</comment>
   </data>
+  <data name="About_Acknowledgements" xml:space="preserve">
+    <value>Acknowledgements</value>
+    <comment>About window: heading above the short list of third-party libraries/projects Coco.Nut is built on or ported from. New in Coco.Nut. The list itself (library/project names) is shown as plain, untranslated text, like the native language names elsewhere in this file.</comment>
+  </data>
   <data name="About_ProjectPage" xml:space="preserve">
     <value>Project page</value>
     <comment>About window: link label to the Coco.Nut source repository. New in Coco.Nut (replaces WinNUT's separate, unlocalized GitHub/SourceForge links).</comment>
@@ -90,6 +94,10 @@ along with this program. If not, see https://www.gnu.org/licenses/.</value>
   <data name="Language_System" xml:space="preserve">
     <value>System default</value>
     <comment>Language selector entry that follows the operating system's language. New in Coco.Nut.</comment>
+  </data>
+  <data name="Language_en" xml:space="preserve">
+    <value>English</value>
+    <comment>Native name of English, shown identically regardless of the active UI language. New in Coco.Nut; intentionally defined only in the neutral resx (see README), like the other Language_* native names.</comment>
   </data>
   <data name="Language_de_DE" xml:space="preserve">
     <value>Deutsch</value>
@@ -170,6 +178,14 @@ along with this program. If not, see https://www.gnu.org/licenses/.</value>
   <data name="Log_ShutdownCancelled" xml:space="preserve">
     <value>Shutdown procedure cancelled</value>
     <comment>In-app log entry when the shutdown procedure is cancelled (e.g. power restored).</comment>
+  </data>
+  <data name="Log_ShutdownExecuting" xml:space="preserve">
+    <value>Executing stop action: {0}</value>
+    <comment>In-app log entry when ShutdownCoordinator.ShutdownExecuting fires, right before the UPS monitor is stopped and the configured power action runs. {0} = localized stop action name (one of the StopAction_* strings). New in Coco.Nut.</comment>
+  </data>
+  <data name="Log_ShutdownExecuting_DryRun" xml:space="preserve">
+    <value>Executing stop action: {0} (dry run)</value>
+    <comment>Same as Log_ShutdownExecuting, shown instead of it when ShutdownCoordinator.DryRun is active (COCONUT_DRY_RUN=1): the power action is logged, not actually run. {0} = localized stop action name. New in Coco.Nut.</comment>
   </data>
   <data name="Log_ShutdownStart" xml:space="preserve">
     <value>Stop conditions met, starting the shutdown procedure</value>
@@ -546,6 +562,10 @@ Accepted value: name of the UPS configured in the NUT server.</value>
     <value>Delete log files</value>
     <comment>Settings &gt; Logging: label for the (was icon-only in WinNUT) delete log button. New in Coco.Nut; see Prefs_Logging_DeleteLog_ToolTip for the existing tooltip.</comment>
   </data>
+  <data name="Prefs_Logging_DeleteLog_ConfirmMessage" xml:space="preserve">
+    <value>Delete all Coco.Nut log files? This cannot be undone.</value>
+    <comment>Settings &gt; Logging: confirmation dialog body shown before the delete log button actually deletes anything (WinNUT deleted without confirming; Coco.Nut adds the confirmation). New in Coco.Nut.</comment>
+  </data>
   <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
     <value>Delete the log file.</value>
     <comment>Settings &gt; Logging: tooltip for the delete log button.</comment>
@@ -852,6 +872,14 @@ Remaining time: {1}</value>
     <value>You are using the latest version.</value>
     <comment>Shown (e.g. after a manual 'Check for updates') when no newer release was found. New in Coco.Nut; parallels the existing Log_NoUpdateAvailable log entry.</comment>
   </data>
+  <data name="Update_PublishedDate" xml:space="preserve">
+    <value>Published:</value>
+    <comment>Update available window: label in front of the release's publish date/time. New in Coco.Nut.</comment>
+  </data>
+  <data name="Update_ReleaseName" xml:space="preserve">
+    <value>Release:</value>
+    <comment>Update available window: label in front of the release's display name (GitHub release title). New in Coco.Nut.</comment>
+  </data>
   <data name="Update_ReleaseNotes" xml:space="preserve">
     <value>Release notes</value>
     <comment>Update available window: heading above the release notes/changelog text. New in Coco.Nut.</comment>
@@ -1003,6 +1031,10 @@ Remaining time: {1}</value>
   <data name="Vars_Name" xml:space="preserve">
     <value>Name:</value>
     <comment>UPS variables window: label in front of the selected variable's name.</comment>
+  </data>
+  <data name="Vars_NotConnected" xml:space="preserve">
+    <value>Connect to the NUT server to view UPS variables.</value>
+    <comment>UPS variables window: shown instead of the variable tree/detail panel when there is no active connection (UpsMonitor.State is not Connected); every action button is disabled at the same time. New in Coco.Nut.</comment>
   </data>
   <data name="Vars_Reload" xml:space="preserve">
     <value>Reload</value>

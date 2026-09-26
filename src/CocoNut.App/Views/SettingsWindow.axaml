@@ -1,0 +1,230 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
+        xmlns:vm="clr-namespace:CocoNut.App.ViewModels"
+        xmlns:sc="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+        x:Class="CocoNut.App.Views.SettingsWindow"
+        x:DataType="vm:SettingsViewModel"
+        Icon="/Assets/coconut.ico"
+        Title="{x:Static loc:Strings.Prefs_Title}"
+        Width="560" Height="560" MinWidth="480" MinHeight="440"
+        WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="*,Auto" Margin="14">
+    <TabControl Grid.Row="0">
+
+      <!-- Connection -->
+      <TabItem Header="{x:Static loc:Strings.Prefs_Connection_Tab}">
+        <ScrollViewer>
+          <StackPanel Spacing="10" Margin="4">
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Connection_Host}" />
+              <TextBox Text="{Binding Host}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Connection_Host_ToolTip}" />
+              <TextBlock Text="{Binding HostError}" Foreground="Red" FontSize="11" IsVisible="{Binding HostError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Connection_Port}" />
+              <NumericUpDown Value="{Binding Port}" Minimum="1" Maximum="65535" FormatString="0" HorizontalAlignment="Left" Width="140"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Connection_Port_ToolTip}" />
+              <TextBlock Text="{Binding PortError}" Foreground="Red" FontSize="11" IsVisible="{Binding PortError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Connection_UpsName}" />
+              <TextBox Text="{Binding UpsName}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Connection_UpsName_ToolTip}" />
+            </StackPanel>
+            <StackPanel Spacing="2">
+              <TextBlock>
+                <Run Text="{x:Static loc:Strings.Prefs_Connection_PollingInterval}" />
+                <Run Text=" (" /><Run Text="{x:Static loc:Strings.Prefs_Connection_PollingInterval_Unit}" /><Run Text=")" />
+              </TextBlock>
+              <NumericUpDown Value="{Binding PollIntervalSeconds}" Minimum="0.1" Maximum="100" Increment="0.1" FormatString="0.0"
+                             HorizontalAlignment="Left" Width="140" ToolTip.Tip="{x:Static loc:Strings.Prefs_Connection_PollingInterval_ToolTip}" />
+              <TextBlock Text="{Binding PollIntervalError}" Foreground="Red" FontSize="11" IsVisible="{Binding PollIntervalError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+            <CheckBox Content="{x:Static loc:Strings.Prefs_Connection_Reconnect}" IsChecked="{Binding AutoReconnect}"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_Connection_Reconnect_ToolTip}" />
+            <TextBlock Text="{x:Static loc:Strings.Prefs_Connection_CredentialsHint}" FontStyle="Italic" TextWrapping="Wrap" Opacity="0.8" />
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Connection_Login}" />
+              <TextBox Text="{Binding Username}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Connection_Login_ToolTip}" />
+            </StackPanel>
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Connection_Password}" />
+              <TextBox Text="{Binding Password}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Connection_Password_ToolTip}"
+                       PasswordChar="•" RevealPassword="{Binding ShowPassword}" />
+              <CheckBox Content="{x:Static loc:Strings.Prefs_Connection_ShowPassword}" IsChecked="{Binding ShowPassword}" />
+            </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <!-- Calibration -->
+      <TabItem Header="{x:Static loc:Strings.Prefs_Calibration_Tab}">
+        <ScrollViewer>
+          <StackPanel Spacing="10" Margin="4">
+            <Grid ColumnDefinitions="140,110,110" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="8" ColumnSpacing="10">
+              <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static loc:Strings.Prefs_Calibration_Min}" HorizontalAlignment="Center" />
+              <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static loc:Strings.Prefs_Calibration_Max}" HorizontalAlignment="Center" />
+
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Prefs_Calibration_InputVoltage}" VerticalAlignment="Center" />
+              <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding InputVoltageMin}" Minimum="0" Maximum="999" FormatString="0"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Calibration_InputVoltage_MinToolTip}" />
+              <NumericUpDown Grid.Row="1" Grid.Column="2" Value="{Binding InputVoltageMax}" Minimum="0" Maximum="999" FormatString="0"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Calibration_InputVoltage_MaxToolTip}" />
+
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Prefs_Calibration_OutputVoltage}" VerticalAlignment="Center" />
+              <NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding OutputVoltageMin}" Minimum="0" Maximum="999" FormatString="0"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Calibration_OutputVoltage_MinToolTip}" />
+              <NumericUpDown Grid.Row="2" Grid.Column="2" Value="{Binding OutputVoltageMax}" Minimum="0" Maximum="999" FormatString="0"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Calibration_OutputVoltage_MaxToolTip}" />
+
+              <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.Prefs_Calibration_InputFrequency}" VerticalAlignment="Center" />
+              <NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding InputFrequencyMin}" Minimum="0" Maximum="100" FormatString="0"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Calibration_InputFrequency_MinToolTip}" />
+              <NumericUpDown Grid.Row="3" Grid.Column="2" Value="{Binding InputFrequencyMax}" Minimum="0" Maximum="100" FormatString="0"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Calibration_InputFrequency_MaxToolTip}" />
+
+              <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static loc:Strings.Prefs_Calibration_BatteryVoltage}" VerticalAlignment="Center" />
+              <NumericUpDown Grid.Row="4" Grid.Column="1" Value="{Binding BatteryVoltageMin}" Minimum="0" Maximum="100" FormatString="0"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Calibration_BatteryVoltage_MinToolTip}" />
+              <NumericUpDown Grid.Row="4" Grid.Column="2" Value="{Binding BatteryVoltageMax}" Minimum="0" Maximum="100" FormatString="0"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Calibration_BatteryVoltage_MaxToolTip}" />
+            </Grid>
+
+            <TextBlock Text="{Binding InputVoltageRangeError}" Foreground="Red" FontSize="11" IsVisible="{Binding InputVoltageRangeError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            <TextBlock Text="{Binding OutputVoltageRangeError}" Foreground="Red" FontSize="11" IsVisible="{Binding OutputVoltageRangeError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            <TextBlock Text="{Binding InputFrequencyRangeError}" Foreground="Red" FontSize="11" IsVisible="{Binding InputFrequencyRangeError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            <TextBlock Text="{Binding BatteryVoltageRangeError}" Foreground="Red" FontSize="11" IsVisible="{Binding BatteryVoltageRangeError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Calibration_FrequencySupply}" />
+              <ComboBox ItemsSource="{Binding NominalFrequencyOptions}" SelectedItem="{Binding InputFrequencyNominal}" Width="140" HorizontalAlignment="Left"
+                        ToolTip.Tip="{x:Static loc:Strings.Prefs_Calibration_FrequencySupply_ToolTip}" />
+            </StackPanel>
+
+            <Grid ColumnDefinitions="140,110,110" ColumnSpacing="10">
+              <TextBlock Grid.Column="0" Text="{x:Static loc:Strings.Prefs_Calibration_Load}" VerticalAlignment="Center" />
+              <NumericUpDown Grid.Column="1" Value="{Binding LoadMin}" Minimum="0" Maximum="100" FormatString="0" />
+              <NumericUpDown Grid.Column="2" Value="{Binding LoadMax}" Minimum="0" Maximum="100" FormatString="0" />
+            </Grid>
+            <TextBlock Text="{Binding LoadRangeError}" Foreground="Red" FontSize="11" IsVisible="{Binding LoadRangeError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <!-- Logging -->
+      <TabItem Header="{x:Static loc:Strings.Prefs_Logging_Tab}">
+        <StackPanel Spacing="12" Margin="4">
+          <CheckBox Content="{x:Static loc:Strings.Prefs_Logging_EnableFile}" IsChecked="{Binding LogToFile}"
+                    ToolTip.Tip="{x:Static loc:Strings.Prefs_Logging_EnableFile_ToolTip}" />
+          <StackPanel Spacing="2">
+            <TextBlock Text="{x:Static loc:Strings.Prefs_Logging_Level}" />
+            <ComboBox ItemsSource="{Binding LogLevelOptions}" SelectedItem="{Binding SelectedLogLevel}" Width="180" HorizontalAlignment="Left"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_Logging_Level_ToolTip}" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <Button Content="{x:Static loc:Strings.Prefs_Logging_ViewLog}" Command="{Binding OpenLogFileCommand}" IsEnabled="{Binding CanOpenLogFile}"
+                    ToolTip.Tip="{x:Static loc:Strings.Prefs_Logging_ViewLog_ToolTip}" />
+            <Button Content="{x:Static loc:Strings.Prefs_Logging_DeleteLog}" Command="{Binding DeleteLogFilesCommand}"
+                    ToolTip.Tip="{x:Static loc:Strings.Prefs_Logging_DeleteLog_ToolTip}" />
+          </StackPanel>
+        </StackPanel>
+      </TabItem>
+
+      <!-- Power -->
+      <TabItem Header="{x:Static loc:Strings.Prefs_Power_Tab}">
+        <ScrollViewer>
+          <StackPanel Spacing="10" Margin="4">
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Power_BatteryLimit}" />
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <NumericUpDown Value="{Binding BatteryChargeFloor}" Minimum="0" Maximum="100" FormatString="0" Width="140"
+                               ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_BatteryLimit_ToolTip}" />
+                <TextBlock Text="{x:Static loc:Strings.Prefs_Power_BatteryLimit_Unit}" VerticalAlignment="Center" />
+              </StackPanel>
+              <TextBlock Text="{Binding BatteryChargeFloorError}" Foreground="Red" FontSize="11" IsVisible="{Binding BatteryChargeFloorError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Power_RuntimeLimit}" />
+              <NumericUpDown Value="{Binding RuntimeFloorSeconds}" Minimum="0" Maximum="3600" FormatString="0" Width="140" HorizontalAlignment="Left"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_RuntimeLimit_ToolTip}" />
+              <TextBlock Text="{Binding RuntimeFloorError}" Foreground="Red" FontSize="11" IsVisible="{Binding RuntimeFloorError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+            <CheckBox Content="{x:Static loc:Strings.Prefs_Power_Immediate}" IsChecked="{Binding StopImmediately}"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_Immediate_ToolTip}" />
+            <CheckBox Content="{x:Static loc:Strings.Prefs_Power_FollowFsd}" IsChecked="{Binding RespectFsd}"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_FollowFsd_ToolTip}" />
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Power_StopType}" />
+              <ComboBox ItemsSource="{Binding StopActionOptions}" SelectedItem="{Binding SelectedStopAction}" Width="180" HorizontalAlignment="Left"
+                        ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_StopType_ToolTip}" />
+            </StackPanel>
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Power_StopDelay}" />
+              <NumericUpDown Value="{Binding StopDelaySeconds}" Minimum="1" Maximum="3600" FormatString="0" Width="140" HorizontalAlignment="Left"
+                             IsEnabled="{Binding IsStopDelayEnabled}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_StopDelay_ToolTip}" />
+              <TextBlock Text="{Binding StopDelayError}" Foreground="Red" FontSize="11" IsVisible="{Binding StopDelayError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+            <CheckBox Content="{x:Static loc:Strings.Prefs_Power_AllowExtend}" IsChecked="{Binding AllowExtendDelay}"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_AllowExtend_ToolTip}" />
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Power_GraceTime}" />
+              <NumericUpDown Value="{Binding ExtendDelaySeconds}" Minimum="1" Maximum="3600" FormatString="0" Width="140" HorizontalAlignment="Left"
+                             IsEnabled="{Binding IsExtendDelayEnabled}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_GraceTime_ToolTip}" />
+              <TextBlock Text="{Binding ExtendDelayError}" Foreground="Red" FontSize="11" IsVisible="{Binding ExtendDelayError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <!-- Misc -->
+      <TabItem Header="{x:Static loc:Strings.Prefs_Misc_Tab}">
+        <ScrollViewer>
+          <StackPanel Spacing="10" Margin="4">
+            <CheckBox Content="{x:Static loc:Strings.Prefs_Misc_StartWithSystem}" IsChecked="{Binding StartWithSystem}"
+                      IsVisible="{Binding IsStartWithSystemSupported}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Misc_StartWithSystem_ToolTip}" />
+            <CheckBox Content="{x:Static loc:Strings.Prefs_Misc_StartMinimized}" IsChecked="{Binding MinimizeOnStart}"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_Misc_StartMinimized_ToolTip}" />
+            <CheckBox Content="{x:Static loc:Strings.Prefs_Misc_MinimizeToTray}" IsChecked="{Binding MinimizeToTray}"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_Misc_MinimizeToTray_ToolTip}" />
+            <CheckBox Content="{x:Static loc:Strings.Prefs_Misc_CloseToTray}" IsChecked="{Binding CloseToTray}"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_Misc_CloseToTray_ToolTip}" />
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Misc_Language}" />
+              <ComboBox ItemsSource="{Binding LanguageOptions}" SelectedItem="{Binding SelectedLanguage}" Width="200" HorizontalAlignment="Left" />
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Misc_LanguageRestartHint}" FontStyle="Italic" FontSize="11"
+                         IsVisible="{Binding IsLanguageRestartHintVisible}" />
+            </StackPanel>
+            <Button Content="{x:Static loc:Strings.Prefs_Import_WinNut}" Command="{Binding ImportWinNutSettingsCommand}"
+                    IsVisible="{Binding ShowImportButton}" />
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <!-- Update -->
+      <TabItem Header="{x:Static loc:Strings.Prefs_Update_Tab}">
+        <StackPanel Spacing="12" Margin="4">
+          <CheckBox Content="{x:Static loc:Strings.Prefs_Update_CheckAtStartup}" IsChecked="{Binding CheckAtStart}"
+                    ToolTip.Tip="{x:Static loc:Strings.Prefs_Update_CheckAtStartup_ToolTip}" />
+          <StackPanel Spacing="2">
+            <TextBlock Text="{x:Static loc:Strings.Prefs_Update_CheckInterval}" />
+            <ComboBox ItemsSource="{Binding CheckIntervalOptions}" SelectedItem="{Binding SelectedCheckInterval}" Width="160" HorizontalAlignment="Left"
+                      IsEnabled="{Binding CheckAtStart}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Update_CheckInterval_ToolTip}" />
+          </StackPanel>
+          <StackPanel Spacing="2">
+            <TextBlock Text="{x:Static loc:Strings.Prefs_Update_Channel}" />
+            <ComboBox ItemsSource="{Binding ChannelOptions}" SelectedItem="{Binding SelectedChannel}" Width="160" HorizontalAlignment="Left"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_Update_Channel_ToolTip}" />
+          </StackPanel>
+          <Button Content="{x:Static loc:Strings.Main_Menu_CheckForUpdate}" Command="{Binding CheckNowCommand}" HorizontalAlignment="Left" />
+        </StackPanel>
+      </TabItem>
+
+    </TabControl>
+
+    <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" Margin="0,14,0,0">
+      <Button Content="{x:Static loc:Strings.Common_Ok}" Command="{Binding SaveCommand}" Classes="accent" />
+      <Button Content="{x:Static loc:Strings.Common_Apply}" Command="{Binding ApplyCommand}" />
+      <Button Content="{x:Static loc:Strings.Common_Cancel}" Command="{Binding CancelCommand}" />
+    </StackPanel>
+  </Grid>
+</Window>

@@ -326,6 +326,32 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public void Shutdown_executing_logs_the_configured_stop_action()
+    {
+        var settings = new AppSettings();
+        settings.Power.StopAction = StopAction.Hibernate;
+        var (vm, _, shutdownEvents, _, _, _) = Build(settings);
+
+        shutdownEvents.RaiseExecuting(ShutdownReason.BatteryChargeFloor);
+
+        var expected = string.Format(CultureInfo.CurrentCulture, Strings.Log_ShutdownExecuting, Strings.StopAction_Hibernate);
+        Assert.Contains(vm.EventLog, e => e.Message == expected);
+    }
+
+    [Fact]
+    public void Shutdown_executing_in_dry_run_appends_the_dry_run_hint()
+    {
+        var (vm, _, shutdownEvents, _, _, _) = Build();
+        shutdownEvents.DryRun = true;
+
+        shutdownEvents.RaiseExecuting(ShutdownReason.ForcedShutdown);
+
+        var expected = string.Format(CultureInfo.CurrentCulture, Strings.Log_ShutdownExecuting_DryRun, Strings.StopAction_Shutdown);
+        Assert.Contains(vm.EventLog, e => e.Message == expected);
+        Assert.DoesNotContain(vm.EventLog, e => e.Message == string.Format(CultureInfo.CurrentCulture, Strings.Log_ShutdownExecuting, Strings.StopAction_Shutdown));
+    }
+
+    [Fact]
     public void Disconnect_and_show_commands_delegate_to_the_monitor_and_navigator()
     {
         var (vm, monitor, _, _, _, navigator) = Build();

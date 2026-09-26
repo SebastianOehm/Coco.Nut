@@ -1,0 +1,66 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
+        xmlns:vm="clr-namespace:CocoNut.App.ViewModels"
+        xmlns:sc="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+        x:Class="CocoNut.App.Views.UpsVariablesWindow"
+        x:DataType="vm:UpsVariablesViewModel"
+        Icon="/Assets/coconut.ico"
+        Title="{x:Static loc:Strings.Vars_Title}"
+        Width="700" Height="520" MinWidth="520" MinHeight="380"
+        WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="14">
+
+    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" Margin="0,0,0,10">
+      <Button Content="{x:Static loc:Strings.Vars_Reload}" Command="{Binding ReloadCommand}"
+              ToolTip.Tip="{x:Static loc:Strings.Vars_Reload_ToolTip}" />
+      <Button Content="{x:Static loc:Strings.Common_Copy}" Command="{Binding CopyToClipboardCommand}"
+              ToolTip.Tip="{x:Static loc:Strings.Vars_Copy_ToolTip}" />
+      <Button Content="{x:Static loc:Strings.Common_Save}" Command="{Binding SaveToFileCommand}"
+              ToolTip.Tip="{x:Static loc:Strings.Vars_Save_ToolTip}" />
+    </StackPanel>
+
+    <TextBox Grid.Row="1" Watermark="{x:Static loc:Strings.Vars_Filter_Watermark}" Text="{Binding FilterText}"
+             IsEnabled="{Binding ShowContent}" Margin="0,0,0,10" />
+
+    <Grid Grid.Row="2" IsVisible="{Binding ShowContent}" ColumnDefinitions="260,*" ColumnSpacing="12">
+      <Border Grid.Column="0" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+        <TreeView ItemsSource="{Binding RootNodes}" SelectedItem="{Binding SelectedNode}">
+          <TreeView.ItemTemplate>
+            <TreeDataTemplate x:DataType="vm:UpsVariableNode" ItemsSource="{Binding Children}">
+              <TextBlock Text="{Binding Segment}" />
+            </TreeDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
+      </Border>
+
+      <Border Grid.Column="1" BorderThickness="1" BorderBrush="Gray" CornerRadius="4" Padding="10">
+        <StackPanel Spacing="8">
+          <TextBlock Text="{x:Static loc:Strings.Vars_GroupTitle}" FontWeight="Bold" />
+          <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="6" ColumnSpacing="8">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Vars_Name}" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding DetailName}" TextWrapping="Wrap" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Vars_Value}" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding DetailValue}" TextWrapping="Wrap" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Vars_Description}" />
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DetailDescription}" TextWrapping="Wrap" />
+          </Grid>
+        </StackPanel>
+      </Border>
+    </Grid>
+
+    <Grid Grid.Row="2" IsVisible="{Binding !ShowContent}">
+      <StackPanel Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
+        <ProgressBar IsIndeterminate="True" Width="220" IsVisible="{Binding IsLoading}" />
+        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap" TextAlignment="Center"
+                   IsVisible="{Binding ErrorMessage, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+        <TextBlock Text="{x:Static loc:Strings.Vars_NotConnected}" TextWrapping="Wrap" TextAlignment="Center"
+                   IsVisible="{Binding !IsConnected}" />
+      </StackPanel>
+    </Grid>
+
+    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+      <Button Content="{x:Static loc:Strings.Common_Close}" Click="OnCloseClick" ToolTip.Tip="{x:Static loc:Strings.Vars_Close_ToolTip}" />
+    </StackPanel>
+  </Grid>
+</Window>

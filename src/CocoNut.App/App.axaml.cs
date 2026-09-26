@@ -21,6 +21,7 @@ public partial class App : Application, IDisposable
 {
     private AppHost? _host;
     private SingleInstanceGuard? _singleInstanceGuard;
+    private SingleInstanceServer? _singleInstanceServer;
 
     /// <inheritdoc />
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
@@ -37,10 +38,20 @@ public partial class App : Application, IDisposable
         // Closing the main window (to tray) must not end the process; only an explicit Exit does.
         desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
+        var pipeName = SingleInstanceIpc.GetPipeName();
+
         _singleInstanceGuard = new SingleInstanceGuard();
         if (!_singleInstanceGuard.IsFirstInstance)
         {
-            Console.Error.WriteLine("Coco.Nut is already running for this user; exiting.");
+            Console.Error.WriteLine("Coco.Nut is already running for this user; asking it to show its window.");
+            // Blocking here is deliberate: the process is about to exit either way, and this happens before any
+            // window or dispatcher loop exists yet, so there is nothing to keep responsive while we wait.
+            var delivered = SingleInstanceIpc.TryRequestShowAsync(pipeName, TimeSpan.FromSeconds(2)).GetAwaiter().GetResult();
+            if (!delivered)
+            {
+                Console.Error.WriteLine("Could not reach the running instance; exiting anyway.");
+            }
+
             _singleInstanceGuard.Dispose();
             desktop.Shutdown();
             base.OnFrameworkInitializationCompleted();
@@ -62,6 +73,12 @@ public partial class App : Application, IDisposable
         desktop.MainWindow = mainWindow;
 
         services.GetRequiredService<WindowNavigator>().AttachMainWindow(mainWindow);
+
+        var navigator = services.GetRequiredService<IWindowNavigator>();
+        _singleInstanceServer = SingleInstanceIpc.StartServer(
+            pipeName,
+            () => Avalonia.Threading.Dispatcher.UIThread.Post(navigator.ShowMainWindow),
+            services.GetRequiredService<ILogger<App>>());
 
         var trayIconController = services.GetRequiredService<TrayIconController>();
         trayIconController.Attach(this, mainWindow);
@@ -85,6 +102,7 @@ public partial class App : Application, IDisposable
         // The process is exiting either way; a blocking wait here is simpler and safer than a fire-and-forget
         // disposal that might not finish before the process actually terminates. AsTask() first: unlike Task,
         // a ValueTask is not safe to block on directly unless it is already known to be completed.
+        _singleInstanceServer?.DisposeAsync().AsTask().GetAwaiter().GetResult();
         _host?.DisposeAsync().AsTask().GetAwaiter().GetResult();
         Dispose();
     }
@@ -107,7 +125,18 @@ public partial class App : Application, IDisposable
             mainWindow.Show();
         }
 
-        if (!string.IsNullOrWhiteSpace(settings.Connection.Host))
+        if (settings.General.IsFirstRun)
+        {
+            // First run: do not auto-connect to the default host - show Settings first so the user configures a
+            // real one. FirstRunCoordinator clears IsFirstRun and connects itself once the window is saved.
+            var coordinator = new FirstRunCoordinator(
+                settingsService,
+                services.GetRequiredService<IUpsMonitorEvents>(),
+                () => ShowFirstRunSettingsAsync(services, mainWindow),
+                services.GetRequiredService<ILogger<FirstRunCoordinator>>());
+            await coordinator.RunAsync().ConfigureAwait(true);
+        }
+        else if (!string.IsNullOrWhiteSpace(settings.Connection.Host))
         {
             try
             {
@@ -120,6 +149,7 @@ public partial class App : Application, IDisposable
             }
         }
 
+        settings = settingsService.Current; // First-run setup may have changed it.
         if (settings.Update.CheckAtStart &&
             UpdateChecker.IsCheckDue(settings.Update.LastCheck, settings.Update.AutoCheckIntervalDays, DateTimeOffset.UtcNow))
         {
@@ -132,5 +162,33 @@ public partial class App : Application, IDisposable
                 logger.LogWarning(ex, "The startup update check failed.");
             }
         }
+    }
+
+    /// <summary>
+    /// Shows a Settings window for first-run setup (owned by <paramref name="mainWindow"/> when it is visible,
+    /// like <see cref="WindowNavigator"/>'s own secondary windows) and returns once it closes, reporting whether
+    /// it was saved at least once. Kept separate from <see cref="WindowNavigator.ShowSettingsAsync"/>, which is
+    /// fire-and-forget and does not report back, since first-run setup needs to know the outcome before deciding
+    /// whether to connect.
+    /// </summary>
+    private static async Task<bool> ShowFirstRunSettingsAsync(IServiceProvider services, MainWindow mainWindow)
+    {
+        var viewModel = services.GetRequiredService<SettingsViewModel>();
+        var window = new SettingsWindow { DataContext = viewModel };
+
+        var closedTcs = new TaskCompletionSource();
+        window.Closed += (_, _) => closedTcs.TrySetResult();
+
+        if (mainWindow.IsVisible)
+        {
+            window.Show(mainWindow);
+        }
+        else
+        {
+            window.Show();
+        }
+
+        await closedTcs.Task.ConfigureAwait(true);
+        return viewModel.WasSaved;
     }
 }

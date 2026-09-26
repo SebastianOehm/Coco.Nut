@@ -6,6 +6,8 @@ namespace CocoNut.App.Tests.Fakes;
 /// <summary>Drives <see cref="IShutdownEvents"/> consumers without a real <see cref="ShutdownCoordinator"/>.</summary>
 public sealed class FakeShutdownEvents : IShutdownEvents
 {
+    public bool DryRun { get; set; }
+
     public event EventHandler<ShutdownPendingEventArgs>? ShutdownPending;
 
     public event EventHandler<ShutdownReason>? ShutdownCancelled;
