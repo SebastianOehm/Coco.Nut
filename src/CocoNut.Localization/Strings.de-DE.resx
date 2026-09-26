@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About_Title" xml:space="preserve">
+    <value>Über Coco.Nut</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Coco.Nut</value>
+  </data>
+  <data name="Common_Apply" xml:space="preserve">
+    <value>Anwenden</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="Common_Copy" xml:space="preserve">
+    <value>Kopieren</value>
+  </data>
+  <data name="Common_Exit" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Common_Unavailable" xml:space="preserve">
+    <value>Nicht verfügbar</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Systemstandard</value>
+  </data>
+  <data name="Log_ApplicationShutdownAt" xml:space="preserve">
+    <value>Anwendung heruntergefahren um </value>
+  </data>
+  <data name="Log_AutoReconnect" xml:space="preserve">
+    <value>Automatische Wiederverbindung</value>
+  </data>
+  <data name="Log_Checking" xml:space="preserve">
+    <value>Updateprüfung läuft...</value>
+  </data>
+  <data name="Log_Connected" xml:space="preserve">
+    <value>Verbindung zum Nut Host {0}:{1} hergestellt</value>
+  </data>
+  <data name="Log_ConnectionFailed" xml:space="preserve">
+    <value>Verbindung zum Nut Host {0}: {1} fehlgeschlagen: {2}</value>
+  </data>
+  <data name="Log_Disconnected" xml:space="preserve">
+    <value>Verbindung zum NUT-Host getrennt</value>
+  </data>
+  <data name="Log_ForcedShutdownByServer" xml:space="preserve">
+    <value>Vom NUT-Server festgelegte Stopp-Bedingung</value>
+  </data>
+  <data name="Log_Level_Debug" xml:space="preserve">
+    <value>Debuggen</value>
+  </data>
+  <data name="Log_Level_Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="Log_Level_Notice" xml:space="preserve">
+    <value>Hinweis</value>
+  </data>
+  <data name="Log_Level_Warning" xml:space="preserve">
+    <value>Alarm</value>
+  </data>
+  <data name="Log_NoUpdateAvailable" xml:space="preserve">
+    <value>Kein Update verfügbar</value>
+  </data>
+  <data name="Log_PreferencesChanged" xml:space="preserve">
+    <value>Coco.Nut-Einstellungen geändert</value>
+  </data>
+  <data name="Log_ShutdownCancelled" xml:space="preserve">
+    <value>Abbruch des Stoppvorgangs</value>
+  </data>
+  <data name="Log_ShutdownStart" xml:space="preserve">
+    <value>Voraussetzungen für den Beginn des Stoppvorgangs liegen vor</value>
+  </data>
+  <data name="Log_UpdateAvailable" xml:space="preserve">
+    <value>Version {0} verfügbar</value>
+  </data>
+  <data name="Main_Flag_BatteryLow" xml:space="preserve">
+    <value>USV-Akkuladung niedrig</value>
+  </data>
+  <data name="Main_Flag_OnBattery" xml:space="preserve">
+    <value>USV im Akkubetrieb</value>
+  </data>
+  <data name="Main_Flag_OnLine" xml:space="preserve">
+    <value>USV im Netzbetrieb</value>
+  </data>
+  <data name="Main_Flag_Overload" xml:space="preserve">
+    <value>USV-Überlastung</value>
+  </data>
+  <data name="Main_Gauge_BatteryCharge" xml:space="preserve">
+    <value>Akkuladung</value>
+  </data>
+  <data name="Main_Gauge_BatteryVoltage" xml:space="preserve">
+    <value>Akkuspannung</value>
+  </data>
+  <data name="Main_Gauge_Frequency" xml:space="preserve">
+    <value>Frequenz</value>
+  </data>
+  <data name="Main_Gauge_InputVoltage" xml:space="preserve">
+    <value>Eingangsspannung</value>
+  </data>
+  <data name="Main_Gauge_Load" xml:space="preserve">
+    <value>USV-Last</value>
+  </data>
+  <data name="Main_Gauge_OutputVoltage" xml:space="preserve">
+    <value>Ausgangsspannung</value>
+  </data>
+  <data name="Main_Label_Firmware" xml:space="preserve">
+    <value>Firmware:</value>
+  </data>
+  <data name="Main_Label_Manufacturer" xml:space="preserve">
+    <value>Hersteller:</value>
+  </data>
+  <data name="Main_Label_Name" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="Main_Label_RemainingTime" xml:space="preserve">
+    <value>Verbleibende Zeit:</value>
+  </data>
+  <data name="Main_Label_Serial" xml:space="preserve">
+    <value>Seriennummer:</value>
+  </data>
+  <data name="Main_Menu_About" xml:space="preserve">
+    <value>Über Coco.Nut</value>
+  </data>
+  <data name="Main_Menu_CheckForUpdate" xml:space="preserve">
+    <value>Auf Update prüfen</value>
+  </data>
+  <data name="Main_Menu_Connect" xml:space="preserve">
+    <value>Verbinden</value>
+  </data>
+  <data name="Main_Menu_Connection" xml:space="preserve">
+    <value>Verbindung</value>
+  </data>
+  <data name="Main_Menu_Disconnect" xml:space="preserve">
+    <value>Verbindung trennen</value>
+  </data>
+  <data name="Main_Menu_Exit" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="Main_Menu_File" xml:space="preserve">
+    <value>Datei</value>
+  </data>
+  <data name="Main_Menu_Help" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="Main_Menu_Persist" xml:space="preserve">
+    <value>Automatische Wiederverbindung</value>
+  </data>
+  <data name="Main_Menu_Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Main_Menu_UpsVariables" xml:space="preserve">
+    <value>USV-Variablen</value>
+  </data>
+  <data name="Main_Status_BatteryOk" xml:space="preserve">
+    <value>Akku OK</value>
+  </data>
+  <data name="Main_Status_Connected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="Main_Status_EnteringSleep" xml:space="preserve">
+    <value>Windows-Standby. Coco.Nut wird getrennt. </value>
+  </data>
+  <data name="Main_Status_InvalidLogin" xml:space="preserve">
+    <value>Falsche Login-ID (Benutzername oder Passwort)</value>
+  </data>
+  <data name="Main_Status_LostConnection" xml:space="preserve">
+    <value>Verbindung zu {0}:{1} verloren</value>
+  </data>
+  <data name="Main_Status_LowBattery" xml:space="preserve">
+    <value>Niedrige Akkuladung</value>
+  </data>
+  <data name="Main_Status_NotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
+  <data name="Main_Status_OnBattery" xml:space="preserve">
+    <value>Im Akkubetrieb ({0}%)</value>
+  </data>
+  <data name="Main_Status_OnLine" xml:space="preserve">
+    <value>Im Netzbetrieb</value>
+  </data>
+  <data name="Main_Status_Reconnecting" xml:space="preserve">
+    <value>Wiederverbindung läuft</value>
+  </data>
+  <data name="Main_Status_ResumedFromSleep" xml:space="preserve">
+    <value>Starte Coco.Nut neu, nachdem Windows aus dem Standby erweckt wurde.</value>
+  </data>
+  <data name="Main_Status_UnknownUps" xml:space="preserve">
+    <value>Unbekannter USV-Name</value>
+  </data>
+  <data name="Notify_Title_Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="Notify_Title_Info" xml:space="preserve">
+    <value>Hinweis</value>
+  </data>
+  <data name="Notify_Title_Warning" xml:space="preserve">
+    <value>Alarm</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage" xml:space="preserve">
+    <value>Akkuspannung</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MaxToolTip" xml:space="preserve">
+    <value>Maximale Akkuspannung.
+Wertebereich: Numerischer Wert von 0 bis 100.</value>
+  </data>
+  <data name="Prefs_Calibration_BatteryVoltage_MinToolTip" xml:space="preserve">
+    <value>Minimale Akkuspannung.
+Wertebereich: Numerischer Wert von 0 bis 100.</value>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply" xml:space="preserve">
+    <value>Netzfrequenz</value>
+  </data>
+  <data name="Prefs_Calibration_FrequencySupply_ToolTip" xml:space="preserve">
+    <value>Legt die Eingangsfrequenz fest, wenn dieser Wert nicht von der USV geliefert wird.</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency" xml:space="preserve">
+    <value>Eingangsfrequenz</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MaxToolTip" xml:space="preserve">
+    <value>Maximale Eingangsfrequenz.
+Wertebereich: Numerischer Wert von 0 bis 100.</value>
+  </data>
+  <data name="Prefs_Calibration_InputFrequency_MinToolTip" xml:space="preserve">
+    <value>Minimale Eingangsfrequenz.
+Wertebereich: Numerischer Wert von 0 bis 100.</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage" xml:space="preserve">
+    <value>Eingangsspannung</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MaxToolTip" xml:space="preserve">
+    <value>Maximale Eingangsspannung.
+Wertebereich: Numerischer Wert von 0 bis 999.</value>
+  </data>
+  <data name="Prefs_Calibration_InputVoltage_MinToolTip" xml:space="preserve">
+    <value>Minimale Eingangsspannung.
+Wertebereich: Numerischer Wert von 0 bis 999.</value>
+  </data>
+  <data name="Prefs_Calibration_Load" xml:space="preserve">
+    <value>USV-Last</value>
+  </data>
+  <data name="Prefs_Calibration_Max" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="Prefs_Calibration_Min" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage" xml:space="preserve">
+    <value>Ausgangsspannung</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MaxToolTip" xml:space="preserve">
+    <value>Maximale Ausgangsspannung.
+Wertebereich: Numerischer Wert von 0 bis 999.</value>
+  </data>
+  <data name="Prefs_Calibration_OutputVoltage_MinToolTip" xml:space="preserve">
+    <value>Minimale Ausgangsspannung.
+Wertebereich: Numerischer Wert von 0 bis 999.</value>
+  </data>
+  <data name="Prefs_Calibration_Tab" xml:space="preserve">
+    <value>Kalibrierung</value>
+  </data>
+  <data name="Prefs_Connection_CredentialsHint" xml:space="preserve">
+    <value>Anmeldeinformationen des NUT-Server (Leer, wenn nicht nötig)</value>
+  </data>
+  <data name="Prefs_Connection_Host" xml:space="preserve">
+    <value>NUT-Host</value>
+  </data>
+  <data name="Prefs_Connection_Host_ToolTip" xml:space="preserve">
+    <value>Adresse des NUT-Servers.
+Wertebereich: IPV4 / IPV6 / FQDN-Adresse.</value>
+  </data>
+  <data name="Prefs_Connection_Login" xml:space="preserve">
+    <value>Anmeldung</value>
+  </data>
+  <data name="Prefs_Connection_Login_ToolTip" xml:space="preserve">
+    <value>Verbindungskennung des NUT-Servers</value>
+  </data>
+  <data name="Prefs_Connection_Password" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="Prefs_Connection_Password_ToolTip" xml:space="preserve">
+    <value>Anmeldekennwort des NUT-Servers</value>
+  </data>
+  <data name="Prefs_Connection_PollingInterval" xml:space="preserve">
+    <value>Abrufintervall</value>
+  </data>
+  <data name="Prefs_Connection_PollingInterval_ToolTip" xml:space="preserve">
+    <value>Wie häufig Coco.Nut die Daten vom NUT-Server aktualisiert.</value>
+  </data>
+  <data name="Prefs_Connection_PollingInterval_Unit" xml:space="preserve">
+    <value>Sekunden</value>
+  </data>
+  <data name="Prefs_Connection_Port" xml:space="preserve">
+    <value>NUT-Port</value>
+  </data>
+  <data name="Prefs_Connection_Port_ToolTip" xml:space="preserve">
+    <value>NUT-Server Portnummer (Standard = 3493).
+Wertebereich: Numerischer Wert von 1 bis 65535.</value>
+  </data>
+  <data name="Prefs_Connection_Reconnect" xml:space="preserve">
+    <value>Verbindung wiederherstellen</value>
+  </data>
+  <data name="Prefs_Connection_Reconnect_ToolTip" xml:space="preserve">
+    <value>Automatische Verbindung / Wiederverbindung aktivieren</value>
+  </data>
+  <data name="Prefs_Connection_Tab" xml:space="preserve">
+    <value>Verbindung</value>
+  </data>
+  <data name="Prefs_Connection_UpsName" xml:space="preserve">
+    <value>USV-Name</value>
+  </data>
+  <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
+    <value>Name der zu überwachenden USV.
+Wertebereich: Name der auf dem NUT-Server konfigurierten USV.</value>
+  </data>
+  <data name="Prefs_Logging_DeleteLog_ToolTip" xml:space="preserve">
+    <value>Logdatei löschen.</value>
+  </data>
+  <data name="Prefs_Logging_EnableFile" xml:space="preserve">
+    <value>Logdatei erstellen</value>
+  </data>
+  <data name="Prefs_Logging_EnableFile_ToolTip" xml:space="preserve">
+    <value>Protokollierungs-Ereignisse in eine Datei schreiben.</value>
+  </data>
+  <data name="Prefs_Logging_Level" xml:space="preserve">
+    <value>Detailstufe des Logs</value>
+  </data>
+  <data name="Prefs_Logging_Level_ToolTip" xml:space="preserve">
+    <value>Detailstufe des Logs.</value>
+  </data>
+  <data name="Prefs_Logging_Tab" xml:space="preserve">
+    <value>Protokollierung</value>
+  </data>
+  <data name="Prefs_Logging_ViewLog_ToolTip" xml:space="preserve">
+    <value>Logdatei öffnen.</value>
+  </data>
+  <data name="Prefs_Misc_CloseToTray" xml:space="preserve">
+    <value>In Systray minimieren</value>
+  </data>
+  <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
+    <value>Ins Systray minimieren, anstatt zu schliessen.</value>
+  </data>
+  <data name="Prefs_Misc_Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Prefs_Misc_LanguageRestartHint" xml:space="preserve">
+    <value>Änderungen werden erst nach einem Neustart von Coco.Nut wirksam.</value>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray" xml:space="preserve">
+    <value>In den Systray minimieren</value>
+  </data>
+  <data name="Prefs_Misc_MinimizeToTray_ToolTip" xml:space="preserve">
+    <value>In Taskleiste oder Systray minimieren.</value>
+  </data>
+  <data name="Prefs_Misc_StartMinimized" xml:space="preserve">
+    <value>Minimiert starten</value>
+  </data>
+  <data name="Prefs_Misc_StartMinimized_ToolTip" xml:space="preserve">
+    <value>Startet Coco.Nut minimiert.</value>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem" xml:space="preserve">
+    <value>Mit Windows starten</value>
+  </data>
+  <data name="Prefs_Misc_StartWithSystem_ToolTip" xml:space="preserve">
+    <value>Startet Coco.Nut beim Start von Windows.</value>
+  </data>
+  <data name="Prefs_Misc_Tab" xml:space="preserve">
+    <value>Verschiedenes</value>
+  </data>
+  <data name="Prefs_Power_AllowExtend" xml:space="preserve">
+    <value>Längere Abschaltzeit zulassen</value>
+  </data>
+  <data name="Prefs_Power_AllowExtend_ToolTip" xml:space="preserve">
+    <value>Zusätzliche Zeit für das Herunterfahren erlauben.
+Hinweis:
+Diese zusätzliche Zeit kann über die Verfügbarkeit der USV hinausgehen - MIT VORSICHT VERWENDEN !!!</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit" xml:space="preserve">
+    <value>Herunterfahren, wenn Akkuladung geringer als</value>
+  </data>
+  <data name="Prefs_Power_BatteryLimit_ToolTip" xml:space="preserve">
+    <value>Untergrenze des Akkuladestands, welcher den Abschaltvorgang auslöst.
+Wertebereich: Numerischer Wert von 0 bis 100.</value>
+  </data>
+  <data name="Prefs_Power_FollowFsd" xml:space="preserve">
+    <value>Herunterfahren bei FSD-Signal des NUT</value>
+  </data>
+  <data name="Prefs_Power_FollowFsd_ToolTip" xml:space="preserve">
+    <value>Gibt an, ob ein Herunterfahren durchgeführt werden soll, wenn der NUT-Server ein erzwungenes Herunterfahren signalisiert (FSD = Force ShutDown).</value>
+  </data>
+  <data name="Prefs_Power_GraceTime" xml:space="preserve">
+    <value>Manuelle Verzögerung während Stoppvorgang (Sek.)</value>
+  </data>
+  <data name="Prefs_Power_GraceTime_ToolTip" xml:space="preserve">
+    <value>Limit für zusätzliche Verzögerung.
+Wertebereich: Numerischer Wert von 0 bis 3600.</value>
+  </data>
+  <data name="Prefs_Power_Immediate" xml:space="preserve">
+    <value>Stoppvorgang sofort einleiten</value>
+  </data>
+  <data name="Prefs_Power_Immediate_ToolTip" xml:space="preserve">
+    <value>Führt die Stopp-Aktion sofort oder zeitgesteuert aus.</value>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit" xml:space="preserve">
+    <value>Herunterfahren, wenn Laufzeit niedriger als (Sek.)</value>
+  </data>
+  <data name="Prefs_Power_RuntimeLimit_ToolTip" xml:space="preserve">
+    <value>Unteres Backup-Zeitlimit, welches das Herunterfahren auslöst.
+Wertebereich: Numerischer Wert von 0 bis 3600.</value>
+  </data>
+  <data name="Prefs_Power_StopDelay" xml:space="preserve">
+    <value>Verzögerung vor der Stopp-Aktion (Sek.)</value>
+  </data>
+  <data name="Prefs_Power_StopDelay_ToolTip" xml:space="preserve">
+    <value>Stoppvorgang bei Verzögerung unterbrechen.
+Wertebereich: Numerischer Wert von 0 bis 3600.</value>
+  </data>
+  <data name="Prefs_Power_StopType" xml:space="preserve">
+    <value>Auszuführende Stopp-Aktion</value>
+  </data>
+  <data name="Prefs_Power_StopType_ToolTip" xml:space="preserve">
+    <value>Art der Stopp-Aktion am Ende des Stoppvorgangs.</value>
+  </data>
+  <data name="Prefs_Power_Tab" xml:space="preserve">
+    <value>Optionen zum Herunterfahren</value>
+  </data>
+  <data name="Prefs_Title" xml:space="preserve">
+    <value>Optionen</value>
+  </data>
+  <data name="Prefs_Update_Channel" xml:space="preserve">
+    <value>Stabiler- oder Entwicklungszweig</value>
+  </data>
+  <data name="Prefs_Update_Channel_ToolTip" xml:space="preserve">
+    <value>Bei der Updateprüfung den stabilen oder den Entwicklungszweig verwenden.</value>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup" xml:space="preserve">
+    <value>Beim Start auf Updates prüfen</value>
+  </data>
+  <data name="Prefs_Update_CheckAtStartup_ToolTip" xml:space="preserve">
+    <value>Sucht beim Start nach Updates.</value>
+  </data>
+  <data name="Prefs_Update_CheckInterval" xml:space="preserve">
+    <value>Verzögerung zwischen Überprüfungen</value>
+  </data>
+  <data name="Prefs_Update_CheckInterval_ToolTip" xml:space="preserve">
+    <value>Häufigkeit der Überprüfung.</value>
+  </data>
+  <data name="Prefs_Update_OpenReleasePage" xml:space="preserve">
+    <value>Seite aufrufen</value>
+  </data>
+  <data name="Prefs_Update_Tab" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="Shutdown_BatteryStatus" xml:space="preserve">
+    <value>Akkuladung: {0}
+Verbleibende Zeit: {1}</value>
+  </data>
+  <data name="Shutdown_GraceButton" xml:space="preserve">
+    <value>Zusätzliche manuelle Verzögerungszeit vor dem Ausführen der Stopp-Aktion</value>
+  </data>
+  <data name="Shutdown_ImmediateButton" xml:space="preserve">
+    <value>Sofortiges Herunterfahren</value>
+  </data>
+  <data name="Shutdown_Title" xml:space="preserve">
+    <value>Stoppvorgang von Coco.Nut eingeleitet</value>
+  </data>
+  <data name="StopAction_Hibernate" xml:space="preserve">
+    <value>Ruhezustand</value>
+  </data>
+  <data name="StopAction_Shutdown" xml:space="preserve">
+    <value>Herunterfahren</value>
+  </data>
+  <data name="StopAction_Suspend" xml:space="preserve">
+    <value>Energie sparen</value>
+  </data>
+  <data name="Tray_Menu_About" xml:space="preserve">
+    <value>Über Coco.Nut</value>
+  </data>
+  <data name="Tray_Menu_CheckForUpdate" xml:space="preserve">
+    <value>Auf Update prüfen</value>
+  </data>
+  <data name="Tray_Menu_Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="UpdateChannel_PreRelease" xml:space="preserve">
+    <value>Entwicklung</value>
+  </data>
+  <data name="UpdateChannel_Stable" xml:space="preserve">
+    <value>Stabil</value>
+  </data>
+  <data name="Update_Title" xml:space="preserve">
+    <value>Update verfügbar</value>
+  </data>
+  <data name="UpsStatus_ALARM" xml:space="preserve">
+    <value>Alarm</value>
+  </data>
+  <data name="UpsStatus_CAL" xml:space="preserve">
+    <value>Kalibrierung</value>
+  </data>
+  <data name="UpsStatus_CHRG" xml:space="preserve">
+    <value>Lädt</value>
+  </data>
+  <data name="UpsStatus_COMMLOST" xml:space="preserve">
+    <value>Kommunikation unterbrochen</value>
+  </data>
+  <data name="UpsStatus_DISCHRG" xml:space="preserve">
+    <value>Entlädt</value>
+  </data>
+  <data name="UpsStatus_FSD" xml:space="preserve">
+    <value>Erzwungenes Herunterfahren</value>
+  </data>
+  <data name="UpsStatus_HB" xml:space="preserve">
+    <value>Hohe Akkuladung</value>
+  </data>
+  <data name="UpsStatus_LB" xml:space="preserve">
+    <value>Niedrige Akkuladung</value>
+  </data>
+  <data name="UpsStatus_OB" xml:space="preserve">
+    <value>Im Akkubetrieb</value>
+  </data>
+  <data name="UpsStatus_OFF" xml:space="preserve">
+    <value>Ausgang aus</value>
+  </data>
+  <data name="UpsStatus_OL" xml:space="preserve">
+    <value>Im Netzbetrieb</value>
+  </data>
+  <data name="UpsStatus_OVER" xml:space="preserve">
+    <value>Überlastung</value>
+  </data>
+  <data name="UpsStatus_RB" xml:space="preserve">
+    <value>Akku ersetzen</value>
+  </data>
+  <data name="UpsStatus_TEST" xml:space="preserve">
+    <value>Test läuft</value>
+  </data>
+  <data name="Vars_Description" xml:space="preserve">
+    <value>Beschreibung:</value>
+  </data>
+  <data name="Vars_GroupTitle" xml:space="preserve">
+    <value>Element-Eigenschaften</value>
+  </data>
+  <data name="Vars_Name" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="Vars_Reload" xml:space="preserve">
+    <value>Neu laden</value>
+  </data>
+  <data name="Vars_Title" xml:space="preserve">
+    <value>Liste der USV-Variablen</value>
+  </data>
+  <data name="Vars_Value" xml:space="preserve">
+    <value>Wert:</value>
+  </data>
+</root>
