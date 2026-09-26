@@ -30,7 +30,9 @@ public static class SingleInstanceIpc
     {
         try
         {
-            using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.Out, PipeOptions.Asynchronous);
+            // CurrentUserOnly: only talk to a server owned by the same user (no other account can squat the name).
+            using var client = new NamedPipeClientStream(
+                ".", pipeName, PipeDirection.Out, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
             using var connectCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             connectCts.CancelAfter(timeout);
             await client.ConnectAsync(connectCts.Token).ConfigureAwait(false);
@@ -107,9 +109,7 @@ public sealed class SingleInstanceServer : IAsyncDisposable
 
                 try
                 {
-                    using var buffer = new MemoryStream();
-                    await connected.CopyToAsync(buffer, cancellationToken).ConfigureAwait(false);
-                    var message = Encoding.UTF8.GetString(buffer.ToArray());
+                    var message = await ReadMessageAsync(connected, cancellationToken).ConfigureAwait(false);
 
                     if (string.Equals(message, SingleInstanceIpc.ShowMessage, StringComparison.Ordinal))
                     {
@@ -142,8 +142,27 @@ public sealed class SingleInstanceServer : IAsyncDisposable
     /// (see <see cref="AcceptLoopAsync"/>), which is exactly what <see cref="NamedPipeServerStream"/>'s
     /// multi-instance support is for.
     /// </summary>
+    /// <summary>Messages are tiny; anything longer than this is not ours and is cut off.</summary>
+    internal const int MaxMessageBytes = 64;
+
+    private static async Task<string> ReadMessageAsync(Stream stream, CancellationToken cancellationToken)
+    {
+        var buffer = new byte[MaxMessageBytes];
+        var length = 0;
+        int read;
+        while (length < buffer.Length &&
+               (read = await stream.ReadAsync(buffer.AsMemory(length), cancellationToken).ConfigureAwait(false)) > 0)
+        {
+            length += read;
+        }
+
+        return Encoding.UTF8.GetString(buffer, 0, length);
+    }
+
+    // CurrentUserOnly: only connections from the same user are accepted.
     private NamedPipeServerStream CreateServer() => new(
-        _pipeName, PipeDirection.In, NamedPipeServerStream.MaxAllowedServerInstances, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+        _pipeName, PipeDirection.In, NamedPipeServerStream.MaxAllowedServerInstances, PipeTransmissionMode.Byte,
+        PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync()

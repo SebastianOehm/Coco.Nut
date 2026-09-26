@@ -7,10 +7,18 @@
         x:DataType="vm:SettingsViewModel"
         Icon="/Assets/coconut.ico"
         Title="{x:Static loc:Strings.Prefs_Title}"
-        Width="560" Height="560" MinWidth="480" MinHeight="440"
+        Width="720" Height="560" MinWidth="600" MinHeight="440"
         WindowStartupLocation="CenterOwner">
+  <Window.Styles>
+    <!-- Six sections do not fit in a horizontal tab strip with Fluent's header size; list them vertically. -->
+    <Style Selector="TabItem">
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="MinHeight" Value="36" />
+      <Setter Property="Padding" Value="12,0" />
+    </Style>
+  </Window.Styles>
   <Grid RowDefinitions="*,Auto" Margin="14">
-    <TabControl Grid.Row="0">
+    <TabControl Grid.Row="0" TabStripPlacement="Left">
 
       <!-- Connection -->
       <TabItem Header="{x:Static loc:Strings.Prefs_Connection_Tab}">
@@ -33,8 +41,7 @@
             </StackPanel>
             <StackPanel Spacing="2">
               <TextBlock>
-                <Run Text="{x:Static loc:Strings.Prefs_Connection_PollingInterval}" />
-                <Run Text=" (" /><Run Text="{x:Static loc:Strings.Prefs_Connection_PollingInterval_Unit}" /><Run Text=")" />
+                <Run Text="{x:Static loc:Strings.Prefs_Connection_PollingInterval}" /><Run Text=" (" /><Run Text="{x:Static loc:Strings.Prefs_Connection_PollingInterval_Unit}" /><Run Text=")" />
               </TextBlock>
               <NumericUpDown Value="{Binding PollIntervalSeconds}" Minimum="0.1" Maximum="100" Increment="0.1" FormatString="0.0"
                              HorizontalAlignment="Left" Width="140" ToolTip.Tip="{x:Static loc:Strings.Prefs_Connection_PollingInterval_ToolTip}" />

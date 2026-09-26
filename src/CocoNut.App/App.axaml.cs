@@ -20,7 +20,6 @@ namespace CocoNut.App;
 public partial class App : Application, IDisposable
 {
     private AppHost? _host;
-    private SingleInstanceGuard? _singleInstanceGuard;
     private SingleInstanceServer? _singleInstanceServer;
 
     /// <inheritdoc />
@@ -40,24 +39,7 @@ public partial class App : Application, IDisposable
 
         var pipeName = SingleInstanceIpc.GetPipeName();
 
-        _singleInstanceGuard = new SingleInstanceGuard();
-        if (!_singleInstanceGuard.IsFirstInstance)
-        {
-            Console.Error.WriteLine("Coco.Nut is already running for this user; asking it to show its window.");
-            // Blocking here is deliberate: the process is about to exit either way, and this happens before any
-            // window or dispatcher loop exists yet, so there is nothing to keep responsive while we wait.
-            var delivered = SingleInstanceIpc.TryRequestShowAsync(pipeName, TimeSpan.FromSeconds(2)).GetAwaiter().GetResult();
-            if (!delivered)
-            {
-                Console.Error.WriteLine("Could not reach the running instance; exiting anyway.");
-            }
-
-            _singleInstanceGuard.Dispose();
-            desktop.Shutdown();
-            base.OnFrameworkInitializationCompleted();
-            return;
-        }
-
+        // The single-instance check happens in Program.Main, before Avalonia starts; here we are the first instance.
         _host = AppHost.Build(() => desktop.Shutdown());
         var services = _host.Services;
 
@@ -108,11 +90,7 @@ public partial class App : Application, IDisposable
     }
 
     /// <inheritdoc />
-    public void Dispose()
-    {
-        _singleInstanceGuard?.Dispose();
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => GC.SuppressFinalize(this);
 
     private static async Task RunStartupSequenceAsync(
         IServiceProvider services, ISettingsService settingsService, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
