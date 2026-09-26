@@ -61,6 +61,7 @@ public class LinuxAutoStartServiceTests : IDisposable
     [InlineData("/opt/$HOME/CocoNut", """/opt/\$HOME/CocoNut""")]
     [InlineData("""/opt/`whoami`/CocoNut""", """/opt/\`whoami\`/CocoNut""")]
     [InlineData("""C:\path\CocoNut""", """C:\\path\\CocoNut""")]
+    [InlineData("/opt/100%/CocoNut", "/opt/100%%/CocoNut")]
     public void SetEnabled_EscapesExecValuePerDesktopEntrySpec(string executablePath, string expectedEscapedValue)
     {
         var service = CreateService();

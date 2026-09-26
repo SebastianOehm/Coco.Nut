@@ -67,6 +67,11 @@ internal sealed class LinuxAutoStartService : IAutoStartService
             {
                 builder.Append('\\');
             }
+            else if (c == '%')
+            {
+                // Field codes start with '%'; a literal percent sign must be written as "%%".
+                builder.Append('%');
+            }
 
             builder.Append(c);
         }

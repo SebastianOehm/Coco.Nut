@@ -21,6 +21,12 @@ internal sealed class WindowsPowerNative : IWindowsPowerNative
 
     // Plain DllImport: LibraryImport's source-generated marshalling needs AllowUnsafeBlocks even for this
     // simple bool-only signature, which the WP asks us to avoid unless required.
+    // SetSuspendState takes and returns BOOLEAN (1 byte), not BOOL (4 bytes, the default bool marshalling).
     [DllImport("powrprof.dll", EntryPoint = "SetSuspendState", ExactSpelling = true)]
-    private static extern bool NativeSetSuspendState(bool hibernate, bool forceCritical, bool disableWakeEvent);
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [return: MarshalAs(UnmanagedType.U1)]
+    private static extern bool NativeSetSuspendState(
+        [MarshalAs(UnmanagedType.U1)] bool hibernate,
+        [MarshalAs(UnmanagedType.U1)] bool forceCritical,
+        [MarshalAs(UnmanagedType.U1)] bool disableWakeEvent);
 }
