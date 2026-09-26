@@ -7,6 +7,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <ApplicationIcon>Assets\coconut.ico</ApplicationIcon>
+    <!-- CA1863 (cache a CompositeFormat) fires on every localized string.Format(Strings.Xyz, ...) call - dozens
+         of one-off, low-frequency formats (event log lines, notifications) across this project. A cached
+         CompositeFormat per string would also have to be rebuilt if the culture could change at runtime; it
+         cannot here (docs/PLAN.md: a language change requires a restart), so the cache would buy nothing.
+         Not worth the loss of readability for code that formats a few strings per user action at most. -->
+    <NoWarn>$(NoWarn);CA1863</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />

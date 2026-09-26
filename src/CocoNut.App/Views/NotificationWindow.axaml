@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:CocoNut.App.ViewModels"
+        x:Class="CocoNut.App.Views.NotificationWindow"
+        x:DataType="vm:NotificationContent"
+        SystemDecorations="None"
+        ShowInTaskbar="False"
+        CanResize="False"
+        ShowActivated="False"
+        Topmost="True"
+        WindowStartupLocation="Manual"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
+        SizeToContent="Manual">
+  <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+          CornerRadius="6" BorderThickness="1" BorderBrush="Gray" Padding="12"
+          PointerPressed="OnPointerPressed">
+    <Grid ColumnDefinitions="4,*">
+      <Rectangle Grid.Column="0" Fill="{Binding AccentBrush}" RadiusX="2" RadiusY="2" Margin="0,2,10,2" />
+      <StackPanel Grid.Column="1" Spacing="4">
+        <TextBlock Text="{Binding Title}" FontWeight="Bold" TextTrimming="CharacterEllipsis" />
+        <TextBlock Text="{Binding Message}" TextWrapping="Wrap" MaxLines="3" TextTrimming="CharacterEllipsis" />
+      </StackPanel>
+    </Grid>
+  </Border>
+</Window>

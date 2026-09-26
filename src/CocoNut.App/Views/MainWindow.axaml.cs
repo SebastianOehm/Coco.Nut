@@ -1,22 +1,61 @@
+using Avalonia;
 using Avalonia.Controls;
-using CocoNut.App.Controls;
+using CocoNut.App.Services;
 
 namespace CocoNut.App.Views;
 
+/// <summary>
+/// Main window code-behind: only the close-to-tray/minimize-to-tray window plumbing from
+/// <c>AppSettings.General</c> (WinNUT's <c>WinNUT.vb</c> had the same close/minimize-to-tray behaviour); every
+/// other behaviour lives in <see cref="CocoNut.App.ViewModels.MainWindowViewModel"/>.
+/// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
-    {
-        InitializeComponent();
+    private readonly ISettingsService? _settingsService;
+    private readonly Action? _requestExit;
 
-        // WP-F demo wiring: GaugePresets.* mirror WinNUT's per-gauge coloring for the calibration
-        // minimum/maximum set on each Gauge in MainWindow.axaml. The App-shell work package will drive
-        // Ranges/Value from the real UpsMonitor/AppSettings instead of these sample readings.
-        InputVoltageGauge.Ranges = GaugePresets.InputVoltage(InputVoltageGauge.Minimum, InputVoltageGauge.Maximum);
-        OutputVoltageGauge.Ranges = GaugePresets.OutputVoltage(OutputVoltageGauge.Minimum, OutputVoltageGauge.Maximum);
-        InputFrequencyGauge.Ranges = GaugePresets.InputFrequency(InputFrequencyGauge.Minimum, InputFrequencyGauge.Maximum);
-        BatteryVoltageGauge.Ranges = GaugePresets.BatteryVoltage(BatteryVoltageGauge.Minimum, BatteryVoltageGauge.Maximum);
-        LoadGauge.Ranges = GaugePresets.Load(LoadGauge.Minimum, LoadGauge.Maximum);
-        PowerGauge.Ranges = GaugePresets.Power(PowerGauge.Minimum, PowerGauge.Maximum);
+    /// <summary>Parameterless constructor for the XAML loader/previewer only; behaves as if closing always exits.</summary>
+    public MainWindow() : this(null, null)
+    {
+    }
+
+    public MainWindow(ISettingsService? settingsService, Action? requestExit)
+    {
+        _settingsService = settingsService;
+        _requestExit = requestExit;
+        InitializeComponent();
+        Closing += OnClosing;
+    }
+
+    private void OnClosing(object? sender, WindowClosingEventArgs e)
+    {
+        var closeToTray = _settingsService?.Current.General.CloseToTray ?? false;
+        if (closeToTray)
+        {
+            e.Cancel = true;
+            Hide();
+            return;
+        }
+
+        // Not closing to tray: route through the app's single exit path (menu Exit/tray Exit use the same one)
+        // instead of letting this Close() proceed directly, so AppHost disposal always happens the same way.
+        e.Cancel = true;
+        _requestExit?.Invoke();
+    }
+
+    /// <inheritdoc />
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property != WindowStateProperty || WindowState != WindowState.Minimized)
+        {
+            return;
+        }
+
+        if (_settingsService?.Current.General.MinimizeToTray ?? false)
+        {
+            Hide();
+        }
     }
 }

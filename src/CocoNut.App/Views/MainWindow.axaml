@@ -2,47 +2,159 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
         xmlns:controls="clr-namespace:CocoNut.App.Controls"
+        xmlns:conv="clr-namespace:CocoNut.App.Converters"
+        xmlns:vm="clr-namespace:CocoNut.App.ViewModels"
         x:Class="CocoNut.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/coconut.ico"
-        Width="860" Height="480"
+        Width="980" Height="760" MinWidth="720" MinHeight="520"
+        WindowStartupLocation="CenterScreen"
         Title="{x:Static loc:Strings.AppName}">
-  <!--
-    WP-F demo: the six Gauge controls from Controls/Gauge.cs, wired up with GaugePresets range bands
-    (see MainWindow.axaml.cs) and sample readings, for the architect to review. The App-shell work
-    package (G) replaces this content with the real MainWindow/MainWindowViewModel.
-  -->
-  <ScrollViewer>
-    <WrapPanel Margin="16" HorizontalAlignment="Center">
-      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-        <controls:Gauge x:Name="InputVoltageGauge" Width="220" Height="220"
-                         Minimum="210" Maximum="270" Value="230"
-                         Caption="Input Voltage" Unit="V" />
-      </Border>
-      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-        <controls:Gauge x:Name="OutputVoltageGauge" Width="220" Height="220"
-                         Minimum="210" Maximum="270" Value="228"
-                         Caption="Output Voltage" Unit="V" />
-      </Border>
-      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-        <controls:Gauge x:Name="InputFrequencyGauge" Width="220" Height="220"
-                         Minimum="40" Maximum="60" Value="50"
-                         Caption="Input Frequency" Unit="Hz" />
-      </Border>
-      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-        <controls:Gauge x:Name="BatteryVoltageGauge" Width="220" Height="220"
-                         Minimum="6" Maximum="18" Value="13.2"
-                         Caption="Battery Voltage" Unit="V" />
-      </Border>
-      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-        <controls:Gauge x:Name="LoadGauge" Width="220" Height="220"
-                         Minimum="0" Maximum="100" Value="35"
-                         Caption="Load" Unit="%" />
-      </Border>
-      <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-        <controls:Gauge x:Name="PowerGauge" Width="220" Height="220"
-                         Minimum="0" Maximum="600" Value="180"
-                         Caption="Power" Unit="W" />
-      </Border>
-    </WrapPanel>
-  </ScrollViewer>
+  <Grid RowDefinitions="Auto,*,200">
+    <Menu Grid.Row="0">
+      <MenuItem Header="{x:Static loc:Strings.Main_Menu_File}">
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_Settings}" Command="{Binding ShowSettingsCommand}" />
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_UpsVariables}" Command="{Binding ShowUpsVariablesCommand}" />
+        <Separator />
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_Exit}" Command="{Binding ExitCommand}" />
+      </MenuItem>
+      <MenuItem Header="{x:Static loc:Strings.Main_Menu_Connection}">
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_Connect}" Command="{Binding ConnectCommand}" IsEnabled="{Binding CanConnect}" />
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_Disconnect}" Command="{Binding DisconnectCommand}" IsEnabled="{Binding CanDisconnect}" />
+        <Separator />
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_Persist}" ToggleType="CheckBox" IsChecked="{Binding AutoReconnectEnabled}" />
+      </MenuItem>
+      <MenuItem Header="{x:Static loc:Strings.Main_Menu_Help}">
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_CheckForUpdate}" Command="{Binding CheckForUpdatesCommand}" />
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_About}" Command="{Binding ShowAboutCommand}" />
+      </MenuItem>
+    </Menu>
+
+    <ScrollViewer Grid.Row="1">
+      <Grid ColumnDefinitions="300,*" Margin="12">
+        <StackPanel Grid.Column="0" Spacing="12" Margin="0,0,12,0">
+          <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="4" Padding="10">
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="4" ColumnSpacing="6">
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Manufacturer}" />
+              <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ManufacturerText}" TextTrimming="CharacterEllipsis" />
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Model}" />
+              <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ModelText}" TextTrimming="CharacterEllipsis" />
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Serial}" />
+              <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SerialText}" TextTrimming="CharacterEllipsis" />
+              <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Firmware}" />
+              <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding FirmwareText}" TextTrimming="CharacterEllipsis" />
+            </Grid>
+          </Border>
+
+          <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="4" Padding="10">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{Binding ConnectionStatusText}" FontWeight="Bold" TextWrapping="Wrap" />
+              <WrapPanel>
+                <Border Background="#2E7D32" CornerRadius="4" Padding="6,2" Margin="0,0,4,4"
+                        Opacity="{Binding IndicatorOnLine, Converter={x:Static conv:BoolToOpacityConverter.Instance}}">
+                  <TextBlock Text="{x:Static loc:Strings.Main_Flag_OnLine}" Foreground="White" FontSize="11" />
+                </Border>
+                <Border Background="#F9A825" CornerRadius="4" Padding="6,2" Margin="0,0,4,4"
+                        Opacity="{Binding IndicatorOnBattery, Converter={x:Static conv:BoolToOpacityConverter.Instance}}">
+                  <TextBlock Text="{x:Static loc:Strings.Main_Flag_OnBattery}" Foreground="White" FontSize="11" />
+                </Border>
+                <Border Background="#D32F2F" CornerRadius="4" Padding="6,2" Margin="0,0,4,4"
+                        Opacity="{Binding IndicatorLowBattery, Converter={x:Static conv:BoolToOpacityConverter.Instance}}">
+                  <TextBlock Text="{x:Static loc:Strings.Main_Flag_BatteryLow}" Foreground="White" FontSize="11" />
+                </Border>
+                <Border Background="#D32F2F" CornerRadius="4" Padding="6,2" Margin="0,0,4,4"
+                        Opacity="{Binding IndicatorOverload, Converter={x:Static conv:BoolToOpacityConverter.Instance}}">
+                  <TextBlock Text="{x:Static loc:Strings.Main_Flag_Overload}" Foreground="White" FontSize="11" />
+                </Border>
+              </WrapPanel>
+              <ItemsControl ItemsSource="{Binding ActiveStatusFlags}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="x:String">
+                    <Border Background="#455A64" CornerRadius="3" Padding="5,1" Margin="0,0,4,4">
+                      <TextBlock Text="{Binding}" Foreground="White" FontSize="10" />
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+
+          <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="4" Padding="10">
+            <StackPanel Spacing="4">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <ProgressBar Grid.Column="0" Minimum="0" Maximum="100" Height="18" VerticalAlignment="Center"
+                             Value="{Binding BatteryChargePercent}" />
+                <TextBlock Grid.Column="1" Text="{Binding BatteryChargeText}" VerticalAlignment="Center" />
+              </Grid>
+              <TextBlock Text="{x:Static loc:Strings.Main_BatteryChargeEstimatedNote}" FontStyle="Italic" FontSize="10"
+                         IsVisible="{Binding IsBatteryChargeEstimated}" />
+              <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+                <TextBlock Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_RemainingTime}" />
+                <TextBlock Grid.Column="1" Text="{Binding BatteryRuntimeText}" />
+              </Grid>
+              <TextBlock Text="{x:Static loc:Strings.Main_BatteryRuntimeEstimatedNote}" FontStyle="Italic" FontSize="10"
+                         IsVisible="{Binding IsBatteryRuntimeEstimated}" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+
+        <WrapPanel Grid.Column="1" HorizontalAlignment="Center">
+          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+            <controls:Gauge Width="180" Height="180"
+                             Minimum="{Binding InputVoltageGauge.Minimum}" Maximum="{Binding InputVoltageGauge.Maximum}"
+                             Value="{Binding InputVoltageGauge.Value}" Ranges="{Binding InputVoltageGauge.Ranges}"
+                             Caption="{Binding InputVoltageGauge.Caption}" Unit="{Binding InputVoltageGauge.Unit}" />
+          </Border>
+          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+            <controls:Gauge Width="180" Height="180"
+                             Minimum="{Binding OutputVoltageGauge.Minimum}" Maximum="{Binding OutputVoltageGauge.Maximum}"
+                             Value="{Binding OutputVoltageGauge.Value}" Ranges="{Binding OutputVoltageGauge.Ranges}"
+                             Caption="{Binding OutputVoltageGauge.Caption}" Unit="{Binding OutputVoltageGauge.Unit}" />
+          </Border>
+          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+            <controls:Gauge Width="180" Height="180"
+                             Minimum="{Binding InputFrequencyGauge.Minimum}" Maximum="{Binding InputFrequencyGauge.Maximum}"
+                             Value="{Binding InputFrequencyGauge.Value}" Ranges="{Binding InputFrequencyGauge.Ranges}"
+                             Caption="{Binding InputFrequencyGauge.Caption}" Unit="{Binding InputFrequencyGauge.Unit}" />
+          </Border>
+          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+            <controls:Gauge Width="180" Height="180"
+                             Minimum="{Binding BatteryVoltageGauge.Minimum}" Maximum="{Binding BatteryVoltageGauge.Maximum}"
+                             Value="{Binding BatteryVoltageGauge.Value}" Ranges="{Binding BatteryVoltageGauge.Ranges}"
+                             Caption="{Binding BatteryVoltageGauge.Caption}" Unit="{Binding BatteryVoltageGauge.Unit}" />
+          </Border>
+          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+            <controls:Gauge Width="180" Height="180"
+                             Minimum="{Binding LoadGauge.Minimum}" Maximum="{Binding LoadGauge.Maximum}"
+                             Value="{Binding LoadGauge.Value}" Ranges="{Binding LoadGauge.Ranges}"
+                             Caption="{Binding LoadGauge.Caption}" Unit="{Binding LoadGauge.Unit}" />
+          </Border>
+          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+            <controls:Gauge Width="180" Height="180"
+                             Minimum="{Binding PowerGauge.Minimum}" Maximum="{Binding PowerGauge.Maximum}"
+                             Value="{Binding PowerGauge.Value}" Ranges="{Binding PowerGauge.Ranges}"
+                             Caption="{Binding PowerGauge.Caption}" Unit="{Binding PowerGauge.Unit}" />
+          </Border>
+        </WrapPanel>
+      </Grid>
+    </ScrollViewer>
+
+    <Border Grid.Row="2" BorderThickness="1,1,1,0" BorderBrush="Gray" Margin="12,0,12,12">
+      <ListBox ItemsSource="{Binding EventLog}">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="vm:EventLogEntry">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <TextBlock Text="{Binding TimeText}" FontFamily="Consolas,monospace" Opacity="0.7" />
+              <TextBlock Text="{Binding Message}" TextWrapping="Wrap" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+  </Grid>
 </Window>

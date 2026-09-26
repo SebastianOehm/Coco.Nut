@@ -1,0 +1,25 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
+        xmlns:vm="clr-namespace:CocoNut.App.ViewModels"
+        x:Class="CocoNut.App.Views.ShutdownWindow"
+        x:DataType="vm:ShutdownViewModel"
+        Title="{Binding TitleText}"
+        Width="420" SizeToContent="Height"
+        CanResize="False"
+        Topmost="True"
+        ShowInTaskbar="True"
+        WindowStartupLocation="CenterScreen">
+  <StackPanel Margin="20" Spacing="14">
+    <TextBlock Text="{Binding ReasonText}" TextWrapping="Wrap" FontWeight="Bold" FontSize="14" />
+    <TextBlock Text="{Binding CountdownText}" TextWrapping="Wrap" FontSize="16" HorizontalAlignment="Center" />
+    <ProgressBar Minimum="0" Maximum="1" Value="{Binding Progress}" Height="14" />
+    <TextBlock Text="{Binding BatteryStatusText}" TextWrapping="Wrap" Opacity="0.85" />
+    <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+      <Button Content="{x:Static loc:Strings.Shutdown_GraceButton}" Command="{Binding ExtendCommand}"
+              IsVisible="{Binding CanShowGraceButton}" IsEnabled="{Binding CanExtend}" />
+      <Button Content="{x:Static loc:Strings.Shutdown_ImmediateButton}" Command="{Binding ShutdownNowCommand}"
+              Classes="accent" />
+    </StackPanel>
+  </StackPanel>
+</Window>
