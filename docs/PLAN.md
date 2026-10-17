@@ -146,6 +146,8 @@ shutdown window, gauge read-outs showing clamped values, a second instance crash
 lost translations.
 
 ### Open items
+Future work and the change log are tracked in [`ROADMAP.md`](ROADMAP.md).
+
 * Manual tests on real hardware/NUT servers (Windows, Linux desktop environments incl. GNOME tray behaviour, macOS),
   including a real suspend/hibernate/shutdown.
 * WinNUT `user.config` import: the credential format is inferred, not verified against a real file.

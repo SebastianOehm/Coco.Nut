@@ -68,21 +68,56 @@ public sealed class PopupNotificationService : INotificationService
             return;
         }
 
-        var workArea = ResolveWorkArea(_openWindows[^1]);
-        var x = workArea.Right - (int)WindowWidth - (int)Margin;
+        var (workArea, scaling) = ResolveScreen(_openWindows[^1]);
+        var positions = ComputeStackPositions(workArea, scaling, _openWindows.Count);
 
         for (var i = 0; i < _openWindows.Count; i++)
         {
-            var stackPosition = _openWindows.Count - i; // 1 = newest/bottom-most, growing upward.
-            var y = workArea.Bottom - stackPosition * ((int)WindowHeight + (int)Margin);
-            _openWindows[i].Position = new PixelPoint(x, y);
+            _openWindows[i].Position = positions[i];
         }
     }
 
-    private static PixelRect ResolveWorkArea(NotificationWindow window)
+    /// <summary>
+    /// Computes the top-left corner of each of <paramref name="count"/> stacked popups, oldest first, so the newest
+    /// sits in the bottom-right corner of <paramref name="workArea"/> and older ones stack upward. The work area and
+    /// the returned positions are physical pixels while the popup size/margin are DIPs, so they are converted with
+    /// the screen's <paramref name="scaling"/> - otherwise a popup on a scaled (e.g. 150%/200%) screen is placed as
+    /// if it were smaller than it is and ends up partially off-screen. Positions are clamped to the work area, so a
+    /// stack taller than the screen overlaps at the top instead of running off it.
+    /// </summary>
+    public static PixelPoint[] ComputeStackPositions(PixelRect workArea, double scaling, int count)
+    {
+        if (count <= 0)
+        {
+            return [];
+        }
+
+        if (scaling <= 0 || double.IsNaN(scaling) || double.IsInfinity(scaling))
+        {
+            scaling = 1;
+        }
+
+        var width = (int)Math.Ceiling(WindowWidth * scaling);
+        var height = (int)Math.Ceiling(WindowHeight * scaling);
+        var margin = (int)Math.Ceiling(Margin * scaling);
+
+        var x = Math.Max(workArea.X, workArea.Right - width - margin);
+        var positions = new PixelPoint[count];
+
+        for (var i = 0; i < count; i++)
+        {
+            var stackPosition = count - i; // 1 = newest/bottom-most, growing upward.
+            var y = Math.Max(workArea.Y, workArea.Bottom - stackPosition * (height + margin));
+            positions[i] = new PixelPoint(x, y);
+        }
+
+        return positions;
+    }
+
+    private static (PixelRect WorkArea, double Scaling) ResolveScreen(NotificationWindow window)
     {
         var screens = window.Screens;
         var screen = screens?.Primary ?? (screens?.All is { Count: > 0 } all ? all[0] : null);
-        return screen?.WorkingArea ?? FallbackWorkArea;
+        return screen is null ? (FallbackWorkArea, 1) : (screen.WorkingArea, screen.Scaling);
     }
 }
