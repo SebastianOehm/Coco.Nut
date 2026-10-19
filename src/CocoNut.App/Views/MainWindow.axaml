@@ -14,6 +14,7 @@
     <Menu Grid.Row="0">
       <MenuItem Header="{x:Static loc:Strings.Main_Menu_File}">
         <MenuItem Header="{x:Static loc:Strings.Main_Menu_Settings}" Command="{Binding ShowSettingsCommand}" />
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_History}" Command="{Binding ShowHistoryCommand}" />
         <MenuItem Header="{x:Static loc:Strings.Main_Menu_UpsVariables}" Command="{Binding ShowUpsVariablesCommand}" />
         <Separator />
         <MenuItem Header="{x:Static loc:Strings.Main_Menu_Exit}" Command="{Binding ExitCommand}" />

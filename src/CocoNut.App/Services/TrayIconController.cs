@@ -42,6 +42,9 @@ public sealed class TrayIconController : IDisposable
         var showItem = new NativeMenuItem(Strings.Tray_Menu_Show);
         showItem.Click += (_, _) => _navigator.ShowMainWindow();
 
+        var historyItem = new NativeMenuItem(Strings.Tray_Menu_History);
+        historyItem.Click += (_, _) => _ = _navigator.ShowHistoryAsync();
+
         var settingsItem = new NativeMenuItem(Strings.Tray_Menu_Settings);
         settingsItem.Click += (_, _) => _ = _navigator.ShowSettingsAsync();
 
@@ -56,7 +59,7 @@ public sealed class TrayIconController : IDisposable
 
         _trayIcon = new TrayIcon
         {
-            Menu = new NativeMenu { showItem, settingsItem, updateItem, aboutItem, new NativeMenuItemSeparator(), exitItem },
+            Menu = new NativeMenu { showItem, historyItem, settingsItem, updateItem, aboutItem, new NativeMenuItemSeparator(), exitItem },
         };
         _trayIcon.Clicked += (_, _) => _navigator.ShowMainWindow();
 

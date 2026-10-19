@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CocoNut.App.Services;
 
-/// <summary>Opens the app's secondary windows: Settings, UPS variables, About and the update-available notice.</summary>
+/// <summary>Opens the app's secondary windows: Settings, UPS variables, History, About and the update-available notice.</summary>
 public interface IWindowNavigator
 {
     /// <summary>Opens the Settings window (<c>Views/SettingsWindow</c>), or activates it if already open.</summary>
@@ -15,6 +15,9 @@ public interface IWindowNavigator
 
     /// <summary>Opens the UPS variables window (<c>Views/UpsVariablesWindow</c>), or activates it if already open.</summary>
     Task ShowUpsVariablesAsync();
+
+    /// <summary>Opens the history window (<c>Views/HistoryWindow</c>), or activates it if already open.</summary>
+    Task ShowHistoryAsync();
 
     /// <summary>Opens the About window (<c>Views/AboutWindow</c>), or activates it if already open.</summary>
     Task ShowAboutAsync();
@@ -44,6 +47,7 @@ public sealed class WindowNavigator : IWindowNavigator
 
     private SettingsWindow? _settingsWindow;
     private UpsVariablesWindow? _upsVariablesWindow;
+    private HistoryWindow? _historyWindow;
     private AboutWindow? _aboutWindow;
     private UpdateAvailableWindow? _updateAvailableWindow;
 
@@ -109,6 +113,24 @@ public sealed class WindowNavigator : IWindowNavigator
         window.Closed += (_, _) => _upsVariablesWindow = null;
 
         _logger.LogDebug("Opening the UPS variables window.");
+        Show(window);
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task ShowHistoryAsync()
+    {
+        if (Activate(_historyWindow))
+        {
+            return Task.CompletedTask;
+        }
+
+        var viewModel = _services.GetRequiredService<HistoryViewModel>();
+        var window = new HistoryWindow { DataContext = viewModel };
+        _historyWindow = window;
+        window.Closed += (_, _) => _historyWindow = null;
+
+        _logger.LogDebug("Opening the History window.");
         Show(window);
         return Task.CompletedTask;
     }
