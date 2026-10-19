@@ -12,7 +12,7 @@
     <Company>NUT Dot Net project</Company>
     <Product>Coco.Nut</Product>
     <Copyright>Coco.Nut: Copyright (C) 2026 Sebastian Oehm, gbakeman. Based on WinNUT-Client: Copyright (C) 2019-2021 Gawindx (Decaux Nicolas), 2022+ gbakeman / NUT Dot Net project</Copyright>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <NeutralLanguage>en</NeutralLanguage>
     <SatelliteResourceLanguages>en;de-DE;fr-FR;ru-RU;uk-UA;zh-CN;zh-TW</SatelliteResourceLanguages>
   </PropertyGroup>
