@@ -1,6 +1,7 @@
 using System.Globalization;
 using CocoNut.App.Tests.Fakes;
 using CocoNut.App.ViewModels;
+using CocoNut.Core.Updates;
 using CocoNut.Localization;
 
 namespace CocoNut.App.Tests.ViewModels;
@@ -16,6 +17,16 @@ public sealed class AboutViewModelTests
 
         Assert.StartsWith(Strings.About_Version[..Strings.About_Version.IndexOf("{0}", StringComparison.Ordinal)], vm.VersionText, StringComparison.Ordinal);
         Assert.False(string.IsNullOrWhiteSpace(vm.VersionText));
+    }
+
+    [Fact]
+    public void Version_text_is_the_release_version_without_build_metadata()
+    {
+        var assembly = typeof(AboutViewModelTests).Assembly;
+        var vm = new AboutViewModel(new FakeShellLauncher(), assembly);
+
+        Assert.DoesNotContain('+', vm.VersionText);
+        Assert.Equal(string.Format(CultureInfo.CurrentCulture, Strings.About_Version, ReleaseVersion.FromAssembly(assembly)), vm.VersionText);
     }
 
     [Fact]

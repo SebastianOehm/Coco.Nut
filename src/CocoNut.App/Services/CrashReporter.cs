@@ -5,6 +5,7 @@ using System.Text;
 using Avalonia.Threading;
 using CocoNut.Core;
 using CocoNut.Core.Logging;
+using CocoNut.Core.Updates;
 using Microsoft.Extensions.Logging;
 
 namespace CocoNut.App.Services;
@@ -92,7 +93,7 @@ public sealed class CrashReporter
 
     private string BuildReport(Exception? exception)
     {
-        var version = Assembly.GetEntryAssembly()?.GetName().Version ?? typeof(CrashReporter).Assembly.GetName().Version;
+        var version = ReleaseVersion.FromAssembly(Assembly.GetEntryAssembly() ?? typeof(CrashReporter).Assembly);
 
         var culture = CultureInfo.InvariantCulture;
         var report = new StringBuilder()

@@ -116,7 +116,7 @@ public sealed class WindowNavigatorTests : IDisposable
     [AvaloniaFact]
     public async Task ShowUpdateAvailableAsync_twice_reuses_the_same_window()
     {
-        var result = UpdateCheckResult.FromRelease(true, new Version(2, 0, 0), new CocoNut.Core.Updates.GitHubRelease { TagName = "v2.0.0" });
+        var result = UpdateCheckResult.FromRelease(true, ReleaseVersion.TryParse("2.0.0")!, new CocoNut.Core.Updates.GitHubRelease { TagName = "v2.0.0" });
 
         await _navigator.ShowUpdateAvailableAsync(result);
         var first = GetWindow("_updateAvailableWindow");

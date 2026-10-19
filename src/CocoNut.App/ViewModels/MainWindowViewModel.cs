@@ -182,7 +182,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     {
         AddLogEntry(Strings.Log_Checking);
 
-        var currentVersion = typeof(MainWindowViewModel).Assembly.GetName().Version ?? new Version(0, 1, 0);
+        var currentVersion = ReleaseVersion.FromAssembly(typeof(MainWindowViewModel).Assembly);
         var channel = _settingsService.Current.Update.Channel;
         var result = await _updateChecker.CheckAsync(currentVersion, channel).ConfigureAwait(true);
 

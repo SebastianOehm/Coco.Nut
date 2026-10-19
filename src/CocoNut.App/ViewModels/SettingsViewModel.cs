@@ -549,7 +549,7 @@ public sealed partial class SettingsViewModel : ObservableObject
     [RelayCommand]
     private async Task CheckNowAsync()
     {
-        var currentVersion = typeof(SettingsViewModel).Assembly.GetName().Version ?? new Version(0, 1, 0);
+        var currentVersion = ReleaseVersion.FromAssembly(typeof(SettingsViewModel).Assembly);
         var result = await _updateChecker.CheckAsync(currentVersion, SelectedChannel.Value).ConfigureAwait(true);
 
         if (result.Error is not null)

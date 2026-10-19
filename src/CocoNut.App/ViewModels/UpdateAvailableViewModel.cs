@@ -17,7 +17,7 @@ public sealed partial class UpdateAvailableViewModel : ObservableObject
     private readonly IShellLauncher _shellLauncher;
     private readonly string? _releaseUrl;
 
-    public UpdateAvailableViewModel(UpdateCheckResult result, Version currentVersion, IShellLauncher shellLauncher)
+    public UpdateAvailableViewModel(UpdateCheckResult result, ReleaseVersion currentVersion, IShellLauncher shellLauncher)
     {
         ArgumentNullException.ThrowIfNull(result);
         ArgumentNullException.ThrowIfNull(currentVersion);

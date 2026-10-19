@@ -143,7 +143,7 @@ public class DemoScreenshotTests
         Directory.CreateDirectory(ArtifactsDirectoryForAbout());
         aboutFrame.Save(Path.Combine(ArtifactsDirectoryForAbout(), "about.png"));
 
-        var result = UpdateCheckResult.FromRelease(true, new Version(1, 2, 0), new CocoNut.Core.Updates.GitHubRelease
+        var result = UpdateCheckResult.FromRelease(true, ReleaseVersion.TryParse("1.2.0")!, new CocoNut.Core.Updates.GitHubRelease
         {
             TagName = "v1.2.0",
             Name = "Coco.Nut 1.2.0",
@@ -151,7 +151,7 @@ public class DemoScreenshotTests
             Body = "- Added feature X\n- Fixed bug Y\n- Improved Z",
             PublishedAt = DateTimeOffset.UtcNow,
         });
-        var updateWindow = new UpdateAvailableWindow { DataContext = new UpdateAvailableViewModel(result, new Version(1, 1, 0), new FakeShellLauncher()) };
+        var updateWindow = new UpdateAvailableWindow { DataContext = new UpdateAvailableViewModel(result, ReleaseVersion.TryParse("1.1.0")!, new FakeShellLauncher()) };
         updateWindow.Show();
         Assert.NotNull(updateWindow.CaptureRenderedFrame());
     }
