@@ -195,6 +195,21 @@
   <data name="History_Range_Last7Days" xml:space="preserve">
     <value>Letzte 7 Tage</value>
   </data>
+  <data name="History_Reason_BatteryChargeFloor" xml:space="preserve">
+    <value>Akkustand bei oder unter dem Grenzwert</value>
+  </data>
+  <data name="History_Reason_ForcedShutdown" xml:space="preserve">
+    <value>Erzwungenes Herunterfahren vom Server angefordert</value>
+  </data>
+  <data name="History_Reason_PowerRestored" xml:space="preserve">
+    <value>Netzstrom wiederhergestellt</value>
+  </data>
+  <data name="History_Reason_RuntimeFloor" xml:space="preserve">
+    <value>Laufzeit bei oder unter dem Grenzwert</value>
+  </data>
+  <data name="History_Reason_UpsLowBattery" xml:space="preserve">
+    <value>USV meldet kritischen Akkuzustand</value>
+  </data>
   <data name="History_Refresh" xml:space="preserve">
     <value>Aktualisieren</value>
   </data>

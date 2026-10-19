@@ -363,6 +363,56 @@ public sealed class HistoryViewModelTests : IDisposable
         Assert.Equal(string.Format(CultureInfo.CurrentCulture, Strings.History_Events_Limit, HistoryViewModel.EventLimit), f.ViewModel.EventsLimitText);
     }
 
+    [Theory]
+    [InlineData(HistoryEventKind.ShutdownPending, "BatteryChargeFloor", "History_Reason_BatteryChargeFloor")]
+    [InlineData(HistoryEventKind.ShutdownPending, "RuntimeFloor", "History_Reason_RuntimeFloor")]
+    [InlineData(HistoryEventKind.ShutdownPending, "UpsLowBattery", "History_Reason_UpsLowBattery")]
+    [InlineData(HistoryEventKind.ShutdownExecuting, "ForcedShutdown", "History_Reason_ForcedShutdown")]
+    [InlineData(HistoryEventKind.ShutdownCancelled, "PowerRestored", "History_Reason_PowerRestored")]
+    public void Shutdown_reasons_are_shown_localized(HistoryEventKind kind, string detail, string resourceKey)
+    {
+        var expected = Strings.ResourceManager.GetString(resourceKey, Strings.Culture);
+
+        Assert.False(string.IsNullOrEmpty(expected));
+        Assert.Equal(expected, HistoryEventFormatter.ToLocalizedDetail(kind, detail));
+    }
+
+    [Theory]
+    [InlineData(HistoryEventKind.ShutdownPending, "batterychargefloor")] // exact match only
+    [InlineData(HistoryEventKind.ShutdownPending, "None")] // defined but has no text
+    [InlineData(HistoryEventKind.ShutdownPending, "99")]
+    [InlineData(HistoryEventKind.ShutdownFailed, "ForcedShutdown")] // only the three shutdown kinds are mapped
+    [InlineData(HistoryEventKind.OnBattery, "PowerRestored")]
+    [InlineData(HistoryEventKind.ShutdownExecuting, "Access denied")]
+    public void Other_details_pass_through_unchanged(HistoryEventKind kind, string detail)
+    {
+        Assert.Equal(detail, HistoryEventFormatter.ToLocalizedDetail(kind, detail));
+    }
+
+    [Fact]
+    public void Null_detail_is_shown_as_empty_text()
+    {
+        Assert.Equal(string.Empty, HistoryEventFormatter.ToLocalizedDetail(HistoryEventKind.Connected, null));
+    }
+
+    [Fact]
+    public async Task Events_show_and_search_the_localized_reason()
+    {
+        var f = Build(store =>
+        {
+            store.KnownUps.Add(Ups("ups"));
+            store.Events.Add(new HistoryEvent(Now.AddHours(-2), Ups("ups"), HistoryEventKind.ShutdownPending, "RuntimeFloor"));
+            store.Events.Add(new HistoryEvent(Now.AddHours(-1), Ups("ups"), HistoryEventKind.ShutdownCancelled, "PowerRestored"));
+        });
+        await WaitIdleAsync(f.ViewModel);
+
+        Assert.Equal([Strings.History_Reason_PowerRestored, Strings.History_Reason_RuntimeFloor], f.ViewModel.Events.Select(e => e.Detail));
+
+        f.ViewModel.SearchText = "at or below the limit";
+        f.Time.Advance(HistoryViewModel.SearchDebounce);
+        Assert.Equal([HistoryEventKind.ShutdownPending], f.ViewModel.Events.Select(e => e.Kind));
+    }
+
     [Fact]
     public void Every_event_kind_has_a_localized_name()
     {

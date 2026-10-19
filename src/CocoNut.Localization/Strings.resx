@@ -255,6 +255,26 @@ along with this program. If not, see https://www.gnu.org/licenses/.</value>
     <value>Last 7 days</value>
     <comment>History window: time range option.</comment>
   </data>
+  <data name="History_Reason_BatteryChargeFloor" xml:space="preserve">
+    <value>Battery charge at or below the limit</value>
+    <comment>History window: detail text of a shutdown event whose reason is the battery charge floor.</comment>
+  </data>
+  <data name="History_Reason_ForcedShutdown" xml:space="preserve">
+    <value>Forced shutdown requested by the server</value>
+    <comment>History window: detail text of a shutdown event whose reason is a forced shutdown (FSD) from the NUT server.</comment>
+  </data>
+  <data name="History_Reason_PowerRestored" xml:space="preserve">
+    <value>Power restored</value>
+    <comment>History window: detail text of a shutdown-cancelled event whose reason is that mains power returned.</comment>
+  </data>
+  <data name="History_Reason_RuntimeFloor" xml:space="preserve">
+    <value>Runtime at or below the limit</value>
+    <comment>History window: detail text of a shutdown event whose reason is the runtime floor.</comment>
+  </data>
+  <data name="History_Reason_UpsLowBattery" xml:space="preserve">
+    <value>UPS reports low battery</value>
+    <comment>History window: detail text of a shutdown event whose reason is the UPS low-battery condition (OB and LB).</comment>
+  </data>
   <data name="History_Refresh" xml:space="preserve">
     <value>Refresh</value>
     <comment>History window: button that reloads the data.</comment>

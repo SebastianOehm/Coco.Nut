@@ -195,6 +195,21 @@
   <data name="History_Range_Last7Days" xml:space="preserve">
     <value>最近 7 天</value>
   </data>
+  <data name="History_Reason_BatteryChargeFloor" xml:space="preserve">
+    <value>电池电量已达到或低于限制</value>
+  </data>
+  <data name="History_Reason_ForcedShutdown" xml:space="preserve">
+    <value>服务器请求强制关机</value>
+  </data>
+  <data name="History_Reason_PowerRestored" xml:space="preserve">
+    <value>市电已恢复</value>
+  </data>
+  <data name="History_Reason_RuntimeFloor" xml:space="preserve">
+    <value>剩余运行时间已达到或低于限制</value>
+  </data>
+  <data name="History_Reason_UpsLowBattery" xml:space="preserve">
+    <value>UPS 报告电池电量严重不足</value>
+  </data>
   <data name="History_Refresh" xml:space="preserve">
     <value>刷新</value>
   </data>

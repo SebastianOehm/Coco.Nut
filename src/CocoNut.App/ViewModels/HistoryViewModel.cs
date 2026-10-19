@@ -285,7 +285,7 @@ public sealed partial class HistoryViewModel : ObservableObject, IDisposable
         historyEvent.Kind,
         historyEvent.Timestamp.ToLocalTime().ToString("G", CultureInfo.CurrentCulture),
         HistoryEventFormatter.ToLocalizedText(historyEvent.Kind),
-        historyEvent.Detail ?? string.Empty);
+        HistoryEventFormatter.ToLocalizedDetail(historyEvent.Kind, historyEvent.Detail));
 
     /// <summary>
     /// Rebuilds <see cref="Events"/> from the loaded events: a row stays when the search text occurs in its localized

@@ -192,6 +192,21 @@
   <data name="History_Range_Last7Days" xml:space="preserve">
     <value>7 derniers jours</value>
   </data>
+  <data name="History_Reason_BatteryChargeFloor" xml:space="preserve">
+    <value>Charge de la batterie égale ou inférieure à la limite</value>
+  </data>
+  <data name="History_Reason_ForcedShutdown" xml:space="preserve">
+    <value>Arrêt forcé demandé par le serveur</value>
+  </data>
+  <data name="History_Reason_PowerRestored" xml:space="preserve">
+    <value>Alimentation secteur rétablie</value>
+  </data>
+  <data name="History_Reason_RuntimeFloor" xml:space="preserve">
+    <value>Temps restant égal ou inférieur à la limite</value>
+  </data>
+  <data name="History_Reason_UpsLowBattery" xml:space="preserve">
+    <value>L'onduleur signale une batterie critique</value>
+  </data>
   <data name="History_Refresh" xml:space="preserve">
     <value>Actualiser</value>
   </data>
