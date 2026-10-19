@@ -172,6 +172,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     private Task ShowUpsVariablesAsync() => _navigator.ShowUpsVariablesAsync();
 
     [RelayCommand]
+    private Task ShowHistoryAsync() => _navigator.ShowHistoryAsync();
+
+    [RelayCommand]
     private Task ShowAboutAsync() => _navigator.ShowAboutAsync();
 
     [RelayCommand]

@@ -23,6 +23,18 @@ public static class AppSettingsValidator
     /// <summary>Maximum accepted value, in seconds, for stop/extend delays and the runtime floor (WinNUT: 3600).</summary>
     public const int MaxDelaySeconds = 3600;
 
+    /// <summary>Accepted range of <see cref="HistorySettings.RetentionDays"/>.</summary>
+    public const int MinHistoryRetentionDays = 1;
+
+    /// <inheritdoc cref="MinHistoryRetentionDays"/>
+    public const int MaxHistoryRetentionDays = 3650;
+
+    /// <summary>Accepted range of <see cref="HistorySettings.SampleIntervalSeconds"/>.</summary>
+    public const int MinHistorySampleIntervalSeconds = 1;
+
+    /// <inheritdoc cref="MinHistorySampleIntervalSeconds"/>
+    public const int MaxHistorySampleIntervalSeconds = 3600;
+
     /// <summary>Returns every validation problem found in <paramref name="settings"/>; empty when it is valid.</summary>
     public static IReadOnlyList<SettingsValidationProblem> Validate(AppSettings settings)
     {
@@ -31,6 +43,7 @@ public static class AppSettingsValidator
         ValidateConnection(settings.Connection, problems);
         ValidateCalibration(settings.Calibration, problems);
         ValidatePower(settings.Power, problems);
+        ValidateHistory(settings.History, problems);
 
         return problems;
     }
@@ -111,6 +124,19 @@ public static class AppSettingsValidator
         if (power.ExtendDelaySeconds is < 1 or > MaxDelaySeconds)
         {
             problems.Add(new SettingsValidationProblem("Power.ExtendDelaySeconds", "Validation_DelayRange"));
+        }
+    }
+
+    private static void ValidateHistory(HistorySettings history, List<SettingsValidationProblem> problems)
+    {
+        if (history.RetentionDays is < MinHistoryRetentionDays or > MaxHistoryRetentionDays)
+        {
+            problems.Add(new SettingsValidationProblem("History.RetentionDays", "Validation_HistoryRetentionRange"));
+        }
+
+        if (history.SampleIntervalSeconds is < MinHistorySampleIntervalSeconds or > MaxHistorySampleIntervalSeconds)
+        {
+            problems.Add(new SettingsValidationProblem("History.SampleIntervalSeconds", "Validation_HistorySampleIntervalRange"));
         }
     }
 }

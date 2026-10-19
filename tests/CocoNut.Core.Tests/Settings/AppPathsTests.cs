@@ -38,6 +38,15 @@ public sealed class AppPathsTests : IDisposable
     }
 
     [Fact]
+    public void HistoryDatabaseFile_IsInsideDataDirectory()
+    {
+        using var temp = new TempDirectory();
+        Environment.SetEnvironmentVariable(AppPaths.DataDirectoryEnvironmentVariable, temp.Path);
+
+        Assert.Equal(Path.Combine(temp.Path, "history.db"), AppPaths.HistoryDatabaseFile);
+    }
+
+    [Fact]
     public void LogDirectory_IsInsideDataDirectory_AndCreated()
     {
         using var temp = new TempDirectory();

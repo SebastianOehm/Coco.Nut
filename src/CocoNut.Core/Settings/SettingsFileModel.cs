@@ -20,6 +20,7 @@ public sealed class SettingsFileModel
     public GeneralSettings General { get; set; } = new();
     public LoggingSettings Logging { get; set; } = new();
     public UpdateSettings Update { get; set; } = new();
+    public HistorySettings History { get; set; } = new();
 }
 
 /// <summary>Mirrors <see cref="ConnectionSettings"/> but stores the username/password protected on disk.</summary>

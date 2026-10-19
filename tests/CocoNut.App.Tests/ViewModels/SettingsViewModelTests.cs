@@ -3,6 +3,7 @@ using CocoNut.App.Services;
 using CocoNut.App.Tests.Fakes;
 using CocoNut.App.ViewModels;
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.History;
 using CocoNut.Core.Logging;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Updates;
@@ -28,7 +29,9 @@ public sealed class SettingsViewModelTests : IDisposable
         FakePowerActions PowerActions,
         FakeAutoStartService AutoStart,
         FakeShellLauncher ShellLauncher,
-        FileLoggerProvider LogProvider);
+        FileLoggerProvider LogProvider,
+        FakeHistoryStore HistoryStore,
+        FakeNotificationService Notifications);
 
     private Fixture Build(AppSettings? settings = null, bool autoStartSupported = true)
     {
@@ -41,6 +44,7 @@ public sealed class SettingsViewModelTests : IDisposable
         var logProvider = new FileLoggerProvider(_logDirectory);
         var navigator = new FakeWindowNavigator();
         var notifications = new FakeNotificationService();
+        var historyStore = new FakeHistoryStore();
 
         var vm = new SettingsViewModel(
             settingsService,
@@ -52,9 +56,10 @@ public sealed class SettingsViewModelTests : IDisposable
             SharedUpdateChecker,
             navigator,
             notifications,
+            historyStore,
             NullLogger<SettingsViewModel>.Instance);
 
-        return new Fixture(vm, store, settingsService, monitor, powerActions, autoStart, shellLauncher, logProvider);
+        return new Fixture(vm, store, settingsService, monitor, powerActions, autoStart, shellLauncher, logProvider, historyStore, notifications);
     }
 
     [Fact]
@@ -257,7 +262,7 @@ public sealed class SettingsViewModelTests : IDisposable
         // that the fake's supported set has been narrowed.
         var restricted = new SettingsViewModel(
             f.Settings, f.Monitor, f.PowerActions, f.AutoStart, f.ShellLauncher, f.LogProvider,
-            SharedUpdateChecker, new FakeWindowNavigator(), new FakeNotificationService(), NullLogger<SettingsViewModel>.Instance);
+            SharedUpdateChecker, new FakeWindowNavigator(), new FakeNotificationService(), new FakeHistoryStore(), NullLogger<SettingsViewModel>.Instance);
 
         Assert.Single(restricted.StopActionOptions);
         Assert.Equal(StopAction.Shutdown, restricted.StopActionOptions[0].Value);
@@ -305,6 +310,7 @@ public sealed class SettingsViewModelTests : IDisposable
             SharedUpdateChecker,
             new FakeWindowNavigator(),
             new FakeNotificationService(),
+            new FakeHistoryStore(),
             NullLogger<SettingsViewModel>.Instance);
 
     [Fact]
@@ -394,7 +400,7 @@ public sealed class SettingsViewModelTests : IDisposable
 
         var vm = new SettingsViewModel(
             f.Settings, f.Monitor, f.PowerActions, f.AutoStart, f.ShellLauncher, freshProvider,
-            SharedUpdateChecker, new FakeWindowNavigator(), new FakeNotificationService(), NullLogger<SettingsViewModel>.Instance)
+            SharedUpdateChecker, new FakeWindowNavigator(), new FakeNotificationService(), new FakeHistoryStore(), NullLogger<SettingsViewModel>.Instance)
         {
             ConfirmAsync = (_, _) => Task.FromResult(false),
         };
@@ -415,6 +421,134 @@ public sealed class SettingsViewModelTests : IDisposable
         // No CI runner (Linux, macOS, or a clean Windows image) has a real WinNUT install, so
         // WinNutSettingsImporter.FindWinNutConfigFiles() finds nothing and the button stays hidden everywhere.
         Assert.False(f.ViewModel.ShowImportButton);
+    }
+
+    // ---- History ---------------------------------------------------------------------------------------------------
+
+    [Fact]
+    public void History_fields_load_from_the_settings()
+    {
+        var settings = new AppSettings();
+        settings.History.Enabled = false;
+        settings.History.RetentionDays = 90;
+        settings.History.SampleIntervalSeconds = 30;
+
+        var f = Build(settings);
+
+        Assert.False(f.ViewModel.HistoryEnabled);
+        Assert.Equal(90m, f.ViewModel.HistoryRetentionDays);
+        Assert.Equal(30m, f.ViewModel.HistorySampleIntervalSeconds);
+        Assert.False(f.ViewModel.HasErrors);
+    }
+
+    [Fact]
+    public void History_bounds_come_from_the_validator()
+    {
+        var f = Build();
+
+        Assert.Equal(AppSettingsValidator.MinHistoryRetentionDays, f.ViewModel.HistoryRetentionMinimum);
+        Assert.Equal(AppSettingsValidator.MaxHistoryRetentionDays, f.ViewModel.HistoryRetentionMaximum);
+        Assert.Equal(AppSettingsValidator.MinHistorySampleIntervalSeconds, f.ViewModel.HistorySampleIntervalMinimum);
+        Assert.Equal(AppSettingsValidator.MaxHistorySampleIntervalSeconds, f.ViewModel.HistorySampleIntervalMaximum);
+    }
+
+    [Fact]
+    public void History_edits_stay_private_until_saved_and_then_reach_the_settings()
+    {
+        var f = Build();
+
+        f.ViewModel.HistoryEnabled = false;
+        f.ViewModel.HistoryRetentionDays = 14;
+        f.ViewModel.HistorySampleIntervalSeconds = 60;
+
+        Assert.True(f.Settings.Current.History.Enabled);
+        Assert.Equal(30, f.Settings.Current.History.RetentionDays);
+
+        f.ViewModel.SaveCommand.Execute(null);
+
+        Assert.False(f.Settings.Current.History.Enabled);
+        Assert.Equal(14, f.Settings.Current.History.RetentionDays);
+        Assert.Equal(60, f.Settings.Current.History.SampleIntervalSeconds);
+        Assert.Equal(14, f.Store.Settings.History.RetentionDays);
+    }
+
+    [Fact]
+    public void History_retention_out_of_range_is_a_localized_error_that_blocks_saving()
+    {
+        var f = Build();
+
+        f.ViewModel.HistoryRetentionDays = 0;
+
+        Assert.Equal(Strings.Validation_HistoryRetentionRange, f.ViewModel.HistoryRetentionError);
+        Assert.True(f.ViewModel.HasErrors);
+        Assert.False(f.ViewModel.SaveCommand.CanExecute(null));
+
+        f.ViewModel.HistoryRetentionDays = 3651;
+        Assert.NotNull(f.ViewModel.HistoryRetentionError);
+
+        f.ViewModel.HistoryRetentionDays = 3650;
+        Assert.Null(f.ViewModel.HistoryRetentionError);
+        Assert.False(f.ViewModel.HasErrors);
+    }
+
+    [Fact]
+    public void History_sample_interval_out_of_range_is_a_localized_error_that_blocks_saving()
+    {
+        var f = Build();
+
+        f.ViewModel.HistorySampleIntervalSeconds = 3601;
+
+        Assert.Equal(Strings.Validation_HistorySampleIntervalRange, f.ViewModel.HistorySampleIntervalError);
+        Assert.True(f.ViewModel.HasErrors);
+
+        f.ViewModel.HistorySampleIntervalSeconds = 0;
+        Assert.NotNull(f.ViewModel.HistorySampleIntervalError);
+
+        f.ViewModel.HistorySampleIntervalSeconds = 1;
+        Assert.Null(f.ViewModel.HistorySampleIntervalError);
+        Assert.False(f.ViewModel.HasErrors);
+    }
+
+    [Fact]
+    public async Task Clear_history_only_clears_after_confirmation()
+    {
+        var f = Build();
+        string? askedTitle = null;
+        string? askedMessage = null;
+        f.ViewModel.ConfirmAsync = (title, message) =>
+        {
+            askedTitle = title;
+            askedMessage = message;
+            return Task.FromResult(false);
+        };
+
+        await f.ViewModel.ClearHistoryCommand.ExecuteAsync(null);
+
+        Assert.Equal(Strings.Prefs_History_Clear_ConfirmTitle, askedTitle);
+        Assert.Equal(Strings.Prefs_History_Clear_ConfirmMessage, askedMessage);
+        Assert.Empty(f.HistoryStore.Cleared);
+        Assert.Empty(f.Notifications.Notifications);
+
+        f.ViewModel.ConfirmAsync = (_, _) => Task.FromResult(true);
+        await f.ViewModel.ClearHistoryCommand.ExecuteAsync(null);
+
+        Assert.Null(Assert.Single(f.HistoryStore.Cleared)); // null = every UPS
+        var notification = Assert.Single(f.Notifications.Notifications);
+        Assert.Equal(Strings.Prefs_History_Cleared, notification.Message);
+    }
+
+    [Fact]
+    public async Task Clear_history_reports_a_store_failure_instead_of_throwing()
+    {
+        var f = Build();
+        f.ViewModel.ConfirmAsync = (_, _) => Task.FromResult(true);
+        f.HistoryStore.Failure = new IOException("locked");
+
+        await f.ViewModel.ClearHistoryCommand.ExecuteAsync(null);
+
+        var notification = Assert.Single(f.Notifications.Notifications);
+        Assert.Equal(NotificationKind.Error, notification.Kind);
+        Assert.Equal(string.Format(CultureInfo.CurrentCulture, Strings.Prefs_History_ClearFailed, "locked"), notification.Message);
     }
 
     public void Dispose()

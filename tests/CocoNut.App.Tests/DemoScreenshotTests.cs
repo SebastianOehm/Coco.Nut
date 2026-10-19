@@ -83,6 +83,7 @@ public class DemoScreenshotTests
             new UpdateChecker(new HttpClient()),
             new FakeWindowNavigator(),
             new FakeNotificationService(),
+            new FakeHistoryStore(),
             NullLogger<SettingsViewModel>.Instance);
 
         var window = new SettingsWindow { DataContext = vm };

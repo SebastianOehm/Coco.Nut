@@ -5,6 +5,7 @@ using CocoNut.App.Services;
 using CocoNut.App.Tests.Fakes;
 using CocoNut.App.ViewModels;
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.History;
 using CocoNut.Core.Logging;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Updates;
@@ -43,10 +44,14 @@ public sealed class WindowNavigatorTests : IDisposable
         services.AddSingleton(_ => new FileLoggerProvider(_logDirectory));
         services.AddSingleton(_ => new UpdateChecker(new HttpClient()));
         services.AddSingleton<INotificationService>(_ => new FakeNotificationService());
+        services.AddSingleton<IHistoryStore>(new FakeHistoryStore()); // an instance: the container does not dispose it (it is only IAsyncDisposable)
+        services.AddSingleton<IFileSaveDialog>(_ => new FakeFileSaveDialog());
+        services.AddSingleton(TimeProvider.System);
         services.AddSingleton<IWindowNavigator>(_ => navigatorBox.Navigator!);
 
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<UpsVariablesViewModel>();
+        services.AddTransient<HistoryViewModel>();
         services.AddTransient<AboutViewModel>();
 
         _provider = services.BuildServiceProvider();
@@ -100,6 +105,28 @@ public sealed class WindowNavigatorTests : IDisposable
 
         Assert.NotNull(first);
         Assert.Same(first, second);
+    }
+
+    [AvaloniaFact]
+    public async Task ShowHistoryAsync_twice_reuses_the_same_window_and_reopens_after_closing()
+    {
+        await _navigator.ShowHistoryAsync();
+        var first = GetWindow("_historyWindow");
+        Assert.NotNull(first);
+        Assert.IsType<CocoNut.App.Views.HistoryWindow>(first);
+        Assert.IsType<HistoryViewModel>(first!.DataContext);
+
+        await _navigator.ShowHistoryAsync();
+        Assert.Same(first, GetWindow("_historyWindow"));
+
+        first.Close();
+        Assert.Null(GetWindow("_historyWindow"));
+
+        await _navigator.ShowHistoryAsync();
+        var second = GetWindow("_historyWindow");
+        Assert.NotNull(second);
+        Assert.NotSame(first, second);
+        second!.Close();
     }
 
     [AvaloniaFact]

@@ -359,11 +359,13 @@ public class MainWindowViewModelTests
         vm.DisconnectCommand.Execute(null);
         vm.ShowSettingsCommand.Execute(null);
         vm.ShowUpsVariablesCommand.Execute(null);
+        vm.ShowHistoryCommand.Execute(null);
         vm.ShowAboutCommand.Execute(null);
 
         Assert.Equal(1, monitor.StopCount);
         Assert.Equal(1, navigator.ShowSettingsCount);
         Assert.Equal(1, navigator.ShowUpsVariablesCount);
+        Assert.Equal(1, navigator.ShowHistoryCount);
         Assert.Equal(1, navigator.ShowAboutCount);
     }
 }

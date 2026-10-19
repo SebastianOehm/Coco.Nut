@@ -15,8 +15,8 @@ rewrite exists, and [`docs/PLAN.md`](docs/PLAN.md) for the detailed migration pl
 platform layer are implemented and tested; the Avalonia UI (windows beyond the main dashboard) is still being built
 out. Expect rough edges and missing features until the first tagged release.
 
-See [`docs/ROADMAP.md`](docs/ROADMAP.md) for planned features (data history, multiple NUT servers/UPSes, an actions
-system) and the change log.
+See [`docs/ROADMAP.md`](docs/ROADMAP.md) for planned features (multiple NUT servers/UPSes, an actions system) and
+the change log.
 
 ## Features
 
@@ -29,6 +29,9 @@ system) and the change log.
   - the estimated runtime falls to or below a configured floor while on battery
   - the NUT server requests a forced shutdown (`ups.status` contains `FSD`)
   - the UPS reports its own critical low-battery condition (`ups.status` contains both `OB` and `LB`)
+- Data history: values and events (power failures, connection losses, shutdowns) are recorded in a local SQLite
+  database; the History window shows charts of charge, runtime, load, input voltage and output power for the last
+  hour up to 30 days, a searchable event list, and exports both as CSV
 - Automatic reconnection to the NUT server with backoff, so a restart of `upsd` or a network blip does not require
   restarting Coco.Nut
 - System tray icon that reflects connection and battery state, with the same icon set WinNUT used
@@ -60,7 +63,7 @@ the update window offers **Download and install**, which downloads the new versi
 refuses to do so while a shutdown countdown is active. The update channel (Stable or Pre-release) selects which
 releases are considered. Portable and from-source runs only offer **Open release page**.
 
-Settings, logs and crash reports live in the per-user data directory (not next to the program), so they survive
+Settings, history, logs and crash reports live in the per-user data directory (not next to the program), so they survive
 updates.
 
 The base version comes from `<Version>` in `Directory.Build.props`.
@@ -105,7 +108,8 @@ By default Coco.Nut stores its settings and logs in the per-user application-dat
 | macOS | `~/.config/Coco.Nut` (via `Environment.SpecialFolder.ApplicationData`) |
 
 Inside that folder: `settings.json` (with the NUT password protected via DPAPI on Windows or an AES key file with
-restricted permissions elsewhere) and a `logs/` folder with the file logs.
+restricted permissions elsewhere), `history.db` (the recorded UPS history, see Settings > History for the retention
+and sample interval) and a `logs/` folder with the file logs.
 
 Set `COCONUT_DATA_DIR` to use a different folder instead - useful for portable installs, or to keep tests and
 throwaway runs from touching your real settings:

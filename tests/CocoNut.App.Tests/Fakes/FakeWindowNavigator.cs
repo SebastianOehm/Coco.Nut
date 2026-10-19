@@ -10,6 +10,8 @@ public sealed class FakeWindowNavigator : IWindowNavigator
 
     public int ShowUpsVariablesCount { get; private set; }
 
+    public int ShowHistoryCount { get; private set; }
+
     public int ShowAboutCount { get; private set; }
 
     public int ShowMainWindowCount { get; private set; }
@@ -25,6 +27,12 @@ public sealed class FakeWindowNavigator : IWindowNavigator
     public Task ShowUpsVariablesAsync()
     {
         ShowUpsVariablesCount++;
+        return Task.CompletedTask;
+    }
+
+    public Task ShowHistoryAsync()
+    {
+        ShowHistoryCount++;
         return Task.CompletedTask;
     }
 

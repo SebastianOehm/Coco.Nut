@@ -29,6 +29,9 @@
     <PackageReference Include="Velopack" />
   </ItemGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="CocoNut.App.Tests" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\CocoNut.Core\CocoNut.Core.csproj" />
     <ProjectReference Include="..\CocoNut.Localization\CocoNut.Localization.csproj" />
     <ProjectReference Include="..\CocoNut.Platform\CocoNut.Platform.csproj" />

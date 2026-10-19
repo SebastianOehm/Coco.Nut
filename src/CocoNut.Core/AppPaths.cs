@@ -16,6 +16,7 @@ public static class AppPaths
 
     private const string AppFolderName = "Coco.Nut";
     private const string SettingsFileName = "settings.json";
+    private const string HistoryDatabaseFileName = "history.db";
     private const string LogFolderName = "logs";
 
     /// <summary>
@@ -38,6 +39,9 @@ public static class AppPaths
 
     /// <summary>Full path of the JSON settings file, inside <see cref="DataDirectory"/>.</summary>
     public static string SettingsFile => Path.Combine(DataDirectory, SettingsFileName);
+
+    /// <summary>Full path of the SQLite history database, inside <see cref="DataDirectory"/>.</summary>
+    public static string HistoryDatabaseFile => Path.Combine(DataDirectory, HistoryDatabaseFileName);
 
     /// <summary>Full path of the log directory, created on demand inside <see cref="DataDirectory"/>.</summary>
     public static string LogDirectory

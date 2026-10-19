@@ -3,6 +3,13 @@
 This file tracks where Coco.Nut is heading after milestone 1 (the C# port of WinNUT-Client, see
 [`PLAN.md`](PLAN.md)) and records notable changes as they happen. Update it with every larger change.
 
+## Versioning
+
+The base version lives in `<Version>` in [`Directory.Build.props`](../Directory.Build.props). Each completed roadmap
+goal raises the minor version (G2 gave 0.2.0, the next completed goal gives 0.3.0, and so on); fixes in between
+raise the patch version. Every push to `preMain` publishes a pre-release named `<base>-pre.<run number>`, e.g.
+`0.2.0-pre.3`.
+
 ## Original goals (by gbakeman)
 
 Coco.Nut was proposed by gbakeman, maintainer of WinNUT-Client and the nutdotnet library, as the successor of
@@ -11,18 +18,15 @@ WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/
 | # | Goal | Status |
 |---|------|--------|
 | G1 | Cross-platform, native desktop app written in C# and XAML | **Done** (milestone 1). Built with Avalonia UI instead of the originally mentioned .NET MAUI: Avalonia supports Linux desktops, MAUI does not. |
-| G2 | Keep a history of the data points collected from a UPS | Open |
+| G2 | Keep a history of the data points collected from a UPS | **Done** (0.2.0). A SQLite history of readings and events with a History window (charts, searchable events, CSV export) and a Settings section. |
 | G3 | Monitor multiple NUT servers at once, with multiple UPSes attached to each | Open |
 | G4 | Actions system: the user defines actions that run when certain conditions are met; default actions where supported (hibernate or shut down the system, run commands, notify, …) | Partly done: fixed rules (charge/runtime floor, FSD, OB+LB) with shutdown/suspend/hibernate and notifications |
 
 ## Planned work
 
-### G2 – Data history
-* Record every `UpsReading` (timestamp, status, charge, runtime, voltages, frequency, load, power) per UPS.
-* Storage: a local SQLite database in the app data directory, with a retention setting (e.g. 30 days) and
-  downsampling of old data.
-* UI: history charts (charge, load, input voltage, power) with selectable time range; export to CSV.
-* Event history: power failures, shutdowns and connection losses as a separate, searchable list.
+### G2 – Data history (done in 0.2.0)
+Readings and events are recorded per UPS into `history.db`; the History window charts them and lists the events;
+both export to CSV. Details in the change log below.
 
 ### G3 – Multiple servers and UPSes
 * Settings model: a list of servers (host, port, credentials, auto-reconnect), each with a list of UPS names;
@@ -50,6 +54,22 @@ WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/
   UPS commands (`INSTCMD`, `SET VAR`), TLS (`STARTTLS`).
 
 ## Change log
+
+### 2026-10-19 – 0.2.0: Data history (G2)
+* Storage: `history.db` (SQLite) in the data directory. A reading is stored at most every **sample interval** seconds
+  (default 10); samples and events older than the **retention** (default 30 days) are deleted, and raw samples older
+  than 24 hours are downsampled to 1-minute averages. Charts ask for at most 600 points (averaged buckets); CSV
+  exports use full resolution.
+* Events recorded: connected, connection lost, on battery, back on line, low battery, forced shutdown, shutdown
+  procedure started/cancelled, stop action executing/failed.
+* **History** window (File > History and the tray menu): charts of battery charge, battery runtime, load, input
+  voltage and output power for the last hour, 6 hours, 24 hours, 7 days or 30 days, with a hover read-out; lines break
+  at missing values and recording gaps. UPS selector when several UPSes have history. Event list, newest first, with a
+  search over the localized event name and the detail text. Auto-refresh every minute. **Export samples** and
+  **Export events** write CSV files.
+* Settings > **History**: record on/off, retention days, sample interval, and **Clear history** (asks first).
+* New `HistoryChart` control (custom-drawn, no charting package); strings in all 7 languages.
+* Version raised to 0.2.0; see Versioning above.
 
 ### 2026-10-19 – Milestone 1 backlog cleanup
 * The NUT host in the settings is validated like in WinNUT: an IPv4/IPv6 address (brackets optional) or a DNS host

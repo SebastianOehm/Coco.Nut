@@ -1,0 +1,93 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:CocoNut.Localization;assembly=CocoNut.Localization"
+        xmlns:vm="clr-namespace:CocoNut.App.ViewModels"
+        xmlns:controls="clr-namespace:CocoNut.App.Controls"
+        xmlns:sc="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+        x:Class="CocoNut.App.Views.HistoryWindow"
+        x:DataType="vm:HistoryViewModel"
+        Icon="/Assets/coconut.ico"
+        Title="{x:Static loc:Strings.History_Title}"
+        Width="920" Height="800" MinWidth="640" MinHeight="520"
+        WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="14">
+
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto" ColumnSpacing="10" Margin="0,0,0,10">
+      <StackPanel Grid.Column="0" Spacing="2" IsVisible="{Binding ShowUpsSelector}">
+        <TextBlock Text="{x:Static loc:Strings.History_Ups}" FontSize="11" />
+        <ComboBox ItemsSource="{Binding UpsOptions}" SelectedItem="{Binding SelectedUps}" MinWidth="200" />
+      </StackPanel>
+      <StackPanel Grid.Column="1" Spacing="2">
+        <TextBlock Text="{x:Static loc:Strings.History_Range}" FontSize="11" />
+        <ComboBox ItemsSource="{Binding RangeOptions}" SelectedItem="{Binding SelectedRange}" MinWidth="160" />
+      </StackPanel>
+      <Button Grid.Column="2" Content="{x:Static loc:Strings.History_Refresh}" Command="{Binding RefreshCommand}"
+              VerticalAlignment="Bottom" ToolTip.Tip="{x:Static loc:Strings.History_Refresh_ToolTip}" />
+      <Button Grid.Column="4" Content="{x:Static loc:Strings.History_Export_Samples}" Command="{Binding ExportSamplesCommand}"
+              VerticalAlignment="Bottom" ToolTip.Tip="{x:Static loc:Strings.History_Export_Samples_ToolTip}" />
+      <Button Grid.Column="5" Content="{x:Static loc:Strings.History_Export_Events}" Command="{Binding ExportEventsCommand}"
+              VerticalAlignment="Bottom" ToolTip.Tip="{x:Static loc:Strings.History_Export_Events_ToolTip}" />
+    </Grid>
+
+    <ProgressBar Grid.Row="1" IsIndeterminate="True" IsVisible="{Binding IsLoading}" Margin="0,0,0,8" />
+
+    <TextBlock Grid.Row="2" Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap" Margin="0,0,0,8"
+               IsVisible="{Binding ErrorMessage, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+
+    <ScrollViewer Grid.Row="3" IsVisible="{Binding !HasNoHistory}">
+      <StackPanel Spacing="4" Margin="0,0,14,0">
+        <ItemsControl ItemsSource="{Binding Charts}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:HistoryChartSeries">
+              <controls:HistoryChart Margin="0,0,0,14"
+                                     Points="{Binding Points}" RangeStart="{Binding RangeStart}" RangeEnd="{Binding RangeEnd}"
+                                     Caption="{Binding Caption}" Unit="{Binding Unit}" ValueFormat="{Binding ValueFormat}"
+                                     Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"
+                                     NoDataText="{x:Static loc:Strings.History_Chart_NoData}" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Text="{x:Static loc:Strings.History_Events_Title}" FontWeight="SemiBold" FontSize="13" Margin="0,6,0,4" />
+        <TextBox Text="{Binding SearchText}" Watermark="{x:Static loc:Strings.History_Events_Search_Watermark}" Margin="0,0,0,6" />
+
+        <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+          <Grid RowDefinitions="Auto,Auto,*">
+            <Grid Grid.Row="0" ColumnDefinitions="180,220,*" Margin="10,6">
+              <TextBlock Grid.Column="0" Text="{x:Static loc:Strings.History_Events_Time}" FontWeight="SemiBold" />
+              <TextBlock Grid.Column="1" Text="{x:Static loc:Strings.History_Events_Event}" FontWeight="SemiBold" />
+              <TextBlock Grid.Column="2" Text="{x:Static loc:Strings.History_Events_Detail}" FontWeight="SemiBold" />
+            </Grid>
+            <Separator Grid.Row="1" Margin="0" />
+            <Grid Grid.Row="2">
+              <ListBox ItemsSource="{Binding Events}" Height="260" Background="Transparent">
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="vm:HistoryEventRow">
+                    <Grid ColumnDefinitions="180,220,*">
+                      <TextBlock Grid.Column="0" Text="{Binding TimeText}" />
+                      <TextBlock Grid.Column="1" Text="{Binding KindText}" TextTrimming="CharacterEllipsis" Margin="0,0,8,0" />
+                      <TextBlock Grid.Column="2" Text="{Binding Detail}" TextTrimming="CharacterEllipsis"
+                                 ToolTip.Tip="{Binding Detail}" />
+                    </Grid>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+              <TextBlock Text="{Binding EventsEmptyText}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                         IsHitTestVisible="False"
+                         IsVisible="{Binding EventsEmptyText, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </Grid>
+          </Grid>
+        </Border>
+        <TextBlock Text="{Binding EventsLimitText}" FontStyle="Italic" FontSize="11" TextWrapping="Wrap"
+                   IsVisible="{Binding EventsLimitText, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <TextBlock Grid.Row="3" Text="{x:Static loc:Strings.History_NoHistory}" TextWrapping="Wrap" TextAlignment="Center"
+               HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding HasNoHistory}" />
+
+    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+      <Button Content="{x:Static loc:Strings.Common_Close}" Click="OnCloseClick" />
+    </StackPanel>
+  </Grid>
+</Window>

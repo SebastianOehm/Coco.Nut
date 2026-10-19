@@ -75,6 +75,10 @@ public partial class App : Application, IDisposable
         services.GetRequiredService<Core.Shutdown.ShutdownCoordinator>();
         services.GetRequiredService<ShutdownWindowController>();
 
+        // Same for the history recorder: it only records once it exists (it subscribes in its constructor), and
+        // it must exist after the coordinator, whose shutdown events it flushes on.
+        services.GetRequiredService<Core.History.HistoryRecorder>();
+
         _ = RunStartupSequenceAsync(services, settingsService, mainWindow, mainWindowViewModel);
 
         desktop.Exit += OnExit;

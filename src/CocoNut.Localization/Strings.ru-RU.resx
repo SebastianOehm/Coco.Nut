@@ -69,6 +69,159 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>Да</value>
   </data>
+  <data name="History_Chart_BatteryCharge" xml:space="preserve">
+    <value>Заряд батареи</value>
+  </data>
+  <data name="History_Chart_BatteryRuntime" xml:space="preserve">
+    <value>Время работы от батареи</value>
+  </data>
+  <data name="History_Chart_InputVoltage" xml:space="preserve">
+    <value>Входное напряжение</value>
+  </data>
+  <data name="History_Chart_Load" xml:space="preserve">
+    <value>Нагрузка ИБП</value>
+  </data>
+  <data name="History_Chart_NoData" xml:space="preserve">
+    <value>Нет данных за этот период.</value>
+  </data>
+  <data name="History_Chart_OutputPower" xml:space="preserve">
+    <value>Выходная мощность</value>
+  </data>
+  <data name="History_Event_Connected" xml:space="preserve">
+    <value>Подключено</value>
+  </data>
+  <data name="History_Event_ConnectionLost" xml:space="preserve">
+    <value>Потеря подключения</value>
+  </data>
+  <data name="History_Event_ForcedShutdown" xml:space="preserve">
+    <value>Запрошено принудительное отключение</value>
+  </data>
+  <data name="History_Event_LowBattery" xml:space="preserve">
+    <value>Низкий заряд батареи</value>
+  </data>
+  <data name="History_Event_OnBattery" xml:space="preserve">
+    <value>От батареи</value>
+  </data>
+  <data name="History_Event_OnLine" xml:space="preserve">
+    <value>Снова от сети</value>
+  </data>
+  <data name="History_Event_ShutdownCancelled" xml:space="preserve">
+    <value>Отключение отменено</value>
+  </data>
+  <data name="History_Event_ShutdownExecuting" xml:space="preserve">
+    <value>Выполняется действие остановки</value>
+  </data>
+  <data name="History_Event_ShutdownFailed" xml:space="preserve">
+    <value>Не удалось выполнить действие остановки</value>
+  </data>
+  <data name="History_Event_ShutdownPending" xml:space="preserve">
+    <value>Запущен процесс отключения</value>
+  </data>
+  <data name="History_Events_Detail" xml:space="preserve">
+    <value>Подробности</value>
+  </data>
+  <data name="History_Events_Event" xml:space="preserve">
+    <value>Событие</value>
+  </data>
+  <data name="History_Events_Limit" xml:space="preserve">
+    <value>Показаны {0} последних событий за этот период.</value>
+  </data>
+  <data name="History_Events_NoMatch" xml:space="preserve">
+    <value>Нет событий, соответствующих поиску.</value>
+  </data>
+  <data name="History_Events_None" xml:space="preserve">
+    <value>Нет событий за этот период.</value>
+  </data>
+  <data name="History_Events_Search_Watermark" xml:space="preserve">
+    <value>Поиск событий…</value>
+  </data>
+  <data name="History_Events_Time" xml:space="preserve">
+    <value>Время</value>
+  </data>
+  <data name="History_Events_Title" xml:space="preserve">
+    <value>События</value>
+  </data>
+  <data name="History_ExportError" xml:space="preserve">
+    <value>Не удалось экспортировать историю: {0}</value>
+  </data>
+  <data name="History_Export_Events" xml:space="preserve">
+    <value>Экспорт событий…</value>
+  </data>
+  <data name="History_Export_Events_Title" xml:space="preserve">
+    <value>Экспорт событий</value>
+  </data>
+  <data name="History_Export_Events_ToolTip" xml:space="preserve">
+    <value>Сохранить события выбранного ИБП за выбранный период в файл CSV.</value>
+  </data>
+  <data name="History_Export_FileType" xml:space="preserve">
+    <value>Файл CSV</value>
+  </data>
+  <data name="History_Export_Samples" xml:space="preserve">
+    <value>Экспорт измерений…</value>
+  </data>
+  <data name="History_Export_Samples_Title" xml:space="preserve">
+    <value>Экспорт измерений</value>
+  </data>
+  <data name="History_Export_Samples_ToolTip" xml:space="preserve">
+    <value>Сохранить все записанные значения выбранного ИБП за выбранный период в файл CSV.</value>
+  </data>
+  <data name="History_Export_Success" xml:space="preserve">
+    <value>История экспортирована в файл: {0}</value>
+  </data>
+  <data name="History_LoadError" xml:space="preserve">
+    <value>Не удалось загрузить историю: {0}</value>
+  </data>
+  <data name="History_NoHistory" xml:space="preserve">
+    <value>История ещё не записана. Подключитесь к серверу NUT и оставьте Coco.Nut запущенным или проверьте, что запись включена в Настройки &gt; История.</value>
+  </data>
+  <data name="History_Range" xml:space="preserve">
+    <value>Период</value>
+  </data>
+  <data name="History_Range_Last1Hour" xml:space="preserve">
+    <value>Последний час</value>
+  </data>
+  <data name="History_Range_Last24Hours" xml:space="preserve">
+    <value>Последние 24 часа</value>
+  </data>
+  <data name="History_Range_Last30Days" xml:space="preserve">
+    <value>Последние 30 дней</value>
+  </data>
+  <data name="History_Range_Last6Hours" xml:space="preserve">
+    <value>Последние 6 часов</value>
+  </data>
+  <data name="History_Range_Last7Days" xml:space="preserve">
+    <value>Последние 7 дней</value>
+  </data>
+  <data name="History_Reason_BatteryChargeFloor" xml:space="preserve">
+    <value>Заряд батареи равен или ниже порога</value>
+  </data>
+  <data name="History_Reason_ForcedShutdown" xml:space="preserve">
+    <value>Сервер запросил принудительное отключение</value>
+  </data>
+  <data name="History_Reason_PowerRestored" xml:space="preserve">
+    <value>Питание восстановлено</value>
+  </data>
+  <data name="History_Reason_RuntimeFloor" xml:space="preserve">
+    <value>Время работы равно или меньше порога</value>
+  </data>
+  <data name="History_Reason_UpsLowBattery" xml:space="preserve">
+    <value>ИБП сообщает о критическом состоянии батареи</value>
+  </data>
+  <data name="History_Refresh" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="History_Refresh_ToolTip" xml:space="preserve">
+    <value>Загрузить данные заново. Окно также обновляется каждую минуту.</value>
+  </data>
+  <data name="History_Title" xml:space="preserve">
+    <value>История</value>
+  </data>
+  <data name="History_Unit_Minutes" xml:space="preserve">
+    <value>мин</value>
+  </data>
+  <data name="History_Ups" xml:space="preserve">
+    <value>ИБП</value>
+  </data>
   <data name="Language_System" xml:space="preserve">
     <value>Как в системе</value>
   </data>
@@ -200,6 +353,9 @@
   </data>
   <data name="Main_Menu_Help" xml:space="preserve">
     <value>Помощь</value>
+  </data>
+  <data name="Main_Menu_History" xml:space="preserve">
+    <value>История</value>
   </data>
   <data name="Main_Menu_Settings" xml:space="preserve">
     <value>Настройки</value>
@@ -373,6 +529,47 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
     <value>Имя ИБП для мониторинга.
 Допустимые значения: Имя ИБП из конфиграции сервера NUT</value>
+  </data>
+  <data name="Prefs_History_Clear" xml:space="preserve">
+    <value>Очистить историю…</value>
+  </data>
+  <data name="Prefs_History_ClearFailed" xml:space="preserve">
+    <value>Не удалось очистить историю: {0}</value>
+  </data>
+  <data name="Prefs_History_Clear_ConfirmMessage" xml:space="preserve">
+    <value>Удалить записанную историю всех ИБП? Это действие невозможно отменить.</value>
+  </data>
+  <data name="Prefs_History_Clear_ConfirmTitle" xml:space="preserve">
+    <value>Очистка истории</value>
+  </data>
+  <data name="Prefs_History_Clear_ToolTip" xml:space="preserve">
+    <value>Удаляет записанную историю всех ИБП.</value>
+  </data>
+  <data name="Prefs_History_Cleared" xml:space="preserve">
+    <value>История очищена.</value>
+  </data>
+  <data name="Prefs_History_Enabled" xml:space="preserve">
+    <value>Записывать историю</value>
+  </data>
+  <data name="Prefs_History_Enabled_ToolTip" xml:space="preserve">
+    <value>Сохранять измерения и события ИБП в локальной базе данных.</value>
+  </data>
+  <data name="Prefs_History_Retention" xml:space="preserve">
+    <value>Хранить историю (дней)</value>
+  </data>
+  <data name="Prefs_History_Retention_ToolTip" xml:space="preserve">
+    <value>Более старые измерения и события удаляются.
+Допустимые значения: от 1 до 3650.</value>
+  </data>
+  <data name="Prefs_History_SampleInterval" xml:space="preserve">
+    <value>Сохранять измерение каждые (сек)</value>
+  </data>
+  <data name="Prefs_History_SampleInterval_ToolTip" xml:space="preserve">
+    <value>За указанное время сохраняется не более одного измерения.
+Допустимые значения: от 1 до 3600.</value>
+  </data>
+  <data name="Prefs_History_Tab" xml:space="preserve">
+    <value>История</value>
   </data>
   <data name="Prefs_Import_NotFound" xml:space="preserve">
     <value>Настройки WinNUT не найдены.</value>
@@ -591,6 +788,9 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Tray_Menu_Exit" xml:space="preserve">
     <value>Выход</value>
   </data>
+  <data name="Tray_Menu_History" xml:space="preserve">
+    <value>История</value>
+  </data>
   <data name="Tray_Menu_Settings" xml:space="preserve">
     <value>Настройки</value>
   </data>
@@ -707,6 +907,12 @@ IPV4 / IPV6 / доменное имя.</value>
   </data>
   <data name="Validation_DelayRange" xml:space="preserve">
     <value>Задержка должна быть от 1 до 3600 секунд.</value>
+  </data>
+  <data name="Validation_HistoryRetentionRange" xml:space="preserve">
+    <value>Срок хранения истории должен быть от 1 до 3650 дней.</value>
+  </data>
+  <data name="Validation_HistorySampleIntervalRange" xml:space="preserve">
+    <value>Интервал записи истории должен быть от 1 до 3600 секунд.</value>
   </data>
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>Необходимо указать хост NUT.</value>

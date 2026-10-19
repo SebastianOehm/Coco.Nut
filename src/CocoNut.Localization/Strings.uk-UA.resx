@@ -72,6 +72,159 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>Так</value>
   </data>
+  <data name="History_Chart_BatteryCharge" xml:space="preserve">
+    <value>Заряд батареї</value>
+  </data>
+  <data name="History_Chart_BatteryRuntime" xml:space="preserve">
+    <value>Час роботи від батареї</value>
+  </data>
+  <data name="History_Chart_InputVoltage" xml:space="preserve">
+    <value>Вхідна напруга</value>
+  </data>
+  <data name="History_Chart_Load" xml:space="preserve">
+    <value>Навантаження ДБЖ</value>
+  </data>
+  <data name="History_Chart_NoData" xml:space="preserve">
+    <value>Немає даних за цей період.</value>
+  </data>
+  <data name="History_Chart_OutputPower" xml:space="preserve">
+    <value>Вихідна потужність</value>
+  </data>
+  <data name="History_Event_Connected" xml:space="preserve">
+    <value>Підключено</value>
+  </data>
+  <data name="History_Event_ConnectionLost" xml:space="preserve">
+    <value>Втрата підключення</value>
+  </data>
+  <data name="History_Event_ForcedShutdown" xml:space="preserve">
+    <value>Запит на примусове вимкнення</value>
+  </data>
+  <data name="History_Event_LowBattery" xml:space="preserve">
+    <value>Низький заряд батареї</value>
+  </data>
+  <data name="History_Event_OnBattery" xml:space="preserve">
+    <value>Від батареї</value>
+  </data>
+  <data name="History_Event_OnLine" xml:space="preserve">
+    <value>Знову від мережі</value>
+  </data>
+  <data name="History_Event_ShutdownCancelled" xml:space="preserve">
+    <value>Вимкнення скасовано</value>
+  </data>
+  <data name="History_Event_ShutdownExecuting" xml:space="preserve">
+    <value>Виконується дія зупинення</value>
+  </data>
+  <data name="History_Event_ShutdownFailed" xml:space="preserve">
+    <value>Не вдалося виконати дію зупинення</value>
+  </data>
+  <data name="History_Event_ShutdownPending" xml:space="preserve">
+    <value>Запущено процес вимкнення</value>
+  </data>
+  <data name="History_Events_Detail" xml:space="preserve">
+    <value>Подробиці</value>
+  </data>
+  <data name="History_Events_Event" xml:space="preserve">
+    <value>Подія</value>
+  </data>
+  <data name="History_Events_Limit" xml:space="preserve">
+    <value>Показано {0} останніх подій за цей період.</value>
+  </data>
+  <data name="History_Events_NoMatch" xml:space="preserve">
+    <value>Немає подій, що відповідають пошуку.</value>
+  </data>
+  <data name="History_Events_None" xml:space="preserve">
+    <value>Немає подій за цей період.</value>
+  </data>
+  <data name="History_Events_Search_Watermark" xml:space="preserve">
+    <value>Пошук подій…</value>
+  </data>
+  <data name="History_Events_Time" xml:space="preserve">
+    <value>Час</value>
+  </data>
+  <data name="History_Events_Title" xml:space="preserve">
+    <value>Події</value>
+  </data>
+  <data name="History_ExportError" xml:space="preserve">
+    <value>Не вдалося експортувати історію: {0}</value>
+  </data>
+  <data name="History_Export_Events" xml:space="preserve">
+    <value>Експорт подій…</value>
+  </data>
+  <data name="History_Export_Events_Title" xml:space="preserve">
+    <value>Експорт подій</value>
+  </data>
+  <data name="History_Export_Events_ToolTip" xml:space="preserve">
+    <value>Зберегти події вибраного ДБЖ за вибраний період у файл CSV.</value>
+  </data>
+  <data name="History_Export_FileType" xml:space="preserve">
+    <value>Файл CSV</value>
+  </data>
+  <data name="History_Export_Samples" xml:space="preserve">
+    <value>Експорт вимірювань…</value>
+  </data>
+  <data name="History_Export_Samples_Title" xml:space="preserve">
+    <value>Експорт вимірювань</value>
+  </data>
+  <data name="History_Export_Samples_ToolTip" xml:space="preserve">
+    <value>Зберегти всі записані значення вибраного ДБЖ за вибраний період у файл CSV.</value>
+  </data>
+  <data name="History_Export_Success" xml:space="preserve">
+    <value>Історію експортовано у файл: {0}</value>
+  </data>
+  <data name="History_LoadError" xml:space="preserve">
+    <value>Не вдалося завантажити історію: {0}</value>
+  </data>
+  <data name="History_NoHistory" xml:space="preserve">
+    <value>Історію ще не записано. Підключіться до сервера NUT і залиште Coco.Nut запущеним або перевірте, що запис увімкнено в Налаштування &gt; Історія.</value>
+  </data>
+  <data name="History_Range" xml:space="preserve">
+    <value>Період</value>
+  </data>
+  <data name="History_Range_Last1Hour" xml:space="preserve">
+    <value>Остання година</value>
+  </data>
+  <data name="History_Range_Last24Hours" xml:space="preserve">
+    <value>Останні 24 години</value>
+  </data>
+  <data name="History_Range_Last30Days" xml:space="preserve">
+    <value>Останні 30 днів</value>
+  </data>
+  <data name="History_Range_Last6Hours" xml:space="preserve">
+    <value>Останні 6 годин</value>
+  </data>
+  <data name="History_Range_Last7Days" xml:space="preserve">
+    <value>Останні 7 днів</value>
+  </data>
+  <data name="History_Reason_BatteryChargeFloor" xml:space="preserve">
+    <value>Заряд батареї дорівнює або нижчий за межу</value>
+  </data>
+  <data name="History_Reason_ForcedShutdown" xml:space="preserve">
+    <value>Сервер запросив примусове вимкнення</value>
+  </data>
+  <data name="History_Reason_PowerRestored" xml:space="preserve">
+    <value>Живлення відновлено</value>
+  </data>
+  <data name="History_Reason_RuntimeFloor" xml:space="preserve">
+    <value>Час роботи дорівнює або менший за межу</value>
+  </data>
+  <data name="History_Reason_UpsLowBattery" xml:space="preserve">
+    <value>ДБЖ повідомляє про критичний стан батареї</value>
+  </data>
+  <data name="History_Refresh" xml:space="preserve">
+    <value>Оновити</value>
+  </data>
+  <data name="History_Refresh_ToolTip" xml:space="preserve">
+    <value>Завантажити дані заново. Вікно також оновлюється щохвилини.</value>
+  </data>
+  <data name="History_Title" xml:space="preserve">
+    <value>Історія</value>
+  </data>
+  <data name="History_Unit_Minutes" xml:space="preserve">
+    <value>хв</value>
+  </data>
+  <data name="History_Ups" xml:space="preserve">
+    <value>ДБЖ</value>
+  </data>
   <data name="Language_System" xml:space="preserve">
     <value>Системна (за умовчанням)</value>
   </data>
@@ -203,6 +356,9 @@
   </data>
   <data name="Main_Menu_Help" xml:space="preserve">
     <value>Допомога</value>
+  </data>
+  <data name="Main_Menu_History" xml:space="preserve">
+    <value>Історія</value>
   </data>
   <data name="Main_Menu_Settings" xml:space="preserve">
     <value>Налаштування</value>
@@ -376,6 +532,47 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
     <value>Ім'я ДБЖ для моніторингу.
 Допустимі значення: Ім'я ДБЖ з конфігурації сервера NUT</value>
+  </data>
+  <data name="Prefs_History_Clear" xml:space="preserve">
+    <value>Очистити історію…</value>
+  </data>
+  <data name="Prefs_History_ClearFailed" xml:space="preserve">
+    <value>Не вдалося очистити історію: {0}</value>
+  </data>
+  <data name="Prefs_History_Clear_ConfirmMessage" xml:space="preserve">
+    <value>Видалити записану історію всіх ДБЖ? Цю дію не можна скасувати.</value>
+  </data>
+  <data name="Prefs_History_Clear_ConfirmTitle" xml:space="preserve">
+    <value>Очищення історії</value>
+  </data>
+  <data name="Prefs_History_Clear_ToolTip" xml:space="preserve">
+    <value>Видаляє записану історію всіх ДБЖ.</value>
+  </data>
+  <data name="Prefs_History_Cleared" xml:space="preserve">
+    <value>Історію очищено.</value>
+  </data>
+  <data name="Prefs_History_Enabled" xml:space="preserve">
+    <value>Записувати історію</value>
+  </data>
+  <data name="Prefs_History_Enabled_ToolTip" xml:space="preserve">
+    <value>Зберігати вимірювання та події ДБЖ у локальній базі даних.</value>
+  </data>
+  <data name="Prefs_History_Retention" xml:space="preserve">
+    <value>Зберігати історію (днів)</value>
+  </data>
+  <data name="Prefs_History_Retention_ToolTip" xml:space="preserve">
+    <value>Старіші вимірювання та події видаляються.
+Допустимі значення: від 1 до 3650.</value>
+  </data>
+  <data name="Prefs_History_SampleInterval" xml:space="preserve">
+    <value>Зберігати вимірювання кожні (сек)</value>
+  </data>
+  <data name="Prefs_History_SampleInterval_ToolTip" xml:space="preserve">
+    <value>За вказаний час зберігається не більше одного вимірювання.
+Допустимі значення: від 1 до 3600.</value>
+  </data>
+  <data name="Prefs_History_Tab" xml:space="preserve">
+    <value>Історія</value>
   </data>
   <data name="Prefs_Import_NotFound" xml:space="preserve">
     <value>Налаштування WinNUT не знайдено.</value>
@@ -597,6 +794,9 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Tray_Menu_Exit" xml:space="preserve">
     <value>Вихід</value>
   </data>
+  <data name="Tray_Menu_History" xml:space="preserve">
+    <value>Історія</value>
+  </data>
   <data name="Tray_Menu_Settings" xml:space="preserve">
     <value>Налаштування</value>
   </data>
@@ -713,6 +913,12 @@ IPV4 / IPV6 / доменне ім'я.</value>
   </data>
   <data name="Validation_DelayRange" xml:space="preserve">
     <value>Затримка має бути від 1 до 3600 секунд.</value>
+  </data>
+  <data name="Validation_HistoryRetentionRange" xml:space="preserve">
+    <value>Термін зберігання історії має бути від 1 до 3650 днів.</value>
+  </data>
+  <data name="Validation_HistorySampleIntervalRange" xml:space="preserve">
+    <value>Інтервал запису історії має бути від 1 до 3600 секунд.</value>
   </data>
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>Хост NUT є обов'язковим.</value>
