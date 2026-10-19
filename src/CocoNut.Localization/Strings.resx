@@ -203,10 +203,6 @@ along with this program. If not, see https://www.gnu.org/licenses/.</value>
     <value>(estimated)</value>
     <comment>Main window: small note appended after the remaining runtime when UpsReading.BatteryRuntimeEstimated is true (runtime calculated, not reported directly by the UPS). New in Coco.Nut.</comment>
   </data>
-  <data name="Main_FeatureNotImplemented" xml:space="preserve">
-    <value>{0} is not available yet.</value>
-    <comment>Notification shown by WindowNavigator when a secondary window (Settings/UPS variables/About/Update available) is opened before the Secondary windows work package (WP-H) implements it. {0} = the localized window/menu name. New in Coco.Nut.</comment>
-  </data>
   <data name="Main_Flag_BatteryLow" xml:space="preserve">
     <value>UPS battery low</value>
     <comment>Main window: indicator lit when the UPS reports a low battery.</comment>
@@ -995,6 +991,10 @@ Remaining time: {1}</value>
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>The NUT host is required.</value>
     <comment>AppSettingsValidator: Connection.Host is empty/whitespace.</comment>
+  </data>
+  <data name="Validation_HostInvalid" xml:space="preserve">
+    <value>Enter a valid IP address or host name (without protocol or port).</value>
+    <comment>AppSettingsValidator: Connection.Host is not empty but is not a valid IPv4/IPv6 address or DNS host name (e.g. contains a protocol, port, path or spaces).</comment>
   </data>
   <data name="Validation_PollIntervalRange" xml:space="preserve">
     <value>Polling interval must be between 0.1 and 100 seconds.</value>

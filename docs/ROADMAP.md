@@ -42,18 +42,22 @@ WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/
 * Safety: actions that power the machine down keep the countdown window, the dry-run mode and the re-arm delay.
 
 ## Backlog (from milestone 1)
-* Validate the NUT host format (IP address / host name) in the settings, as WinNUT did.
-* Windows: check whether hibernation is available before offering it.
-* Remove the unused string `Main_FeatureNotImplemented`.
 * Verify the WinNUT settings import against a real WinNUT 2.x `user.config` with saved credentials.
 * Manual tests with real NUT servers and UPS hardware on Windows, Linux (incl. GNOME tray) and macOS, including a
   real suspend, hibernate and shutdown.
 * Native-speaker review of the translations.
-* Signed builds (Windows code signing, macOS signing/notarization), app icons for the Linux AppImage (PNG) and
-  macOS (`.icns`), and verifying the macOS pkg end to end; later: UPS commands (`INSTCMD`, `SET VAR`), TLS
-  (`STARTTLS`).
+* Signed builds (Windows code signing, macOS signing/notarization) and verifying the macOS pkg end to end; later:
+  UPS commands (`INSTCMD`, `SET VAR`), TLS (`STARTTLS`).
 
 ## Change log
+
+### 2026-10-19 – Milestone 1 backlog cleanup
+* The NUT host in the settings is validated like in WinNUT: an IPv4/IPv6 address (brackets optional) or a DNS host
+  name; a protocol, port, path or spaces show "Enter a valid IP address or host name" (new string, all languages).
+* Windows: hibernate is only offered when `IsPwrHibernateAllowed` (powrprof.dll) says it is available; if the call
+  is not possible it still reports "supported".
+* Linux AppImage and macOS packages get an app icon (`coconut.png`, `coconut.icns` next to `coconut.ico`).
+* Removed the unused string `Main_FeatureNotImplemented`.
 
 ### 2026-10-19 – Installer and in-app updates (Velopack)
 * CI packs each platform on its own runner with Velopack: `CocoNut-win-Setup.exe` (per-user install), a Linux

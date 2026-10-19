@@ -687,6 +687,9 @@
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>必須填寫 NUT 主機。</value>
   </data>
+  <data name="Validation_HostInvalid" xml:space="preserve">
+    <value>請輸入有效的 IP 位址或主機名稱（不含通訊協定和連接埠）。</value>
+  </data>
   <data name="Validation_PollIntervalRange" xml:space="preserve">
     <value>輪詢間隔必須介於 0.1 到 100 秒之間。</value>
   </data>

@@ -41,6 +41,10 @@ public static class AppSettingsValidator
         {
             problems.Add(new SettingsValidationProblem("Connection.Host", "Validation_HostRequired"));
         }
+        else if (!IsValidHost(connection.Host))
+        {
+            problems.Add(new SettingsValidationProblem("Connection.Host", "Validation_HostInvalid"));
+        }
 
         if (connection.Port is < 1 or > 65535)
         {
@@ -51,6 +55,16 @@ public static class AppSettingsValidator
         {
             problems.Add(new SettingsValidationProblem("Connection.PollIntervalMs", "Validation_PollIntervalRange"));
         }
+    }
+
+    /// <summary>
+    /// True when <paramref name="host"/> (trimmed) is an IPv4 address, an IPv6 address (with or without brackets) or a
+    /// DNS host name. A protocol, port, path or whitespace makes it invalid.
+    /// </summary>
+    private static bool IsValidHost(string host)
+    {
+        var type = Uri.CheckHostName(host.Trim());
+        return type is UriHostNameType.Dns or UriHostNameType.IPv4 or UriHostNameType.IPv6;
     }
 
     private static void ValidateCalibration(CalibrationSettings calibration, List<SettingsValidationProblem> problems)

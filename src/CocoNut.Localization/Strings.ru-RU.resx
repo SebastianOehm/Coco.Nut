@@ -711,6 +711,9 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>Необходимо указать хост NUT.</value>
   </data>
+  <data name="Validation_HostInvalid" xml:space="preserve">
+    <value>Введите допустимый IP-адрес или имя хоста (без протокола и порта).</value>
+  </data>
   <data name="Validation_PollIntervalRange" xml:space="preserve">
     <value>Интервал опроса должен быть от 0,1 до 100 секунд.</value>
   </data>
