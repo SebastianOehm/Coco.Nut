@@ -1,4 +1,5 @@
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.Actions;
 using CocoNut.Core.Settings;
 using Microsoft.Extensions.Logging;
 
@@ -47,6 +48,27 @@ public sealed record LanguageOption(string? CultureCode, string Text)
 
 /// <summary>One selectable entry of the Settings window's theme combo box (Settings &gt; Misc).</summary>
 public sealed record ThemeOption(AppTheme Value, string Text)
+{
+    /// <inheritdoc />
+    public override string ToString() => Text;
+}
+
+/// <summary>One selectable entry of the rule editor's trigger-kind combo box (Settings &gt; Rules).</summary>
+public sealed record TriggerKindOption(TriggerKind Value, string Text)
+{
+    /// <inheritdoc />
+    public override string ToString() => Text;
+}
+
+/// <summary>One selectable entry of the rule editor's value combo box (Settings &gt; Rules).</summary>
+public sealed record RuleMetricOption(RuleMetric Value, string Text)
+{
+    /// <inheritdoc />
+    public override string ToString() => Text;
+}
+
+/// <summary>One selectable entry of the rule editor's action-kind combo box (Settings &gt; Rules).</summary>
+public sealed record ActionKindOption(ActionKind Value, string Text)
 {
     /// <inheritdoc />
     public override string ToString() => Text;

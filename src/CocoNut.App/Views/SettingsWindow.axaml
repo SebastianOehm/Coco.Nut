@@ -7,10 +7,10 @@
         x:DataType="vm:SettingsViewModel"
         Icon="/Assets/coconut.ico"
         Title="{x:Static loc:Strings.Prefs_Title}"
-        Width="720" Height="560" MinWidth="600" MinHeight="440"
+        Width="820" Height="680" MinWidth="680" MinHeight="480"
         WindowStartupLocation="CenterOwner">
   <Window.Styles>
-    <!-- Seven sections do not fit in a horizontal tab strip with Fluent's header size; list them vertically. -->
+    <!-- Eight sections do not fit in a horizontal tab strip with Fluent's header size; list them vertically. -->
     <Style Selector="TabItem">
       <Setter Property="FontSize" Value="15" />
       <Setter Property="MinHeight" Value="36" />
@@ -179,6 +179,161 @@
                              IsEnabled="{Binding IsExtendDelayEnabled}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_GraceTime_ToolTip}" />
               <TextBlock Text="{Binding ExtendDelayError}" Foreground="Red" FontSize="11" IsVisible="{Binding ExtendDelayError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
             </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <!-- Rules -->
+      <TabItem Header="{x:Static loc:Strings.Prefs_Rules_Tab}">
+        <ScrollViewer>
+          <StackPanel Spacing="10" Margin="4">
+            <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Intro}" TextWrapping="Wrap" FontStyle="Italic" Opacity="0.8" />
+
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+              <ListBox Grid.Column="0" ItemsSource="{Binding Rules}" SelectedItem="{Binding SelectedRule}" MinHeight="96" MaxHeight="190">
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="vm:RuleViewModel">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="6">
+                      <CheckBox Grid.Column="0" IsChecked="{Binding Enabled}" MinWidth="0" VerticalAlignment="Center"
+                                ToolTip.Tip="{x:Static loc:Strings.Prefs_Rules_Enabled}" />
+                      <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{Binding Summary}" FontSize="11" Opacity="0.7" TextTrimming="CharacterEllipsis" />
+                      </StackPanel>
+                      <TextBlock Grid.Column="2" Text="!" Foreground="Red" FontWeight="Bold" VerticalAlignment="Center"
+                                 IsVisible="{Binding HasProblems}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Rules_Invalid}" />
+                    </Grid>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+              <StackPanel Grid.Column="1" Spacing="4" Width="110">
+                <Button Content="{x:Static loc:Strings.Prefs_Rules_Add}" Command="{Binding AddRuleCommand}" HorizontalAlignment="Stretch" />
+                <Button Content="{x:Static loc:Strings.Prefs_Rules_Duplicate}" Command="{Binding DuplicateRuleCommand}" HorizontalAlignment="Stretch" />
+                <Button Content="{x:Static loc:Strings.Prefs_Rules_Delete}" Command="{Binding DeleteRuleCommand}" HorizontalAlignment="Stretch" />
+                <Button Content="{x:Static loc:Strings.Prefs_Rules_MoveUp}" Command="{Binding MoveRuleUpCommand}" HorizontalAlignment="Stretch" />
+                <Button Content="{x:Static loc:Strings.Prefs_Rules_MoveDown}" Command="{Binding MoveRuleDownCommand}" HorizontalAlignment="Stretch" />
+              </StackPanel>
+            </Grid>
+            <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Empty}" Opacity="0.7" IsVisible="{Binding !HasRules}" />
+
+            <Border IsVisible="{Binding HasSelectedRule}" BorderThickness="1" BorderBrush="Gray" CornerRadius="4" Padding="10">
+              <StackPanel x:DataType="vm:RuleViewModel" DataContext="{Binding SelectedRule}" Spacing="10">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                  <StackPanel Grid.Column="0" Spacing="2">
+                    <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Name}" />
+                    <TextBox Text="{Binding Name}" />
+                  </StackPanel>
+                  <CheckBox Grid.Column="1" Content="{x:Static loc:Strings.Prefs_Rules_Enabled}" IsChecked="{Binding Enabled}" VerticalAlignment="Bottom" />
+                </Grid>
+
+                <StackPanel Spacing="2" IsVisible="{Binding HasProblems}">
+                  <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Problems}" Foreground="Red" FontSize="11" FontWeight="Bold" />
+                  <ItemsControl ItemsSource="{Binding Problems}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="x:String">
+                        <TextBlock Text="{Binding}" Foreground="Red" FontSize="11" TextWrapping="Wrap" />
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+
+                <Border BorderThickness="1" BorderBrush="DarkOrange" CornerRadius="4" Padding="8" IsVisible="{Binding StopsComputer}">
+                  <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_StopWarning}" TextWrapping="Wrap" Foreground="DarkOrange" />
+                </Border>
+
+                <!-- Trigger -->
+                <StackPanel Spacing="2">
+                  <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Trigger}" />
+                  <ComboBox ItemsSource="{Binding Options.TriggerKinds}" SelectedItem="{Binding SelectedTriggerKind}" HorizontalAlignment="Stretch" />
+                </StackPanel>
+                <StackPanel Spacing="2" IsVisible="{Binding IsFlagsTrigger}">
+                  <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Flags}" />
+                  <ItemsControl ItemsSource="{Binding Flags}">
+                    <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate>
+                        <WrapPanel />
+                      </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:FlagOptionViewModel">
+                        <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" Width="116" />
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Flags_Hint}" FontSize="11" Opacity="0.7" TextWrapping="Wrap" />
+                </StackPanel>
+                <StackPanel Spacing="8" IsVisible="{Binding IsValueTrigger}">
+                  <StackPanel Spacing="2">
+                    <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Metric}" />
+                    <ComboBox ItemsSource="{Binding Options.Metrics}" SelectedItem="{Binding SelectedMetric}" HorizontalAlignment="Stretch" />
+                  </StackPanel>
+                  <StackPanel Spacing="2">
+                    <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Threshold}" />
+                    <NumericUpDown Value="{Binding Threshold}" Minimum="-1000000" Maximum="1000000" FormatString="0.##" Increment="1"
+                                   Width="160" HorizontalAlignment="Left" />
+                  </StackPanel>
+                  <CheckBox Content="{x:Static loc:Strings.Prefs_Rules_OnBatteryOnly}" IsChecked="{Binding OnBatteryOnly}" />
+                </StackPanel>
+                <StackPanel Spacing="2" IsVisible="{Binding IsDurationTrigger}">
+                  <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Duration}" />
+                  <NumericUpDown Value="{Binding DurationSeconds}" Minimum="0" Maximum="{Binding MaxSeconds}" FormatString="0"
+                                 Width="160" HorizontalAlignment="Left" />
+                </StackPanel>
+                <StackPanel Spacing="2" IsVisible="{Binding IsLevelTrigger}">
+                  <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Delay}" />
+                  <NumericUpDown Value="{Binding DelaySeconds}" Minimum="0" Maximum="{Binding MaxSeconds}" FormatString="0"
+                                 Width="160" HorizontalAlignment="Left" ToolTip.Tip="{x:Static loc:Strings.Prefs_Rules_Delay_ToolTip}" />
+                </StackPanel>
+
+                <!-- Actions -->
+                <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Actions}" FontWeight="SemiBold" />
+                <ItemsControl ItemsSource="{Binding Actions}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:RuleActionViewModel">
+                      <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="4" Padding="8" Margin="0,0,0,6">
+                        <StackPanel Spacing="6">
+                          <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <ComboBox Grid.Column="0" ItemsSource="{Binding Options.ActionKinds}" SelectedItem="{Binding SelectedKind}" HorizontalAlignment="Stretch" />
+                            <Button Grid.Column="1" Content="{x:Static loc:Strings.Prefs_Rules_RemoveAction}" Command="{Binding RemoveCommand}" />
+                          </Grid>
+                          <ComboBox ItemsSource="{Binding Options.StopActions}" SelectedItem="{Binding SelectedStopAction}" Width="200" HorizontalAlignment="Left"
+                                    IsVisible="{Binding IsStop}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_StopType_ToolTip}" />
+                          <StackPanel Spacing="2" IsVisible="{Binding IsMessage}">
+                            <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Message}" />
+                            <TextBox Text="{Binding Message}" />
+                            <TextBlock Text="{Binding Options.PlaceholderHint}" FontSize="11" Opacity="0.7" TextWrapping="Wrap" />
+                          </StackPanel>
+                          <StackPanel Spacing="2" IsVisible="{Binding IsLog}">
+                            <TextBlock Text="{x:Static loc:Strings.Prefs_Logging_Level}" />
+                            <ComboBox ItemsSource="{Binding Options.LogLevels}" SelectedItem="{Binding SelectedLogLevel}" Width="200" HorizontalAlignment="Left" />
+                          </StackPanel>
+                          <StackPanel Spacing="6" IsVisible="{Binding IsCommand}">
+                            <StackPanel Spacing="2">
+                              <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Command}" />
+                              <TextBox Text="{Binding Command}" />
+                            </StackPanel>
+                            <StackPanel Spacing="2">
+                              <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Arguments}" />
+                              <TextBox Text="{Binding ArgumentsText}" AcceptsReturn="True" TextWrapping="NoWrap" MinHeight="60" MaxHeight="120" />
+                            </StackPanel>
+                            <StackPanel Spacing="2">
+                              <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Timeout}" />
+                              <NumericUpDown Value="{Binding TimeoutSeconds}" Minimum="1" Maximum="{Binding MaxTimeoutSeconds}" FormatString="0"
+                                             Width="160" HorizontalAlignment="Left" />
+                            </StackPanel>
+                          </StackPanel>
+                          <StackPanel Spacing="2" IsVisible="{Binding IsWebhook}">
+                            <TextBlock Text="{x:Static loc:Strings.Prefs_Rules_Url}" />
+                            <TextBox Text="{Binding Url}" />
+                          </StackPanel>
+                        </StackPanel>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Content="{x:Static loc:Strings.Prefs_Rules_AddAction}" Command="{Binding AddActionCommand}" HorizontalAlignment="Left" />
+              </StackPanel>
+            </Border>
           </StackPanel>
         </ScrollViewer>
       </TabItem>

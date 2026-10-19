@@ -1,9 +1,13 @@
+using System.Collections.ObjectModel;
 using System.Globalization;
 using CocoNut.App.Services;
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.Actions;
 using CocoNut.Core.History;
 using CocoNut.Core.Logging;
 using CocoNut.Core.Settings;
+using CocoNut.Core.Shutdown;
+using CocoNut.Core.Ups;
 using CocoNut.Core.Updates;
 using CocoNut.Localization;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -13,8 +17,8 @@ using Microsoft.Extensions.Logging;
 namespace CocoNut.App.ViewModels;
 
 /// <summary>
-/// View model of the Settings window (WinNUT's <c>Pref_Gui.vb</c>, seven tabs: Connection, Calibration, Logging,
-/// Power, History, Misc, Update). Edits a private <see cref="AppSettingsExtensions.Clone"/> of <see cref="ISettingsService.Current"/>
+/// View model of the Settings window (WinNUT's <c>Pref_Gui.vb</c>, eight tabs: Connection, Calibration, Logging,
+/// Power, Rules, History, Misc, Update). Edits a private <see cref="AppSettingsExtensions.Clone"/> of <see cref="ISettingsService.Current"/>
 /// so nothing is persisted until Save/Apply, validates it with <see cref="AppSettingsValidator"/> on every change,
 /// and on a successful save restarts the UPS monitor when connection-relevant settings changed.
 /// </summary>
@@ -125,6 +129,9 @@ public sealed partial class SettingsViewModel : ObservableObject
         ];
 
         NominalFrequencyOptions = [50, 60];
+
+        RuleOptions = new RuleOptions(StopActionOptions, LogLevelOptions);
+        Rules.CollectionChanged += (_, _) => OnPropertyChanged(nameof(HasRules));
 
         IsStartWithSystemSupported = _autoStartService.IsSupported;
 
@@ -465,6 +472,188 @@ public sealed partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private string? _extendDelayError;
 
+    // ---- Rules ----------------------------------------------------------------------------------------------------
+
+    /// <summary>The localized option lists of the rule editor.</summary>
+    public RuleOptions RuleOptions { get; }
+
+    /// <summary>The user rules in priority order; each wraps the matching element of the working copy's rule list.</summary>
+    public ObservableCollection<RuleViewModel> Rules { get; } = [];
+
+    /// <summary>Whether there is at least one user rule.</summary>
+    public bool HasRules => Rules.Count > 0;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSelectedRule))]
+    [NotifyCanExecuteChangedFor(nameof(DuplicateRuleCommand))]
+    [NotifyCanExecuteChangedFor(nameof(DeleteRuleCommand))]
+    [NotifyCanExecuteChangedFor(nameof(MoveRuleUpCommand))]
+    [NotifyCanExecuteChangedFor(nameof(MoveRuleDownCommand))]
+    private RuleViewModel? _selectedRule;
+
+    /// <summary>Whether a rule is selected (shows the rule editor).</summary>
+    public bool HasSelectedRule => SelectedRule is not null;
+
+    [RelayCommand]
+    private void AddRule()
+    {
+        var rule = new ActionRule
+        {
+            Id = Guid.NewGuid(),
+            Name = Strings.Prefs_Rules_NewName,
+            Enabled = true,
+            UpsName = null,
+            ShutdownReason = ShutdownReason.CustomRule,
+            Trigger = new RuleTrigger { Kind = TriggerKind.FlagsBecameActive, Flags = UpsStatus.OB },
+            Actions = [RuleAction.Notify(RuleOptions.DefaultMessage)],
+        };
+
+        _working.Actions.Rules.Add(rule);
+        var item = new RuleViewModel(rule, RuleOptions, Revalidate);
+        Rules.Add(item);
+        SelectedRule = item;
+        Revalidate();
+    }
+
+    [RelayCommand(CanExecute = nameof(HasSelectedRule))]
+    private void DuplicateRule()
+    {
+        if (SelectedRule is not { } selected)
+        {
+            return;
+        }
+
+        var source = selected.Rule;
+        var copy = new ActionRule
+        {
+            Id = Guid.NewGuid(),
+            Name = string.Format(CultureInfo.CurrentCulture, Strings.Prefs_Rules_CopyName, source.Name),
+            Enabled = source.Enabled,
+            UpsName = source.UpsName,
+            ShutdownReason = ShutdownReason.CustomRule,
+            DelaySeconds = source.DelaySeconds,
+            Trigger = new RuleTrigger
+            {
+                Kind = source.Trigger.Kind,
+                Flags = source.Trigger.Flags,
+                Metric = source.Trigger.Metric,
+                Threshold = source.Trigger.Threshold,
+                OnBatteryOnly = source.Trigger.OnBatteryOnly,
+                DurationSeconds = source.Trigger.DurationSeconds,
+            },
+            Actions = [.. source.Actions.Select(a => new RuleAction
+            {
+                Kind = a.Kind,
+                StopAction = a.StopAction,
+                Message = a.Message,
+                LogLevel = a.LogLevel,
+                Command = a.Command,
+                Arguments = [.. a.Arguments],
+                TimeoutSeconds = a.TimeoutSeconds,
+                Url = a.Url,
+            })],
+        };
+
+        var index = Rules.IndexOf(selected) + 1;
+        _working.Actions.Rules.Insert(index, copy);
+        var item = new RuleViewModel(copy, RuleOptions, Revalidate);
+        Rules.Insert(index, item);
+        SelectedRule = item;
+        Revalidate();
+    }
+
+    [RelayCommand(CanExecute = nameof(HasSelectedRule))]
+    private async Task DeleteRuleAsync()
+    {
+        if (SelectedRule is not { } selected)
+        {
+            return;
+        }
+
+        var confirmed = await ConfirmAsync(
+            Strings.Prefs_Rules_Delete_ConfirmTitle,
+            string.Format(CultureInfo.CurrentCulture, Strings.Prefs_Rules_Delete_ConfirmMessage, selected.Name)).ConfigureAwait(true);
+        if (!confirmed)
+        {
+            return;
+        }
+
+        var index = Rules.IndexOf(selected);
+        if (index < 0)
+        {
+            return;
+        }
+
+        _working.Actions.Rules.RemoveAt(index);
+        Rules.RemoveAt(index);
+        SelectedRule = Rules.Count == 0 ? null : Rules[Math.Min(index, Rules.Count - 1)];
+        Revalidate();
+    }
+
+    private bool CanMoveRuleUp() => SelectedRule is { } selected && Rules.IndexOf(selected) > 0;
+
+    private bool CanMoveRuleDown() => SelectedRule is { } selected && Rules.IndexOf(selected) is var i && i >= 0 && i < Rules.Count - 1;
+
+    [RelayCommand(CanExecute = nameof(CanMoveRuleUp))]
+    private void MoveRuleUp() => MoveSelectedRule(-1);
+
+    [RelayCommand(CanExecute = nameof(CanMoveRuleDown))]
+    private void MoveRuleDown() => MoveSelectedRule(1);
+
+    private void MoveSelectedRule(int offset)
+    {
+        if (SelectedRule is not { } selected)
+        {
+            return;
+        }
+
+        var from = Rules.IndexOf(selected);
+        var to = from + offset;
+        if (from < 0 || to < 0 || to >= Rules.Count)
+        {
+            return;
+        }
+
+        var rule = _working.Actions.Rules[from];
+        _working.Actions.Rules.RemoveAt(from);
+        _working.Actions.Rules.Insert(to, rule);
+        Rules.Move(from, to);
+        MoveRuleUpCommand.NotifyCanExecuteChanged();
+        MoveRuleDownCommand.NotifyCanExecuteChanged();
+        Revalidate();
+    }
+
+    private void LoadRules()
+    {
+        _working.Actions ??= new ActionsSettings();
+        _working.Actions.Rules ??= [];
+        _working.Actions.Rules.RemoveAll(rule => rule is null);
+
+        SelectedRule = null;
+        Rules.Clear();
+        foreach (var rule in _working.Actions.Rules)
+        {
+            Rules.Add(new RuleViewModel(rule, RuleOptions, Revalidate));
+        }
+
+        SelectedRule = Rules.FirstOrDefault();
+    }
+
+    private static int RuleIndexOf(string path)
+    {
+        const string prefix = "Actions.Rules[";
+        if (!path.StartsWith(prefix, StringComparison.Ordinal))
+        {
+            return -1;
+        }
+
+        var end = path.IndexOf(']', prefix.Length);
+        return end > prefix.Length
+            && int.TryParse(path.AsSpan(prefix.Length, end - prefix.Length), NumberStyles.None, CultureInfo.InvariantCulture, out var index)
+                ? index
+                : -1;
+    }
+
     // ---- History --------------------------------------------------------------------------------------------------
 
 #pragma warning disable CA1822 // Instance members: they are bound from XAML, which cannot bind to static properties.
@@ -759,6 +948,30 @@ public sealed partial class SettingsViewModel : ObservableObject
         HistoryRetentionError = Find("History.RetentionDays");
         HistorySampleIntervalError = Find("History.SampleIntervalSeconds");
 
+        var ruleProblems = new List<string>?[Rules.Count];
+        foreach (var problem in problems)
+        {
+            var index = RuleIndexOf(problem.PropertyPath);
+            if (index >= 0 && index < ruleProblems.Length)
+            {
+                var message = Strings.ResourceManager.GetString(problem.ErrorKey, Strings.Culture) ?? problem.ErrorKey;
+                var list = ruleProblems[index] ??= [];
+                if (!list.Contains(message))
+                {
+                    list.Add(message);
+                }
+            }
+        }
+
+        for (var i = 0; i < Rules.Count; i++)
+        {
+            IReadOnlyList<string> messages = (IReadOnlyList<string>?)ruleProblems[i] ?? [];
+            if (!Rules[i].Problems.SequenceEqual(messages))
+            {
+                Rules[i].Problems = messages;
+            }
+        }
+
         HasErrors = problems.Count > 0;
     }
 
@@ -767,6 +980,8 @@ public sealed partial class SettingsViewModel : ObservableObject
         _isLoading = true;
         try
         {
+            LoadRules();
+
             Host = _working.Connection.Host;
             Port = _working.Connection.Port;
             UpsName = _working.Connection.UpsName;

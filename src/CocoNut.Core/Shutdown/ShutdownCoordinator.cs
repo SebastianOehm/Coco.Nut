@@ -18,7 +18,6 @@ namespace CocoNut.Core.Shutdown;
 /// re-arming (<c>_armed</c>); once re-armed, a condition that still holds starts the stop again.
 /// </para>
 /// <para>
-/// <para>
 /// Every other action of a rule (notify, log, command, webhook) is handed to the <see cref="IRuleActionRunner"/> once
 /// per <see cref="RuleMatch.IsNewFiring"/>, before and independent of the stop logic: also while a stop is pending
 /// and while the policy is re-arming.
