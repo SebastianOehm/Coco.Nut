@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Reflection;
 using CocoNut.App.Services;
+using CocoNut.Core.Updates;
 using CocoNut.Localization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -21,18 +22,15 @@ public sealed partial class AboutViewModel : ObservableObject
         _shellLauncher = shellLauncher ?? throw new ArgumentNullException(nameof(shellLauncher));
 
         var assembly = entryAssembly ?? Assembly.GetEntryAssembly();
-        var informationalVersion = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-        var version = string.IsNullOrWhiteSpace(informationalVersion)
-            ? assembly?.GetName().Version?.ToString() ?? "0.1.0"
-            : informationalVersion;
+        var version = assembly is null ? ReleaseVersion.Fallback : ReleaseVersion.FromAssembly(assembly);
 
-        VersionText = string.Format(CultureInfo.CurrentCulture, Strings.About_Version, version);
+        VersionText = string.Format(CultureInfo.CurrentCulture, Strings.About_Version, version.ToString());
         CopyrightText = assembly?.GetCustomAttribute<AssemblyCopyrightAttribute>()?.Copyright ?? string.Empty;
     }
 
     private readonly IShellLauncher _shellLauncher;
 
-    /// <summary>Localized "Version {0}" text, {0} from the assembly's informational (or, as a fallback, file) version.</summary>
+    /// <summary>Localized "Version {0}" text, {0} the release version (e.g. <c>0.1.0-pre.12</c>, without <c>+commit</c> metadata), as used by the update check and crash reports.</summary>
     public string VersionText { get; }
 
     /// <summary>The <c>AssemblyCopyrightAttribute</c> text (from <c>Directory.Build.props</c>'s <c>&lt;Copyright&gt;</c>).</summary>
