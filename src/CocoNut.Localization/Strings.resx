@@ -753,7 +753,7 @@ Accepted value: numeric value from 0 to 3600.</value>
   </data>
   <data name="Prefs_Update_OpenReleasePage" xml:space="preserve">
     <value>Open release page</value>
-    <comment>Button that opens the release page in a browser. Used both in Settings &gt; Update and in the Update Available window (WinNUT had no self-install in Coco.Nut's design, so the old download/self-install button was dropped).</comment>
+    <comment>Button that opens the release page in a browser. Used both in Settings &gt; Update and in the Update Available window, where it is the fallback next to Update_DownloadAndInstall (portable and dev builds cannot update themselves).</comment>
   </data>
   <data name="Prefs_Update_Tab" xml:space="preserve">
     <value>Update</value>
@@ -860,13 +860,33 @@ Remaining time: {1}</value>
     <value>Weekly</value>
     <comment>Settings &gt; Update: update check interval option (AutoCheckIntervalDays = 7, the default). See UpdateInterval_Daily.</comment>
   </data>
+  <data name="Update_BlockedByShutdown" xml:space="preserve">
+    <value>A shutdown countdown is active. Install the update after it has been cancelled.</value>
+    <comment>Update available window: shown when the user clicks 'Download and install' while a shutdown countdown is active (updating restarts the app, so it is refused). New in Coco.Nut.</comment>
+  </data>
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Could not check for updates: {0}</value>
     <comment>Shown when an update check fails (network error, bad response, ...). {0} = error message (UpdateCheckResult.Error). New in Coco.Nut.</comment>
   </data>
+  <data name="Update_DownloadAndInstall" xml:space="preserve">
+    <value>Download and install</value>
+    <comment>Update available window: primary button that downloads the new version and restarts into it. Only shown for installed (non-portable) builds. New in Coco.Nut.</comment>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Downloading update... {0}%</value>
+    <comment>Update available window: progress text while downloading. {0} = percent (0-100). New in Coco.Nut.</comment>
+  </data>
+  <data name="Update_InstallFailed" xml:space="preserve">
+    <value>Could not install the update: {0}</value>
+    <comment>Update available window: error shown when the in-app update fails. {0} = reason. New in Coco.Nut.</comment>
+  </data>
   <data name="Update_Message" xml:space="preserve">
     <value>Version {0} is available. You are using version {1}.</value>
     <comment>Update available window: headline. {0} = latest version, {1} = running version. New in Coco.Nut.</comment>
+  </data>
+  <data name="Update_NoInstallablePackage" xml:space="preserve">
+    <value>No installable package was found for this update yet. Use the release page instead.</value>
+    <comment>Update available window: reason shown when Velopack found no installable package for the update (e.g. the release has no Velopack assets). New in Coco.Nut.</comment>
   </data>
   <data name="Update_NoUpdate" xml:space="preserve">
     <value>You are using the latest version.</value>

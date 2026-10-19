@@ -151,7 +151,7 @@ public class DemoScreenshotTests
             Body = "- Added feature X\n- Fixed bug Y\n- Improved Z",
             PublishedAt = DateTimeOffset.UtcNow,
         });
-        var updateWindow = new UpdateAvailableWindow { DataContext = new UpdateAvailableViewModel(result, ReleaseVersion.TryParse("1.1.0")!, new FakeShellLauncher()) };
+        var updateWindow = new UpdateAvailableWindow { DataContext = new UpdateAvailableViewModel(result, ReleaseVersion.TryParse("1.1.0")!, new FakeShellLauncher(), new FakeAppUpdater(), new FakeShutdownEvents(), new ImmediateUiDispatcher()) };
         updateWindow.Show();
         Assert.NotNull(updateWindow.CaptureRenderedFrame());
     }

@@ -6,7 +6,7 @@ namespace CocoNut.Core.Updates;
 
 /// <summary>
 /// Checks GitHub releases for a newer version, replacing WinNUT's <c>Updater.UpdateUtil</c> (which used Octokit).
-/// Only checks and reports; it never downloads or installs anything.
+/// Only checks and reports; it never downloads or installs anything (the in-app install is the App project's <c>IAppUpdater</c>, which uses Velopack).
 /// </summary>
 public sealed class UpdateChecker
 {

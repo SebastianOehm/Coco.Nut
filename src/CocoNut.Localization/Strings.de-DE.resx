@@ -636,11 +636,26 @@ Verbleibende Zeit: {1}</value>
   <data name="UpdateInterval_Weekly" xml:space="preserve">
     <value>Wöchentlich</value>
   </data>
+  <data name="Update_BlockedByShutdown" xml:space="preserve">
+    <value>Ein Herunterfahren-Countdown läuft. Installieren Sie das Update, nachdem er abgebrochen wurde.</value>
+  </data>
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Update-Prüfung fehlgeschlagen: {0}</value>
   </data>
+  <data name="Update_DownloadAndInstall" xml:space="preserve">
+    <value>Herunterladen und installieren</value>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Update wird heruntergeladen ... {0} %</value>
+  </data>
+  <data name="Update_InstallFailed" xml:space="preserve">
+    <value>Das Update konnte nicht installiert werden: {0}</value>
+  </data>
   <data name="Update_Message" xml:space="preserve">
     <value>Version {0} ist verfügbar. Sie verwenden derzeit Version {1}.</value>
+  </data>
+  <data name="Update_NoInstallablePackage" xml:space="preserve">
+    <value>Für dieses Update wurde noch kein installierbares Paket gefunden. Verwenden Sie stattdessen die Release-Seite.</value>
   </data>
   <data name="Update_NoUpdate" xml:space="preserve">
     <value>Sie verwenden die aktuellste Version.</value>

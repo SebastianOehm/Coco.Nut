@@ -37,6 +37,8 @@ public sealed class WindowNavigatorTests : IDisposable
         services.AddSingleton<IPowerActions>(_ => new FakePowerActions());
         services.AddSingleton<IAutoStartService>(_ => new FakeAutoStartService());
         services.AddSingleton<IShellLauncher>(_ => new FakeShellLauncher());
+        services.AddSingleton<IAppUpdater>(_ => new FakeAppUpdater());
+        services.AddSingleton<IShutdownEvents>(_ => new FakeShutdownEvents());
         services.AddSingleton<IUiDispatcher>(_ => new ImmediateUiDispatcher());
         services.AddSingleton(_ => new FileLoggerProvider(_logDirectory));
         services.AddSingleton(_ => new UpdateChecker(new HttpClient()));

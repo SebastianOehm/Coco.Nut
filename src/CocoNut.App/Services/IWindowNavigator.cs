@@ -143,7 +143,9 @@ public sealed class WindowNavigator : IWindowNavigator
 
         var shellLauncher = _services.GetRequiredService<IShellLauncher>();
         var currentVersion = ReleaseVersion.FromAssembly(typeof(WindowNavigator).Assembly);
-        var viewModel = new UpdateAvailableViewModel(result, currentVersion, shellLauncher);
+        var appUpdater = _services.GetRequiredService<IAppUpdater>();
+        var shutdownEvents = _services.GetRequiredService<IShutdownEvents>();
+        var viewModel = new UpdateAvailableViewModel(result, currentVersion, shellLauncher, appUpdater, shutdownEvents, _services.GetRequiredService<IUiDispatcher>());
         var window = new UpdateAvailableWindow { DataContext = viewModel };
         _updateAvailableWindow = window;
         window.Closed += (_, _) => _updateAvailableWindow = null;

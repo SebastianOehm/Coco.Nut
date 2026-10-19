@@ -13,6 +13,9 @@ public interface IShutdownEvents
     /// <inheritdoc cref="ShutdownCoordinator.DryRun"/>
     bool DryRun { get; }
 
+    /// <inheritdoc cref="ShutdownCoordinator.IsShutdownPending"/>
+    bool IsShutdownPending { get; }
+
     /// <inheritdoc cref="ShutdownCoordinator.ShutdownPending"/>
     event EventHandler<ShutdownPendingEventArgs>? ShutdownPending;
 
@@ -36,6 +39,9 @@ public sealed class ShutdownEventsAdapter : IShutdownEvents
 
     /// <inheritdoc />
     public bool DryRun => _coordinator.DryRun;
+
+    /// <inheritdoc />
+    public bool IsShutdownPending => _coordinator.IsShutdownPending;
 
     /// <inheritdoc />
     public event EventHandler<ShutdownPendingEventArgs>? ShutdownPending

@@ -612,11 +612,26 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="UpdateInterval_Weekly" xml:space="preserve">
     <value>Еженедельно</value>
   </data>
+  <data name="Update_BlockedByShutdown" xml:space="preserve">
+    <value>Идёт обратный отсчёт до выключения. Установите обновление после его отмены.</value>
+  </data>
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Не удалось проверить обновления: {0}</value>
   </data>
+  <data name="Update_DownloadAndInstall" xml:space="preserve">
+    <value>Скачать и установить</value>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Загрузка обновления... {0}%</value>
+  </data>
+  <data name="Update_InstallFailed" xml:space="preserve">
+    <value>Не удалось установить обновление: {0}</value>
+  </data>
   <data name="Update_Message" xml:space="preserve">
     <value>Доступна версия {0}. Вы используете версию {1}.</value>
+  </data>
+  <data name="Update_NoInstallablePackage" xml:space="preserve">
+    <value>Для этого обновления пока не найден устанавливаемый пакет. Воспользуйтесь страницей релиза.</value>
   </data>
   <data name="Update_NoUpdate" xml:space="preserve">
     <value>Вы используете последнюю версию.</value>

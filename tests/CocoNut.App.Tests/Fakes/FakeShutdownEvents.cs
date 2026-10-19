@@ -8,6 +8,8 @@ public sealed class FakeShutdownEvents : IShutdownEvents
 {
     public bool DryRun { get; set; }
 
+    public bool IsShutdownPending { get; set; }
+
     public event EventHandler<ShutdownPendingEventArgs>? ShutdownPending;
 
     public event EventHandler<ShutdownReason>? ShutdownCancelled;

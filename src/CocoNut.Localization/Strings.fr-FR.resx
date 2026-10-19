@@ -618,11 +618,26 @@ Temps restant : {1}</value>
   <data name="UpdateInterval_Weekly" xml:space="preserve">
     <value>Hebdomadaire</value>
   </data>
+  <data name="Update_BlockedByShutdown" xml:space="preserve">
+    <value>Un compte à rebours d'arrêt est en cours. Installez la mise à jour après son annulation.</value>
+  </data>
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>Impossible de vérifier les mises à jour : {0}</value>
   </data>
+  <data name="Update_DownloadAndInstall" xml:space="preserve">
+    <value>Télécharger et installer</value>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Téléchargement de la mise à jour... {0} %</value>
+  </data>
+  <data name="Update_InstallFailed" xml:space="preserve">
+    <value>Impossible d'installer la mise à jour : {0}</value>
+  </data>
   <data name="Update_Message" xml:space="preserve">
     <value>La version {0} est disponible. Vous utilisez actuellement la version {1}.</value>
+  </data>
+  <data name="Update_NoInstallablePackage" xml:space="preserve">
+    <value>Aucun paquet installable n'a encore été trouvé pour cette mise à jour. Utilisez plutôt la page de la version.</value>
   </data>
   <data name="Update_NoUpdate" xml:space="preserve">
     <value>Vous utilisez la dernière version.</value>

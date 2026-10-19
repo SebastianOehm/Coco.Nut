@@ -80,6 +80,7 @@ public sealed class AppHost : IAsyncDisposable
 
         services.AddSingleton(_ => new HttpClient());
         services.AddSingleton(sp => new UpdateChecker(sp.GetRequiredService<HttpClient>()));
+        services.AddSingleton<IAppUpdater>(sp => new VelopackAppUpdater(() => sp.GetRequiredService<ISettingsService>().Current.Update.Channel));
 
         services.AddSingleton<IUiDispatcher, AvaloniaUiDispatcher>();
         services.AddSingleton<INotificationService, PopupNotificationService>();

@@ -620,11 +620,26 @@
   <data name="UpdateInterval_Weekly" xml:space="preserve">
     <value>每周</value>
   </data>
+  <data name="Update_BlockedByShutdown" xml:space="preserve">
+    <value>关机倒计时正在进行。请在取消后再安装更新。</value>
+  </data>
   <data name="Update_CheckFailed" xml:space="preserve">
     <value>无法检查更新：{0}</value>
   </data>
+  <data name="Update_DownloadAndInstall" xml:space="preserve">
+    <value>下载并安装</value>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>正在下载更新... {0}%</value>
+  </data>
+  <data name="Update_InstallFailed" xml:space="preserve">
+    <value>无法安装更新：{0}</value>
+  </data>
   <data name="Update_Message" xml:space="preserve">
     <value>有新版本 {0} 可用。您当前使用的是版本 {1}。</value>
+  </data>
+  <data name="Update_NoInstallablePackage" xml:space="preserve">
+    <value>尚未找到此更新的可安装包。请改用发布页面。</value>
   </data>
   <data name="Update_NoUpdate" xml:space="preserve">
     <value>您正在使用最新版本。</value>

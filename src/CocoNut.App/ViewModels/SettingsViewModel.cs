@@ -599,7 +599,12 @@ public sealed partial class SettingsViewModel : ObservableObject
 
         if (IsStartWithSystemSupported)
         {
-            _autoStartService.SetEnabled(toSave.General.StartWithOs, Environment.ProcessPath ?? string.Empty);
+            // A Linux AppImage runs from a per-run mount point, so ProcessPath is not stable there; APPIMAGE is the
+            // .AppImage file itself (which Velopack replaces in place on update). Windows installs run from
+            // %LocalAppData%\CocoNut\current\, a path that stays the same across updates.
+            var appImagePath = Environment.GetEnvironmentVariable("APPIMAGE");
+            var executablePath = string.IsNullOrEmpty(appImagePath) ? Environment.ProcessPath ?? string.Empty : appImagePath;
+            _autoStartService.SetEnabled(toSave.General.StartWithOs, executablePath);
         }
 
         var connectionChanged = !ConnectionEquals(_lastAppliedConnection, toSave.Connection)

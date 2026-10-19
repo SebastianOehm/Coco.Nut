@@ -8,7 +8,7 @@
         Title="{x:Static loc:Strings.Update_Title}"
         Width="480" Height="420" MinWidth="380" MinHeight="300"
         WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="16">
+  <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto" Margin="16">
     <TextBlock Grid.Row="0" Text="{Binding MessageText}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,0,0,10" />
 
     <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" IsVisible="{Binding HasReleaseName}" Margin="0,0,0,4">
@@ -27,8 +27,20 @@
                VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
     </DockPanel>
 
-    <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" Margin="0,12,0,0">
-      <Button Content="{x:Static loc:Strings.Prefs_Update_OpenReleasePage}" Command="{Binding OpenReleasePageCommand}" Classes="accent" />
+    <StackPanel Grid.Row="4" Spacing="6" Margin="0,12,0,0">
+      <StackPanel Spacing="4" IsVisible="{Binding IsInstalling}">
+        <TextBlock Text="{Binding ProgressText}" />
+        <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" />
+      </StackPanel>
+      <TextBlock Text="{Binding ErrorText}" IsVisible="{Binding HasError}" TextWrapping="Wrap"
+                 Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
+    </StackPanel>
+
+    <StackPanel Grid.Row="5" Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" Margin="0,12,0,0">
+      <Button Content="{x:Static loc:Strings.Update_DownloadAndInstall}" Command="{Binding DownloadAndInstallCommand}"
+              IsVisible="{Binding CanSelfUpdate}" Classes="accent" />
+      <Button Content="{x:Static loc:Strings.Prefs_Update_OpenReleasePage}" Command="{Binding OpenReleasePageCommand}"
+              Classes.accent="{Binding IsReleasePagePrimary}" />
       <Button Content="{x:Static loc:Strings.Common_Close}" Click="OnCloseClick" />
     </StackPanel>
   </Grid>
