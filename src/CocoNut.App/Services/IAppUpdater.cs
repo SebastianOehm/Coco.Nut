@@ -22,12 +22,18 @@ public interface IAppUpdater
     /// call never returns; on failure (no package found, network error, ...) it returns the reason instead of
     /// throwing. Only a cancellation requested through <paramref name="cancellationToken"/> propagates.
     /// </summary>
-    Task<AppUpdateResult> DownloadAndInstallAsync(IProgress<int>? progress, CancellationToken cancellationToken = default);
+    /// <param name="canApply">
+    /// Checked after the download, right before the update is applied (which restarts the app). When it returns
+    /// <see langword="false"/> nothing is applied and the result has <see cref="AppUpdateResult.BlockedByShutdown"/>
+    /// set; the downloaded package stays cached for a later attempt.
+    /// </param>
+    Task<AppUpdateResult> DownloadAndInstallAsync(IProgress<int>? progress, Func<bool> canApply, CancellationToken cancellationToken = default);
 }
 
 /// <summary>Outcome of <see cref="IAppUpdater.DownloadAndInstallAsync"/> when the app did not restart.</summary>
 /// <param name="Error">Human-readable reason the update was not installed.</param>
-public sealed record AppUpdateResult(string Error);
+/// <param name="BlockedByShutdown">The update was downloaded but not applied because a shutdown countdown became active.</param>
+public sealed record AppUpdateResult(string Error, bool BlockedByShutdown = false);
 
 /// <summary>Default <see cref="IAppUpdater"/>, backed by Velopack's <see cref="UpdateManager"/> and the repository's GitHub releases.</summary>
 public sealed class VelopackAppUpdater : IAppUpdater
@@ -58,8 +64,10 @@ public sealed class VelopackAppUpdater : IAppUpdater
     public bool CanSelfUpdate => _canSelfUpdate.Value;
 
     /// <inheritdoc />
-    public async Task<AppUpdateResult> DownloadAndInstallAsync(IProgress<int>? progress, CancellationToken cancellationToken = default)
+    public async Task<AppUpdateResult> DownloadAndInstallAsync(IProgress<int>? progress, Func<bool> canApply, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(canApply);
+
         try
         {
             var source = new GithubSource(RepoUrl, null, _channel() == UpdateChannel.PreRelease);
@@ -72,6 +80,11 @@ public sealed class VelopackAppUpdater : IAppUpdater
             }
 
             await manager.DownloadUpdatesAsync(update, percent => progress?.Report(percent), cancellationToken).ConfigureAwait(false);
+            if (!canApply())
+            {
+                return new AppUpdateResult(Strings.Update_BlockedByShutdown, BlockedByShutdown: true);
+            }
+
             manager.ApplyUpdatesAndRestart(update.TargetFullRelease);
 
             // Not reached: ApplyUpdatesAndRestart exits the process.

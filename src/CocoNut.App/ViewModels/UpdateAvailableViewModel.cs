@@ -111,8 +111,10 @@ public sealed partial class UpdateAvailableViewModel : ObservableObject
         IsInstalling = true;
         try
         {
-            var outcome = await _appUpdater.DownloadAndInstallAsync(new DispatcherProgress(this)).ConfigureAwait(true);
-            ErrorText = string.Format(CultureInfo.CurrentCulture, Strings.Update_InstallFailed, outcome.Error);
+            var outcome = await _appUpdater.DownloadAndInstallAsync(new DispatcherProgress(this), () => !_shutdownEvents.IsShutdownPending).ConfigureAwait(true);
+            ErrorText = outcome.BlockedByShutdown
+                ? Strings.Update_BlockedByShutdown
+                : string.Format(CultureInfo.CurrentCulture, Strings.Update_InstallFailed, outcome.Error);
         }
         finally
         {

@@ -1,4 +1,5 @@
 using CocoNut.App.Services;
+using CocoNut.Localization;
 
 namespace CocoNut.App.Tests.Fakes;
 
@@ -15,7 +16,7 @@ public sealed class FakeAppUpdater : IAppUpdater
 
     public int Calls { get; private set; }
 
-    public async Task<AppUpdateResult> DownloadAndInstallAsync(IProgress<int>? progress, CancellationToken cancellationToken = default)
+    public async Task<AppUpdateResult> DownloadAndInstallAsync(IProgress<int>? progress, Func<bool> canApply, CancellationToken cancellationToken = default)
     {
         Calls++;
         foreach (var step in ProgressSteps)
@@ -26,6 +27,11 @@ public sealed class FakeAppUpdater : IAppUpdater
         if (Gate is not null)
         {
             await Gate;
+        }
+
+        if (!canApply())
+        {
+            return new AppUpdateResult(Strings.Update_BlockedByShutdown, BlockedByShutdown: true);
         }
 
         return new AppUpdateResult(Error);

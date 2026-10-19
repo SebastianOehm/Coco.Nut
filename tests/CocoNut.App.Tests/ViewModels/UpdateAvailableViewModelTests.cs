@@ -148,4 +148,21 @@ public sealed class UpdateAvailableViewModelTests
         Assert.Equal(Strings.Update_BlockedByShutdown, vm.ErrorText);
         Assert.False(vm.IsInstalling);
     }
+
+    [Fact]
+    public async Task Install_is_not_applied_when_a_shutdown_starts_during_the_download()
+    {
+        var gate = new TaskCompletionSource();
+        var shutdownEvents = new FakeShutdownEvents();
+        var updater = new FakeAppUpdater { CanSelfUpdate = true, Gate = gate.Task, Error = "applied" };
+        var vm = CreateViewModel(updater, shutdownEvents);
+
+        var running = vm.DownloadAndInstallCommand.ExecuteAsync(null);
+        shutdownEvents.IsShutdownPending = true;
+        gate.SetResult();
+        await running;
+
+        Assert.Equal(Strings.Update_BlockedByShutdown, vm.ErrorText);
+        Assert.False(vm.IsInstalling);
+    }
 }
