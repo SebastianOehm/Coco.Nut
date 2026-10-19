@@ -1,6 +1,7 @@
 using CocoNut.App.ViewModels;
 using CocoNut.Core;
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.History;
 using CocoNut.Core.Logging;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Nut;
@@ -76,6 +77,15 @@ public sealed class AppHost : IAsyncDisposable
             sp.GetRequiredService<ILogger<ShutdownCoordinator>>()));
         services.AddSingleton<IShutdownEvents>(sp => new ShutdownEventsAdapter(sp.GetRequiredService<ShutdownCoordinator>()));
 
+        services.AddSingleton<IHistoryStore>(_ => new SqliteHistoryStore(AppPaths.HistoryDatabaseFile));
+        services.AddSingleton(sp => new HistoryRecorder(
+            sp.GetRequiredService<UpsMonitor>(),
+            sp.GetRequiredService<ShutdownCoordinator>(),
+            sp.GetRequiredService<IHistoryStore>(),
+            sp.GetRequiredService<TimeProvider>(),
+            () => sp.GetRequiredService<ISettingsService>().Current.History,
+            sp.GetRequiredService<ILogger<HistoryRecorder>>()));
+
         services.AddSingleton(_ => AutoStartServiceFactory.Create());
 
         services.AddSingleton(_ => new HttpClient());
@@ -142,6 +152,12 @@ public sealed class AppHost : IAsyncDisposable
         (_provider.GetService<ShutdownWindowController>())?.Dispose();
         (_provider.GetService<MainWindowViewModel>())?.Dispose();
 
+        // The recorder flushes its buffer into the store on dispose, so it goes first and the store last.
+        if (_provider.GetService<HistoryRecorder>() is { } recorder)
+        {
+            await recorder.DisposeAsync().ConfigureAwait(false);
+        }
+
         if (_provider.GetService<ShutdownCoordinator>() is { } coordinator)
         {
             await coordinator.DisposeAsync().ConfigureAwait(false);
@@ -150,6 +166,11 @@ public sealed class AppHost : IAsyncDisposable
         if (_provider.GetService<UpsMonitor>() is { } monitor)
         {
             await monitor.DisposeAsync().ConfigureAwait(false);
+        }
+
+        if (_provider.GetService<IHistoryStore>() is { } historyStore)
+        {
+            await historyStore.DisposeAsync().ConfigureAwait(false);
         }
 
         await _provider.DisposeAsync().ConfigureAwait(false);
