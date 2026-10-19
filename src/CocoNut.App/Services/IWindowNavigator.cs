@@ -142,7 +142,7 @@ public sealed class WindowNavigator : IWindowNavigator
         }
 
         var shellLauncher = _services.GetRequiredService<IShellLauncher>();
-        var currentVersion = typeof(WindowNavigator).Assembly.GetName().Version ?? new Version(0, 1, 0);
+        var currentVersion = ReleaseVersion.FromAssembly(typeof(WindowNavigator).Assembly);
         var viewModel = new UpdateAvailableViewModel(result, currentVersion, shellLauncher);
         var window = new UpdateAvailableWindow { DataContext = viewModel };
         _updateAvailableWindow = window;

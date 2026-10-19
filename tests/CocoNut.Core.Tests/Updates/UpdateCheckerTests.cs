@@ -47,7 +47,7 @@ public class UpdateCheckerTests
         ]
         """;
 
-    private static UpdateChecker CreateChecker(FakeHttpMessageHandler handler, string owner = "nutdotnet", string repo = "Coco.Nut") =>
+    private static UpdateChecker CreateChecker(FakeHttpMessageHandler handler, string owner = "SebastianOehm", string repo = "Coco.Nut") =>
         new(new HttpClient(handler), owner, repo);
 
     [Fact]
@@ -56,10 +56,10 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, ReleasesJson);
         var checker = CreateChecker(handler);
 
-        var result = await checker.CheckAsync(new Version(1, 3, 0), UpdateChannel.Stable);
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("1.3.0")!, UpdateChannel.Stable);
 
         Assert.True(result.IsUpdateAvailable);
-        Assert.Equal(new Version(1, 4, 0), result.LatestVersion);
+        Assert.Equal(ReleaseVersion.TryParse("1.4.0")!, result.LatestVersion);
         Assert.Equal("https://example.invalid/releases/v1.4.0", result.ReleaseUrl);
         Assert.Null(result.Error);
     }
@@ -70,10 +70,10 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, ReleasesJson);
         var checker = CreateChecker(handler);
 
-        var result = await checker.CheckAsync(new Version(1, 3, 0), UpdateChannel.PreRelease);
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("1.3.0")!, UpdateChannel.PreRelease);
 
         Assert.True(result.IsUpdateAvailable);
-        Assert.Equal(new Version(1, 5, 0), result.LatestVersion);
+        Assert.Equal(ReleaseVersion.TryParse("1.5.0-beta")!, result.LatestVersion);
         Assert.Equal("beta notes", result.ReleaseNotes);
     }
 
@@ -83,10 +83,10 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, ReleasesJson);
         var checker = CreateChecker(handler);
 
-        var result = await checker.CheckAsync(new Version(1, 4, 0), UpdateChannel.Stable);
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("1.4.0")!, UpdateChannel.Stable);
 
         Assert.False(result.IsUpdateAvailable);
-        Assert.Equal(new Version(1, 4, 0), result.LatestVersion);
+        Assert.Equal(ReleaseVersion.TryParse("1.4.0")!, result.LatestVersion);
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, ReleasesJson);
         var checker = CreateChecker(handler);
 
-        var result = await checker.CheckAsync(new Version(9, 0, 0), UpdateChannel.Stable);
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("9.0.0")!, UpdateChannel.Stable);
 
         Assert.False(result.IsUpdateAvailable);
     }
@@ -109,7 +109,7 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, draftOnlyJson);
         var checker = CreateChecker(handler);
 
-        var result = await checker.CheckAsync(new Version(1, 0, 0), UpdateChannel.PreRelease);
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("1.0.0")!, UpdateChannel.PreRelease);
 
         Assert.False(result.IsUpdateAvailable);
         Assert.Null(result.LatestVersion);
@@ -122,7 +122,7 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, "[]");
         var checker = CreateChecker(handler);
 
-        var result = await checker.CheckAsync(new Version(1, 0, 0), UpdateChannel.Stable);
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("1.0.0")!, UpdateChannel.Stable);
 
         Assert.False(result.IsUpdateAvailable);
     }
@@ -133,7 +133,7 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.InternalServerError, "");
         var checker = CreateChecker(handler);
 
-        var result = await checker.CheckAsync(new Version(1, 0, 0), UpdateChannel.Stable);
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("1.0.0")!, UpdateChannel.Stable);
 
         Assert.False(result.IsUpdateAvailable);
         Assert.NotNull(result.Error);
@@ -146,7 +146,7 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.Throwing(new HttpRequestException("connection refused"));
         var checker = CreateChecker(handler);
 
-        var result = await checker.CheckAsync(new Version(1, 0, 0), UpdateChannel.Stable);
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("1.0.0")!, UpdateChannel.Stable);
 
         Assert.False(result.IsUpdateAvailable);
         Assert.NotNull(result.Error);
@@ -158,7 +158,7 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, "{ not a release array");
         var checker = CreateChecker(handler);
 
-        var result = await checker.CheckAsync(new Version(1, 0, 0), UpdateChannel.Stable);
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("1.0.0")!, UpdateChannel.Stable);
 
         Assert.False(result.IsUpdateAvailable);
         Assert.NotNull(result.Error);
@@ -173,7 +173,7 @@ public class UpdateCheckerTests
         cts.Cancel();
 
         await Assert.ThrowsAnyAsync<OperationCanceledException>(
-            () => checker.CheckAsync(new Version(1, 0, 0), UpdateChannel.Stable, cts.Token));
+            () => checker.CheckAsync(ReleaseVersion.TryParse("1.0.0")!, UpdateChannel.Stable, cts.Token));
     }
 
     [Fact]
@@ -182,7 +182,7 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, "[]");
         var checker = CreateChecker(handler);
 
-        await checker.CheckAsync(new Version(1, 0, 0), UpdateChannel.Stable);
+        await checker.CheckAsync(ReleaseVersion.TryParse("1.0.0")!, UpdateChannel.Stable);
 
         Assert.NotNull(handler.LastRequest);
         Assert.NotEmpty(handler.LastRequest!.Headers.UserAgent);
@@ -194,27 +194,68 @@ public class UpdateCheckerTests
         var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, "[]");
         var checker = CreateChecker(handler, owner: "some-owner", repo: "some-repo");
 
-        await checker.CheckAsync(new Version(1, 0, 0), UpdateChannel.Stable);
+        await checker.CheckAsync(ReleaseVersion.TryParse("1.0.0")!, UpdateChannel.Stable);
 
         Assert.Contains("some-owner/some-repo", handler.LastRequest!.RequestUri!.ToString());
     }
 
+    [Fact]
+    public async Task CheckAsync_WithDefaultChecker_RequestsTheSebastianOehmReleasesEndpoint()
+    {
+        var handler = FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, ReleasesJson);
+        var checker = new UpdateChecker(new HttpClient(handler));
+
+        await checker.CheckAsync(ReleaseVersion.TryParse("1.0.0")!, UpdateChannel.Stable);
+
+        Assert.Equal("https://api.github.com/repos/SebastianOehm/Coco.Nut/releases", handler.LastRequest!.RequestUri!.ToString());
+    }
+
+    private const string Pre13Json = """
+        { "tag_name": "v0.1.0-pre.13", "name": "pre 13", "html_url": "https://example.invalid/pre13", "prerelease": true, "draft": false }
+        """;
+
+    private const string Pre12Json = """
+        { "tag_name": "v0.1.0-pre.12", "name": "pre 12", "html_url": "https://example.invalid/pre12", "prerelease": true, "draft": false }
+        """;
+
+    [Fact]
+    public async Task CheckAsync_WithNewerPreMainBuild_ReportsUpdateWithFullVersionText()
+    {
+        var checker = CreateChecker(FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, $"[{Pre13Json},{Pre12Json}]"));
+
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("0.1.0-pre.12+abc123")!, UpdateChannel.PreRelease);
+
+        Assert.True(result.IsUpdateAvailable);
+        Assert.Equal("0.1.0-pre.13", result.LatestVersion!.ToString());
+    }
+
+    [Fact]
+    public async Task CheckAsync_WithCurrentPreMainBuild_ReportsNoUpdate()
+    {
+        var checker = CreateChecker(FakeHttpMessageHandler.WithJson(HttpStatusCode.OK, $"[{Pre12Json}]"));
+
+        var result = await checker.CheckAsync(ReleaseVersion.TryParse("0.1.0-pre.12")!, UpdateChannel.PreRelease);
+
+        Assert.False(result.IsUpdateAvailable);
+        Assert.Equal("0.1.0-pre.12", result.LatestVersion!.ToString());
+    }
+
     [Theory]
-    [InlineData("v1.2.3", 1, 2, 3)]
-    [InlineData("1.2.3", 1, 2, 3)]
-    [InlineData("v2.3.9492", 2, 3, 9492)]
-    [InlineData("V1.0.0", 1, 0, 0)]
-    [InlineData("v2.3.0-beta", 2, 3, 0)]
-    [InlineData("v2.3.0-beta.1", 2, 3, 0)]
-    [InlineData("v2.3.0+build.5", 2, 3, 0)]
-    public void TryParseVersionTag_ParsesSupportedFormats(string tag, int major, int minor, int build)
+    [InlineData("v1.2.3", "1.2.3")]
+    [InlineData("1.2.3", "1.2.3")]
+    [InlineData("v2.3.9492", "2.3.9492")]
+    [InlineData("V1.0.0", "1.0.0")]
+    [InlineData("v0.1.0-pre.12", "0.1.0-pre.12")]
+    [InlineData("v1.5.0-beta", "1.5.0-beta")]
+    [InlineData("v2.3.0-beta.1", "2.3.0-beta.1")]
+    [InlineData("v2.3.0+build.5", "2.3.0")]
+    [InlineData("v5", "5.0.0")]
+    public void TryParseVersionTag_ParsesSupportedFormats(string tag, string expected)
     {
         var version = UpdateChecker.TryParseVersionTag(tag);
 
         Assert.NotNull(version);
-        Assert.Equal(major, version!.Major);
-        Assert.Equal(minor, version.Minor);
-        Assert.Equal(build, version.Build);
+        Assert.Equal(expected, version!.ToString());
     }
 
     [Theory]
@@ -222,17 +263,10 @@ public class UpdateCheckerTests
     [InlineData("   ")]
     [InlineData("not-a-version")]
     [InlineData("v")]
+    [InlineData("v1.0.0-")]
     public void TryParseVersionTag_WithUnparsableTag_ReturnsNull(string tag)
     {
         Assert.Null(UpdateChecker.TryParseVersionTag(tag));
-    }
-
-    [Fact]
-    public void TryParseVersionTag_WithSingleComponent_TreatsItAsMajorMinor()
-    {
-        var version = UpdateChecker.TryParseVersionTag("v5");
-
-        Assert.Equal(new Version(5, 0), version);
     }
 
     [Fact]

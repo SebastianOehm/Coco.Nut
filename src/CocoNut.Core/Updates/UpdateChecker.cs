@@ -11,7 +11,7 @@ namespace CocoNut.Core.Updates;
 public sealed class UpdateChecker
 {
     /// <summary>Default repository owner, used when the caller does not name one.</summary>
-    public const string DefaultOwner = "nutdotnet";
+    public const string DefaultOwner = "SebastianOehm";
 
     /// <summary>Default repository name, used when the caller does not name one.</summary>
     public const string DefaultRepo = "Coco.Nut";
@@ -38,7 +38,7 @@ public sealed class UpdateChecker
     /// <paramref name="cancellationToken"/> propagates as <see cref="OperationCanceledException"/>.
     /// </summary>
     public async Task<UpdateCheckResult> CheckAsync(
-        Version currentVersion, UpdateChannel channel, CancellationToken cancellationToken = default)
+        ReleaseVersion currentVersion, UpdateChannel channel, CancellationToken cancellationToken = default)
     {
         List<GitHubRelease>? releases;
         try
@@ -98,42 +98,11 @@ public sealed class UpdateChecker
     }
 
     /// <summary>
-    /// Parses a release tag such as <c>v1.2.3</c>, <c>1.2.3</c> or <c>v2.3.9492</c> into a <see cref="Version"/>,
-    /// tolerating a leading <c>v</c>/<c>V</c> and a trailing semver-style suffix (<c>-beta</c>, <c>+build.5</c>).
-    /// Returns <see langword="null"/> for tags that still don't parse as a dotted numeric version.
+    /// Parses a release tag such as <c>v0.1.0-pre.12</c>, <c>1.2.3</c> or <c>v2.3.9492</c> into a
+    /// <see cref="ReleaseVersion"/> (see <see cref="ReleaseVersion.TryParse"/>). Returns <see langword="null"/>
+    /// for tags that are not a dotted numeric version.
     /// </summary>
-    internal static Version? TryParseVersionTag(string tag)
-    {
-        if (string.IsNullOrWhiteSpace(tag))
-        {
-            return null;
-        }
-
-        var text = tag.Trim();
-        if (text.Length > 0 && (text[0] == 'v' || text[0] == 'V'))
-        {
-            text = text[1..];
-        }
-
-        var suffixIndex = text.IndexOfAny(['-', '+']);
-        if (suffixIndex >= 0)
-        {
-            text = text[..suffixIndex];
-        }
-
-        if (text.Length == 0)
-        {
-            return null;
-        }
-
-        // System.Version requires at least a major.minor pair.
-        if (!text.Contains('.'))
-        {
-            text += ".0";
-        }
-
-        return Version.TryParse(text, out var version) ? version : null;
-    }
+    internal static ReleaseVersion? TryParseVersionTag(string tag) => ReleaseVersion.TryParse(tag);
 
     /// <summary>
     /// Whether an automatic check is due, given the last successful check time and the configured interval

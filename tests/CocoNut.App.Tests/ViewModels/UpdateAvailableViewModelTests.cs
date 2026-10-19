@@ -13,7 +13,7 @@ public sealed class UpdateAvailableViewModelTests
     [Fact]
     public void Message_formats_the_new_and_current_version()
     {
-        var result = UpdateCheckResult.FromRelease(true, new Version(2, 0, 0), new CocoNut.Core.Updates.GitHubRelease
+        var result = UpdateCheckResult.FromRelease(true, ReleaseVersion.TryParse("2.0.0")!, new CocoNut.Core.Updates.GitHubRelease
         {
             TagName = "v2.0.0",
             Name = "Coco.Nut 2.0",
@@ -22,9 +22,9 @@ public sealed class UpdateAvailableViewModelTests
             PublishedAt = new DateTimeOffset(2026, 1, 15, 10, 0, 0, TimeSpan.Zero),
         });
 
-        var vm = new UpdateAvailableViewModel(result, new Version(1, 5, 0), new FakeShellLauncher());
+        var vm = new UpdateAvailableViewModel(result, ReleaseVersion.TryParse("1.5.0")!, new FakeShellLauncher());
 
-        var expected = string.Format(CultureInfo.CurrentCulture, Strings.Update_Message, new Version(2, 0, 0), new Version(1, 5, 0));
+        var expected = string.Format(CultureInfo.CurrentCulture, Strings.Update_Message, ReleaseVersion.TryParse("2.0.0")!, ReleaseVersion.TryParse("1.5.0")!);
         Assert.Equal(expected, vm.MessageText);
         Assert.Equal("Coco.Nut 2.0", vm.ReleaseName);
         Assert.True(vm.HasReleaseName);
@@ -36,9 +36,9 @@ public sealed class UpdateAvailableViewModelTests
     [Fact]
     public void Missing_release_name_and_date_hide_their_rows()
     {
-        var result = new UpdateCheckResult { LatestVersion = new Version(2, 0, 0), IsUpdateAvailable = true };
+        var result = new UpdateCheckResult { LatestVersion = ReleaseVersion.TryParse("2.0.0")!, IsUpdateAvailable = true };
 
-        var vm = new UpdateAvailableViewModel(result, new Version(1, 0, 0), new FakeShellLauncher());
+        var vm = new UpdateAvailableViewModel(result, ReleaseVersion.TryParse("1.0.0")!, new FakeShellLauncher());
 
         Assert.False(vm.HasReleaseName);
         Assert.False(vm.HasPublishedDate);
@@ -48,13 +48,13 @@ public sealed class UpdateAvailableViewModelTests
     [Fact]
     public void Open_release_page_launches_the_release_url()
     {
-        var result = UpdateCheckResult.FromRelease(true, new Version(2, 0, 0), new CocoNut.Core.Updates.GitHubRelease
+        var result = UpdateCheckResult.FromRelease(true, ReleaseVersion.TryParse("2.0.0")!, new CocoNut.Core.Updates.GitHubRelease
         {
             TagName = "v2.0.0",
             HtmlUrl = "https://example.invalid/releases/v2.0.0",
         });
         var shellLauncher = new FakeShellLauncher();
-        var vm = new UpdateAvailableViewModel(result, new Version(1, 0, 0), shellLauncher);
+        var vm = new UpdateAvailableViewModel(result, ReleaseVersion.TryParse("1.0.0")!, shellLauncher);
 
         vm.OpenReleasePageCommand.Execute(null);
 
@@ -64,8 +64,8 @@ public sealed class UpdateAvailableViewModelTests
     [Fact]
     public void Open_release_page_is_disabled_without_a_url()
     {
-        var result = new UpdateCheckResult { LatestVersion = new Version(2, 0, 0), IsUpdateAvailable = true };
-        var vm = new UpdateAvailableViewModel(result, new Version(1, 0, 0), new FakeShellLauncher());
+        var result = new UpdateCheckResult { LatestVersion = ReleaseVersion.TryParse("2.0.0")!, IsUpdateAvailable = true };
+        var vm = new UpdateAvailableViewModel(result, ReleaseVersion.TryParse("1.0.0")!, new FakeShellLauncher());
 
         Assert.False(vm.OpenReleasePageCommand.CanExecute(null));
     }

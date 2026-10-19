@@ -44,7 +44,6 @@ WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/
 ## Backlog (from milestone 1)
 * Validate the NUT host format (IP address / host name) in the settings, as WinNUT did.
 * Windows: check whether hibernation is available before offering it.
-* Update check: point it at the repository that publishes the releases (currently `nutdotnet/Coco.Nut`).
 * Remove the unused string `Main_FeatureNotImplemented`.
 * Verify the WinNUT settings import against a real WinNUT 2.x `user.config` with saved credentials.
 * Manual tests with real NUT servers and UPS hardware on Windows, Linux (incl. GNOME tray) and macOS, including a
@@ -54,6 +53,12 @@ WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/
   (`STARTTLS`).
 
 ## Change log
+
+### 2026-10-19 – Update check for preMain builds
+* The update check now queries `SebastianOehm/Coco.Nut` (previously the empty `nutdotnet/Coco.Nut`).
+* Versions are compared SemVer-style including the pre-release label, so a running `0.1.0-pre.12` build detects
+  `0.1.0-pre.13`; the running version comes from the assembly's informational version, and the update dialog and
+  notifications show the full text (e.g. `0.1.0-pre.13`).
 
 ### 2026-09-26 – Milestone 1
 * C# / .NET 10 / Avalonia port of WinNUT-Client 2.3 with feature parity: monitoring, gauges, tray icon,

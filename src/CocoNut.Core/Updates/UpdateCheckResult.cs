@@ -7,8 +7,8 @@ public sealed record UpdateCheckResult
     /// <summary><see langword="true"/> when <see cref="LatestVersion"/> is newer than the version that was checked.</summary>
     public bool IsUpdateAvailable { get; init; }
 
-    /// <summary>Version parsed from the matching release's tag, or <see langword="null"/> when none was found.</summary>
-    public Version? LatestVersion { get; init; }
+    /// <summary>Version parsed from the matching release's tag (including any pre-release label), or <see langword="null"/> when none was found.</summary>
+    public ReleaseVersion? LatestVersion { get; init; }
 
     /// <summary>The release's display name (GitHub <c>name</c> field).</summary>
     public string? ReleaseName { get; init; }
@@ -29,7 +29,7 @@ public sealed record UpdateCheckResult
     public static UpdateCheckResult NoUpdate() => new();
 
     /// <summary>A release was found; <see cref="IsUpdateAvailable"/> reflects whether it is newer.</summary>
-    public static UpdateCheckResult FromRelease(bool isNewer, Version version, GitHubRelease release) => new()
+    public static UpdateCheckResult FromRelease(bool isNewer, ReleaseVersion version, GitHubRelease release) => new()
     {
         IsUpdateAvailable = isNewer,
         LatestVersion = version,
