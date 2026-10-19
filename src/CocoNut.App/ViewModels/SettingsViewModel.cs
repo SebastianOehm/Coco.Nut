@@ -1,6 +1,7 @@
 using System.Globalization;
 using CocoNut.App.Services;
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.History;
 using CocoNut.Core.Logging;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Updates;
@@ -12,8 +13,8 @@ using Microsoft.Extensions.Logging;
 namespace CocoNut.App.ViewModels;
 
 /// <summary>
-/// View model of the Settings window (WinNUT's <c>Pref_Gui.vb</c>, six tabs: Connection, Calibration, Logging,
-/// Power, Misc, Update). Edits a private <see cref="AppSettingsExtensions.Clone"/> of <see cref="ISettingsService.Current"/>
+/// View model of the Settings window (WinNUT's <c>Pref_Gui.vb</c>, seven tabs: Connection, Calibration, Logging,
+/// Power, History, Misc, Update). Edits a private <see cref="AppSettingsExtensions.Clone"/> of <see cref="ISettingsService.Current"/>
 /// so nothing is persisted until Save/Apply, validates it with <see cref="AppSettingsValidator"/> on every change,
 /// and on a successful save restarts the UPS monitor when connection-relevant settings changed.
 /// </summary>
@@ -28,6 +29,7 @@ public sealed partial class SettingsViewModel : ObservableObject
     private readonly UpdateChecker _updateChecker;
     private readonly IWindowNavigator _navigator;
     private readonly INotificationService _notifications;
+    private readonly IHistoryStore _historyStore;
     private readonly ILogger<SettingsViewModel> _logger;
 
     private readonly AppSettings _working;
@@ -46,6 +48,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         UpdateChecker updateChecker,
         IWindowNavigator navigator,
         INotificationService notifications,
+        IHistoryStore historyStore,
         ILogger<SettingsViewModel> logger)
     {
         _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
@@ -57,6 +60,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         _updateChecker = updateChecker ?? throw new ArgumentNullException(nameof(updateChecker));
         _navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
         _notifications = notifications ?? throw new ArgumentNullException(nameof(notifications));
+        _historyStore = historyStore ?? throw new ArgumentNullException(nameof(historyStore));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         var current = _settingsService.Current;
@@ -461,6 +465,76 @@ public sealed partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private string? _extendDelayError;
 
+    // ---- History --------------------------------------------------------------------------------------------------
+
+#pragma warning disable CA1822 // Instance members: they are bound from XAML, which cannot bind to static properties.
+    /// <summary>Bounds of the retention field, from <see cref="AppSettingsValidator"/>.</summary>
+    public decimal HistoryRetentionMinimum => AppSettingsValidator.MinHistoryRetentionDays;
+
+    /// <inheritdoc cref="HistoryRetentionMinimum"/>
+    public decimal HistoryRetentionMaximum => AppSettingsValidator.MaxHistoryRetentionDays;
+
+    /// <summary>Bounds of the sample interval field, from <see cref="AppSettingsValidator"/>.</summary>
+    public decimal HistorySampleIntervalMinimum => AppSettingsValidator.MinHistorySampleIntervalSeconds;
+
+    /// <inheritdoc cref="HistorySampleIntervalMinimum"/>
+    public decimal HistorySampleIntervalMaximum => AppSettingsValidator.MaxHistorySampleIntervalSeconds;
+#pragma warning restore CA1822
+
+    [ObservableProperty]
+    private bool _historyEnabled;
+
+    partial void OnHistoryEnabledChanged(bool value) => _working.History.Enabled = value;
+
+    [ObservableProperty]
+    private decimal _historyRetentionDays;
+
+    partial void OnHistoryRetentionDaysChanged(decimal value)
+    {
+        _working.History.RetentionDays = (int)value;
+        Revalidate();
+    }
+
+    [ObservableProperty]
+    private decimal _historySampleIntervalSeconds;
+
+    partial void OnHistorySampleIntervalSecondsChanged(decimal value)
+    {
+        _working.History.SampleIntervalSeconds = (int)value;
+        Revalidate();
+    }
+
+    [ObservableProperty]
+    private string? _historyRetentionError;
+
+    [ObservableProperty]
+    private string? _historySampleIntervalError;
+
+    /// <summary>Deletes the recorded history of every UPS right away (not part of Save/Apply), after confirmation.</summary>
+    [RelayCommand]
+    private async Task ClearHistoryAsync()
+    {
+        var confirmed = await ConfirmAsync(Strings.Prefs_History_Clear_ConfirmTitle, Strings.Prefs_History_Clear_ConfirmMessage).ConfigureAwait(true);
+        if (!confirmed)
+        {
+            return;
+        }
+
+        try
+        {
+            await _historyStore.ClearAsync(null).ConfigureAwait(true);
+            _notifications.Notify(Strings.Notify_Title_Info, Strings.Prefs_History_Cleared, NotificationKind.Info);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to clear the history.");
+            _notifications.Notify(
+                Strings.Notify_Title_Error,
+                string.Format(CultureInfo.CurrentCulture, Strings.Prefs_History_ClearFailed, ex.Message),
+                NotificationKind.Error);
+        }
+    }
+
     // ---- Misc -----------------------------------------------------------------------------------------------------
 
     /// <summary>Whether the "start with system" checkbox is shown at all (<see cref="IAutoStartService.IsSupported"/>).</summary>
@@ -650,6 +724,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         target.General = source.General;
         target.Logging = source.Logging;
         target.Update = source.Update;
+        target.History = source.History;
     }
 
     private void Revalidate()
@@ -681,6 +756,8 @@ public sealed partial class SettingsViewModel : ObservableObject
         RuntimeFloorError = Find("Power.RuntimeFloorSeconds");
         StopDelayError = Find("Power.StopDelaySeconds");
         ExtendDelayError = Find("Power.ExtendDelaySeconds");
+        HistoryRetentionError = Find("History.RetentionDays");
+        HistorySampleIntervalError = Find("History.SampleIntervalSeconds");
 
         HasErrors = problems.Count > 0;
     }
@@ -721,6 +798,10 @@ public sealed partial class SettingsViewModel : ObservableObject
             StopDelaySeconds = _working.Power.StopDelaySeconds;
             AllowExtendDelay = _working.Power.AllowExtendDelay;
             ExtendDelaySeconds = _working.Power.ExtendDelaySeconds;
+
+            HistoryEnabled = _working.History.Enabled;
+            HistoryRetentionDays = _working.History.RetentionDays;
+            HistorySampleIntervalSeconds = _working.History.SampleIntervalSeconds;
 
             StartWithSystem = _working.General.StartWithOs;
             MinimizeOnStart = _working.General.MinimizeOnStart;

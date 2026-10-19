@@ -10,7 +10,7 @@
         Width="720" Height="560" MinWidth="600" MinHeight="440"
         WindowStartupLocation="CenterOwner">
   <Window.Styles>
-    <!-- Six sections do not fit in a horizontal tab strip with Fluent's header size; list them vertically. -->
+    <!-- Seven sections do not fit in a horizontal tab strip with Fluent's header size; list them vertically. -->
     <Style Selector="TabItem">
       <Setter Property="FontSize" Value="15" />
       <Setter Property="MinHeight" Value="36" />
@@ -179,6 +179,32 @@
                              IsEnabled="{Binding IsExtendDelayEnabled}" ToolTip.Tip="{x:Static loc:Strings.Prefs_Power_GraceTime_ToolTip}" />
               <TextBlock Text="{Binding ExtendDelayError}" Foreground="Red" FontSize="11" IsVisible="{Binding ExtendDelayError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
             </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <!-- History -->
+      <TabItem Header="{x:Static loc:Strings.Prefs_History_Tab}">
+        <ScrollViewer>
+          <StackPanel Spacing="10" Margin="4">
+            <CheckBox Content="{x:Static loc:Strings.Prefs_History_Enabled}" IsChecked="{Binding HistoryEnabled}"
+                      ToolTip.Tip="{x:Static loc:Strings.Prefs_History_Enabled_ToolTip}" />
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_History_Retention}" />
+              <NumericUpDown Value="{Binding HistoryRetentionDays}" Minimum="{Binding HistoryRetentionMinimum}" Maximum="{Binding HistoryRetentionMaximum}"
+                             FormatString="0" Width="140" HorizontalAlignment="Left"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_History_Retention_ToolTip}" />
+              <TextBlock Text="{Binding HistoryRetentionError}" Foreground="Red" FontSize="11" IsVisible="{Binding HistoryRetentionError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+            <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_History_SampleInterval}" />
+              <NumericUpDown Value="{Binding HistorySampleIntervalSeconds}" Minimum="{Binding HistorySampleIntervalMinimum}" Maximum="{Binding HistorySampleIntervalMaximum}"
+                             FormatString="0" Width="140" HorizontalAlignment="Left"
+                             ToolTip.Tip="{x:Static loc:Strings.Prefs_History_SampleInterval_ToolTip}" />
+              <TextBlock Text="{Binding HistorySampleIntervalError}" Foreground="Red" FontSize="11" IsVisible="{Binding HistorySampleIntervalError, Converter={x:Static sc:StringConverters.IsNotNullOrEmpty}}" />
+            </StackPanel>
+            <Button Content="{x:Static loc:Strings.Prefs_History_Clear}" Command="{Binding ClearHistoryCommand}" HorizontalAlignment="Left"
+                    ToolTip.Tip="{x:Static loc:Strings.Prefs_History_Clear_ToolTip}" />
           </StackPanel>
         </ScrollViewer>
       </TabItem>
