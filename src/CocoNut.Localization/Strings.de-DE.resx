@@ -72,6 +72,144 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
+  <data name="History_Chart_BatteryCharge" xml:space="preserve">
+    <value>Akkuladung</value>
+  </data>
+  <data name="History_Chart_BatteryRuntime" xml:space="preserve">
+    <value>Akku-Laufzeit</value>
+  </data>
+  <data name="History_Chart_InputVoltage" xml:space="preserve">
+    <value>Eingangsspannung</value>
+  </data>
+  <data name="History_Chart_Load" xml:space="preserve">
+    <value>USV-Last</value>
+  </data>
+  <data name="History_Chart_NoData" xml:space="preserve">
+    <value>Keine Daten in diesem Zeitraum.</value>
+  </data>
+  <data name="History_Chart_OutputPower" xml:space="preserve">
+    <value>Ausgangsleistung</value>
+  </data>
+  <data name="History_Event_Connected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="History_Event_ConnectionLost" xml:space="preserve">
+    <value>Verbindung verloren</value>
+  </data>
+  <data name="History_Event_ForcedShutdown" xml:space="preserve">
+    <value>Erzwungenes Herunterfahren angefordert</value>
+  </data>
+  <data name="History_Event_LowBattery" xml:space="preserve">
+    <value>Niedrige Akkuladung</value>
+  </data>
+  <data name="History_Event_OnBattery" xml:space="preserve">
+    <value>Im Akkubetrieb</value>
+  </data>
+  <data name="History_Event_OnLine" xml:space="preserve">
+    <value>Wieder im Netzbetrieb</value>
+  </data>
+  <data name="History_Event_ShutdownCancelled" xml:space="preserve">
+    <value>Stoppvorgang abgebrochen</value>
+  </data>
+  <data name="History_Event_ShutdownExecuting" xml:space="preserve">
+    <value>Stopp-Aktion wird ausgeführt</value>
+  </data>
+  <data name="History_Event_ShutdownFailed" xml:space="preserve">
+    <value>Stopp-Aktion fehlgeschlagen</value>
+  </data>
+  <data name="History_Event_ShutdownPending" xml:space="preserve">
+    <value>Stoppvorgang gestartet</value>
+  </data>
+  <data name="History_Events_Detail" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="History_Events_Event" xml:space="preserve">
+    <value>Ereignis</value>
+  </data>
+  <data name="History_Events_Limit" xml:space="preserve">
+    <value>Es werden die neuesten {0} Ereignisse dieses Zeitraums angezeigt.</value>
+  </data>
+  <data name="History_Events_NoMatch" xml:space="preserve">
+    <value>Keine Ereignisse entsprechen der Suche.</value>
+  </data>
+  <data name="History_Events_None" xml:space="preserve">
+    <value>Keine Ereignisse in diesem Zeitraum.</value>
+  </data>
+  <data name="History_Events_Search_Watermark" xml:space="preserve">
+    <value>Ereignisse durchsuchen…</value>
+  </data>
+  <data name="History_Events_Time" xml:space="preserve">
+    <value>Zeit</value>
+  </data>
+  <data name="History_Events_Title" xml:space="preserve">
+    <value>Ereignisse</value>
+  </data>
+  <data name="History_ExportError" xml:space="preserve">
+    <value>Der Verlauf konnte nicht exportiert werden: {0}</value>
+  </data>
+  <data name="History_Export_Events" xml:space="preserve">
+    <value>Ereignisse exportieren…</value>
+  </data>
+  <data name="History_Export_Events_Title" xml:space="preserve">
+    <value>Ereignisse exportieren</value>
+  </data>
+  <data name="History_Export_Events_ToolTip" xml:space="preserve">
+    <value>Die Ereignisse der gewählten USV und des gewählten Zeitraums als CSV-Datei speichern.</value>
+  </data>
+  <data name="History_Export_FileType" xml:space="preserve">
+    <value>CSV-Datei</value>
+  </data>
+  <data name="History_Export_Samples" xml:space="preserve">
+    <value>Messwerte exportieren…</value>
+  </data>
+  <data name="History_Export_Samples_Title" xml:space="preserve">
+    <value>Messwerte exportieren</value>
+  </data>
+  <data name="History_Export_Samples_ToolTip" xml:space="preserve">
+    <value>Alle aufgezeichneten Werte der gewählten USV und des gewählten Zeitraums als CSV-Datei speichern.</value>
+  </data>
+  <data name="History_Export_Success" xml:space="preserve">
+    <value>Verlauf exportiert nach: {0}</value>
+  </data>
+  <data name="History_LoadError" xml:space="preserve">
+    <value>Der Verlauf konnte nicht geladen werden: {0}</value>
+  </data>
+  <data name="History_NoHistory" xml:space="preserve">
+    <value>Es wurde noch kein Verlauf aufgezeichnet. Verbinden Sie sich mit einem NUT-Server und lassen Sie Coco.Nut laufen, oder prüfen Sie unter Einstellungen &gt; Verlauf, ob die Aufzeichnung aktiviert ist.</value>
+  </data>
+  <data name="History_Range" xml:space="preserve">
+    <value>Zeitraum</value>
+  </data>
+  <data name="History_Range_Last1Hour" xml:space="preserve">
+    <value>Letzte Stunde</value>
+  </data>
+  <data name="History_Range_Last24Hours" xml:space="preserve">
+    <value>Letzte 24 Stunden</value>
+  </data>
+  <data name="History_Range_Last30Days" xml:space="preserve">
+    <value>Letzte 30 Tage</value>
+  </data>
+  <data name="History_Range_Last6Hours" xml:space="preserve">
+    <value>Letzte 6 Stunden</value>
+  </data>
+  <data name="History_Range_Last7Days" xml:space="preserve">
+    <value>Letzte 7 Tage</value>
+  </data>
+  <data name="History_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="History_Refresh_ToolTip" xml:space="preserve">
+    <value>Daten jetzt neu laden. Das Fenster aktualisiert sich außerdem jede Minute.</value>
+  </data>
+  <data name="History_Title" xml:space="preserve">
+    <value>Verlauf</value>
+  </data>
+  <data name="History_Unit_Minutes" xml:space="preserve">
+    <value>Min.</value>
+  </data>
+  <data name="History_Ups" xml:space="preserve">
+    <value>USV</value>
+  </data>
   <data name="Language_System" xml:space="preserve">
     <value>Systemstandard</value>
   </data>
@@ -209,6 +347,9 @@
   </data>
   <data name="Main_Menu_Help" xml:space="preserve">
     <value>Hilfe</value>
+  </data>
+  <data name="Main_Menu_History" xml:space="preserve">
+    <value>Verlauf</value>
   </data>
   <data name="Main_Menu_Persist" xml:space="preserve">
     <value>Automatische Wiederverbindung</value>
@@ -391,6 +532,47 @@ Wertebereich: Numerischer Wert von 1 bis 65535.</value>
   <data name="Prefs_Connection_UpsName_ToolTip" xml:space="preserve">
     <value>Name der zu überwachenden USV.
 Wertebereich: Name der auf dem NUT-Server konfigurierten USV.</value>
+  </data>
+  <data name="Prefs_History_Clear" xml:space="preserve">
+    <value>Verlauf löschen…</value>
+  </data>
+  <data name="Prefs_History_ClearFailed" xml:space="preserve">
+    <value>Der Verlauf konnte nicht gelöscht werden: {0}</value>
+  </data>
+  <data name="Prefs_History_Clear_ConfirmMessage" xml:space="preserve">
+    <value>Den aufgezeichneten Verlauf aller USVs löschen? Dies kann nicht widerrufen werden.</value>
+  </data>
+  <data name="Prefs_History_Clear_ConfirmTitle" xml:space="preserve">
+    <value>Verlauf löschen</value>
+  </data>
+  <data name="Prefs_History_Clear_ToolTip" xml:space="preserve">
+    <value>Löscht den aufgezeichneten Verlauf aller USVs.</value>
+  </data>
+  <data name="Prefs_History_Cleared" xml:space="preserve">
+    <value>Der Verlauf wurde gelöscht.</value>
+  </data>
+  <data name="Prefs_History_Enabled" xml:space="preserve">
+    <value>Verlauf aufzeichnen</value>
+  </data>
+  <data name="Prefs_History_Enabled_ToolTip" xml:space="preserve">
+    <value>Zeichnet die Werte und Ereignisse der USV in einer lokalen Datenbank auf.</value>
+  </data>
+  <data name="Prefs_History_Retention" xml:space="preserve">
+    <value>Verlauf aufbewahren für (Tage)</value>
+  </data>
+  <data name="Prefs_History_Retention_ToolTip" xml:space="preserve">
+    <value>Ältere Werte und Ereignisse werden gelöscht.
+Wertebereich: 1 bis 3650.</value>
+  </data>
+  <data name="Prefs_History_SampleInterval" xml:space="preserve">
+    <value>Wert speichern alle (Sek.)</value>
+  </data>
+  <data name="Prefs_History_SampleInterval_ToolTip" xml:space="preserve">
+    <value>Pro Zeitspanne wird höchstens ein Wert gespeichert.
+Wertebereich: 1 bis 3600.</value>
+  </data>
+  <data name="Prefs_History_Tab" xml:space="preserve">
+    <value>Verlauf</value>
   </data>
   <data name="Prefs_Import_NotFound" xml:space="preserve">
     <value>Es wurden keine WinNUT-Einstellungen gefunden.</value>
@@ -615,6 +797,9 @@ Verbleibende Zeit: {1}</value>
   <data name="Tray_Menu_Exit" xml:space="preserve">
     <value>Beenden</value>
   </data>
+  <data name="Tray_Menu_History" xml:space="preserve">
+    <value>Verlauf</value>
+  </data>
   <data name="Tray_Menu_Settings" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
@@ -734,6 +919,12 @@ Verbleibende Zeit: {1}</value>
   </data>
   <data name="Validation_DelayRange" xml:space="preserve">
     <value>Die Verzögerung muss zwischen 1 und 3600 Sekunden liegen.</value>
+  </data>
+  <data name="Validation_HistoryRetentionRange" xml:space="preserve">
+    <value>Die Aufbewahrungsdauer des Verlaufs muss zwischen 1 und 3650 Tagen liegen.</value>
+  </data>
+  <data name="Validation_HistorySampleIntervalRange" xml:space="preserve">
+    <value>Das Speicherintervall des Verlaufs muss zwischen 1 und 3600 Sekunden liegen.</value>
   </data>
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>Der NUT-Host ist erforderlich.</value>
