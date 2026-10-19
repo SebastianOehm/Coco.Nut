@@ -90,14 +90,35 @@ jobs:
     if: >-
       github.event_name == 'push' &&
       (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/preMain' || startsWith(github.ref, 'refs/tags/v'))
-    runs-on: ubuntu-latest
+    # Each RID builds on its native runner: Velopack packs per OS (AppImage on Linux, pkg on macOS, Setup.exe on Windows).
+    runs-on: ${{ matrix.os }}
+    env:
+      # A GitHub release is only created for preMain pushes; only those get Velopack packages.
+      PACK: ${{ github.ref == 'refs/heads/preMain' && 'true' || 'false' }}
+      VERSION: ${{ needs.version.outputs.version }}
+      VPK_VERSION: 1.2.161
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
         include:
           - rid: win-x64
+            os: windows-latest
+            channel: win
+            exe: CocoNut.exe
+            icon: src/CocoNut.App/Assets/coconut.ico
           - rid: linux-x64
+            os: ubuntu-latest
+            channel: linux
+            exe: CocoNut
+            icon: '' # vpk needs a PNG on Linux; the repo only has coconut.ico
           - rid: osx-arm64
+            os: macos-latest
+            channel: osx
+            exe: CocoNut
+            icon: '' # vpk needs an .icns on macOS; the repo has none
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -119,14 +140,75 @@ jobs:
         run: >-
           dotnet publish src/CocoNut.App -c Release -r ${{ matrix.rid }}
           --self-contained -p:PublishSingleFile=true
-          -p:Version=${{ needs.version.outputs.version }}
+          -p:Version=$VERSION
           -o publish/${{ matrix.rid }}
 
       - name: Upload ${{ matrix.rid }} artifact
+        if: env.PACK != 'true'
         uses: actions/upload-artifact@v7
         with:
           name: CocoNut-${{ matrix.rid }}
           path: publish/${{ matrix.rid }}
+
+      - name: Install vpk
+        if: env.PACK == 'true'
+        run: dotnet tool install --tool-path ./.vpk vpk --version "$VPK_VERSION"
+
+      # squashfs-tools builds the AppImage; zstd is needed for delta packages (Windows bundles its own).
+      - name: Install packaging tools (Linux)
+        if: env.PACK == 'true' && runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y squashfs-tools zstd
+
+      - name: Install packaging tools (macOS)
+        if: env.PACK == 'true' && runner.os == 'macOS'
+        run: brew list zstd >/dev/null 2>&1 || brew install zstd
+
+      # Fetches the previous release's package so vpk can build delta updates. Nothing to fetch on the first run.
+      - name: Download previous release (for deltas)
+        if: env.PACK == 'true'
+        continue-on-error: true
+        run: >-
+          ./.vpk/vpk download github
+          --repoUrl "https://github.com/${{ github.repository }}"
+          --channel ${{ matrix.channel }} --pre
+          --token "${{ github.token }}"
+          -o Releases
+
+      - name: Pack ${{ matrix.rid }} with Velopack
+        if: env.PACK == 'true'
+        # The macOS pack is unverified (no signing, no icon); do not let it block the Windows and Linux assets.
+        continue-on-error: ${{ matrix.rid == 'osx-arm64' }}
+        env:
+          ICON: ${{ matrix.icon }}
+        run: |
+          mkdir -p Releases
+          touch Releases/.pack-marker
+          sleep 1
+          icon_args=()
+          if [[ -n "$ICON" ]]; then icon_args=(--icon "$ICON"); fi
+          ./.vpk/vpk pack \
+            --packId CocoNut \
+            --packVersion "$VERSION" \
+            --packDir "publish/${{ matrix.rid }}" \
+            --mainExe "${{ matrix.exe }}" \
+            --packTitle "Coco.Nut" \
+            --packAuthors "Sebastian Oehm, gbakeman" \
+            --channel ${{ matrix.channel }} \
+            --runtime ${{ matrix.rid }} \
+            "${icon_args[@]}" \
+            -o Releases
+          # Keep only what this run created or rewrote; the downloaded previous packages are not re-uploaded.
+          mkdir -p release-out
+          find Releases -type f -newer Releases/.pack-marker -exec cp {} release-out/ \;
+          ls -l release-out
+
+      - name: Upload ${{ matrix.rid }} release files
+        if: env.PACK == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: CocoNut-${{ matrix.rid }}
+          path: release-out
+          if-no-files-found: warn
 
   prerelease:
     name: GitHub pre-release
@@ -139,16 +221,23 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v8
         with:
+          pattern: CocoNut-*
           path: artifacts
 
-      - name: Package archives
+      # GithubSource needs every Velopack file as a release asset (releases.<channel>.json, assets.<channel>.json,
+      # *-full/-delta.nupkg) next to the Setup/Portable/AppImage/pkg downloads, so they all go in one flat folder.
+      - name: Collect release files
         shell: bash
         run: |
           mkdir -p release
-          for dir in artifacts/CocoNut-*; do
-            name=$(basename "$dir")
-            (cd "$dir" && zip -qr "../../release/${name}-${{ needs.version.outputs.version }}.zip" .)
-          done
+          while IFS= read -r -d '' file; do
+            name=$(basename "$file")
+            if [[ -e "release/$name" ]]; then
+              echo "::error::Duplicate release asset name: $name"
+              exit 1
+            fi
+            cp "$file" "release/$name"
+          done < <(find artifacts -type f -print0)
           ls -l release
 
       - name: Create pre-release
@@ -157,10 +246,13 @@ jobs:
           VERSION: ${{ needs.version.outputs.version }}
         shell: bash
         run: |
-          gh release create "v${VERSION}" release/*.zip \
+          notes="Automatic pre-release built from preMain at ${GITHUB_SHA}. Not for production use: test with COCONUT_DRY_RUN=1 first."
+          notes+=$'\n\n'"Windows: run CocoNut-win-Setup.exe once; later updates install from inside the app (Update window > Download and install)."
+          notes+=$'\n'"Linux: download the .AppImage, make it executable and run it. macOS: run the .pkg. Portable zip: unzip and run (no in-app install)."
+          gh release create "v${VERSION}" release/* \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --prerelease \
             --title "Coco.Nut ${VERSION}" \
-            --notes "Automatic pre-release built from preMain at ${GITHUB_SHA}. Not for production use: test with COCONUT_DRY_RUN=1 first." \
+            --notes "$notes" \
             --generate-notes

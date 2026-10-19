@@ -49,10 +49,21 @@ WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/
 * Manual tests with real NUT servers and UPS hardware on Windows, Linux (incl. GNOME tray) and macOS, including a
   real suspend, hibernate and shutdown.
 * Native-speaker review of the translations.
-* Installer and signed builds; later: automatic update download, UPS commands (`INSTCMD`, `SET VAR`), TLS
+* Signed builds (Windows code signing, macOS signing/notarization), app icons for the Linux AppImage (PNG) and
+  macOS (`.icns`), and verifying the macOS pkg end to end; later: UPS commands (`INSTCMD`, `SET VAR`), TLS
   (`STARTTLS`).
 
 ## Change log
+
+### 2026-10-19 – Installer and in-app updates (Velopack)
+* CI packs each platform on its own runner with Velopack: `CocoNut-win-Setup.exe` (per-user install), a Linux
+  AppImage and a macOS pkg, plus portable zips; every `preMain` pre-release carries the full Velopack file set
+  (delta packages when a previous release exists).
+* The update window has a **Download and install** button for installed builds: progress bar, restart into the new
+  version, error text with **Open release page** as fallback. Refused while a shutdown countdown is active.
+  Portable and dev runs behave as before.
+* `VelopackApp.Build().Run()` runs first in `Main`; the updater follows the Stable/Pre-release channel setting.
+* Start with system on Linux AppImage records the `.AppImage` path (`APPIMAGE`) instead of the temporary mount path.
 
 ### 2026-10-19 – Update check for preMain builds
 * The update check now queries `SebastianOehm/Coco.Nut` (previously the empty `nutdotnet/Coco.Nut`).

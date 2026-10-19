@@ -39,8 +39,29 @@ system) and the change log.
 
 - **Pre-releases:** every push to the `preMain` branch builds and tests Coco.Nut and publishes a GitHub
   **pre-release** (`v<version>-pre.<run number>`) with self-contained builds for Windows (x64), Linux (x64) and
-  macOS (Apple Silicon) as zip files. These are for testing: try them with `COCONUT_DRY_RUN=1` first.
-- **CI builds:** pushes to `main` and `v*` tags also produce the same builds as workflow artifacts.
+  macOS (Apple Silicon). These are for testing: try them with `COCONUT_DRY_RUN=1` first.
+- **CI builds:** pushes to `main` and `v*` tags also produce the same self-contained builds as workflow artifacts
+  (plain files, no installer).
+
+### Installing
+
+Installers and updates are built with [Velopack](https://velopack.io/). Download from the
+[releases page](https://github.com/SebastianOehm/Coco.Nut/releases):
+
+- **Windows:** run `CocoNut-win-Setup.exe` once. It installs per user (no admin rights) to
+  `%LocalAppData%\CocoNut` and adds Start menu and desktop shortcuts.
+- **Linux:** download `CocoNut.AppImage`, make it executable (`chmod +x CocoNut.AppImage`) and run it.
+- **macOS:** run the `.pkg` installer (the build is not signed yet, so macOS may ask you to confirm it).
+- **Portable:** `CocoNut-win-Portable.zip` can be unzipped and run anywhere, but a
+  portable copy cannot update itself.
+
+**Updates:** an installed Coco.Nut checks for updates as configured under Settings > Update. When one is found,
+the update window offers **Download and install**, which downloads the new version and restarts into it. It
+refuses to do so while a shutdown countdown is active. The update channel (Stable or Pre-release) selects which
+releases are considered. Portable and from-source runs only offer **Open release page**.
+
+Settings, logs and crash reports live in the per-user data directory (not next to the program), so they survive
+updates.
 
 The base version comes from `<Version>` in `Directory.Build.props`.
 
@@ -154,6 +175,7 @@ Coco.Nut is built with:
 - [Avalonia UI](https://avaloniaui.net/) ([MIT license](https://opensource.org/licenses/MIT))
 - [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) ([MIT license](https://opensource.org/licenses/MIT))
 - [Microsoft.Extensions.*](https://github.com/dotnet/runtime) libraries (logging, dependency injection; MIT license)
+- [Velopack](https://github.com/velopack/velopack) (installer and in-app updates; MIT license)
 
 The gauge control (`src/CocoNut.App/Controls/Gauge.cs`) is a new implementation for Avalonia, inspired by the
 [AGauge](https://github.com/Code-Artist/AGauge) control (MIT license) that WinNUT used. The tray/window icon set
