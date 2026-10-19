@@ -151,7 +151,5 @@ Future work and the change log are tracked in [`ROADMAP.md`](ROADMAP.md).
 * Manual tests on real hardware/NUT servers (Windows, Linux desktop environments incl. GNOME tray behaviour, macOS),
   including a real suspend/hibernate/shutdown.
 * WinNUT `user.config` import: the credential format is inferred, not verified against a real file.
-* Host name / IP format validation in the settings (WinNUT had it; only "not empty" is checked now).
-* Windows hibernate capability check (`IsSupported(Hibernate)` currently always true).
 * Native-speaker review of the translations (several were machine-translated or carried over from WinNUT verbatim).
 * Packaging (installer, signed builds) and the other out-of-scope items above.
