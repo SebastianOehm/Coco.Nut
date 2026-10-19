@@ -1,9 +1,11 @@
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.Actions;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Shutdown;
 using CocoNut.Core.Tests.Fakes;
 using CocoNut.Core.Tests.Monitoring;
+using CocoNut.Core.Ups;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Time.Testing;
 
@@ -61,7 +63,7 @@ public class ShutdownCoordinatorTests
         }
     }
 
-    private static async Task<Harness> CreateStartedHarnessAsync(PowerSettings? settings = null)
+    private static async Task<Harness> CreateStartedHarnessAsync(PowerSettings? settings = null, Func<IReadOnlyList<ActionRule>>? rules = null)
     {
         var client = new FakeNutClient();
         client.Variables["ups.status"] = "OL";
@@ -72,11 +74,12 @@ public class ShutdownCoordinatorTests
         var powerActions = new FakePowerActions();
         var mutableSettings = new MutableSettings { Value = settings ?? new PowerSettings() };
 
-        var coordinator = new ShutdownCoordinator(
-            monitor, powerActions, () => mutableSettings.Value, timeProvider, NullLogger<ShutdownCoordinator>.Instance)
-        {
-            DryRun = false,
-        };
+        var coordinator = rules is null
+            ? new ShutdownCoordinator(
+                monitor, powerActions, () => mutableSettings.Value, timeProvider, NullLogger<ShutdownCoordinator>.Instance)
+            : new ShutdownCoordinator(
+                monitor, powerActions, () => mutableSettings.Value, rules, timeProvider, NullLogger<ShutdownCoordinator>.Instance);
+        coordinator.DryRun = false;
 
         var pending = new EventCollector<ShutdownPendingEventArgs>();
         var cancelled = new EventCollector<ShutdownReason>();
@@ -483,5 +486,108 @@ public class ShutdownCoordinatorTests
 
         await h.Coordinator.DisposeAsync();
         await h.Coordinator.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task ForcedShutdownReceivedOnLine_IsNotCancelledByTheNextReading()
+    {
+        // Deliberate change from the former fixed policy: the "power restored" cancel only applies to a stop that
+        // was started while on battery. An FSD received while on line used to be cancelled by the very next reading.
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = false,
+            StopDelaySeconds = 30,
+            RespectFsd = true,
+        });
+
+        await PushReadingAsync(h, "OL FSD");
+        var pending = await h.Pending.NextAsync();
+        Assert.Equal(ShutdownReason.ForcedShutdown, pending.Reason);
+
+        await PushReadingAsync(h, "OL FSD");
+        await PushReadingAsync(h, "OL");
+        await h.Cancelled.AssertNoneAsync(TimeSpan.FromMilliseconds(50));
+        Assert.True(h.Coordinator.IsShutdownPending);
+    }
+
+    [Fact]
+    public async Task ForcedShutdownReceivedOnBattery_IsCancelledWhenPowerReturns()
+    {
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = false,
+            StopDelaySeconds = 30,
+            RespectFsd = true,
+            BatteryChargeFloor = 0,
+        });
+
+        await PushReadingAsync(h, "OB FSD");
+        Assert.Equal(ShutdownReason.ForcedShutdown, (await h.Pending.NextAsync()).Reason);
+
+        await PushReadingAsync(h, "OL");
+        Assert.Equal(ShutdownReason.PowerRestored, await h.Cancelled.NextAsync());
+    }
+
+    [Fact]
+    public async Task CustomRule_ExecutesItsOwnStopAction_WithCustomRuleReason()
+    {
+        var rule = new ActionRule
+        {
+            Name = "Hibernate when load is high",
+            Trigger = new RuleTrigger { Kind = TriggerKind.ValueAtOrAbove, Metric = RuleMetric.BatteryCharge, Threshold = 85 },
+            Actions = [RuleAction.StopComputer(StopAction.Hibernate)],
+        };
+        await using var h = await CreateStartedHarnessAsync(
+            new PowerSettings { StopImmediately = true, StopAction = StopAction.Shutdown },
+            () => [rule]);
+
+        await h.PowerActions.Executions.AssertNoneAsync(TimeSpan.FromMilliseconds(20));
+        await PushReadingAsync(h, "OL", "90");
+
+        Assert.Equal(StopAction.Hibernate, await h.PowerActions.Executions.NextAsync());
+        Assert.Equal(ShutdownReason.CustomRule, await h.Executing.NextAsync());
+    }
+
+    [Fact]
+    public async Task ConnectionLostRule_FiresAfterItsDurationWhileDisconnected()
+    {
+        var rule = new ActionRule
+        {
+            Name = "Stop when the server is gone",
+            Trigger = new RuleTrigger { Kind = TriggerKind.ConnectionLost, DurationSeconds = 30 },
+            Actions = [RuleAction.StopComputer(StopAction.Shutdown)],
+        };
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings { StopImmediately = true }, () => [rule]);
+
+        h.Client.ListVarsResults.Enqueue(new IOException("server gone")); // the next poll fails.
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
+        await h.StateChanges.NextAsync(); // Connected -> Disconnected (auto reconnect is off in the harness)
+
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(10));
+        await h.PowerActions.Executions.AssertNoneAsync(TimeSpan.FromMilliseconds(50));
+
+        // Time passes with no readings at all: only the coordinator's own tick can notice that 30s have elapsed.
+        Assert.Equal(StopAction.Shutdown, await h.PowerActions.Executions.NextAsync(h.TimeProvider, TimeSpan.FromSeconds(10)));
+    }
+
+    [Theory]
+    [InlineData("OL OB")]
+    [InlineData("OB")]
+    public async Task PendingStop_IsNotCancelledUnlessOnLineAndOffBattery(string status)
+    {
+        // Some UPS units briefly report OL and OB together during a transfer; only cancel once OB has cleared.
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = false,
+            StopDelaySeconds = 30,
+            BatteryChargeFloor = 30,
+        });
+
+        await PushReadingAsync(h, "OB", "10");
+        await h.Pending.NextAsync();
+
+        await PushReadingAsync(h, status, "10");
+        await h.Cancelled.AssertNoneAsync(TimeSpan.FromMilliseconds(50));
+        Assert.True(h.Coordinator.IsShutdownPending);
     }
 }

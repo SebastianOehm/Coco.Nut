@@ -1,6 +1,7 @@
 using CocoNut.App.ViewModels;
 using CocoNut.Core;
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.Actions;
 using CocoNut.Core.History;
 using CocoNut.Core.Logging;
 using CocoNut.Core.Monitoring;
@@ -73,6 +74,7 @@ public sealed class AppHost : IAsyncDisposable
             sp.GetRequiredService<UpsMonitor>(),
             sp.GetRequiredService<IPowerActions>(),
             () => sp.GetRequiredService<ISettingsService>().Current.Power,
+            () => DefaultRules.FromPowerSettings(sp.GetRequiredService<ISettingsService>().Current.Power),
             sp.GetRequiredService<TimeProvider>(),
             sp.GetRequiredService<ILogger<ShutdownCoordinator>>()));
         services.AddSingleton<IShutdownEvents>(sp => new ShutdownEventsAdapter(sp.GetRequiredService<ShutdownCoordinator>()));
