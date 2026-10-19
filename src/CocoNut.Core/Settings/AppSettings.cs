@@ -15,6 +15,7 @@ public sealed class AppSettings
     public GeneralSettings General { get; set; } = new();
     public LoggingSettings Logging { get; set; } = new();
     public UpdateSettings Update { get; set; } = new();
+    public HistorySettings History { get; set; } = new();
 }
 
 public sealed class ConnectionSettings
@@ -120,4 +121,15 @@ public sealed class UpdateSettings
     public UpdateChannel Channel { get; set; } = UpdateChannel.Stable;
     /// <summary>UP_LastCheck</summary>
     public DateTimeOffset? LastCheck { get; set; }
+}
+
+/// <summary>Recording of UPS readings and events into the local history database (new in Coco.Nut).</summary>
+public sealed class HistorySettings
+{
+    /// <summary>Record readings and events at all.</summary>
+    public bool Enabled { get; set; } = true;
+    /// <summary>Samples and events older than this many days are deleted.</summary>
+    public int RetentionDays { get; set; } = 30;
+    /// <summary>At most one reading is stored per this many seconds.</summary>
+    public int SampleIntervalSeconds { get; set; } = 10;
 }

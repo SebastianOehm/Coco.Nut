@@ -140,6 +140,7 @@ public sealed class JsonSettingsStore : ISettingsStore
             General = model.General ?? new GeneralSettings(),
             Logging = model.Logging ?? new LoggingSettings(),
             Update = model.Update ?? new UpdateSettings(),
+            History = model.History ?? new HistorySettings(),
         };
     }
 
@@ -161,6 +162,7 @@ public sealed class JsonSettingsStore : ISettingsStore
         General = settings.General,
         Logging = settings.Logging,
         Update = settings.Update,
+        History = settings.History,
     };
 
     private string? UnprotectOrNull(string? protectedValue, string fieldName)

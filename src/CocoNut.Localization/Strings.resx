@@ -988,6 +988,14 @@ Remaining time: {1}</value>
     <value>Delay must be between 1 and 3600 seconds.</value>
     <comment>AppSettingsValidator: Power.StopDelaySeconds or Power.ExtendDelaySeconds outside 1-MaxDelaySeconds (3600).</comment>
   </data>
+  <data name="Validation_HistoryRetentionRange" xml:space="preserve">
+    <value>History retention must be between 1 and 3650 days.</value>
+    <comment>AppSettingsValidator: History.RetentionDays outside 1-3650.</comment>
+  </data>
+  <data name="Validation_HistorySampleIntervalRange" xml:space="preserve">
+    <value>History sample interval must be between 1 and 3600 seconds.</value>
+    <comment>AppSettingsValidator: History.SampleIntervalSeconds outside 1-3600.</comment>
+  </data>
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>The NUT host is required.</value>
     <comment>AppSettingsValidator: Connection.Host is empty/whitespace.</comment>

@@ -243,4 +243,52 @@ public class AppSettingsCloneTests
         Assert.Equal(UpdateChannel.PreRelease, clone.Update.Channel);
         Assert.Equal(Microsoft.Extensions.Logging.LogLevel.Debug, clone.Logging.MinimumLevel);
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-5)]
+    [InlineData(3651)]
+    public void Validate_HistoryRetentionOutOfRange_ReportsProblem(int days)
+    {
+        var settings = new AppSettings { History = new HistorySettings { RetentionDays = days } };
+
+        var problems = AppSettingsValidator.Validate(settings);
+
+        Assert.Contains(problems, p => p.PropertyPath == "History.RetentionDays" && p.ErrorKey == "Validation_HistoryRetentionRange");
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(30)]
+    [InlineData(3650)]
+    public void Validate_HistoryRetentionInRange_ReportsNoProblem(int days)
+    {
+        var settings = new AppSettings { History = new HistorySettings { RetentionDays = days } };
+
+        Assert.DoesNotContain(AppSettingsValidator.Validate(settings), p => p.PropertyPath == "History.RetentionDays");
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(3601)]
+    public void Validate_HistorySampleIntervalOutOfRange_ReportsProblem(int seconds)
+    {
+        var settings = new AppSettings { History = new HistorySettings { SampleIntervalSeconds = seconds } };
+
+        var problems = AppSettingsValidator.Validate(settings);
+
+        Assert.Contains(problems, p => p.PropertyPath == "History.SampleIntervalSeconds" && p.ErrorKey == "Validation_HistorySampleIntervalRange");
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    [InlineData(3600)]
+    public void Validate_HistorySampleIntervalInRange_ReportsNoProblem(int seconds)
+    {
+        var settings = new AppSettings { History = new HistorySettings { SampleIntervalSeconds = seconds } };
+
+        Assert.DoesNotContain(AppSettingsValidator.Validate(settings), p => p.PropertyPath == "History.SampleIntervalSeconds");
+    }
 }

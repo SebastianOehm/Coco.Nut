@@ -213,6 +213,47 @@ public sealed class JsonSettingsStoreTests : IDisposable
     }
 
     [Fact]
+    public void Load_WithoutHistorySection_UsesHistoryDefaults()
+    {
+        // A settings file written before the history feature existed.
+        File.WriteAllText(_filePath, """
+            { "schemaVersion": 1, "connection": { "host": "old", "port": 3493, "upsName": "ups", "pollIntervalMs": 1000 } }
+            """);
+
+        var history = CreateStore().Load().History;
+
+        Assert.True(history.Enabled);
+        Assert.Equal(30, history.RetentionDays);
+        Assert.Equal(10, history.SampleIntervalSeconds);
+    }
+
+    [Fact]
+    public void Load_WithNullHistorySection_UsesHistoryDefaults()
+    {
+        File.WriteAllText(_filePath, """{ "schemaVersion": 1, "history": null }""");
+
+        Assert.Equal(30, CreateStore().Load().History.RetentionDays);
+    }
+
+    [Fact]
+    public void SaveAndLoad_RoundTripsHistorySettings()
+    {
+        var store = CreateStore();
+        var settings = new AppSettings
+        {
+            History = new HistorySettings { Enabled = false, RetentionDays = 90, SampleIntervalSeconds = 60 },
+        };
+
+        store.Save(settings);
+        var loaded = store.Load();
+
+        Assert.False(loaded.History.Enabled);
+        Assert.Equal(90, loaded.History.RetentionDays);
+        Assert.Equal(60, loaded.History.SampleIntervalSeconds);
+        Assert.Contains("\"history\"", File.ReadAllText(_filePath));
+    }
+
+    [Fact]
     public void Load_WithNullSections_UsesDefaultsForThem()
     {
         File.WriteAllText(_filePath, """
