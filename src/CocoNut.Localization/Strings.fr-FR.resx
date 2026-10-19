@@ -996,4 +996,49 @@ Temps restant : {1}</value>
   <data name="Vars_Value" xml:space="preserve">
     <value>Valeur :</value>
   </data>
+  <data name="Shutdown_Reason_CustomRule" xml:space="preserve">
+    <value>Règle : {0}</value>
+  </data>
+  <data name="History_Reason_CustomRule" xml:space="preserve">
+    <value>Règle : {0}</value>
+  </data>
+  <data name="History_Event_RuleFired" xml:space="preserve">
+    <value>Règle déclenchée</value>
+  </data>
+  <data name="Validation_RuleNameRequired" xml:space="preserve">
+    <value>Chaque règle doit avoir un nom.</value>
+  </data>
+  <data name="Validation_RuleIdInvalid" xml:space="preserve">
+    <value>Une règle a un identifiant manquant, en double ou réservé.</value>
+  </data>
+  <data name="Validation_RuleReasonInvalid" xml:space="preserve">
+    <value>Une règle personnalisée doit utiliser le motif d’arrêt « règle personnalisée ».</value>
+  </data>
+  <data name="Validation_RuleActionsRequired" xml:space="preserve">
+    <value>Une règle doit comporter au moins une action.</value>
+  </data>
+  <data name="Validation_RuleThresholdInvalid" xml:space="preserve">
+    <value>Le seuil de la règle doit être un nombre fini.</value>
+  </data>
+  <data name="Validation_RuleDelayRange" xml:space="preserve">
+    <value>Le délai de la règle doit être compris entre 0 et 86400 secondes.</value>
+  </data>
+  <data name="Validation_RuleDurationRange" xml:space="preserve">
+    <value>La durée de la règle doit être comprise entre 0 et 86400 secondes.</value>
+  </data>
+  <data name="Validation_RuleFlagsRequired" xml:space="preserve">
+    <value>Sélectionnez au moins un indicateur d’état de l’onduleur pour ce déclencheur.</value>
+  </data>
+  <data name="Validation_RuleCommandRequired" xml:space="preserve">
+    <value>La commande à exécuter est obligatoire.</value>
+  </data>
+  <data name="Validation_RuleTimeoutRange" xml:space="preserve">
+    <value>Le délai d’expiration de la commande doit être compris entre 1 et 3600 secondes.</value>
+  </data>
+  <data name="Validation_RuleUrlInvalid" xml:space="preserve">
+    <value>L’URL du webhook doit être une adresse http ou https absolue.</value>
+  </data>
+  <data name="Validation_RuleMessageRequired" xml:space="preserve">
+    <value>Le texte du message est obligatoire.</value>
+  </data>
 </root>

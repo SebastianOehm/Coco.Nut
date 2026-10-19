@@ -411,4 +411,55 @@ public class RuleEngineTests
         engine.Evaluate(Reading(UpsStatus.OB), null, false, []);
         Assert.Equal(1, Count(engine, rule, Reading(UpsStatus.OB))); // fired flag was dropped with the rule.
     }
+
+    // ---- new firing vs. repeated report ----
+
+    private static RuleMatch Single(RuleEngine engine, ActionRule rule, UpsReading? reading, UpsStatusChangedEventArgs? change = null) =>
+        Assert.Single(engine.Evaluate(reading, change, false, [rule]));
+
+    [Fact]
+    public void NonStopLevelRule_IsANewFiring()
+    {
+        var engine = NewEngine();
+        var rule = Rule(new RuleTrigger { Kind = TriggerKind.FlagsActive, Flags = UpsStatus.OB });
+
+        Assert.True(Single(engine, rule, Reading(UpsStatus.OB)).IsNewFiring);
+    }
+
+    [Fact]
+    public void StopRule_IsANewFiringOnTheRisingEdgeOnly_RepeatsAreNot()
+    {
+        var engine = NewEngine();
+        var rule = Rule(new RuleTrigger { Kind = TriggerKind.FlagsActive, Flags = UpsStatus.OB }, stop: true);
+
+        Assert.True(Single(engine, rule, Reading(UpsStatus.OB)).IsNewFiring);
+        Assert.False(Single(engine, rule, Reading(UpsStatus.OB)).IsNewFiring);
+        Assert.False(Single(engine, rule, Reading(UpsStatus.OB)).IsNewFiring);
+
+        // The condition clears and returns: a new rising edge.
+        Assert.Equal(0, Count(engine, rule, Reading(UpsStatus.OL)));
+        Assert.True(Single(engine, rule, Reading(UpsStatus.OB)).IsNewFiring);
+    }
+
+    [Fact]
+    public void StopRule_WithDelay_IsANewFiringWhenTheDelayElapses_NotEarlierNorLater()
+    {
+        var engine = NewEngine();
+        var rule = Rule(new RuleTrigger { Kind = TriggerKind.FlagsActive, Flags = UpsStatus.OB }, delay: 30, stop: true);
+
+        Assert.Equal(0, Count(engine, rule, Reading(UpsStatus.OB)));
+        _time.Advance(TimeSpan.FromSeconds(30));
+        Assert.True(Single(engine, rule, Reading(UpsStatus.OB)).IsNewFiring);
+        Assert.False(Single(engine, rule, Reading(UpsStatus.OB)).IsNewFiring);
+    }
+
+    [Fact]
+    public void EdgeTrigger_EveryOccurrenceIsANewFiring()
+    {
+        var engine = NewEngine();
+        var rule = Rule(new RuleTrigger { Kind = TriggerKind.FlagsBecameActive, Flags = UpsStatus.FSD }, stop: true);
+
+        Assert.True(Single(engine, rule, Reading(UpsStatus.FSD), Change(UpsStatus.OL, UpsStatus.FSD)).IsNewFiring);
+        Assert.True(Single(engine, rule, Reading(UpsStatus.FSD), Change(UpsStatus.OL, UpsStatus.FSD)).IsNewFiring);
+    }
 }

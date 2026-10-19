@@ -1,4 +1,5 @@
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.Actions;
 using CocoNut.Core.History;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Settings;
@@ -166,7 +167,8 @@ public class HistoryRecorderTests
 
     /// <summary>Builds the recorder first and starts the monitor afterwards, as the app does.</summary>
     private static async Task<Harness> CreateHarnessAsync(
-        HistorySettings? history = null, Action<FakeStore>? configureStore = null, bool start = true, PowerSettings? power = null)
+        HistorySettings? history = null, Action<FakeStore>? configureStore = null, bool start = true, PowerSettings? power = null,
+        IReadOnlyList<ActionRule>? userRules = null)
     {
         var client = new FakeNutClient();
         client.Variables["ups.status"] = "OL";
@@ -178,7 +180,9 @@ public class HistoryRecorderTests
         var powerActions = new FakePowerActions();
         var harnessPower = power ?? new PowerSettings { StopImmediately = true, BatteryChargeFloor = 30 };
         var coordinator = new ShutdownCoordinator(
-            monitor, powerActions, () => harnessPower, time, NullLogger<ShutdownCoordinator>.Instance)
+            monitor, powerActions, () => harnessPower,
+            () => DefaultRules.WithUserRules(harnessPower, new ActionsSettings { Rules = [.. userRules ?? []] }),
+            time, NullLogger<ShutdownCoordinator>.Instance)
         {
             DryRun = false,
         };
@@ -381,6 +385,59 @@ public class HistoryRecorderTests
         var cancelled = Assert.Single(restored, e => e.Kind == HistoryEventKind.ShutdownCancelled);
         Assert.Equal("PowerRestored", cancelled.Detail);
         Assert.Contains(restored, e => e.Kind == HistoryEventKind.OnLine);
+    }
+
+    private static ActionRule UserRule(string name, UpsStatus flags, bool stop = false) => new()
+    {
+        Name = name,
+        Trigger = new RuleTrigger { Kind = TriggerKind.FlagsActive, Flags = flags },
+        Actions = stop ? [RuleAction.StopComputer(StopAction.Shutdown)] : [RuleAction.Log("fired")],
+    };
+
+    [Fact]
+    public async Task UserRuleFiring_IsRecordedOnce_WithTheRuleNameAsDetail()
+    {
+        await using var h = await CreateHarnessAsync(userRules: [UserRule("Calibration started", UpsStatus.CAL)]);
+        await h.Store.Events.NextAsync(); // Connected
+
+        await h.PollAsync("OL CAL", "80");
+        await h.PollAsync("OL CAL", "80"); // still active: no second event.
+        await h.PollAsync("OL", "80");
+        await h.PollAsync("OL CAL", "80"); // a new rising edge.
+
+        var fired = new[] { await h.Store.Events.NextAsync(), await h.Store.Events.NextAsync() };
+        Assert.All(fired, e =>
+        {
+            Assert.Equal(HistoryEventKind.RuleFired, e.Kind);
+            Assert.Equal("Calibration started", e.Detail);
+        });
+    }
+
+    [Fact]
+    public async Task BuiltInStopRules_AreNotRecordedAsFiredRules_OnlyAsShutdownEvents()
+    {
+        await using var h = await CreateHarnessAsync(power: new PowerSettings { StopImmediately = false, StopDelaySeconds = 30, BatteryChargeFloor = 30 });
+        await h.Store.Events.NextAsync(); // Connected
+
+        await h.PollAsync("OB", "10");
+        var events = await h.EventsUntilAsync(HistoryEventKind.ShutdownPending);
+
+        Assert.DoesNotContain(events, e => e.Kind == HistoryEventKind.RuleFired);
+    }
+
+    [Fact]
+    public async Task ShutdownByAUserRule_RecordsTheRuleNameInThePendingAndExecutingDetails()
+    {
+        await using var h = await CreateHarnessAsync(
+            power: new PowerSettings { StopImmediately = true, BatteryChargeFloor = 0 },
+            userRules: [UserRule("Stop on calibration", UpsStatus.CAL, stop: true)]);
+        await h.Store.Events.NextAsync(); // Connected
+
+        await h.PollAsync("OL CAL", "80");
+
+        var events = await h.EventsUntilAsync(HistoryEventKind.ShutdownExecuting);
+        Assert.Contains(events, e => e.Kind == HistoryEventKind.RuleFired && e.Detail == "Stop on calibration");
+        Assert.Equal(HistoryRecorder.CustomRuleDetailPrefix + "Stop on calibration", events[^1].Detail);
     }
 
     [Fact]

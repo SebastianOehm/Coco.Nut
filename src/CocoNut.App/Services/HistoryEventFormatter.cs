@@ -1,3 +1,4 @@
+using System.Globalization;
 using CocoNut.Core.History;
 using CocoNut.Core.Shutdown;
 using CocoNut.Localization;
@@ -23,18 +24,27 @@ public static class HistoryEventFormatter
         HistoryEventKind.ShutdownCancelled => Strings.History_Event_ShutdownCancelled,
         HistoryEventKind.ShutdownExecuting => Strings.History_Event_ShutdownExecuting,
         HistoryEventKind.ShutdownFailed => Strings.History_Event_ShutdownFailed,
+        HistoryEventKind.RuleFired => Strings.History_Event_RuleFired,
         _ => kind.ToString(),
     };
 
     /// <summary>
     /// The detail text to display. The recorder stores the <see cref="ShutdownReason"/> name for the shutdown events;
-    /// for those it is replaced by a localized reason. Any other detail (or a name that is not a defined reason) is shown unchanged.
+    /// for those it is replaced by a localized reason (for a custom rule, the stored "CustomRule: name" becomes
+    /// "Rule: name"). Any other detail (or a name that is not a defined reason) is shown unchanged.
     /// </summary>
     public static string ToLocalizedDetail(HistoryEventKind kind, string? detail)
     {
         if (detail is null)
         {
             return string.Empty;
+        }
+
+        if (kind is HistoryEventKind.ShutdownPending or HistoryEventKind.ShutdownExecuting
+            && detail.StartsWith(HistoryRecorder.CustomRuleDetailPrefix, StringComparison.Ordinal))
+        {
+            return string.Format(
+                CultureInfo.CurrentCulture, Strings.History_Reason_CustomRule, detail[HistoryRecorder.CustomRuleDetailPrefix.Length..]);
         }
 
         if (kind is HistoryEventKind.ShutdownPending or HistoryEventKind.ShutdownCancelled or HistoryEventKind.ShutdownExecuting

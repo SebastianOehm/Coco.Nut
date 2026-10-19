@@ -26,8 +26,8 @@ public enum ShutdownReason
     PowerRestored,
 
     /// <summary>
-    /// A user-defined rule (not one of the built-in ones above) started the stop. Has no dedicated localized text
-    /// yet; the UI shows no specific reason for it.
+    /// A user-defined rule (not one of the built-in ones above) started the stop. The UI shows the rule's name
+    /// (<see cref="ShutdownPendingEventArgs.RuleName"/>) as the reason.
     /// </summary>
     CustomRule,
 }

@@ -202,4 +202,82 @@ public class DefaultRulesTests
             Assert.Equal(DefaultRules.BatteryChargeFloorId, matches[0].Rule.Id);
         }
     }
+
+    // ---- the effective rule list: built-ins + user rules ----
+
+    private static ActionRule UserRule(string name = "mine", Guid? id = null) => new()
+    {
+        Id = id ?? Guid.NewGuid(),
+        Name = name,
+        Trigger = new RuleTrigger { Kind = TriggerKind.FlagsActive, Flags = UpsStatus.OB },
+        Actions = [RuleAction.Notify("on battery")],
+    };
+
+    [Fact]
+    public void WithUserRules_PutsTheBuiltInsFirst_ThenTheUserRulesInOrder()
+    {
+        var first = UserRule("first");
+        var second = UserRule("second");
+
+        var rules = DefaultRules.WithUserRules(NewSettings(), new ActionsSettings { Rules = [first, second] });
+
+        Assert.Equal(6, rules.Count);
+        Assert.All(rules.Take(4), rule => Assert.True(DefaultRules.IsBuiltIn(rule.Id)));
+        Assert.Same(first, rules[4]);
+        Assert.Same(second, rules[5]);
+    }
+
+    [Fact]
+    public void WithUserRules_WithoutUserRules_IsJustTheBuiltIns()
+    {
+        Assert.Equal(4, DefaultRules.WithUserRules(NewSettings(), new ActionsSettings()).Count);
+        Assert.Equal(4, DefaultRules.WithUserRules(NewSettings(), null).Count);
+        Assert.Equal(4, DefaultRules.WithUserRules(NewSettings(), new ActionsSettings { Rules = null! }).Count);
+    }
+
+    [Fact]
+    public void WithUserRules_DropsRulesThatUseABuiltInOrEmptyOrRepeatedId_OrAreNullOrInvalid()
+    {
+        var kept = UserRule("kept");
+        var invalid = UserRule("no actions");
+        invalid.Actions = [];
+
+        var rules = DefaultRules.WithUserRules(NewSettings(), new ActionsSettings
+        {
+            Rules =
+            [
+                UserRule("hijack", DefaultRules.ForcedShutdownId),
+                UserRule("empty id", Guid.Empty),
+                null!,
+                invalid,
+                kept,
+                UserRule("same id again", kept.Id),
+            ],
+        });
+
+        Assert.Equal(5, rules.Count);
+        Assert.Same(kept, rules[4]);
+    }
+
+    [Fact]
+    public void WithUserRules_ForcesTheCustomRuleReason_WithoutTouchingTheStoredRule()
+    {
+        var stored = UserRule("pretender");
+        stored.ShutdownReason = ShutdownReason.ForcedShutdown;
+
+        var rule = DefaultRules.WithUserRules(NewSettings(), new ActionsSettings { Rules = [stored] })[4];
+
+        Assert.Equal(ShutdownReason.CustomRule, rule.ShutdownReason);
+        Assert.Equal(stored.Id, rule.Id);
+        Assert.Equal("pretender", rule.Name);
+        Assert.Equal(ShutdownReason.ForcedShutdown, stored.ShutdownReason);
+    }
+
+    [Fact]
+    public void IsBuiltIn_IsTrueForTheFourBuiltInIdsOnly()
+    {
+        Assert.All(DefaultRules.FromPowerSettings(NewSettings()), rule => Assert.True(DefaultRules.IsBuiltIn(rule.Id)));
+        Assert.False(DefaultRules.IsBuiltIn(Guid.NewGuid()));
+        Assert.False(DefaultRules.IsBuiltIn(Guid.Empty));
+    }
 }

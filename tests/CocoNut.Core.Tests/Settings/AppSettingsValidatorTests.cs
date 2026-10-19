@@ -1,3 +1,6 @@
+using CocoNut.Core.Ups;
+using CocoNut.Core.Shutdown;
+using CocoNut.Core.Actions;
 using CocoNut.Core.Settings;
 
 namespace CocoNut.Core.Tests.Settings;
@@ -290,5 +293,197 @@ public class AppSettingsCloneTests
         var settings = new AppSettings { History = new HistorySettings { SampleIntervalSeconds = seconds } };
 
         Assert.DoesNotContain(AppSettingsValidator.Validate(settings), p => p.PropertyPath == "History.SampleIntervalSeconds");
+    }
+
+    // ---- user rules ----
+
+    private static ActionRule ValidRule(string name = "rule") => new()
+    {
+        Id = Guid.NewGuid(),
+        Name = name,
+        Trigger = new RuleTrigger { Kind = TriggerKind.FlagsActive, Flags = UpsStatus.OB },
+        Actions = [RuleAction.Log("hello")],
+    };
+
+    private static IReadOnlyList<SettingsValidationProblem> ValidateRules(params ActionRule[] rules) =>
+        AppSettingsValidator.Validate(new AppSettings { Actions = new ActionsSettings { Rules = [.. rules] } });
+
+    private static void AssertProblem(IReadOnlyList<SettingsValidationProblem> problems, string path, string key) =>
+        Assert.Contains(problems, p => p.PropertyPath == path && p.ErrorKey == key);
+
+    [Fact]
+    public void Validate_ValidUserRule_HasNoProblems() => Assert.Empty(ValidateRules(ValidRule()));
+
+    [Fact]
+    public void Validate_RuleWithoutName_ReportsProblem()
+    {
+        var rule = ValidRule(" ");
+
+        AssertProblem(ValidateRules(rule), "Actions.Rules[0].Name", "Validation_RuleNameRequired");
+    }
+
+    [Fact]
+    public void Validate_RuleIds_MustBeNonEmptyUniqueAndNotBuiltIn()
+    {
+        var duplicate = ValidRule("a");
+        var twin = ValidRule("b");
+        twin.Id = duplicate.Id;
+        var empty = ValidRule("c");
+        empty.Id = Guid.Empty;
+        var builtIn = ValidRule("d");
+        builtIn.Id = DefaultRules.RuntimeFloorId;
+
+        var problems = ValidateRules(duplicate, twin, empty, builtIn);
+
+        Assert.DoesNotContain(problems, p => p.PropertyPath == "Actions.Rules[0].Id");
+        AssertProblem(problems, "Actions.Rules[1].Id", "Validation_RuleIdInvalid");
+        AssertProblem(problems, "Actions.Rules[2].Id", "Validation_RuleIdInvalid");
+        AssertProblem(problems, "Actions.Rules[3].Id", "Validation_RuleIdInvalid");
+    }
+
+    [Fact]
+    public void Validate_RuleWithAnotherReasonThanCustomRule_ReportsProblem()
+    {
+        var rule = ValidRule();
+        rule.ShutdownReason = ShutdownReason.BatteryChargeFloor;
+
+        AssertProblem(ValidateRules(rule), "Actions.Rules[0].ShutdownReason", "Validation_RuleReasonInvalid");
+    }
+
+    [Fact]
+    public void Validate_RuleWithoutActions_ReportsProblem()
+    {
+        var rule = ValidRule();
+        rule.Actions = [];
+
+        AssertProblem(ValidateRules(rule), "Actions.Rules[0].Actions", "Validation_RuleActionsRequired");
+    }
+
+    [Theory]
+    [InlineData(-1, false)]
+    [InlineData(0, true)]
+    [InlineData(86400, true)]
+    [InlineData(86401, false)]
+    public void Validate_RuleDelay_MustBeWithinZeroAndADay(int seconds, bool valid)
+    {
+        var rule = ValidRule();
+        rule.DelaySeconds = seconds;
+
+        Assert.Equal(valid, !ValidateRules(rule).Any(p => p.ErrorKey == "Validation_RuleDelayRange"));
+    }
+
+    [Theory]
+    [InlineData(-1, false)]
+    [InlineData(0, true)]
+    [InlineData(86400, true)]
+    [InlineData(86401, false)]
+    public void Validate_TriggerDuration_MustBeWithinZeroAndADay(int seconds, bool valid)
+    {
+        var rule = ValidRule();
+        rule.Trigger = new RuleTrigger { Kind = TriggerKind.OnBatteryFor, DurationSeconds = seconds };
+
+        Assert.Equal(valid, !ValidateRules(rule).Any(p => p.ErrorKey == "Validation_RuleDurationRange"));
+    }
+
+    [Theory]
+    [InlineData(TriggerKind.FlagsActive)]
+    [InlineData(TriggerKind.FlagsBecameActive)]
+    [InlineData(TriggerKind.FlagsBecameInactive)]
+    public void Validate_FlagTriggerWithoutFlags_ReportsProblem(TriggerKind kind)
+    {
+        var rule = ValidRule();
+        rule.Trigger = new RuleTrigger { Kind = kind, Flags = UpsStatus.None };
+
+        AssertProblem(ValidateRules(rule), "Actions.Rules[0].Trigger.Flags", "Validation_RuleFlagsRequired");
+    }
+
+    [Theory]
+    [InlineData(TriggerKind.ValueAtOrBelow, double.NaN)]
+    [InlineData(TriggerKind.ValueAtOrAbove, double.PositiveInfinity)]
+    [InlineData(TriggerKind.ValueAtOrBelow, double.NegativeInfinity)]
+    public void Validate_ValueTriggerThreshold_MustBeFinite(TriggerKind kind, double threshold)
+    {
+        var rule = ValidRule();
+        rule.Trigger = new RuleTrigger { Kind = kind, Metric = RuleMetric.LoadPercent, Threshold = threshold };
+
+        AssertProblem(ValidateRules(rule), "Actions.Rules[0].Trigger.Threshold", "Validation_RuleThresholdInvalid");
+    }
+
+    [Fact]
+    public void Validate_ValueTriggerWithFiniteThreshold_AndConnectionTriggerWithoutFlags_AreFine()
+    {
+        var value = ValidRule();
+        value.Trigger = new RuleTrigger { Kind = TriggerKind.ValueAtOrBelow, Metric = RuleMetric.BatteryCharge, Threshold = -5.5 };
+        var lost = ValidRule();
+        lost.Trigger = new RuleTrigger { Kind = TriggerKind.ConnectionLost, DurationSeconds = 30 };
+
+        Assert.Empty(ValidateRules(value, lost));
+    }
+
+    [Theory]
+    [InlineData(ActionKind.Notify)]
+    [InlineData(ActionKind.Log)]
+    public void Validate_NotifyAndLogWithoutMessage_ReportProblem(ActionKind kind)
+    {
+        var rule = ValidRule();
+        rule.Actions = [new RuleAction { Kind = kind, Message = "  " }];
+
+        AssertProblem(ValidateRules(rule), "Actions.Rules[0].Actions[0].Message", "Validation_RuleMessageRequired");
+    }
+
+    [Fact]
+    public void Validate_RunCommand_NeedsACommandAndATimeoutOfOneToThirtySixHundredSeconds()
+    {
+        var rule = ValidRule();
+        rule.Actions = [RuleAction.RunCommand(" "), RuleAction.RunCommand("tool", timeoutSeconds: 0), RuleAction.RunCommand("tool", timeoutSeconds: 3601),
+            RuleAction.RunCommand("tool", timeoutSeconds: 1), RuleAction.RunCommand("tool", timeoutSeconds: 3600)];
+
+        var problems = ValidateRules(rule);
+
+        AssertProblem(problems, "Actions.Rules[0].Actions[0].Command", "Validation_RuleCommandRequired");
+        AssertProblem(problems, "Actions.Rules[0].Actions[1].TimeoutSeconds", "Validation_RuleTimeoutRange");
+        AssertProblem(problems, "Actions.Rules[0].Actions[2].TimeoutSeconds", "Validation_RuleTimeoutRange");
+        Assert.DoesNotContain(problems, p => p.PropertyPath.StartsWith("Actions.Rules[0].Actions[3]", StringComparison.Ordinal));
+        Assert.DoesNotContain(problems, p => p.PropertyPath.StartsWith("Actions.Rules[0].Actions[4]", StringComparison.Ordinal));
+    }
+
+    [Theory]
+    [InlineData("", false)]
+    [InlineData("not a url", false)]
+    [InlineData("/relative/path", false)]
+    [InlineData("ftp://example.org/hook", false)]
+    [InlineData("file:///etc/passwd", false)]
+    [InlineData("http://localhost:8080/hook", true)]
+    [InlineData("https://example.org/hook?token=x", true)]
+    public void Validate_WebhookUrl_MustBeAbsoluteHttpOrHttps(string url, bool valid)
+    {
+        var rule = ValidRule();
+        rule.Actions = [RuleAction.Webhook(url)];
+
+        Assert.Equal(valid, !ValidateRules(rule).Any(p => p.ErrorKey == "Validation_RuleUrlInvalid"));
+    }
+
+    [Fact]
+    public void Validate_StopComputerAction_NeedsNothingElse()
+    {
+        var rule = ValidRule();
+        rule.Actions = [RuleAction.StopComputer(CocoNut.Core.Abstractions.StopAction.Hibernate)];
+
+        Assert.Empty(ValidateRules(rule));
+    }
+
+    [Fact]
+    public void Validate_NullSectionsFromAHandEditedFile_DoNotThrow()
+    {
+        var rule = ValidRule();
+        rule.Actions = null!;
+        var other = ValidRule();
+        other.Trigger = null!;
+
+        var problems = ValidateRules(rule, other);
+
+        AssertProblem(problems, "Actions.Rules[0].Actions", "Validation_RuleActionsRequired");
+        Assert.Contains(problems, p => p.PropertyPath.StartsWith("Actions.Rules[1].Trigger", StringComparison.Ordinal));
+        Assert.Empty(AppSettingsValidator.Validate(new AppSettings { Actions = new ActionsSettings { Rules = null! } }));
     }
 }

@@ -995,4 +995,49 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Vars_Value" xml:space="preserve">
     <value>Значення:</value>
   </data>
+  <data name="Shutdown_Reason_CustomRule" xml:space="preserve">
+    <value>Правило: {0}</value>
+  </data>
+  <data name="History_Reason_CustomRule" xml:space="preserve">
+    <value>Правило: {0}</value>
+  </data>
+  <data name="History_Event_RuleFired" xml:space="preserve">
+    <value>Правило спрацювало</value>
+  </data>
+  <data name="Validation_RuleNameRequired" xml:space="preserve">
+    <value>Кожне правило має мати назву.</value>
+  </data>
+  <data name="Validation_RuleIdInvalid" xml:space="preserve">
+    <value>У правила відсутній, повторюється або зарезервований ідентифікатор.</value>
+  </data>
+  <data name="Validation_RuleReasonInvalid" xml:space="preserve">
+    <value>Користувацьке правило має використовувати причину зупинки «користувацьке правило».</value>
+  </data>
+  <data name="Validation_RuleActionsRequired" xml:space="preserve">
+    <value>Правило має мати принаймні одну дію.</value>
+  </data>
+  <data name="Validation_RuleThresholdInvalid" xml:space="preserve">
+    <value>Порогове значення правила має бути скінченним числом.</value>
+  </data>
+  <data name="Validation_RuleDelayRange" xml:space="preserve">
+    <value>Затримка правила має бути від 0 до 86400 секунд.</value>
+  </data>
+  <data name="Validation_RuleDurationRange" xml:space="preserve">
+    <value>Тривалість правила має бути від 0 до 86400 секунд.</value>
+  </data>
+  <data name="Validation_RuleFlagsRequired" xml:space="preserve">
+    <value>Виберіть принаймні один прапорець стану ДБЖ для цієї умови.</value>
+  </data>
+  <data name="Validation_RuleCommandRequired" xml:space="preserve">
+    <value>Потрібно вказати команду для запуску.</value>
+  </data>
+  <data name="Validation_RuleTimeoutRange" xml:space="preserve">
+    <value>Тайм-аут команди має бути від 1 до 3600 секунд.</value>
+  </data>
+  <data name="Validation_RuleUrlInvalid" xml:space="preserve">
+    <value>URL вебхука має бути абсолютною адресою http або https.</value>
+  </data>
+  <data name="Validation_RuleMessageRequired" xml:space="preserve">
+    <value>Потрібно вказати текст повідомлення.</value>
+  </data>
 </root>

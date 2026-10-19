@@ -989,4 +989,49 @@ IPV4 / IPV6 / доменное имя.</value>
   <data name="Vars_Value" xml:space="preserve">
     <value>Значение:</value>
   </data>
+  <data name="Shutdown_Reason_CustomRule" xml:space="preserve">
+    <value>Правило: {0}</value>
+  </data>
+  <data name="History_Reason_CustomRule" xml:space="preserve">
+    <value>Правило: {0}</value>
+  </data>
+  <data name="History_Event_RuleFired" xml:space="preserve">
+    <value>Правило сработало</value>
+  </data>
+  <data name="Validation_RuleNameRequired" xml:space="preserve">
+    <value>У каждого правила должно быть имя.</value>
+  </data>
+  <data name="Validation_RuleIdInvalid" xml:space="preserve">
+    <value>У правила отсутствует, повторяется или зарезервирован идентификатор.</value>
+  </data>
+  <data name="Validation_RuleReasonInvalid" xml:space="preserve">
+    <value>Пользовательское правило должно использовать причину остановки «пользовательское правило».</value>
+  </data>
+  <data name="Validation_RuleActionsRequired" xml:space="preserve">
+    <value>У правила должно быть хотя бы одно действие.</value>
+  </data>
+  <data name="Validation_RuleThresholdInvalid" xml:space="preserve">
+    <value>Пороговое значение правила должно быть конечным числом.</value>
+  </data>
+  <data name="Validation_RuleDelayRange" xml:space="preserve">
+    <value>Задержка правила должна быть от 0 до 86400 секунд.</value>
+  </data>
+  <data name="Validation_RuleDurationRange" xml:space="preserve">
+    <value>Длительность правила должна быть от 0 до 86400 секунд.</value>
+  </data>
+  <data name="Validation_RuleFlagsRequired" xml:space="preserve">
+    <value>Выберите хотя бы один флаг состояния ИБП для этого условия.</value>
+  </data>
+  <data name="Validation_RuleCommandRequired" xml:space="preserve">
+    <value>Необходимо указать команду для запуска.</value>
+  </data>
+  <data name="Validation_RuleTimeoutRange" xml:space="preserve">
+    <value>Тайм-аут команды должен быть от 1 до 3600 секунд.</value>
+  </data>
+  <data name="Validation_RuleUrlInvalid" xml:space="preserve">
+    <value>URL вебхука должен быть абсолютным адресом http или https.</value>
+  </data>
+  <data name="Validation_RuleMessageRequired" xml:space="preserve">
+    <value>Необходимо указать текст сообщения.</value>
+  </data>
 </root>

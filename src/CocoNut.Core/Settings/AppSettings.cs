@@ -1,4 +1,5 @@
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.Actions;
 using Microsoft.Extensions.Logging;
 
 namespace CocoNut.Core.Settings;
@@ -16,6 +17,20 @@ public sealed class AppSettings
     public LoggingSettings Logging { get; set; } = new();
     public UpdateSettings Update { get; set; } = new();
     public HistorySettings History { get; set; } = new();
+    /// <summary>The user-defined rules (new in Coco.Nut). The built-in stop rules are not part of this; they derive from <see cref="Power"/>.</summary>
+    public ActionsSettings Actions { get; set; } = new();
+}
+
+/// <summary>
+/// The rules of the actions system that the user defines. The four built-in stop rules (<see cref="DefaultRules"/>)
+/// are deliberately not stored here: they stay derived from <see cref="PowerSettings"/>. The effective rule list is
+/// the built-ins followed by these, see <see cref="DefaultRules.WithUserRules"/>.
+/// </summary>
+public sealed class ActionsSettings
+{
+    /// <summary>The user rules, in priority order (after the built-in ones). Their stop reason is always
+    /// <see cref="Shutdown.ShutdownReason.CustomRule"/>.</summary>
+    public List<ActionRule> Rules { get; set; } = [];
 }
 
 public sealed class ConnectionSettings

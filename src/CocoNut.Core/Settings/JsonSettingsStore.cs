@@ -1,4 +1,5 @@
 using System.Text.Json;
+using CocoNut.Core.Shutdown;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -141,7 +142,24 @@ public sealed class JsonSettingsStore : ISettingsStore
             Logging = model.Logging ?? new LoggingSettings(),
             Update = model.Update ?? new UpdateSettings(),
             History = model.History ?? new HistorySettings(),
+            Actions = MapActions(model.Actions),
         };
+    }
+
+    /// <summary>
+    /// A missing/null section or list becomes empty, and entries a hand-edited file left null are dropped. User rules
+    /// always carry <see cref="ShutdownReason.CustomRule"/>: a stored other reason would only be ignored later, and
+    /// normalising it here keeps it from showing up as a validation problem the editor cannot fix.
+    /// </summary>
+    private static ActionsSettings MapActions(ActionsSettings? actions)
+    {
+        var rules = (actions?.Rules ?? []).Where(rule => rule is not null).ToList();
+        foreach (var rule in rules)
+        {
+            rule.ShutdownReason = ShutdownReason.CustomRule;
+        }
+
+        return new ActionsSettings { Rules = rules };
     }
 
     private SettingsFileModel MapToFileModel(AppSettings settings) => new()
@@ -163,6 +181,7 @@ public sealed class JsonSettingsStore : ISettingsStore
         Logging = settings.Logging,
         Update = settings.Update,
         History = settings.History,
+        Actions = settings.Actions,
     };
 
     private string? UnprotectOrNull(string? protectedValue, string fieldName)

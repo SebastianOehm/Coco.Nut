@@ -1,3 +1,6 @@
+using CocoNut.Core.Ups;
+using CocoNut.Core.Shutdown;
+using CocoNut.Core.Actions;
 using CocoNut.Core.Abstractions;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Tests.TestSupport;
@@ -294,5 +297,171 @@ public sealed class JsonSettingsStoreTests : IDisposable
 
         Assert.Null(loaded.Connection.Username);
         Assert.Null(loaded.Connection.Password);
+    }
+
+    // ---- actions section ----
+
+    private static AppSettings SettingsWithOneRuleOfEveryActionKind() => new()
+    {
+        Actions = new ActionsSettings
+        {
+            Rules =
+            [
+                new ActionRule
+                {
+                    Id = Guid.Parse("11111111-2222-3333-4444-555555555555"),
+                    Name = "Everything",
+                    Enabled = false,
+                    UpsName = null,
+                    DelaySeconds = 45,
+                    Trigger = new RuleTrigger
+                    {
+                        Kind = TriggerKind.ValueAtOrBelow,
+                        Flags = UpsStatus.OB | UpsStatus.LB,
+                        Metric = RuleMetric.OutputPowerWatts,
+                        Threshold = 12.5,
+                        OnBatteryOnly = true,
+                        DurationSeconds = 7,
+                    },
+                    Actions =
+                    [
+                        RuleAction.StopComputer(StopAction.Hibernate),
+                        RuleAction.Notify("{rule}: {charge}%"),
+                        RuleAction.Log("logged {ups}", LogLevel.Warning),
+                        RuleAction.RunCommand("/usr/bin/notify", ["--text", "two words", "\"quoted\""], 90),
+                        RuleAction.Webhook("https://hooks.example/x?token=1"),
+                    ],
+                },
+                new ActionRule
+                {
+                    Id = Guid.Parse("66666666-7777-8888-9999-000000000000"),
+                    Name = "Edge",
+                    Trigger = new RuleTrigger { Kind = TriggerKind.FlagsBecameInactive, Flags = UpsStatus.OB },
+                    Actions = [RuleAction.Notify("power is back")],
+                },
+            ],
+        },
+    };
+
+    [Fact]
+    public void SaveThenLoad_RoundTripsUserRulesWithEveryActionKind()
+    {
+        var store = CreateStore();
+        var original = SettingsWithOneRuleOfEveryActionKind();
+
+        store.Save(original);
+        var loaded = store.Load();
+
+        Assert.Equal(2, loaded.Actions.Rules.Count);
+        var rule = loaded.Actions.Rules[0];
+        Assert.Equal(Guid.Parse("11111111-2222-3333-4444-555555555555"), rule.Id);
+        Assert.Equal("Everything", rule.Name);
+        Assert.False(rule.Enabled);
+        Assert.Null(rule.UpsName);
+        Assert.Equal(45, rule.DelaySeconds);
+        Assert.Equal(ShutdownReason.CustomRule, rule.ShutdownReason);
+        Assert.Equal(TriggerKind.ValueAtOrBelow, rule.Trigger.Kind);
+        Assert.Equal(UpsStatus.OB | UpsStatus.LB, rule.Trigger.Flags);
+        Assert.Equal(RuleMetric.OutputPowerWatts, rule.Trigger.Metric);
+        Assert.Equal(12.5, rule.Trigger.Threshold);
+        Assert.True(rule.Trigger.OnBatteryOnly);
+        Assert.Equal(7, rule.Trigger.DurationSeconds);
+
+        Assert.Equal(5, rule.Actions.Count);
+        Assert.Equal(ActionKind.StopComputer, rule.Actions[0].Kind);
+        Assert.Equal(StopAction.Hibernate, rule.Actions[0].StopAction);
+        Assert.Equal(ActionKind.Notify, rule.Actions[1].Kind);
+        Assert.Equal("{rule}: {charge}%", rule.Actions[1].Message);
+        Assert.Equal(ActionKind.Log, rule.Actions[2].Kind);
+        Assert.Equal(LogLevel.Warning, rule.Actions[2].LogLevel);
+        Assert.Equal("logged {ups}", rule.Actions[2].Message);
+        Assert.Equal(ActionKind.RunCommand, rule.Actions[3].Kind);
+        Assert.Equal("/usr/bin/notify", rule.Actions[3].Command);
+        Assert.Equal(["--text", "two words", "\"quoted\""], rule.Actions[3].Arguments);
+        Assert.Equal(90, rule.Actions[3].TimeoutSeconds);
+        Assert.Equal(ActionKind.Webhook, rule.Actions[4].Kind);
+        Assert.Equal("https://hooks.example/x?token=1", rule.Actions[4].Url);
+
+        Assert.Equal(TriggerKind.FlagsBecameInactive, loaded.Actions.Rules[1].Trigger.Kind);
+    }
+
+    [Fact]
+    public void Save_WritesEnumsAsStrings_AndNoStopsComputerMember()
+    {
+        var store = CreateStore();
+
+        store.Save(SettingsWithOneRuleOfEveryActionKind());
+
+        var json = File.ReadAllText(_filePath);
+        Assert.Contains("\"kind\": \"RunCommand\"", json);
+        Assert.Contains("\"kind\": \"FlagsBecameInactive\"", json);
+        Assert.Contains("\"logLevel\": \"Warning\"", json);
+        Assert.Contains("\"stopAction\": \"Hibernate\"", json);
+        Assert.Contains("\"shutdownReason\": \"CustomRule\"", json);
+        Assert.DoesNotContain("stopsComputer", json, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void Load_AVersion1FileWithoutAnActionsSection_HasNoRules_AndRoundTrips()
+    {
+        File.WriteAllText(_filePath, """{ "schemaVersion": 1, "power": { "batteryChargeFloor": 42 } }""");
+        var store = CreateStore();
+
+        var loaded = store.Load();
+
+        Assert.NotNull(loaded.Actions);
+        Assert.Empty(loaded.Actions.Rules);
+        Assert.Equal(42, loaded.Power.BatteryChargeFloor);
+
+        store.Save(loaded);
+        var reloaded = store.Load();
+
+        Assert.Empty(reloaded.Actions.Rules);
+        Assert.Equal(42, reloaded.Power.BatteryChargeFloor);
+        Assert.Equal(1, SettingsFileModel.CurrentSchemaVersion);
+    }
+
+    [Theory]
+    [InlineData("""{ "schemaVersion": 1, "actions": null }""")]
+    [InlineData("""{ "schemaVersion": 1, "actions": {} }""")]
+    [InlineData("""{ "schemaVersion": 1, "actions": { "rules": null } }""")]
+    public void Load_NullOrEmptyActionsSection_BecomesAnEmptyList(string json)
+    {
+        File.WriteAllText(_filePath, json);
+
+        var loaded = CreateStore().Load();
+
+        Assert.Empty(loaded.Actions.Rules);
+    }
+
+    [Fact]
+    public void Load_StoredReasonOtherThanCustomRule_IsNormalised_AndNullRulesAreDropped()
+    {
+        File.WriteAllText(_filePath, """
+            { "schemaVersion": 1, "actions": { "rules": [
+                null,
+                { "id": "11111111-2222-3333-4444-555555555555", "name": "x", "shutdownReason": "ForcedShutdown",
+                  "trigger": { "kind": "FlagsActive", "flags": "OB" }, "actions": [ { "kind": "Notify", "message": "m" } ] }
+            ] } }
+            """);
+
+        var loaded = CreateStore().Load();
+
+        var rule = Assert.Single(loaded.Actions.Rules);
+        Assert.Equal(ShutdownReason.CustomRule, rule.ShutdownReason);
+        Assert.Equal(UpsStatus.OB, rule.Trigger.Flags);
+    }
+
+    [Fact]
+    public void Clone_CopiesTheRulesDeeply()
+    {
+        var original = SettingsWithOneRuleOfEveryActionKind();
+
+        var copy = original.Clone();
+        copy.Actions.Rules[0].Actions[3].Arguments.Add("extra");
+
+        Assert.Equal(3, original.Actions.Rules[0].Actions[3].Arguments.Count);
+        Assert.Equal(4, copy.Actions.Rules[0].Actions[3].Arguments.Count);
+        Assert.Equal("Everything", copy.Actions.Rules[0].Name);
     }
 }

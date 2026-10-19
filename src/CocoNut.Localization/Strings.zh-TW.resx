@@ -965,4 +965,49 @@
   <data name="Vars_Value" xml:space="preserve">
     <value>值：</value>
   </data>
+  <data name="Shutdown_Reason_CustomRule" xml:space="preserve">
+    <value>規則：{0}</value>
+  </data>
+  <data name="History_Reason_CustomRule" xml:space="preserve">
+    <value>規則：{0}</value>
+  </data>
+  <data name="History_Event_RuleFired" xml:space="preserve">
+    <value>規則已觸發</value>
+  </data>
+  <data name="Validation_RuleNameRequired" xml:space="preserve">
+    <value>每條規則都需要名稱。</value>
+  </data>
+  <data name="Validation_RuleIdInvalid" xml:space="preserve">
+    <value>某條規則的 ID 缺失、重複或為保留值。</value>
+  </data>
+  <data name="Validation_RuleReasonInvalid" xml:space="preserve">
+    <value>使用者自訂規則必須使用「自訂規則」作為停止原因。</value>
+  </data>
+  <data name="Validation_RuleActionsRequired" xml:space="preserve">
+    <value>每條規則至少需要一個動作。</value>
+  </data>
+  <data name="Validation_RuleThresholdInvalid" xml:space="preserve">
+    <value>規則門檻值必須是有限數值。</value>
+  </data>
+  <data name="Validation_RuleDelayRange" xml:space="preserve">
+    <value>規則延遲必須介於 0 到 86400 秒之間。</value>
+  </data>
+  <data name="Validation_RuleDurationRange" xml:space="preserve">
+    <value>規則持續時間必須介於 0 到 86400 秒之間。</value>
+  </data>
+  <data name="Validation_RuleFlagsRequired" xml:space="preserve">
+    <value>請至少為此觸發條件選擇一個 UPS 狀態旗標。</value>
+  </data>
+  <data name="Validation_RuleCommandRequired" xml:space="preserve">
+    <value>必須填寫要執行的命令。</value>
+  </data>
+  <data name="Validation_RuleTimeoutRange" xml:space="preserve">
+    <value>命令逾時必須介於 1 到 3600 秒之間。</value>
+  </data>
+  <data name="Validation_RuleUrlInvalid" xml:space="preserve">
+    <value>Webhook 網址必須是絕對的 http 或 https 位址。</value>
+  </data>
+  <data name="Validation_RuleMessageRequired" xml:space="preserve">
+    <value>必須填寫訊息文字。</value>
+  </data>
 </root>

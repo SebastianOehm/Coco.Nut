@@ -7,7 +7,12 @@ namespace CocoNut.Core.Actions;
 /// <summary>A rule that fires in one <see cref="RuleEngine.Evaluate"/> call.</summary>
 /// <param name="Rule">The firing rule.</param>
 /// <param name="Detail">A human-readable explanation, suitable for logging.</param>
-public sealed record RuleMatch(ActionRule Rule, string Detail);
+/// <param name="IsNewFiring">
+/// <see langword="true"/> for an edge occurrence or the rising edge of a level condition; <see langword="false"/> for
+/// the repeated report of a stop rule whose condition keeps holding. Actions other than stopping the computer run on
+/// new firings only.
+/// </param>
+public sealed record RuleMatch(ActionRule Rule, string Detail, bool IsNewFiring = true);
 
 /// <summary>
 /// Pure rule evaluation: decides which <see cref="ActionRule"/>s fire for a UPS reading / status change / connection
@@ -114,8 +119,8 @@ public sealed class RuleEngine
 
             if (rule.StopsComputer() || !state.Fired)
             {
+                matches.Add(new RuleMatch(rule, detail, IsNewFiring: !state.Fired));
                 state.Fired = true;
-                matches.Add(new RuleMatch(rule, detail));
             }
         }
 

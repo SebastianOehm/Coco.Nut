@@ -1016,4 +1016,49 @@ Verbleibende Zeit: {1}</value>
   <data name="Vars_Value" xml:space="preserve">
     <value>Wert:</value>
   </data>
+  <data name="Shutdown_Reason_CustomRule" xml:space="preserve">
+    <value>Regel: {0}</value>
+  </data>
+  <data name="History_Reason_CustomRule" xml:space="preserve">
+    <value>Regel: {0}</value>
+  </data>
+  <data name="History_Event_RuleFired" xml:space="preserve">
+    <value>Regel ausgelöst</value>
+  </data>
+  <data name="Validation_RuleNameRequired" xml:space="preserve">
+    <value>Jede Regel braucht einen Namen.</value>
+  </data>
+  <data name="Validation_RuleIdInvalid" xml:space="preserve">
+    <value>Eine Regel hat eine fehlende, doppelte oder reservierte ID.</value>
+  </data>
+  <data name="Validation_RuleReasonInvalid" xml:space="preserve">
+    <value>Eine benutzerdefinierte Regel muss den Stopp-Grund „Benutzerregel“ verwenden.</value>
+  </data>
+  <data name="Validation_RuleActionsRequired" xml:space="preserve">
+    <value>Eine Regel braucht mindestens eine Aktion.</value>
+  </data>
+  <data name="Validation_RuleThresholdInvalid" xml:space="preserve">
+    <value>Der Schwellenwert der Regel muss eine endliche Zahl sein.</value>
+  </data>
+  <data name="Validation_RuleDelayRange" xml:space="preserve">
+    <value>Die Verzögerung der Regel muss zwischen 0 und 86400 Sekunden liegen.</value>
+  </data>
+  <data name="Validation_RuleDurationRange" xml:space="preserve">
+    <value>Die Dauer der Regel muss zwischen 0 und 86400 Sekunden liegen.</value>
+  </data>
+  <data name="Validation_RuleFlagsRequired" xml:space="preserve">
+    <value>Wähle mindestens ein USV-Statusflag für diesen Auslöser.</value>
+  </data>
+  <data name="Validation_RuleCommandRequired" xml:space="preserve">
+    <value>Der auszuführende Befehl ist erforderlich.</value>
+  </data>
+  <data name="Validation_RuleTimeoutRange" xml:space="preserve">
+    <value>Das Zeitlimit des Befehls muss zwischen 1 und 3600 Sekunden liegen.</value>
+  </data>
+  <data name="Validation_RuleUrlInvalid" xml:space="preserve">
+    <value>Die Webhook-URL muss eine absolute http- oder https-Adresse sein.</value>
+  </data>
+  <data name="Validation_RuleMessageRequired" xml:space="preserve">
+    <value>Der Nachrichtentext ist erforderlich.</value>
+  </data>
 </root>

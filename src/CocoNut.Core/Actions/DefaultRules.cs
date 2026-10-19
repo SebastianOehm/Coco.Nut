@@ -20,6 +20,56 @@ public static class DefaultRules
     /// <summary>Id of the runtime-floor rule.</summary>
     public static readonly Guid RuntimeFloorId = new("c0c0a001-0000-4000-8000-000000000004");
 
+    /// <summary>Whether <paramref name="id"/> is the id of one of the four built-in rules (reserved, user rules must not use it).</summary>
+    public static bool IsBuiltIn(Guid id) =>
+        id == ForcedShutdownId || id == UpsLowBatteryId || id == BatteryChargeFloorId || id == RuntimeFloorId;
+
+    /// <summary>
+    /// The effective rule list: <see cref="FromPowerSettings"/> followed by the usable user rules, so the built-in
+    /// stop rules keep priority. A user rule is dropped (silently - this runs on every evaluation, and the settings
+    /// validator already rejects such rules on save, so only a hand-edited file gets here) when it is
+    /// <see langword="null"/>, has an empty or built-in or already used id, or fails
+    /// <see cref="AppSettingsValidator.ValidateRule"/>. A user rule's stop reason is always
+    /// <see cref="ShutdownReason.CustomRule"/>; a rule stored with another one is used as a copy that has it.
+    /// </summary>
+    public static IReadOnlyList<ActionRule> WithUserRules(PowerSettings power, ActionsSettings? actions)
+    {
+        var rules = new List<ActionRule>(FromPowerSettings(power));
+        if (actions?.Rules is not { Count: > 0 } userRules)
+        {
+            return rules;
+        }
+
+        var ids = new HashSet<Guid>();
+        foreach (var rule in userRules)
+        {
+            if (rule is null
+                || rule.Id == Guid.Empty
+                || IsBuiltIn(rule.Id)
+                || AppSettingsValidator.ValidateRule(rule, string.Empty).Count > 0
+                || !ids.Add(rule.Id))
+            {
+                continue;
+            }
+
+            rules.Add(rule.ShutdownReason == ShutdownReason.CustomRule ? rule : CopyWithCustomReason(rule));
+        }
+
+        return rules;
+    }
+
+    private static ActionRule CopyWithCustomReason(ActionRule rule) => new()
+    {
+        Id = rule.Id,
+        Name = rule.Name,
+        Enabled = rule.Enabled,
+        UpsName = rule.UpsName,
+        Trigger = rule.Trigger,
+        DelaySeconds = rule.DelaySeconds,
+        ShutdownReason = ShutdownReason.CustomRule,
+        Actions = rule.Actions,
+    };
+
     /// <summary>
     /// Builds the four built-in rules, in priority order: forced shutdown (only enabled when
     /// <see cref="PowerSettings.RespectFsd"/>), UPS low battery, charge floor, runtime floor. The result is fresh on

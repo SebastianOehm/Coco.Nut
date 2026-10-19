@@ -69,14 +69,26 @@ public sealed class AppHost : IAsyncDisposable
             sp.GetRequiredService<ILogger<UpsMonitor>>()));
         services.AddSingleton<IUpsMonitorEvents>(sp => new UpsMonitorAdapter(sp.GetRequiredService<UpsMonitor>()));
 
+        services.AddSingleton<ICommandRunner, ProcessCommandRunner>();
+        services.AddSingleton<IRuleActionRunner>(sp => new RuleActionRunner(
+            sp.GetRequiredService<INotificationService>(),
+            sp.GetRequiredService<ICommandRunner>(),
+            sp.GetRequiredService<HttpClient>(),
+            sp.GetRequiredService<TimeProvider>(),
+            sp.GetRequiredService<ILogger<RuleActionRunner>>()));
         services.AddSingleton(sp => PowerActionsFactory.Create(sp.GetRequiredService<ILoggerFactory>()));
         services.AddSingleton(sp => new ShutdownCoordinator(
             sp.GetRequiredService<UpsMonitor>(),
             sp.GetRequiredService<IPowerActions>(),
             () => sp.GetRequiredService<ISettingsService>().Current.Power,
-            () => DefaultRules.FromPowerSettings(sp.GetRequiredService<ISettingsService>().Current.Power),
+            () =>
+            {
+                var current = sp.GetRequiredService<ISettingsService>().Current;
+                return DefaultRules.WithUserRules(current.Power, current.Actions);
+            },
             sp.GetRequiredService<TimeProvider>(),
-            sp.GetRequiredService<ILogger<ShutdownCoordinator>>()));
+            sp.GetRequiredService<ILogger<ShutdownCoordinator>>(),
+            sp.GetRequiredService<IRuleActionRunner>()));
         services.AddSingleton<IShutdownEvents>(sp => new ShutdownEventsAdapter(sp.GetRequiredService<ShutdownCoordinator>()));
 
         services.AddSingleton<IHistoryStore>(_ => new SqliteHistoryStore(AppPaths.HistoryDatabaseFile));

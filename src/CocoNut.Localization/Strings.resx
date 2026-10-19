@@ -1394,4 +1394,64 @@ Remaining time: {1}</value>
     <value>Large parts of Coco.Nut were written with AI assistance (Claude by Anthropic, using Claude Code): an AI model planned and reviewed the work, AI sub-agents wrote most of the code. All changes were directed and checked by the maintainers and are covered by automated builds and tests. Please report problems on the project page.</value>
     <comment>About window: disclosure of AI-assisted development. Keep the product names unchanged.</comment>
   </data>
+  <data name="Shutdown_Reason_CustomRule" xml:space="preserve">
+    <value>Rule: {0}</value>
+    <comment>Shutdown window: why the shutdown procedure started when a user-defined rule (ShutdownReason.CustomRule) triggered it. {0} = the rule name. New in Coco.Nut.</comment>
+  </data>
+  <data name="History_Reason_CustomRule" xml:space="preserve">
+    <value>Rule: {0}</value>
+    <comment>History window: detail text of a shutdown event whose reason is a user-defined rule. {0} = the rule name. New in Coco.Nut.</comment>
+  </data>
+  <data name="History_Event_RuleFired" xml:space="preserve">
+    <value>Rule fired</value>
+    <comment>History event name: a user-defined rule fired (the detail is the rule name). New in Coco.Nut.</comment>
+  </data>
+  <data name="Validation_RuleNameRequired" xml:space="preserve">
+    <value>Every rule needs a name.</value>
+    <comment>AppSettingsValidator: a user-defined rule (Actions.Rules) has no name.</comment>
+  </data>
+  <data name="Validation_RuleIdInvalid" xml:space="preserve">
+    <value>A rule has a missing, duplicate or reserved ID.</value>
+    <comment>AppSettingsValidator: a user-defined rule has an empty, duplicate or reserved (built-in rule) ID.</comment>
+  </data>
+  <data name="Validation_RuleReasonInvalid" xml:space="preserve">
+    <value>A user-defined rule must use the custom-rule stop reason.</value>
+    <comment>AppSettingsValidator: a user-defined rule has a stop reason other than CustomRule.</comment>
+  </data>
+  <data name="Validation_RuleActionsRequired" xml:space="preserve">
+    <value>A rule needs at least one action.</value>
+    <comment>AppSettingsValidator: a user-defined rule has no action.</comment>
+  </data>
+  <data name="Validation_RuleThresholdInvalid" xml:space="preserve">
+    <value>The rule threshold must be a finite number.</value>
+    <comment>AppSettingsValidator: the threshold of a value trigger is not a finite number.</comment>
+  </data>
+  <data name="Validation_RuleDelayRange" xml:space="preserve">
+    <value>The rule delay must be between 0 and 86400 seconds.</value>
+    <comment>AppSettingsValidator: ActionRule.DelaySeconds outside 0-86400.</comment>
+  </data>
+  <data name="Validation_RuleDurationRange" xml:space="preserve">
+    <value>The rule duration must be between 0 and 86400 seconds.</value>
+    <comment>AppSettingsValidator: RuleTrigger.DurationSeconds outside 0-86400.</comment>
+  </data>
+  <data name="Validation_RuleFlagsRequired" xml:space="preserve">
+    <value>Select at least one UPS status flag for this trigger.</value>
+    <comment>AppSettingsValidator: a status-flag trigger has no ups.status flag selected.</comment>
+  </data>
+  <data name="Validation_RuleCommandRequired" xml:space="preserve">
+    <value>The command to run is required.</value>
+    <comment>AppSettingsValidator: a run-command action has no command.</comment>
+  </data>
+  <data name="Validation_RuleTimeoutRange" xml:space="preserve">
+    <value>The command timeout must be between 1 and 3600 seconds.</value>
+    <comment>AppSettingsValidator: RuleAction.TimeoutSeconds of a run-command action outside 1-3600.</comment>
+  </data>
+  <data name="Validation_RuleUrlInvalid" xml:space="preserve">
+    <value>The webhook URL must be an absolute http or https address.</value>
+    <comment>AppSettingsValidator: the URL of a webhook action is not an absolute http or https address.</comment>
+  </data>
+  <data name="Validation_RuleMessageRequired" xml:space="preserve">
+    <value>The message text is required.</value>
+    <comment>AppSettingsValidator: a notify or log action has no message text.</comment>
+  </data>
 </root>
