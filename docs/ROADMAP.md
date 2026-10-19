@@ -6,21 +6,22 @@ This file tracks where Coco.Nut is heading after milestone 1 (the C# port of Win
 ## Versioning
 
 The base version lives in `<Version>` in [`Directory.Build.props`](../Directory.Build.props). Each completed roadmap
-goal raises the minor version (G2 gave 0.2.0, the next completed goal gives 0.3.0, and so on); fixes in between
+goal raises the minor version (G2 gave 0.2.0, G3 gives 0.3.0, and so on); fixes in between
 raise the patch version. Every push to `preMain` publishes a pre-release named `<base>-pre.<run number>`, e.g.
 `0.2.0-pre.3`.
 
 ## Original goals (by gbakeman)
 
 Coco.Nut was proposed by gbakeman, maintainer of WinNUT-Client and the nutdotnet library, as the successor of
-WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/issues/40)). His goals for it:
+WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/issues/40)). His goals for it,
+numbered in the order they ship (goal G<n> ships as 0.<n>.0):
 
 | # | Goal | Status |
 |---|------|--------|
 | G1 | Cross-platform, native desktop app written in C# and XAML | **Done** (milestone 1). Built with Avalonia UI instead of the originally mentioned .NET MAUI: Avalonia supports Linux desktops, MAUI does not. |
 | G2 | Keep a history of the data points collected from a UPS | **Done** (0.2.0). A SQLite history of readings and events with a History window (charts, searchable events, CSV export) and a Settings section. |
-| G3 | Monitor multiple NUT servers at once, with multiple UPSes attached to each | Open |
-| G4 | Actions system: the user defines actions that run when certain conditions are met; default actions where supported (hibernate or shut down the system, run commands, notify, …) | Partly done: fixed rules (charge/runtime floor, FSD, OB+LB) with shutdown/suspend/hibernate and notifications |
+| G3 | Actions system: the user defines actions that run when certain conditions are met; default actions where supported (hibernate or shut down the system, run commands, notify, …) | Partly done: fixed rules (charge/runtime floor, FSD, OB+LB) with shutdown/suspend/hibernate and notifications |
+| G4 | Monitor multiple NUT servers at once, with multiple UPSes attached to each | Open |
 
 ## Planned work
 
@@ -28,7 +29,17 @@ WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/
 Readings and events are recorded per UPS into `history.db`; the History window charts them and lists the events;
 both export to CSV. Details in the change log below.
 
-### G3 – Multiple servers and UPSes
+### G3 – Actions system
+* Generalise `ShutdownPolicy` into rules: **trigger** (status flag becomes active/inactive, value below/above a
+  threshold, connection lost for N seconds, time on battery ≥ N) + optional delay/countdown + **actions**.
+* Built-in actions: shut down / suspend / hibernate this computer, notification, run a command or script (with
+  UPS values as environment variables), send an e-mail/webhook, write to the log.
+* The current fixed stop conditions become the default rule set, so existing settings keep working.
+* Safety: actions that power the machine down keep the countdown window, the dry-run mode and the re-arm delay.
+* Each rule carries an optional UPS scope (empty = the UPS that powers this computer), so G4 can attach rules to
+  individual UPSes without another settings migration.
+
+### G4 – Multiple servers and UPSes
 * Settings model: a list of servers (host, port, credentials, auto-reconnect), each with a list of UPS names;
   `LIST UPS` offers the UPSes available on a server. The current single-connection settings migrate to one entry.
 * Core: one `NutClient` per server shared by one `UpsMonitor` per UPS (the protocol allows several `LOGIN`s per
@@ -36,14 +47,6 @@ both export to CSV. Details in the change log below.
 * UI: an overview with one card per UPS (status, charge, runtime) and the current gauge view as a detail page;
   the tray icon shows the worst state of all UPSes.
 * Shutdown: decide per UPS whether it powers this computer (only those can trigger the local stop action).
-
-### G4 – Actions system
-* Generalise `ShutdownPolicy` into rules: **trigger** (status flag becomes active/inactive, value below/above a
-  threshold, connection lost for N seconds, time on battery ≥ N) + optional delay/countdown + **actions**.
-* Built-in actions: shut down / suspend / hibernate this computer, notification, run a command or script (with
-  UPS values as environment variables), send an e-mail/webhook, write to the log.
-* The current fixed stop conditions become the default rule set, so existing settings keep working.
-* Safety: actions that power the machine down keep the countdown window, the dry-run mode and the re-arm delay.
 
 ## Backlog (from milestone 1)
 * Verify the WinNUT settings import against a real WinNUT 2.x `user.config` with saved credentials.
