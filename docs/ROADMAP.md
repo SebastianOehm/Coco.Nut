@@ -6,9 +6,9 @@ This file tracks where Coco.Nut is heading after milestone 1 (the C# port of Win
 ## Versioning
 
 The base version lives in `<Version>` in [`Directory.Build.props`](../Directory.Build.props). Each completed roadmap
-goal raises the minor version (G2 gave 0.2.0, G3 gives 0.3.0, and so on); fixes in between
-raise the patch version. Every push to `preMain` publishes a pre-release named `<base>-pre.<run number>`, e.g.
-`0.2.0-pre.3`.
+goal raises the minor version (G2 gave 0.2.0, G3 gave 0.3.0, the next completed goal gives 0.4.0); fixes in
+between raise the patch version. Every push to `preMain` publishes a pre-release named `<base>-pre.<run number>`,
+e.g. `0.3.0-pre.3`.
 
 ## Original goals (by gbakeman)
 
@@ -20,7 +20,7 @@ numbered in the order they ship (goal G<n> ships as 0.<n>.0):
 |---|------|--------|
 | G1 | Cross-platform, native desktop app written in C# and XAML | **Done** (milestone 1). Built with Avalonia UI instead of the originally mentioned .NET MAUI: Avalonia supports Linux desktops, MAUI does not. |
 | G2 | Keep a history of the data points collected from a UPS | **Done** (0.2.0). A SQLite history of readings and events with a History window (charts, searchable events, CSV export) and a Settings section. |
-| G3 | Actions system: the user defines actions that run when certain conditions are met; default actions where supported (hibernate or shut down the system, run commands, notify, …) | Partly done: fixed rules (charge/runtime floor, FSD, OB+LB) with shutdown/suspend/hibernate and notifications |
+| G3 | Actions system: the user defines actions that run when certain conditions are met; default actions where supported (hibernate or shut down the system, run commands, notify, …) | **Done** (0.3.0). A rule engine with triggers, delays and actions (stop the computer, notification, log entry, command, webhook) replaces the fixed shutdown policy; the old conditions are built-in rules and user rules are edited on a Rules tab in the Settings. |
 | G4 | Monitor multiple NUT servers at once, with multiple UPSes attached to each | Open |
 
 ## Planned work
@@ -29,15 +29,16 @@ numbered in the order they ship (goal G<n> ships as 0.<n>.0):
 Readings and events are recorded per UPS into `history.db`; the History window charts them and lists the events;
 both export to CSV. Details in the change log below.
 
-### G3 – Actions system
-* Generalise `ShutdownPolicy` into rules: **trigger** (status flag becomes active/inactive, value below/above a
-  threshold, connection lost for N seconds, time on battery ≥ N) + optional delay/countdown + **actions**.
-* Built-in actions: shut down / suspend / hibernate this computer, notification, run a command or script (with
-  UPS values as environment variables), send an e-mail/webhook, write to the log.
-* The current fixed stop conditions become the default rule set, so existing settings keep working.
-* Safety: actions that power the machine down keep the countdown window, the dry-run mode and the re-arm delay.
-* Each rule carries an optional UPS scope (empty = the UPS that powers this computer), so G4 can attach rules to
-  individual UPSes without another settings migration.
+### G3 – Actions system (done in 0.3.0)
+A rule engine replaces the fixed shutdown policy: a rule has a trigger, an optional delay and a list of actions, and the
+former stop conditions are the built-in rules. User rules are edited in Settings > Rules. Details in the change log
+below.
+
+Follow-ups:
+* E-mail action (needs protected storage for SMTP credentials).
+* Working directory and placeholder expansion in the arguments of the command action.
+* A "test action" button in the rule editor.
+* Rules per UPS once G4 lands: `ActionRule.UpsName` already exists but is ignored for now.
 
 ### G4 – Multiple servers and UPSes
 * Settings model: a list of servers (host, port, credentials, auto-reconnect), each with a list of UPS names;
@@ -57,6 +58,29 @@ both export to CSV. Details in the change log below.
   UPS commands (`INSTCMD`, `SET VAR`), TLS (`STARTTLS`).
 
 ## Change log
+
+### 2026-10-19 – 0.3.0: Actions system (G3)
+* Rule engine replacing the fixed shutdown policy. Triggers: status flag active / became active / became inactive,
+  value at or below / at or above a threshold (optionally "only on battery"), on battery for N seconds, connection
+  lost for N seconds; level triggers take an optional delay. Rules are evaluated in order. Level rules fire once per
+  rising edge; stop rules keep reporting while their condition holds, so the existing countdown, dry-run and re-arm
+  safety applies unchanged.
+* The former fixed conditions (FSD if "respect FSD", OB+LB, charge floor, runtime floor) are the built-in rules. They
+  are still configured on the Power ("Shutdown options") tab and evaluated before the user rules, so existing
+  settings keep working without a migration.
+* Behaviour change: a pending stop is now only cancelled by "power restored" when it started while on battery. A
+  forced shutdown received while on line power is no longer cancelled by the next reading.
+* Actions: stop the computer (shutdown, suspend or hibernate), notification, log entry, run a command (no shell,
+  `COCONUT_*` environment variables carry the UPS values, killed after its timeout) and webhook (HTTP POST with a JSON
+  body of the values, 10 s timeout). Messages support placeholders such as `{ups}`, `{status}`, `{charge}` and
+  `{runtime}`. Non-stop actions run once per firing, also while a stop is pending.
+* Settings > **Rules**: list with add, duplicate, delete and reorder, an editor for trigger and actions, validation and
+  a warning on stop rules; the settings window is larger. User rules are stored in `actions.rules` of the settings
+  file.
+* The countdown window and the history show "Rule: <name>" for stops started by a user rule; a "rule fired" history
+  event is recorded for user rules.
+* Connection-lost tracking ends when the user disconnects on purpose.
+* Strings in all 7 languages; version raised to 0.3.0.
 
 ### 2026-10-19 – 0.2.0: Data history (G2)
 * Storage: `history.db` (SQLite) in the data directory. A reading is stored at most every **sample interval** seconds

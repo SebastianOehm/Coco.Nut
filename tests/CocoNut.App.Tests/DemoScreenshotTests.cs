@@ -1,6 +1,8 @@
+using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media.Imaging;
+using Avalonia.VisualTree;
 using CocoNut.App.Services;
 using CocoNut.App.Tests.Fakes;
 using CocoNut.App.ViewModels;
@@ -95,6 +97,26 @@ public class DemoScreenshotTests
         string artifactsDirectory = Path.Combine(FindRepositoryRoot(), "artifacts");
         Directory.CreateDirectory(artifactsDirectory);
         frame.Save(Path.Combine(artifactsDirectory, "settings.png"));
+    }
+
+    [AvaloniaFact]
+    public void SettingsWindow_rules_tab_screenshot_is_saved_to_artifacts_settings_rules_png()
+    {
+        var settings = SettingsWindowRulesTests.SettingsWithSampleRules();
+        settings.Actions.Rules.RemoveAt(settings.Actions.Rules.Count - 1); // the deliberately invalid one
+        var vm = SettingsWindowRulesTests.CreateViewModel(settings);
+        vm.SelectedRule = vm.Rules[1]; // the stop rule, so the warning is visible
+
+        var window = new SettingsWindow { DataContext = vm };
+        window.Show();
+        window.GetVisualDescendants().OfType<TabControl>().First().SelectedIndex = SettingsWindowRulesTests.RulesTabIndex;
+
+        WriteableBitmap? frame = window.CaptureRenderedFrame();
+        Assert.NotNull(frame);
+
+        string artifactsDirectory = Path.Combine(FindRepositoryRoot(), "artifacts");
+        Directory.CreateDirectory(artifactsDirectory);
+        frame.Save(Path.Combine(artifactsDirectory, "settings-rules.png"));
     }
 
     [AvaloniaFact]

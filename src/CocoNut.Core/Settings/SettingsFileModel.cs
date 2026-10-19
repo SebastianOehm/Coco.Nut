@@ -21,6 +21,9 @@ public sealed class SettingsFileModel
     public LoggingSettings Logging { get; set; } = new();
     public UpdateSettings Update { get; set; } = new();
     public HistorySettings History { get; set; } = new();
+
+    /// <summary>Optional and additive: files written before it existed simply lack it (no schema version bump).</summary>
+    public ActionsSettings Actions { get; set; } = new();
 }
 
 /// <summary>Mirrors <see cref="ConnectionSettings"/> but stores the username/password protected on disk.</summary>

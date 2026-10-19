@@ -51,7 +51,8 @@ public sealed class ShutdownWindowController : IDisposable
             () => _monitor.LastReading,
             _coordinator.ExecuteNowAsync,
             _coordinator.TryExtend,
-            _dispatcher);
+            _dispatcher,
+            e.RuleName);
 
         _window = new ShutdownWindow { DataContext = _viewModel };
         _window.Show();

@@ -35,6 +35,7 @@ public sealed partial class ShutdownViewModel : ObservableObject, IDisposable
     /// <param name="executeNow">Invoked by the "shut down now" button (<see cref="ShutdownCoordinator.ExecuteNowAsync"/>).</param>
     /// <param name="tryExtend">Invoked by the grace button (<see cref="ShutdownCoordinator.TryExtend"/>).</param>
     /// <param name="dispatcher">Marshals <paramref name="countdown"/>'s events (raised off the UI thread) back to it.</param>
+    /// <param name="ruleName">The name of the rule that started the stop, shown as the reason for <see cref="ShutdownReason.CustomRule"/>.</param>
     public ShutdownViewModel(
         ShutdownReason reason,
         StopAction stopAction,
@@ -47,7 +48,8 @@ public sealed partial class ShutdownViewModel : ObservableObject, IDisposable
         Func<UpsReading?> currentReadingProvider,
         Func<Task> executeNow,
         Func<bool> tryExtend,
-        IUiDispatcher dispatcher)
+        IUiDispatcher dispatcher,
+        string? ruleName = null)
     {
         _countdown = countdown ?? throw new ArgumentNullException(nameof(countdown));
         _currentReadingProvider = currentReadingProvider ?? throw new ArgumentNullException(nameof(currentReadingProvider));
@@ -57,7 +59,7 @@ public sealed partial class ShutdownViewModel : ObservableObject, IDisposable
 
         TitleText = dryRun ? $"{Strings.Shutdown_Title} [DRY RUN]" : Strings.Shutdown_Title;
         StopActionText = StopActionFormatter.ToLocalizedText(stopAction);
-        ReasonText = BuildReasonText(reason, batteryChargeFloor, runtimeFloorSeconds, readingAtStart);
+        ReasonText = BuildReasonText(reason, batteryChargeFloor, runtimeFloorSeconds, readingAtStart, ruleName);
         CanShowGraceButton = allowExtend;
 
         _countdown.Tick += OnTick;
@@ -138,7 +140,8 @@ public sealed partial class ShutdownViewModel : ObservableObject, IDisposable
         BatteryStatusText = string.Format(CultureInfo.CurrentCulture, Strings.Shutdown_BatteryStatus, chargeText, runtimeText);
     }
 
-    private static string BuildReasonText(ShutdownReason reason, int chargeFloor, int runtimeFloorSeconds, UpsReading? reading) => reason switch
+    private static string BuildReasonText(
+        ShutdownReason reason, int chargeFloor, int runtimeFloorSeconds, UpsReading? reading, string? ruleName) => reason switch
     {
         ShutdownReason.BatteryChargeFloor => string.Format(
             CultureInfo.CurrentCulture, Strings.Shutdown_Reason_BatteryCharge, FormatNumber(reading?.BatteryCharge), chargeFloor),
@@ -147,6 +150,8 @@ public sealed partial class ShutdownViewModel : ObservableObject, IDisposable
             RuntimeFormatter.FormatRuntime(reading?.BatteryRuntime), RuntimeFormatter.FormatHms(TimeSpan.FromSeconds(runtimeFloorSeconds))),
         ShutdownReason.ForcedShutdown => Strings.Shutdown_Reason_Fsd,
         ShutdownReason.UpsLowBattery => Strings.Shutdown_Reason_UpsLowBattery,
+        ShutdownReason.CustomRule when !string.IsNullOrWhiteSpace(ruleName) => string.Format(
+            CultureInfo.CurrentCulture, Strings.Shutdown_Reason_CustomRule, ruleName),
         _ => string.Empty,
     };
 

@@ -965,4 +965,247 @@
   <data name="Vars_Value" xml:space="preserve">
     <value>值：</value>
   </data>
+  <data name="Shutdown_Reason_CustomRule" xml:space="preserve">
+    <value>規則：{0}</value>
+  </data>
+  <data name="History_Reason_CustomRule" xml:space="preserve">
+    <value>規則：{0}</value>
+  </data>
+  <data name="History_Event_RuleFired" xml:space="preserve">
+    <value>規則已觸發</value>
+  </data>
+  <data name="Validation_RuleNameRequired" xml:space="preserve">
+    <value>每條規則都需要名稱。</value>
+  </data>
+  <data name="Validation_RuleIdInvalid" xml:space="preserve">
+    <value>某條規則的 ID 缺失、重複或為保留值。</value>
+  </data>
+  <data name="Validation_RuleReasonInvalid" xml:space="preserve">
+    <value>使用者自訂規則必須使用「自訂規則」作為停止原因。</value>
+  </data>
+  <data name="Validation_RuleActionsRequired" xml:space="preserve">
+    <value>每條規則至少需要一個動作。</value>
+  </data>
+  <data name="Validation_RuleThresholdInvalid" xml:space="preserve">
+    <value>規則門檻值必須是有限數值。</value>
+  </data>
+  <data name="Validation_RuleDelayRange" xml:space="preserve">
+    <value>規則延遲必須介於 0 到 86400 秒之間。</value>
+  </data>
+  <data name="Validation_RuleDurationRange" xml:space="preserve">
+    <value>規則持續時間必須介於 0 到 86400 秒之間。</value>
+  </data>
+  <data name="Validation_RuleFlagsRequired" xml:space="preserve">
+    <value>請至少為此觸發條件選擇一個 UPS 狀態旗標。</value>
+  </data>
+  <data name="Validation_RuleCommandRequired" xml:space="preserve">
+    <value>必須填寫要執行的命令。</value>
+  </data>
+  <data name="Validation_RuleTimeoutRange" xml:space="preserve">
+    <value>命令逾時必須介於 1 到 3600 秒之間。</value>
+  </data>
+  <data name="Validation_RuleUrlInvalid" xml:space="preserve">
+    <value>Webhook 網址必須是絕對的 http 或 https 位址。</value>
+  </data>
+  <data name="Validation_RuleMessageRequired" xml:space="preserve">
+    <value>必須填寫訊息文字。</value>
+  </data>
+  <data name="Prefs_Rules_Tab" xml:space="preserve">
+    <value>規則</value>
+  </data>
+  <data name="Prefs_Rules_Intro" xml:space="preserve">
+    <value>自訂規則會在內建的停止條件之後執行。內建條件在「關機選項」索引標籤中設定，且一律最先判斷。規則由上至下依序判斷，順序即優先順序。</value>
+  </data>
+  <data name="Prefs_Rules_Add" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="Prefs_Rules_Duplicate" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="Prefs_Rules_Delete" xml:space="preserve">
+    <value>刪除</value>
+  </data>
+  <data name="Prefs_Rules_MoveUp" xml:space="preserve">
+    <value>上移</value>
+  </data>
+  <data name="Prefs_Rules_MoveDown" xml:space="preserve">
+    <value>下移</value>
+  </data>
+  <data name="Prefs_Rules_Delete_ConfirmTitle" xml:space="preserve">
+    <value>刪除規則</value>
+  </data>
+  <data name="Prefs_Rules_Delete_ConfirmMessage" xml:space="preserve">
+    <value>要刪除規則「{0}」嗎？</value>
+  </data>
+  <data name="Prefs_Rules_NewName" xml:space="preserve">
+    <value>新規則</value>
+  </data>
+  <data name="Prefs_Rules_CopyName" xml:space="preserve">
+    <value>{0}（副本）</value>
+  </data>
+  <data name="Prefs_Rules_Empty" xml:space="preserve">
+    <value>尚無規則。按一下「新增」建立一條。</value>
+  </data>
+  <data name="Prefs_Rules_Invalid" xml:space="preserve">
+    <value>此規則有問題，儲存前必須修正。</value>
+  </data>
+  <data name="Prefs_Rules_Name" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="Prefs_Rules_Enabled" xml:space="preserve">
+    <value>啟用</value>
+  </data>
+  <data name="Prefs_Rules_Trigger" xml:space="preserve">
+    <value>觸發條件</value>
+  </data>
+  <data name="Prefs_Rules_Flags" xml:space="preserve">
+    <value>狀態旗標</value>
+  </data>
+  <data name="Prefs_Rules_Flags_Hint" xml:space="preserve">
+    <value>「處於作用中」：所選旗標必須全部存在。「變為作用中／非作用中」：所選旗標任一個發生變化即可。</value>
+  </data>
+  <data name="Prefs_Rules_Metric" xml:space="preserve">
+    <value>數值</value>
+  </data>
+  <data name="Prefs_Rules_Threshold" xml:space="preserve">
+    <value>臨界值</value>
+  </data>
+  <data name="Prefs_Rules_OnBatteryOnly" xml:space="preserve">
+    <value>僅在使用電池供電時</value>
+  </data>
+  <data name="Prefs_Rules_Duration" xml:space="preserve">
+    <value>持續時間（秒）</value>
+  </data>
+  <data name="Prefs_Rules_Delay" xml:space="preserve">
+    <value>延遲（秒）</value>
+  </data>
+  <data name="Prefs_Rules_Delay_ToolTip" xml:space="preserve">
+    <value>條件必須不間斷地持續多久規則才會觸發。0 表示立即觸發。</value>
+  </data>
+  <data name="Prefs_Rules_Actions" xml:space="preserve">
+    <value>動作</value>
+  </data>
+  <data name="Prefs_Rules_AddAction" xml:space="preserve">
+    <value>新增動作</value>
+  </data>
+  <data name="Prefs_Rules_RemoveAction" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="Prefs_Rules_ActionKind" xml:space="preserve">
+    <value>動作</value>
+  </data>
+  <data name="Prefs_Rules_Message" xml:space="preserve">
+    <value>訊息</value>
+  </data>
+  <data name="Prefs_Rules_Message_Hint" xml:space="preserve">
+    <value>預留位置：{0}</value>
+  </data>
+  <data name="Prefs_Rules_Command" xml:space="preserve">
+    <value>命令</value>
+  </data>
+  <data name="Prefs_Rules_Arguments" xml:space="preserve">
+    <value>引數（每行一個）</value>
+  </data>
+  <data name="Prefs_Rules_Timeout" xml:space="preserve">
+    <value>逾時（秒）</value>
+  </data>
+  <data name="Prefs_Rules_Url" xml:space="preserve">
+    <value>Webhook URL</value>
+  </data>
+  <data name="Prefs_Rules_StopWarning" xml:space="preserve">
+    <value>警告：此規則觸發時，將在「關機選項」索引標籤中設定的倒數結束後停止本電腦（關機、睡眠或休眠）。</value>
+  </data>
+  <data name="Prefs_Rules_Problems" xml:space="preserve">
+    <value>問題</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_FlagsActive" xml:space="preserve">
+    <value>狀態旗標處於作用中</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_FlagsBecameActive" xml:space="preserve">
+    <value>狀態旗標變為作用中</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_FlagsBecameInactive" xml:space="preserve">
+    <value>狀態旗標變為非作用中</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_ValueAtOrBelow" xml:space="preserve">
+    <value>數值小於或等於臨界值</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_ValueAtOrAbove" xml:space="preserve">
+    <value>數值大於或等於臨界值</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_OnBatteryFor" xml:space="preserve">
+    <value>使用電池供電達一段時間</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_ConnectionLost" xml:space="preserve">
+    <value>與 NUT 伺服器的連線中斷達一段時間</value>
+  </data>
+  <data name="Prefs_Rules_Metric_BatteryCharge" xml:space="preserve">
+    <value>電池電量 (%)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_BatteryRuntimeSeconds" xml:space="preserve">
+    <value>電池續航時間（秒）</value>
+  </data>
+  <data name="Prefs_Rules_Metric_BatteryVoltage" xml:space="preserve">
+    <value>電池電壓 (V)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_InputVoltage" xml:space="preserve">
+    <value>輸入電壓 (V)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_OutputVoltage" xml:space="preserve">
+    <value>輸出電壓 (V)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_LoadPercent" xml:space="preserve">
+    <value>負載 (%)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_OutputPowerWatts" xml:space="preserve">
+    <value>輸出功率 (W)</value>
+  </data>
+  <data name="Prefs_Rules_Action_StopComputer" xml:space="preserve">
+    <value>停止本電腦</value>
+  </data>
+  <data name="Prefs_Rules_Action_Notify" xml:space="preserve">
+    <value>顯示通知</value>
+  </data>
+  <data name="Prefs_Rules_Action_Log" xml:space="preserve">
+    <value>寫入記錄檔</value>
+  </data>
+  <data name="Prefs_Rules_Action_RunCommand" xml:space="preserve">
+    <value>執行命令</value>
+  </data>
+  <data name="Prefs_Rules_Action_Webhook" xml:space="preserve">
+    <value>呼叫 Webhook</value>
+  </data>
+  <data name="Prefs_Rules_Summary" xml:space="preserve">
+    <value>{0} → {1}</value>
+  </data>
+  <data name="Prefs_Rules_Summary_FlagsActive" xml:space="preserve">
+    <value>{0} 處於作用中</value>
+  </data>
+  <data name="Prefs_Rules_Summary_FlagsBecameActive" xml:space="preserve">
+    <value>{0} 變為作用中</value>
+  </data>
+  <data name="Prefs_Rules_Summary_FlagsBecameInactive" xml:space="preserve">
+    <value>{0} 變為非作用中</value>
+  </data>
+  <data name="Prefs_Rules_Summary_ValueAtOrBelow" xml:space="preserve">
+    <value>{0} ≤ {1}</value>
+  </data>
+  <data name="Prefs_Rules_Summary_ValueAtOrAbove" xml:space="preserve">
+    <value>{0} ≥ {1}</value>
+  </data>
+  <data name="Prefs_Rules_Summary_OnBatteryOnly" xml:space="preserve">
+    <value>{0}，使用電池時</value>
+  </data>
+  <data name="Prefs_Rules_Summary_OnBatteryFor" xml:space="preserve">
+    <value>使用電池 {0} 秒</value>
+  </data>
+  <data name="Prefs_Rules_Summary_ConnectionLost" xml:space="preserve">
+    <value>連線中斷 {0} 秒</value>
+  </data>
+  <data name="Prefs_Rules_Summary_NoFlags" xml:space="preserve">
+    <value>無旗標</value>
+  </data>
+  <data name="Prefs_Rules_Summary_NoActions" xml:space="preserve">
+    <value>無動作</value>
+  </data>
 </root>

@@ -15,8 +15,8 @@ rewrite exists, and [`docs/PLAN.md`](docs/PLAN.md) for the detailed migration pl
 platform layer are implemented and tested; the Avalonia UI (windows beyond the main dashboard) is still being built
 out. Expect rough edges and missing features until the first tagged release.
 
-See [`docs/ROADMAP.md`](docs/ROADMAP.md) for planned features (multiple NUT servers/UPSes, an actions system) and
-the change log.
+See [`docs/ROADMAP.md`](docs/ROADMAP.md) for planned features (multiple NUT servers/UPSes next; the actions system
+is done) and the change log.
 
 ## Features
 
@@ -24,7 +24,10 @@ the change log.
   runtime) on gauge and bar controls
 - Desktop notifications on power/status changes (power lost/restored, low battery, forced shutdown, connection
   lost/restored)
-- Configurable shutdown, suspend, or hibernate of the local machine when:
+- Actions system: user-defined rules (Settings > Rules) fire when a status flag changes, a value crosses a threshold,
+  the UPS has been on battery for a while or the connection is lost, and run actions: stop the computer, notify, log,
+  run a command or call a webhook
+- Configurable shutdown, suspend, or hibernate of the local machine, provided by built-in rules, when:
   - the battery charge falls to or below a configured floor while on battery
   - the estimated runtime falls to or below a configured floor while on battery
   - the NUT server requests a forced shutdown (`ups.status` contains `FSD`)
@@ -157,7 +160,7 @@ feature.
 
 ```
 src/
-├─ CocoNut.Core/          NUT protocol client, UPS monitor/calculators, shutdown policy, settings, logging, updates
+├─ CocoNut.Core/          NUT protocol client, UPS monitor/calculators, rule engine and actions, settings, logging, updates
 ├─ CocoNut.Localization/  Strings.resx (English) + Strings.<culture>.resx translations
 ├─ CocoNut.Platform/      Windows/Linux/macOS power actions and autostart implementations
 └─ CocoNut.App/           Avalonia desktop app (views, view models, gauge control, tray icon)

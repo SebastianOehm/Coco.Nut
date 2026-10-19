@@ -1,9 +1,9 @@
 namespace CocoNut.Core.Shutdown;
 
-/// <summary>Why a <see cref="ShutdownDecision"/> starts or cancels the stop procedure.</summary>
+/// <summary>Why the stop procedure starts or is cancelled.</summary>
 public enum ShutdownReason
 {
-    /// <summary>No decision was made; the value carried by a <see cref="ShutdownDecisionKind.None"/> decision.</summary>
+    /// <summary>No reason (default value).</summary>
     None,
 
     /// <summary>Battery charge fell to or below <c>PowerSettings.BatteryChargeFloor</c> while on battery.</summary>
@@ -24,4 +24,10 @@ public enum ShutdownReason
 
     /// <summary>Mains power returned while a shutdown was pending.</summary>
     PowerRestored,
+
+    /// <summary>
+    /// A user-defined rule (not one of the built-in ones above) started the stop. The UI shows the rule's name
+    /// (<see cref="ShutdownPendingEventArgs.RuleName"/>) as the reason.
+    /// </summary>
+    CustomRule,
 }

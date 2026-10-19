@@ -1,5 +1,6 @@
 using System.Threading;
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.Actions;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Ups;
@@ -8,9 +9,24 @@ using Microsoft.Extensions.Logging;
 namespace CocoNut.Core.Shutdown;
 
 /// <summary>
-/// Wires <see cref="UpsMonitor"/> readings through <see cref="ShutdownPolicy"/> to a countdown (or an immediate
-/// stop) and finally to <see cref="IPowerActions"/>. Ports WinNUT's <c>Shutdown_Event</c>/<c>Stop_Shutdown_Event</c>/
-/// <c>Shutdown_Action</c> in <c>WinNUT.vb</c>.
+/// Wires <see cref="UpsMonitor"/> readings through the <see cref="RuleEngine"/> and its <see cref="ActionRule"/>s to
+/// a countdown (or an immediate stop) and finally to <see cref="IPowerActions"/>. Ports WinNUT's
+/// <c>Shutdown_Event</c>/<c>Stop_Shutdown_Event</c>/<c>Shutdown_Action</c> in <c>WinNUT.vb</c>.
+/// <para>
+/// Stop rules are level triggered: while their condition holds the engine reports them on every evaluation, and
+/// this class ignores the repeats while a stop is pending (<c>_shutdownPending</c>) or the policy is still
+/// re-arming (<c>_armed</c>); once re-armed, a condition that still holds starts the stop again.
+/// </para>
+/// <para>
+/// Every other action of a rule (notify, log, command, webhook) is handed to the <see cref="IRuleActionRunner"/> once
+/// per <see cref="RuleMatch.IsNewFiring"/>, before and independent of the stop logic: also while a stop is pending
+/// and while the policy is re-arming.
+/// </para>
+/// <para>
+/// A pending stop is cancelled when mains power returns (<c>OL</c> present, <c>OB</c> cleared), but only if the
+/// stop was started while the UPS was on battery. A stop started on line power (for example a forced shutdown
+/// received while on line) is not cancelled by the next reading, which the previous fixed policy did.
+/// </para>
 /// </summary>
 public sealed class ShutdownCoordinator : IAsyncDisposable
 {
@@ -33,6 +49,10 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
     private readonly UpsMonitor _monitor;
     private readonly IPowerActions _powerActions;
     private readonly Func<PowerSettings> _settingsProvider;
+    private readonly Func<IReadOnlyList<ActionRule>> _rulesProvider;
+    private readonly RuleEngine _engine;
+    private readonly IRuleActionRunner? _actionRunner;
+    private readonly Lock _engineGate = new();
     private readonly TimeProvider _timeProvider;
     private readonly ILogger _logger;
     private readonly Lock _gate = new();
@@ -44,18 +64,50 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
     private bool _executed;
     private bool _armed = true;
     private ShutdownReason _pendingReason;
+    private StopAction? _pendingStopAction;
+    private string? _pendingRuleName;
+    private bool _startedOnBattery;
+    private bool _connectionLost;
+    private ITimer? _connectionTimer;
 
+    /// <summary>Creates a coordinator running the built-in <see cref="DefaultRules"/> derived from the power settings.</summary>
     public ShutdownCoordinator(
         UpsMonitor monitor,
         IPowerActions powerActions,
         Func<PowerSettings> settingsProvider,
         TimeProvider timeProvider,
-        ILogger<ShutdownCoordinator> logger)
+        ILogger<ShutdownCoordinator> logger,
+        IRuleActionRunner? actionRunner = null)
+        : this(monitor, powerActions, settingsProvider, () => DefaultRules.FromPowerSettings(settingsProvider()), timeProvider, logger, actionRunner)
     {
+    }
+
+    /// <param name="monitor">The UPS monitor to watch.</param>
+    /// <param name="powerActions">Executes the power action.</param>
+    /// <param name="settingsProvider">Countdown, extend and immediate-stop settings (and the stop action fallback).</param>
+    /// <param name="rulesProvider">
+    /// The rule set, asked on every evaluation so changes apply at once. It may return new instances each time: the
+    /// engine's per-rule state is keyed by <see cref="ActionRule.Id"/>.
+    /// </param>
+    /// <param name="timeProvider">Time source for the engine, countdown and re-arm delay.</param>
+    /// <param name="logger">Logger.</param>
+    /// <param name="actionRunner">Runs the actions other than stopping the computer; <see langword="null"/> = they are ignored.</param>
+    public ShutdownCoordinator(
+        UpsMonitor monitor,
+        IPowerActions powerActions,
+        Func<PowerSettings> settingsProvider,
+        Func<IReadOnlyList<ActionRule>> rulesProvider,
+        TimeProvider timeProvider,
+        ILogger<ShutdownCoordinator> logger,
+        IRuleActionRunner? actionRunner = null)
+    {
+        _actionRunner = actionRunner;
         _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
         _powerActions = powerActions ?? throw new ArgumentNullException(nameof(powerActions));
         _settingsProvider = settingsProvider ?? throw new ArgumentNullException(nameof(settingsProvider));
+        _rulesProvider = rulesProvider ?? throw new ArgumentNullException(nameof(rulesProvider));
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+        _engine = new RuleEngine(timeProvider);
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         // WinNUT stubbed the actual power action out under an attached debugger (Shutdown_Action, #If DEBUG).
@@ -64,6 +116,8 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
 
         _monitor.ReadingUpdated += OnReadingUpdated;
         _monitor.StatusChanged += OnStatusChanged;
+        _monitor.ConnectionLost += OnConnectionLost;
+        _monitor.StateChanged += OnStateChanged;
     }
 
     /// <summary>
@@ -80,6 +134,18 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
             lock (_gate)
             {
                 return _shutdownPending;
+            }
+        }
+    }
+
+    /// <summary>The name of the rule whose stop is pending, or <see langword="null"/> when nothing is pending.</summary>
+    public string? PendingRuleName
+    {
+        get
+        {
+            lock (_gate)
+            {
+                return _shutdownPending ? _pendingRuleName : null;
             }
         }
     }
@@ -102,6 +168,12 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
     /// </summary>
     public event EventHandler<ShutdownPendingEventArgs>? ShutdownPending;
 
+    /// <summary>
+    /// Raised for every new firing (see <see cref="RuleMatch.IsNewFiring"/>) of a user-defined rule, not for the
+    /// built-in stop rules (their stops are reported by <see cref="ShutdownPending"/> and friends).
+    /// </summary>
+    public event EventHandler<RuleFiredEventArgs>? RuleFired;
+
     /// <summary>Raised when a pending shutdown is cancelled because mains power returned.</summary>
     public event EventHandler<ShutdownReason>? ShutdownCancelled;
 
@@ -122,29 +194,134 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
 
     private void OnStatusChanged(object? sender, UpsStatusChangedEventArgs e) => Evaluate(_monitor.LastReading, e);
 
-    private void Evaluate(UpsReading? reading, UpsStatusChangedEventArgs? statusChange)
+    private void OnConnectionLost(object? sender, Exception? error)
     {
-        if (reading is null)
+        lock (_gate)
+        {
+            _connectionLost = true;
+            // Duration triggers need evaluations while no readings arrive; tick once a second until reconnected.
+            _connectionTimer ??= _timeProvider.CreateTimer(_ => Evaluate(null, null), null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+        }
+
+        Evaluate(null, null);
+    }
+
+    private void OnStateChanged(object? sender, MonitorStateChangedEventArgs e)
+    {
+        // The lost state ends in two cases: the connection is back (Connected), or the monitor was stopped on
+        // purpose (Disconnected without an error - the user disconnected, or this coordinator's own LOGOUT before a
+        // power action). A Disconnected *with* an error (lost, auto-reconnect off) is still a lost connection and
+        // keeps counting towards connection-lost rules.
+        var ended = e.NewState == MonitorState.Connected
+            || (e.NewState == MonitorState.Disconnected && e.Error is null);
+        if (!ended)
         {
             return;
         }
 
-        var settings = _settingsProvider();
-        var decision = ShutdownPolicy.Evaluate(reading, statusChange, settings, IsShutdownPending);
-
-        switch (decision.Kind)
+        ITimer? timer;
+        lock (_gate)
         {
-            case ShutdownDecisionKind.Start:
-                Start(decision, settings);
-                break;
-            case ShutdownDecisionKind.Cancel:
-                CancelPending(decision);
-                break;
+            _connectionLost = false;
+            timer = _connectionTimer;
+            _connectionTimer = null;
+        }
+
+        timer?.Dispose();
+    }
+
+    private void Evaluate(UpsReading? reading, UpsStatusChangedEventArgs? statusChange)
+    {
+        if (Volatile.Read(ref _disposed) != 0)
+        {
+            return;
+        }
+
+        bool connectionLost;
+        lock (_gate)
+        {
+            connectionLost = _connectionLost;
+        }
+
+        IReadOnlyList<RuleMatch> matches;
+        lock (_engineGate)
+        {
+            matches = _engine.Evaluate(reading, statusChange, connectionLost, _rulesProvider());
+        }
+
+        DispatchActions(matches, reading);
+
+        if (IsShutdownPending)
+        {
+            // Only the "power restored" cancel rule applies while pending - a stop is never started a second time.
+            if (reading is not null && ShouldCancel(reading))
+            {
+                CancelPending(ShutdownReason.PowerRestored, "Mains power (OL) is present again and on-battery (OB) has cleared.");
+            }
+
+            return;
+        }
+
+        foreach (var match in matches)
+        {
+            var stop = match.Rule.Actions.FirstOrDefault(a => a.Kind == ActionKind.StopComputer);
+            if (stop is not null)
+            {
+                Start(match, stop.StopAction, reading, _settingsProvider());
+                return; // the first firing stop rule (list order = priority) decides.
+            }
         }
     }
 
-    private void Start(ShutdownDecision decision, PowerSettings settings)
+    /// <summary>Reports the new firings and hands their non-stop actions to the runner. Never throws.</summary>
+    private void DispatchActions(IReadOnlyList<RuleMatch> matches, UpsReading? reading)
     {
+        var upsName = _monitor.Settings?.UpsName ?? string.Empty;
+        foreach (var match in matches)
+        {
+            if (!match.IsNewFiring)
+            {
+                continue;
+            }
+
+            if (!DefaultRules.IsBuiltIn(match.Rule.Id))
+            {
+                _logger.LogInformation("Rule '{Rule}' fired: {Detail}", match.Rule.Name, match.Detail);
+                RaiseSafe(RuleFired, new RuleFiredEventArgs(match.Rule, match.Detail));
+            }
+
+            if (_actionRunner is null || !match.Rule.Actions.Any(a => a.Kind != ActionKind.StopComputer))
+            {
+                continue;
+            }
+
+            try
+            {
+                _actionRunner.Run(match, reading, upsName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to start the actions of rule '{Rule}'.", match.Rule.Name);
+            }
+        }
+    }
+
+    private bool ShouldCancel(UpsReading reading)
+    {
+        if (!reading.Status.HasFlag(UpsStatus.OL) || reading.Status.HasFlag(UpsStatus.OB))
+        {
+            return false;
+        }
+
+        lock (_gate)
+        {
+            return _startedOnBattery;
+        }
+    }
+
+    private void Start(RuleMatch match, StopAction stopAction, UpsReading? reading, PowerSettings settings)
+    {
+        var reason = match.Rule.ShutdownReason;
         lock (_gate)
         {
             if (_shutdownPending)
@@ -158,19 +335,22 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
                 // still-critical condition observed on the very next poll would start (and execute) a shutdown
                 // again immediately, in a tight loop.
                 _logger.LogDebug(
-                    "Ignoring a new stop condition ({Reason}) - the stop policy is still re-arming.", decision.Reason);
+                    "Ignoring a new stop condition ({Reason}) - the stop policy is still re-arming.", reason);
                 return;
             }
 
             _shutdownPending = true;
-            _pendingReason = decision.Reason;
+            _pendingReason = reason;
+            _pendingStopAction = stopAction;
+            _pendingRuleName = match.Rule.Name;
+            _startedOnBattery = reading?.Status.HasFlag(UpsStatus.OB) ?? false;
         }
 
-        _logger.LogWarning("Shutdown starting: {Reason} - {Detail}", decision.Reason, decision.Detail);
+        _logger.LogWarning("Shutdown starting: {Reason} - rule '{Rule}': {Detail}", reason, match.Rule.Name, match.Detail);
 
         if (settings.StopImmediately)
         {
-            _ = ExecuteAsync(decision.Reason);
+            _ = ExecuteAsync(reason, stopAction);
             return;
         }
 
@@ -180,12 +360,12 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
             _countdown = countdown;
         }
 
-        countdown.Completed += (_, _) => _ = ExecuteAsync(decision.Reason);
-        RaiseSafe(ShutdownPending, new ShutdownPendingEventArgs(decision.Reason, countdown));
+        countdown.Completed += (_, _) => _ = ExecuteAsync(reason, stopAction);
+        RaiseSafe(ShutdownPending, new ShutdownPendingEventArgs(reason, countdown, match.Rule.Name));
         countdown.Start(TimeSpan.FromSeconds(settings.StopDelaySeconds));
     }
 
-    private void CancelPending(ShutdownDecision decision)
+    private void CancelPending(ShutdownReason reason, string detail)
     {
         ShutdownCountdown? countdown;
         lock (_gate)
@@ -209,8 +389,8 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
 
         countdown?.Cancel();
         countdown?.Dispose();
-        _logger.LogInformation("Shutdown cancelled: {Detail}", decision.Detail);
-        RaiseSafe(ShutdownCancelled, decision.Reason);
+        _logger.LogInformation("Shutdown cancelled: {Detail}", detail);
+        RaiseSafe(ShutdownCancelled, reason);
     }
 
     /// <summary>
@@ -241,16 +421,18 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
     public Task ExecuteNowAsync()
     {
         ShutdownReason reason;
+        StopAction? stopAction;
         ShutdownCountdown? countdown;
         lock (_gate)
         {
             reason = _shutdownPending ? _pendingReason : ShutdownReason.ForcedShutdown;
+            stopAction = _shutdownPending ? _pendingStopAction : null;
             countdown = _countdown;
         }
 
         // Stop the countdown's own timer so its Completed handler cannot also call ExecuteAsync.
         countdown?.Cancel();
-        return ExecuteAsync(reason);
+        return ExecuteAsync(reason, stopAction ?? _settingsProvider().StopAction);
     }
 
     /// <summary>
@@ -265,7 +447,7 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
     /// <see cref="DefaultRearmDelay"/>), so the same still-critical condition observed right after the restart does
     /// not immediately re-trigger a loop of shutdown attempts.
     /// </summary>
-    private async Task ExecuteAsync(ShutdownReason reason)
+    private async Task ExecuteAsync(ShutdownReason reason, StopAction stopAction)
     {
         lock (_gate)
         {
@@ -278,7 +460,6 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
         }
 
         RaiseSafe(ShutdownExecuting, reason);
-        var settings = _settingsProvider();
 
         try
         {
@@ -292,18 +473,18 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
         var succeeded = false;
         if (DryRun)
         {
-            _logger.LogWarning("DRY RUN ({Reason}): would execute power action {Action} now.", reason, settings.StopAction);
+            _logger.LogWarning("DRY RUN ({Reason}): would execute power action {Action} now.", reason, stopAction);
         }
         else
         {
             try
             {
-                await _powerActions.ExecuteAsync(settings.StopAction).ConfigureAwait(false);
+                await _powerActions.ExecuteAsync(stopAction).ConfigureAwait(false);
                 succeeded = true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to execute power action {Action}.", settings.StopAction);
+                _logger.LogError(ex, "Failed to execute power action {Action}.", stopAction);
                 RaiseSafe(ShutdownFailed, ex);
             }
         }
@@ -325,11 +506,14 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
             _countdown = null;
             _executed = false;
             _armed = false;
+            _pendingStopAction = null;
+            _pendingRuleName = null;
+            _startedOnBattery = false;
         }
 
         countdown?.Dispose();
 
-        var rearmDelay = succeeded && settings.StopAction == StopAction.Shutdown ? ShutdownRearmDelay : DefaultRearmDelay;
+        var rearmDelay = succeeded && stopAction == StopAction.Shutdown ? ShutdownRearmDelay : DefaultRearmDelay;
         _ = RearmAfterDelayAsync(rearmDelay);
     }
 
@@ -365,6 +549,8 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
 
         _monitor.ReadingUpdated -= OnReadingUpdated;
         _monitor.StatusChanged -= OnStatusChanged;
+        _monitor.ConnectionLost -= OnConnectionLost;
+        _monitor.StateChanged -= OnStateChanged;
 
         _disposeCts.Cancel();
         _disposeCts.Dispose();
@@ -373,6 +559,8 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
         {
             _countdown?.Dispose();
             _countdown = null;
+            _connectionTimer?.Dispose();
+            _connectionTimer = null;
         }
 
         return ValueTask.CompletedTask;

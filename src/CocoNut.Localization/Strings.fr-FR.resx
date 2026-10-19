@@ -996,4 +996,247 @@ Temps restant : {1}</value>
   <data name="Vars_Value" xml:space="preserve">
     <value>Valeur :</value>
   </data>
+  <data name="Shutdown_Reason_CustomRule" xml:space="preserve">
+    <value>Règle : {0}</value>
+  </data>
+  <data name="History_Reason_CustomRule" xml:space="preserve">
+    <value>Règle : {0}</value>
+  </data>
+  <data name="History_Event_RuleFired" xml:space="preserve">
+    <value>Règle déclenchée</value>
+  </data>
+  <data name="Validation_RuleNameRequired" xml:space="preserve">
+    <value>Chaque règle doit avoir un nom.</value>
+  </data>
+  <data name="Validation_RuleIdInvalid" xml:space="preserve">
+    <value>Une règle a un identifiant manquant, en double ou réservé.</value>
+  </data>
+  <data name="Validation_RuleReasonInvalid" xml:space="preserve">
+    <value>Une règle personnalisée doit utiliser le motif d’arrêt « règle personnalisée ».</value>
+  </data>
+  <data name="Validation_RuleActionsRequired" xml:space="preserve">
+    <value>Une règle doit comporter au moins une action.</value>
+  </data>
+  <data name="Validation_RuleThresholdInvalid" xml:space="preserve">
+    <value>Le seuil de la règle doit être un nombre fini.</value>
+  </data>
+  <data name="Validation_RuleDelayRange" xml:space="preserve">
+    <value>Le délai de la règle doit être compris entre 0 et 86400 secondes.</value>
+  </data>
+  <data name="Validation_RuleDurationRange" xml:space="preserve">
+    <value>La durée de la règle doit être comprise entre 0 et 86400 secondes.</value>
+  </data>
+  <data name="Validation_RuleFlagsRequired" xml:space="preserve">
+    <value>Sélectionnez au moins un indicateur d’état de l’onduleur pour ce déclencheur.</value>
+  </data>
+  <data name="Validation_RuleCommandRequired" xml:space="preserve">
+    <value>La commande à exécuter est obligatoire.</value>
+  </data>
+  <data name="Validation_RuleTimeoutRange" xml:space="preserve">
+    <value>Le délai d’expiration de la commande doit être compris entre 1 et 3600 secondes.</value>
+  </data>
+  <data name="Validation_RuleUrlInvalid" xml:space="preserve">
+    <value>L’URL du webhook doit être une adresse http ou https absolue.</value>
+  </data>
+  <data name="Validation_RuleMessageRequired" xml:space="preserve">
+    <value>Le texte du message est obligatoire.</value>
+  </data>
+  <data name="Prefs_Rules_Tab" xml:space="preserve">
+    <value>Règles</value>
+  </data>
+  <data name="Prefs_Rules_Intro" xml:space="preserve">
+    <value>Vos propres règles s'exécutent après les conditions d'arrêt intégrées. Celles-ci se configurent dans l'onglet Options d'arrêt et sont toujours évaluées en premier. Les règles sont évaluées de haut en bas ; leur ordre est leur priorité.</value>
+  </data>
+  <data name="Prefs_Rules_Add" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="Prefs_Rules_Duplicate" xml:space="preserve">
+    <value>Dupliquer</value>
+  </data>
+  <data name="Prefs_Rules_Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Prefs_Rules_MoveUp" xml:space="preserve">
+    <value>Monter</value>
+  </data>
+  <data name="Prefs_Rules_MoveDown" xml:space="preserve">
+    <value>Descendre</value>
+  </data>
+  <data name="Prefs_Rules_Delete_ConfirmTitle" xml:space="preserve">
+    <value>Supprimer la règle</value>
+  </data>
+  <data name="Prefs_Rules_Delete_ConfirmMessage" xml:space="preserve">
+    <value>Supprimer la règle « {0} » ?</value>
+  </data>
+  <data name="Prefs_Rules_NewName" xml:space="preserve">
+    <value>Nouvelle règle</value>
+  </data>
+  <data name="Prefs_Rules_CopyName" xml:space="preserve">
+    <value>{0} (copie)</value>
+  </data>
+  <data name="Prefs_Rules_Empty" xml:space="preserve">
+    <value>Aucune règle pour l'instant. Utilisez Ajouter pour en créer une.</value>
+  </data>
+  <data name="Prefs_Rules_Invalid" xml:space="preserve">
+    <value>Cette règle contient des problèmes à corriger avant d'enregistrer.</value>
+  </data>
+  <data name="Prefs_Rules_Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Prefs_Rules_Enabled" xml:space="preserve">
+    <value>Activée</value>
+  </data>
+  <data name="Prefs_Rules_Trigger" xml:space="preserve">
+    <value>Déclencheur</value>
+  </data>
+  <data name="Prefs_Rules_Flags" xml:space="preserve">
+    <value>Indicateurs d'état</value>
+  </data>
+  <data name="Prefs_Rules_Flags_Hint" xml:space="preserve">
+    <value>« Sont actifs » : tous les indicateurs choisis doivent être présents. « Sont devenus actifs/inactifs » : le changement d'un seul des indicateurs choisis suffit.</value>
+  </data>
+  <data name="Prefs_Rules_Metric" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="Prefs_Rules_Threshold" xml:space="preserve">
+    <value>Seuil</value>
+  </data>
+  <data name="Prefs_Rules_OnBatteryOnly" xml:space="preserve">
+    <value>Uniquement sur batterie</value>
+  </data>
+  <data name="Prefs_Rules_Duration" xml:space="preserve">
+    <value>Durée (secondes)</value>
+  </data>
+  <data name="Prefs_Rules_Delay" xml:space="preserve">
+    <value>Délai (secondes)</value>
+  </data>
+  <data name="Prefs_Rules_Delay_ToolTip" xml:space="preserve">
+    <value>Durée pendant laquelle la condition doit rester vraie sans interruption avant que la règle ne se déclenche. 0 déclenche immédiatement.</value>
+  </data>
+  <data name="Prefs_Rules_Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Prefs_Rules_AddAction" xml:space="preserve">
+    <value>Ajouter une action</value>
+  </data>
+  <data name="Prefs_Rules_RemoveAction" xml:space="preserve">
+    <value>Retirer</value>
+  </data>
+  <data name="Prefs_Rules_ActionKind" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Prefs_Rules_Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Prefs_Rules_Message_Hint" xml:space="preserve">
+    <value>Variables : {0}</value>
+  </data>
+  <data name="Prefs_Rules_Command" xml:space="preserve">
+    <value>Commande</value>
+  </data>
+  <data name="Prefs_Rules_Arguments" xml:space="preserve">
+    <value>Arguments (un par ligne)</value>
+  </data>
+  <data name="Prefs_Rules_Timeout" xml:space="preserve">
+    <value>Délai d'expiration (secondes)</value>
+  </data>
+  <data name="Prefs_Rules_Url" xml:space="preserve">
+    <value>URL du webhook</value>
+  </data>
+  <data name="Prefs_Rules_StopWarning" xml:space="preserve">
+    <value>Attention : lorsque cette règle se déclenche, elle arrête cet ordinateur (arrêt, veille ou hibernation) après le compte à rebours configuré dans l'onglet Options d'arrêt.</value>
+  </data>
+  <data name="Prefs_Rules_Problems" xml:space="preserve">
+    <value>Problèmes</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_FlagsActive" xml:space="preserve">
+    <value>Les indicateurs d'état sont actifs</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_FlagsBecameActive" xml:space="preserve">
+    <value>Des indicateurs d'état sont devenus actifs</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_FlagsBecameInactive" xml:space="preserve">
+    <value>Des indicateurs d'état sont devenus inactifs</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_ValueAtOrBelow" xml:space="preserve">
+    <value>La valeur est inférieure ou égale à un seuil</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_ValueAtOrAbove" xml:space="preserve">
+    <value>La valeur est supérieure ou égale à un seuil</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_OnBatteryFor" xml:space="preserve">
+    <value>Sur batterie depuis un moment</value>
+  </data>
+  <data name="Prefs_Rules_Trigger_ConnectionLost" xml:space="preserve">
+    <value>Connexion au serveur NUT perdue depuis un moment</value>
+  </data>
+  <data name="Prefs_Rules_Metric_BatteryCharge" xml:space="preserve">
+    <value>Charge de la batterie (%)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_BatteryRuntimeSeconds" xml:space="preserve">
+    <value>Autonomie de la batterie (secondes)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_BatteryVoltage" xml:space="preserve">
+    <value>Tension de la batterie (V)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_InputVoltage" xml:space="preserve">
+    <value>Tension d'entrée (V)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_OutputVoltage" xml:space="preserve">
+    <value>Tension de sortie (V)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_LoadPercent" xml:space="preserve">
+    <value>Charge (%)</value>
+  </data>
+  <data name="Prefs_Rules_Metric_OutputPowerWatts" xml:space="preserve">
+    <value>Puissance de sortie (W)</value>
+  </data>
+  <data name="Prefs_Rules_Action_StopComputer" xml:space="preserve">
+    <value>Arrêter cet ordinateur</value>
+  </data>
+  <data name="Prefs_Rules_Action_Notify" xml:space="preserve">
+    <value>Afficher une notification</value>
+  </data>
+  <data name="Prefs_Rules_Action_Log" xml:space="preserve">
+    <value>Écrire dans le journal</value>
+  </data>
+  <data name="Prefs_Rules_Action_RunCommand" xml:space="preserve">
+    <value>Exécuter une commande</value>
+  </data>
+  <data name="Prefs_Rules_Action_Webhook" xml:space="preserve">
+    <value>Appeler un webhook</value>
+  </data>
+  <data name="Prefs_Rules_Summary" xml:space="preserve">
+    <value>{0} → {1}</value>
+  </data>
+  <data name="Prefs_Rules_Summary_FlagsActive" xml:space="preserve">
+    <value>{0} actif</value>
+  </data>
+  <data name="Prefs_Rules_Summary_FlagsBecameActive" xml:space="preserve">
+    <value>{0} est devenu actif</value>
+  </data>
+  <data name="Prefs_Rules_Summary_FlagsBecameInactive" xml:space="preserve">
+    <value>{0} est devenu inactif</value>
+  </data>
+  <data name="Prefs_Rules_Summary_ValueAtOrBelow" xml:space="preserve">
+    <value>{0} ≤ {1}</value>
+  </data>
+  <data name="Prefs_Rules_Summary_ValueAtOrAbove" xml:space="preserve">
+    <value>{0} ≥ {1}</value>
+  </data>
+  <data name="Prefs_Rules_Summary_OnBatteryOnly" xml:space="preserve">
+    <value>{0}, sur batterie</value>
+  </data>
+  <data name="Prefs_Rules_Summary_OnBatteryFor" xml:space="preserve">
+    <value>Sur batterie depuis {0} s</value>
+  </data>
+  <data name="Prefs_Rules_Summary_ConnectionLost" xml:space="preserve">
+    <value>Connexion perdue depuis {0} s</value>
+  </data>
+  <data name="Prefs_Rules_Summary_NoFlags" xml:space="preserve">
+    <value>aucun indicateur</value>
+  </data>
+  <data name="Prefs_Rules_Summary_NoActions" xml:space="preserve">
+    <value>aucune action</value>
+  </data>
 </root>

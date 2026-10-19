@@ -22,7 +22,8 @@ public class ShutdownViewModelTests
         TimeSpan? delay = null,
         FakeTimeProvider? timeProvider = null,
         Func<Task>? executeNow = null,
-        UpsReading? readingAtStart = null)
+        UpsReading? readingAtStart = null,
+        string? ruleName = null)
     {
         var time = timeProvider ?? new FakeTimeProvider();
         var countdown = new ShutdownCountdown(time);
@@ -40,7 +41,8 @@ public class ShutdownViewModelTests
             currentReadingProvider: () => readingAtStart,
             executeNow: executeNow ?? (() => Task.CompletedTask),
             tryExtend: () => countdown.TryExtend(TimeSpan.FromSeconds(15)),
-            new ImmediateUiDispatcher());
+            new ImmediateUiDispatcher(),
+            ruleName);
 
         return (vm, countdown);
     }
@@ -122,6 +124,27 @@ public class ShutdownViewModelTests
         var (vm, countdown) = Build(reason: ShutdownReason.BatteryChargeFloor, readingAtStart: reading);
 
         Assert.Equal(string.Format(CultureInfo.CurrentCulture, Strings.Shutdown_Reason_BatteryCharge, "22", 30), vm.ReasonText);
+
+        countdown.Dispose();
+    }
+
+    [Fact]
+    public void Custom_rule_reason_shows_the_rule_name()
+    {
+        var (vm, countdown) = Build(reason: ShutdownReason.CustomRule, ruleName: "Stop at night");
+
+        Assert.Equal(string.Format(CultureInfo.CurrentCulture, Strings.Shutdown_Reason_CustomRule, "Stop at night"), vm.ReasonText);
+        Assert.Contains("Stop at night", vm.ReasonText);
+
+        countdown.Dispose();
+    }
+
+    [Fact]
+    public void Custom_rule_reason_without_a_name_shows_no_text()
+    {
+        var (vm, countdown) = Build(reason: ShutdownReason.CustomRule, ruleName: null);
+
+        Assert.Equal(string.Empty, vm.ReasonText);
 
         countdown.Dispose();
     }

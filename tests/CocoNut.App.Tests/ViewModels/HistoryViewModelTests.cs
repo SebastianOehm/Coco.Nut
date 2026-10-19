@@ -389,6 +389,24 @@ public sealed class HistoryViewModelTests : IDisposable
         Assert.Equal(detail, HistoryEventFormatter.ToLocalizedDetail(kind, detail));
     }
 
+    [Theory]
+    [InlineData(HistoryEventKind.ShutdownPending, "Calibration stop")]
+    [InlineData(HistoryEventKind.ShutdownExecuting, "Rule: with colon")]
+    public void Custom_rule_reason_shows_the_rule_name_localized(HistoryEventKind kind, string ruleName)
+    {
+        var detail = HistoryRecorder.CustomRuleDetailPrefix + ruleName;
+
+        Assert.Equal(string.Format(CultureInfo.CurrentCulture, Strings.History_Reason_CustomRule, ruleName), HistoryEventFormatter.ToLocalizedDetail(kind, detail));
+        Assert.Equal("Rule: " + ruleName, HistoryEventFormatter.ToLocalizedDetail(kind, detail)); // English test culture.
+    }
+
+    [Fact]
+    public void Rule_fired_event_shows_the_rule_name_unchanged()
+    {
+        Assert.Equal("My rule", HistoryEventFormatter.ToLocalizedDetail(HistoryEventKind.RuleFired, "My rule"));
+        Assert.Equal(Strings.History_Event_RuleFired, HistoryEventFormatter.ToLocalizedText(HistoryEventKind.RuleFired));
+    }
+
     [Fact]
     public void Null_detail_is_shown_as_empty_text()
     {

@@ -1,9 +1,11 @@
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.Actions;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Shutdown;
 using CocoNut.Core.Tests.Fakes;
 using CocoNut.Core.Tests.Monitoring;
+using CocoNut.Core.Ups;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Time.Testing;
 
@@ -35,6 +37,29 @@ public class ShutdownCoordinatorTests
         }
     }
 
+    private sealed class FakeRuleActionRunner : IRuleActionRunner
+    {
+        public EventCollector<(RuleMatch Match, UpsReading? Reading, string UpsName)> Runs { get; } = new();
+
+        public Exception? Throw { get; set; }
+
+        public void Run(RuleMatch match, UpsReading? reading, string upsName)
+        {
+            Runs.Add((match, reading, upsName));
+            if (Throw is not null)
+            {
+                throw Throw;
+            }
+        }
+    }
+
+    private static ActionRule NotifyRule(string name, UpsStatus flags, bool alsoStop = false, StopAction stopAction = StopAction.Shutdown) => new()
+    {
+        Name = name,
+        Trigger = new RuleTrigger { Kind = TriggerKind.FlagsActive, Flags = flags },
+        Actions = alsoStop ? [RuleAction.StopComputer(stopAction), RuleAction.Notify("hi")] : [RuleAction.Notify("hi")],
+    };
+
     private sealed class MutableSettings
     {
         public PowerSettings Value { get; set; } = new();
@@ -61,7 +86,7 @@ public class ShutdownCoordinatorTests
         }
     }
 
-    private static async Task<Harness> CreateStartedHarnessAsync(PowerSettings? settings = null)
+    private static async Task<Harness> CreateStartedHarnessAsync(PowerSettings? settings = null, Func<IReadOnlyList<ActionRule>>? rules = null, IRuleActionRunner? runner = null)
     {
         var client = new FakeNutClient();
         client.Variables["ups.status"] = "OL";
@@ -72,11 +97,14 @@ public class ShutdownCoordinatorTests
         var powerActions = new FakePowerActions();
         var mutableSettings = new MutableSettings { Value = settings ?? new PowerSettings() };
 
-        var coordinator = new ShutdownCoordinator(
-            monitor, powerActions, () => mutableSettings.Value, timeProvider, NullLogger<ShutdownCoordinator>.Instance)
-        {
-            DryRun = false,
-        };
+        var coordinator = rules is null && runner is null
+            ? new ShutdownCoordinator(
+                monitor, powerActions, () => mutableSettings.Value, timeProvider, NullLogger<ShutdownCoordinator>.Instance)
+            : new ShutdownCoordinator(
+                monitor, powerActions, () => mutableSettings.Value,
+                rules ?? (() => DefaultRules.FromPowerSettings(mutableSettings.Value)),
+                timeProvider, NullLogger<ShutdownCoordinator>.Instance, runner);
+        coordinator.DryRun = false;
 
         var pending = new EventCollector<ShutdownPendingEventArgs>();
         var cancelled = new EventCollector<ShutdownReason>();
@@ -483,5 +511,277 @@ public class ShutdownCoordinatorTests
 
         await h.Coordinator.DisposeAsync();
         await h.Coordinator.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task ForcedShutdownReceivedOnLine_IsNotCancelledByTheNextReading()
+    {
+        // Deliberate change from the former fixed policy: the "power restored" cancel only applies to a stop that
+        // was started while on battery. An FSD received while on line used to be cancelled by the very next reading.
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = false,
+            StopDelaySeconds = 30,
+            RespectFsd = true,
+        });
+
+        await PushReadingAsync(h, "OL FSD");
+        var pending = await h.Pending.NextAsync();
+        Assert.Equal(ShutdownReason.ForcedShutdown, pending.Reason);
+
+        await PushReadingAsync(h, "OL FSD");
+        await PushReadingAsync(h, "OL");
+        await h.Cancelled.AssertNoneAsync(TimeSpan.FromMilliseconds(50));
+        Assert.True(h.Coordinator.IsShutdownPending);
+    }
+
+    [Fact]
+    public async Task ForcedShutdownReceivedOnBattery_IsCancelledWhenPowerReturns()
+    {
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = false,
+            StopDelaySeconds = 30,
+            RespectFsd = true,
+            BatteryChargeFloor = 0,
+        });
+
+        await PushReadingAsync(h, "OB FSD");
+        Assert.Equal(ShutdownReason.ForcedShutdown, (await h.Pending.NextAsync()).Reason);
+
+        await PushReadingAsync(h, "OL");
+        Assert.Equal(ShutdownReason.PowerRestored, await h.Cancelled.NextAsync());
+    }
+
+    [Fact]
+    public async Task CustomRule_ExecutesItsOwnStopAction_WithCustomRuleReason()
+    {
+        var rule = new ActionRule
+        {
+            Name = "Hibernate when load is high",
+            Trigger = new RuleTrigger { Kind = TriggerKind.ValueAtOrAbove, Metric = RuleMetric.BatteryCharge, Threshold = 85 },
+            Actions = [RuleAction.StopComputer(StopAction.Hibernate)],
+        };
+        await using var h = await CreateStartedHarnessAsync(
+            new PowerSettings { StopImmediately = true, StopAction = StopAction.Shutdown },
+            () => [rule]);
+
+        await h.PowerActions.Executions.AssertNoneAsync(TimeSpan.FromMilliseconds(20));
+        await PushReadingAsync(h, "OL", "90");
+
+        Assert.Equal(StopAction.Hibernate, await h.PowerActions.Executions.NextAsync());
+        Assert.Equal(ShutdownReason.CustomRule, await h.Executing.NextAsync());
+    }
+
+    [Fact]
+    public async Task ConnectionLostRule_FiresAfterItsDurationWhileDisconnected()
+    {
+        var rule = new ActionRule
+        {
+            Name = "Stop when the server is gone",
+            Trigger = new RuleTrigger { Kind = TriggerKind.ConnectionLost, DurationSeconds = 30 },
+            Actions = [RuleAction.StopComputer(StopAction.Shutdown)],
+        };
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings { StopImmediately = true }, () => [rule]);
+
+        h.Client.ListVarsResults.Enqueue(new IOException("server gone")); // the next poll fails.
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
+        await h.StateChanges.NextAsync(); // Connected -> Disconnected (auto reconnect is off in the harness)
+
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(10));
+        await h.PowerActions.Executions.AssertNoneAsync(TimeSpan.FromMilliseconds(50));
+
+        // Time passes with no readings at all: only the coordinator's own tick can notice that 30s have elapsed.
+        Assert.Equal(StopAction.Shutdown, await h.PowerActions.Executions.NextAsync(h.TimeProvider, TimeSpan.FromSeconds(10)));
+    }
+
+    [Theory]
+    [InlineData("OL OB")]
+    [InlineData("OB")]
+    public async Task PendingStop_IsNotCancelledUnlessOnLineAndOffBattery(string status)
+    {
+        // Some UPS units briefly report OL and OB together during a transfer; only cancel once OB has cleared.
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings
+        {
+            StopImmediately = false,
+            StopDelaySeconds = 30,
+            BatteryChargeFloor = 30,
+        });
+
+        await PushReadingAsync(h, "OB", "10");
+        await h.Pending.NextAsync();
+
+        await PushReadingAsync(h, status, "10");
+        await h.Cancelled.AssertNoneAsync(TimeSpan.FromMilliseconds(50));
+        Assert.True(h.Coordinator.IsShutdownPending);
+    }
+
+    [Fact]
+    public async Task ConnectionLostRule_DoesNotFire_WhenTheUserDisconnectsAfterTheLoss()
+    {
+        var rule = new ActionRule
+        {
+            Name = "Stop when the server is gone",
+            Trigger = new RuleTrigger { Kind = TriggerKind.ConnectionLost, DurationSeconds = 30 },
+            Actions = [RuleAction.StopComputer(StopAction.Shutdown)],
+        };
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings { StopImmediately = true }, () => [rule]);
+
+        h.Client.ListVarsResults.Enqueue(new IOException("server gone"));
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
+        await h.StateChanges.NextAsync(); // Connected -> Disconnected with an error (lost)
+
+        // A deliberate stop (graceful Disconnected, no error) ends the lost state.
+        await h.Monitor.StopAsync();
+
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(60));
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(60));
+        await h.PowerActions.Executions.AssertNoneAsync(TimeSpan.FromMilliseconds(100));
+        Assert.False(h.Coordinator.IsShutdownPending);
+    }
+
+    // ---- non-stop actions ----
+
+    [Fact]
+    public async Task NonStopRule_RunsItsActionsOncePerRisingEdge_WithReadingAndUpsName()
+    {
+        var runner = new FakeRuleActionRunner();
+        var rule = NotifyRule("On battery", UpsStatus.OB);
+        await using var h = await CreateStartedHarnessAsync(rules: () => [rule], runner: runner);
+
+        await PushReadingAsync(h, "OB", "55");
+        var (match, reading, upsName) = await runner.Runs.NextAsync();
+        Assert.Same(rule, match.Rule);
+        Assert.True(match.IsNewFiring);
+        Assert.Equal("OB", reading?.RawStatus);
+        Assert.Equal(55, reading?.BatteryCharge);
+        Assert.Equal("ups", upsName);
+
+        await PushReadingAsync(h, "OB", "54"); // the condition still holds: no second run.
+        await PushReadingAsync(h, "OB", "53");
+        await runner.Runs.AssertNoneAsync(TimeSpan.FromMilliseconds(100));
+
+        await PushReadingAsync(h, "OL", "53");
+        await PushReadingAsync(h, "OB", "52"); // a new rising edge.
+        Assert.Same(rule, (await runner.Runs.NextAsync()).Match.Rule);
+    }
+
+    [Fact]
+    public async Task NonStopRule_StillRuns_WhileAStopIsPending()
+    {
+        var runner = new FakeRuleActionRunner();
+        var rule = NotifyRule("Calibrating", UpsStatus.CAL);
+        await using var h = await CreateStartedHarnessAsync(
+            new PowerSettings { StopImmediately = false, StopDelaySeconds = 30, BatteryChargeFloor = 30 },
+            () => [.. DefaultRules.FromPowerSettings(new PowerSettings { BatteryChargeFloor = 30 }), rule],
+            runner);
+
+        await PushReadingAsync(h, "OB", "10");
+        await h.Pending.NextAsync();
+        Assert.True(h.Coordinator.IsShutdownPending);
+
+        await PushReadingAsync(h, "OB CAL", "10");
+
+        Assert.Same(rule, (await runner.Runs.NextAsync()).Match.Rule);
+    }
+
+    [Fact]
+    public async Task NonStopRule_StillRuns_WhileThePolicyIsRearming()
+    {
+        var runner = new FakeRuleActionRunner();
+        var rule = NotifyRule("Calibrating", UpsStatus.CAL);
+        await using var h = await CreateStartedHarnessAsync(
+            new PowerSettings { StopImmediately = true, BatteryChargeFloor = 30 },
+            () => [.. DefaultRules.FromPowerSettings(new PowerSettings { BatteryChargeFloor = 30 }), rule],
+            runner);
+
+        await PushReadingAsync(h, "OB", "10");
+        await h.PowerActions.Executions.NextAsync();
+        await WaitForRestartAsync(h); // the policy is disarmed now.
+
+        await PushReadingAsync(h, "OB CAL", "10");
+
+        Assert.Same(rule, (await runner.Runs.NextAsync()).Match.Rule);
+    }
+
+    [Fact]
+    public async Task StopRuleWithAnExtraNotify_NotifiesOnce_NotOnEveryPoll()
+    {
+        var runner = new FakeRuleActionRunner();
+        var rule = NotifyRule("Stop and tell", UpsStatus.OB, alsoStop: true);
+        await using var h = await CreateStartedHarnessAsync(
+            new PowerSettings { StopImmediately = false, StopDelaySeconds = 60 }, () => [rule], runner);
+
+        await PushReadingAsync(h, "OB", "50");
+        await h.Pending.NextAsync();
+        Assert.True((await runner.Runs.NextAsync()).Match.IsNewFiring);
+
+        await PushReadingAsync(h, "OB", "49");
+        await PushReadingAsync(h, "OB", "48");
+        await runner.Runs.AssertNoneAsync(TimeSpan.FromMilliseconds(100));
+    }
+
+    [Fact]
+    public async Task ARunnerThatThrows_NeverStopsTheStopLogic()
+    {
+        var runner = new FakeRuleActionRunner { Throw = new InvalidOperationException("boom") };
+        var rule = NotifyRule("Stop and tell", UpsStatus.OB, alsoStop: true);
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings { StopImmediately = true }, () => [rule], runner);
+
+        await PushReadingAsync(h, "OB", "50");
+
+        Assert.Equal(StopAction.Shutdown, await h.PowerActions.Executions.NextAsync());
+    }
+
+    [Fact]
+    public async Task BuiltInStopRules_StillStopAsBefore_WithARunnerAttached()
+    {
+        var runner = new FakeRuleActionRunner();
+        await using var h = await CreateStartedHarnessAsync(
+            new PowerSettings { StopImmediately = true, BatteryChargeFloor = 30 }, runner: runner);
+
+        await PushReadingAsync(h, "OB", "10");
+
+        Assert.Equal(StopAction.Shutdown, await h.PowerActions.Executions.NextAsync());
+        Assert.Equal(ShutdownReason.BatteryChargeFloor, await h.Executing.NextAsync());
+    }
+
+    // ---- custom rule stop / RuleFired ----
+
+    [Fact]
+    public async Task CustomRuleStop_CarriesTheRuleNameInPendingAndWhileExecuting()
+    {
+        var rule = NotifyRule("Stop at night", UpsStatus.OB, alsoStop: true);
+        await using var h = await CreateStartedHarnessAsync(
+            new PowerSettings { StopImmediately = false, StopDelaySeconds = 30 }, () => [rule]);
+
+        await PushReadingAsync(h, "OB", "50");
+
+        var pending = await h.Pending.NextAsync();
+        Assert.Equal(ShutdownReason.CustomRule, pending.Reason);
+        Assert.Equal("Stop at night", pending.RuleName);
+        Assert.Equal("Stop at night", h.Coordinator.PendingRuleName);
+    }
+
+    [Fact]
+    public async Task RuleFired_IsRaisedOncePerNewFiringOfAUserRule_AndNotForBuiltInRules()
+    {
+        var userRule = NotifyRule("Mine", UpsStatus.CAL);
+        var fired = new EventCollector<RuleFiredEventArgs>();
+        await using var h = await CreateStartedHarnessAsync(
+            new PowerSettings { StopImmediately = false, StopDelaySeconds = 60, BatteryChargeFloor = 30 },
+            () => [.. DefaultRules.FromPowerSettings(new PowerSettings { BatteryChargeFloor = 30 }), userRule]);
+        h.Coordinator.RuleFired += (_, e) => fired.Add(e);
+
+        await PushReadingAsync(h, "OB", "10"); // the built-in charge floor fires, the user rule does not.
+        await h.Pending.NextAsync();
+        await fired.AssertNoneAsync(TimeSpan.FromMilliseconds(100));
+
+        await PushReadingAsync(h, "OB CAL", "10");
+        var e = await fired.NextAsync();
+        Assert.Same(userRule, e.Rule);
+
+        await PushReadingAsync(h, "OB CAL", "10");
+        await fired.AssertNoneAsync(TimeSpan.FromMilliseconds(100));
     }
 }

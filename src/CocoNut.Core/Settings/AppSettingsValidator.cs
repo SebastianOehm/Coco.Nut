@@ -1,3 +1,7 @@
+using CocoNut.Core.Actions;
+using CocoNut.Core.Shutdown;
+using CocoNut.Core.Ups;
+
 namespace CocoNut.Core.Settings;
 
 /// <summary>
@@ -44,8 +48,150 @@ public static class AppSettingsValidator
         ValidateCalibration(settings.Calibration, problems);
         ValidatePower(settings.Power, problems);
         ValidateHistory(settings.History, problems);
+        ValidateActions(settings.Actions, problems);
 
         return problems;
+    }
+
+    /// <summary>Accepted range of a rule's <see cref="ActionRule.DelaySeconds"/> and <see cref="RuleTrigger.DurationSeconds"/> (24 hours).</summary>
+    public const int MaxRuleSeconds = 86_400;
+
+    /// <summary>Accepted range of a command action's <see cref="RuleAction.TimeoutSeconds"/> is 1 to this many seconds.</summary>
+    public const int MaxCommandTimeoutSeconds = 3600;
+
+    private static void ValidateActions(ActionsSettings? actions, List<SettingsValidationProblem> problems)
+    {
+        var ids = new HashSet<Guid>();
+        var rules = actions?.Rules ?? [];
+        for (var i = 0; i < rules.Count; i++)
+        {
+            var path = $"Actions.Rules[{i}]";
+            var rule = rules[i];
+            if (rule is null)
+            {
+                problems.Add(new SettingsValidationProblem(path, "Validation_RuleNameRequired"));
+                continue;
+            }
+
+            if (rule.Id == Guid.Empty || DefaultRules.IsBuiltIn(rule.Id) || !ids.Add(rule.Id))
+            {
+                problems.Add(new SettingsValidationProblem($"{path}.Id", "Validation_RuleIdInvalid"));
+            }
+
+            if (rule.ShutdownReason != ShutdownReason.CustomRule)
+            {
+                problems.Add(new SettingsValidationProblem($"{path}.ShutdownReason", "Validation_RuleReasonInvalid"));
+            }
+
+            problems.AddRange(ValidateRule(rule, path));
+        }
+    }
+
+    /// <summary>
+    /// Validates what concerns one rule on its own: name, trigger, delays and actions. Not covered here because they
+    /// need the whole list or are normalised elsewhere: unique/non-reserved ids and the stop reason (see
+    /// <see cref="Validate"/>). <paramref name="path"/> prefixes the property paths of the returned problems.
+    /// </summary>
+    public static IReadOnlyList<SettingsValidationProblem> ValidateRule(ActionRule rule, string path)
+    {
+        ArgumentNullException.ThrowIfNull(rule);
+
+        var problems = new List<SettingsValidationProblem>();
+        var prefix = path.Length == 0 ? string.Empty : $"{path}.";
+
+        if (string.IsNullOrWhiteSpace(rule.Name))
+        {
+            problems.Add(new SettingsValidationProblem($"{prefix}Name", "Validation_RuleNameRequired"));
+        }
+
+        if (rule.DelaySeconds is < 0 or > MaxRuleSeconds)
+        {
+            problems.Add(new SettingsValidationProblem($"{prefix}DelaySeconds", "Validation_RuleDelayRange"));
+        }
+
+        ValidateTrigger(rule.Trigger, $"{prefix}Trigger", problems);
+
+        if (rule.Actions is not { Count: > 0 } || rule.Actions.Any(a => a is null))
+        {
+            problems.Add(new SettingsValidationProblem($"{prefix}Actions", "Validation_RuleActionsRequired"));
+        }
+        else
+        {
+            for (var i = 0; i < rule.Actions.Count; i++)
+            {
+                ValidateAction(rule.Actions[i], $"{prefix}Actions[{i}]", problems);
+            }
+        }
+
+        return problems;
+    }
+
+    private static void ValidateTrigger(RuleTrigger? trigger, string path, List<SettingsValidationProblem> problems)
+    {
+        if (trigger is null)
+        {
+            problems.Add(new SettingsValidationProblem(path, "Validation_RuleFlagsRequired"));
+            return;
+        }
+
+        switch (trigger.Kind)
+        {
+            case TriggerKind.FlagsActive or TriggerKind.FlagsBecameActive or TriggerKind.FlagsBecameInactive:
+                if (trigger.Flags == UpsStatus.None)
+                {
+                    problems.Add(new SettingsValidationProblem($"{path}.Flags", "Validation_RuleFlagsRequired"));
+                }
+
+                break;
+
+            case TriggerKind.ValueAtOrBelow or TriggerKind.ValueAtOrAbove:
+                if (!double.IsFinite(trigger.Threshold))
+                {
+                    problems.Add(new SettingsValidationProblem($"{path}.Threshold", "Validation_RuleThresholdInvalid"));
+                }
+
+                break;
+        }
+
+        if (trigger.DurationSeconds is < 0 or > MaxRuleSeconds)
+        {
+            problems.Add(new SettingsValidationProblem($"{path}.DurationSeconds", "Validation_RuleDurationRange"));
+        }
+    }
+
+    private static void ValidateAction(RuleAction action, string path, List<SettingsValidationProblem> problems)
+    {
+        switch (action.Kind)
+        {
+            case ActionKind.Notify or ActionKind.Log:
+                if (string.IsNullOrWhiteSpace(action.Message))
+                {
+                    problems.Add(new SettingsValidationProblem($"{path}.Message", "Validation_RuleMessageRequired"));
+                }
+
+                break;
+
+            case ActionKind.RunCommand:
+                if (string.IsNullOrWhiteSpace(action.Command))
+                {
+                    problems.Add(new SettingsValidationProblem($"{path}.Command", "Validation_RuleCommandRequired"));
+                }
+
+                if (action.TimeoutSeconds is < 1 or > MaxCommandTimeoutSeconds)
+                {
+                    problems.Add(new SettingsValidationProblem($"{path}.TimeoutSeconds", "Validation_RuleTimeoutRange"));
+                }
+
+                break;
+
+            case ActionKind.Webhook:
+                if (!Uri.TryCreate(action.Url, UriKind.Absolute, out var uri) || uri.Scheme is not ("http" or "https"))
+                {
+                    problems.Add(new SettingsValidationProblem($"{path}.Url", "Validation_RuleUrlInvalid"));
+                }
+
+                break;
+        }
     }
 
     private static void ValidateConnection(ConnectionSettings connection, List<SettingsValidationProblem> problems)

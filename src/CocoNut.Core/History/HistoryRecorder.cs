@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Threading.Channels;
+using CocoNut.Core.Actions;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Shutdown;
@@ -18,6 +19,12 @@ namespace CocoNut.Core.History;
 /// </summary>
 public sealed class HistoryRecorder : IAsyncDisposable
 {
+    /// <summary>
+    /// Start of the detail of a shutdown event whose reason is <see cref="ShutdownReason.CustomRule"/>: the rule's name
+    /// follows it. Other reasons are stored as the bare <see cref="ShutdownReason"/> name.
+    /// </summary>
+    public const string CustomRuleDetailPrefix = "CustomRule: ";
+
     /// <summary>How often buffered samples are written to the store.</summary>
     internal static readonly TimeSpan FlushInterval = TimeSpan.FromSeconds(60);
 
@@ -74,6 +81,7 @@ public sealed class HistoryRecorder : IAsyncDisposable
         _monitor.StateChanged += OnStateChanged;
         _monitor.ConnectionLost += OnConnectionLost;
         _coordinator.ShutdownPending += OnShutdownPending;
+        _coordinator.RuleFired += OnRuleFired;
         _coordinator.ShutdownCancelled += OnShutdownCancelled;
         _coordinator.ShutdownExecuting += OnShutdownExecuting;
         _coordinator.ShutdownFailed += OnShutdownFailed;
@@ -164,7 +172,10 @@ public sealed class HistoryRecorder : IAsyncDisposable
         Guard(() => QueueEvent(HistoryEventKind.ConnectionLost, error is null ? null : DescribeException(error)));
 
     private void OnShutdownPending(object? sender, ShutdownPendingEventArgs e) =>
-        Guard(() => QueueEvent(HistoryEventKind.ShutdownPending, e.Reason.ToString()));
+        Guard(() => QueueEvent(HistoryEventKind.ShutdownPending, DescribeReason(e.Reason, e.RuleName)));
+
+    private void OnRuleFired(object? sender, RuleFiredEventArgs e) =>
+        Guard(() => QueueEvent(HistoryEventKind.RuleFired, e.Rule.Name));
 
     private void OnShutdownCancelled(object? sender, ShutdownReason reason) =>
         Guard(() => QueueEvent(HistoryEventKind.ShutdownCancelled, reason.ToString()));
@@ -175,7 +186,7 @@ public sealed class HistoryRecorder : IAsyncDisposable
     private void OnShutdownExecuting(object? sender, ShutdownReason reason) =>
         Guard(() =>
         {
-            QueueEvent(HistoryEventKind.ShutdownExecuting, reason.ToString());
+            QueueEvent(HistoryEventKind.ShutdownExecuting, DescribeReason(reason, _coordinator.PendingRuleName));
             if (!IsRecording)
             {
                 return;
@@ -371,6 +382,11 @@ public sealed class HistoryRecorder : IAsyncDisposable
         return string.Join(", ", parts);
     }
 
+    private static string DescribeReason(ShutdownReason reason, string? ruleName) =>
+        reason == ShutdownReason.CustomRule && !string.IsNullOrWhiteSpace(ruleName)
+            ? CustomRuleDetailPrefix + ruleName
+            : reason.ToString();
+
     private static string DescribeException(Exception error) => $"{error.GetType().Name}: {error.Message}";
 
     /// <summary>
@@ -389,6 +405,7 @@ public sealed class HistoryRecorder : IAsyncDisposable
         _monitor.StateChanged -= OnStateChanged;
         _monitor.ConnectionLost -= OnConnectionLost;
         _coordinator.ShutdownPending -= OnShutdownPending;
+        _coordinator.RuleFired -= OnRuleFired;
         _coordinator.ShutdownCancelled -= OnShutdownCancelled;
         _coordinator.ShutdownExecuting -= OnShutdownExecuting;
         _coordinator.ShutdownFailed -= OnShutdownFailed;

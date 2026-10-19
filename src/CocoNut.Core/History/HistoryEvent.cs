@@ -26,6 +26,8 @@ public enum HistoryEventKind
     ShutdownExecuting = 9,
     /// <summary>The power action failed.</summary>
     ShutdownFailed = 10,
+    /// <summary>A user-defined rule fired (its detail is the rule name). The built-in stop rules are reported by the shutdown events instead.</summary>
+    RuleFired = 11,
 }
 
 /// <summary>

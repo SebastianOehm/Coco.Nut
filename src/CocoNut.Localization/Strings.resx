@@ -1394,4 +1394,328 @@ Remaining time: {1}</value>
     <value>Large parts of Coco.Nut were written with AI assistance (Claude by Anthropic, using Claude Code): an AI model planned and reviewed the work, AI sub-agents wrote most of the code. All changes were directed and checked by the maintainers and are covered by automated builds and tests. Please report problems on the project page.</value>
     <comment>About window: disclosure of AI-assisted development. Keep the product names unchanged.</comment>
   </data>
+  <data name="Shutdown_Reason_CustomRule" xml:space="preserve">
+    <value>Rule: {0}</value>
+    <comment>Shutdown window: why the shutdown procedure started when a user-defined rule (ShutdownReason.CustomRule) triggered it. {0} = the rule name. New in Coco.Nut.</comment>
+  </data>
+  <data name="History_Reason_CustomRule" xml:space="preserve">
+    <value>Rule: {0}</value>
+    <comment>History window: detail text of a shutdown event whose reason is a user-defined rule. {0} = the rule name. New in Coco.Nut.</comment>
+  </data>
+  <data name="History_Event_RuleFired" xml:space="preserve">
+    <value>Rule fired</value>
+    <comment>History event name: a user-defined rule fired (the detail is the rule name). New in Coco.Nut.</comment>
+  </data>
+  <data name="Validation_RuleNameRequired" xml:space="preserve">
+    <value>Every rule needs a name.</value>
+    <comment>AppSettingsValidator: a user-defined rule (Actions.Rules) has no name.</comment>
+  </data>
+  <data name="Validation_RuleIdInvalid" xml:space="preserve">
+    <value>A rule has a missing, duplicate or reserved ID.</value>
+    <comment>AppSettingsValidator: a user-defined rule has an empty, duplicate or reserved (built-in rule) ID.</comment>
+  </data>
+  <data name="Validation_RuleReasonInvalid" xml:space="preserve">
+    <value>A user-defined rule must use the custom-rule stop reason.</value>
+    <comment>AppSettingsValidator: a user-defined rule has a stop reason other than CustomRule.</comment>
+  </data>
+  <data name="Validation_RuleActionsRequired" xml:space="preserve">
+    <value>A rule needs at least one action.</value>
+    <comment>AppSettingsValidator: a user-defined rule has no action.</comment>
+  </data>
+  <data name="Validation_RuleThresholdInvalid" xml:space="preserve">
+    <value>The rule threshold must be a finite number.</value>
+    <comment>AppSettingsValidator: the threshold of a value trigger is not a finite number.</comment>
+  </data>
+  <data name="Validation_RuleDelayRange" xml:space="preserve">
+    <value>The rule delay must be between 0 and 86400 seconds.</value>
+    <comment>AppSettingsValidator: ActionRule.DelaySeconds outside 0-86400.</comment>
+  </data>
+  <data name="Validation_RuleDurationRange" xml:space="preserve">
+    <value>The rule duration must be between 0 and 86400 seconds.</value>
+    <comment>AppSettingsValidator: RuleTrigger.DurationSeconds outside 0-86400.</comment>
+  </data>
+  <data name="Validation_RuleFlagsRequired" xml:space="preserve">
+    <value>Select at least one UPS status flag for this trigger.</value>
+    <comment>AppSettingsValidator: a status-flag trigger has no ups.status flag selected.</comment>
+  </data>
+  <data name="Validation_RuleCommandRequired" xml:space="preserve">
+    <value>The command to run is required.</value>
+    <comment>AppSettingsValidator: a run-command action has no command.</comment>
+  </data>
+  <data name="Validation_RuleTimeoutRange" xml:space="preserve">
+    <value>The command timeout must be between 1 and 3600 seconds.</value>
+    <comment>AppSettingsValidator: RuleAction.TimeoutSeconds of a run-command action outside 1-3600.</comment>
+  </data>
+  <data name="Validation_RuleUrlInvalid" xml:space="preserve">
+    <value>The webhook URL must be an absolute http or https address.</value>
+    <comment>AppSettingsValidator: the URL of a webhook action is not an absolute http or https address.</comment>
+  </data>
+  <data name="Validation_RuleMessageRequired" xml:space="preserve">
+    <value>The message text is required.</value>
+    <comment>AppSettingsValidator: a notify or log action has no message text.</comment>
+  </data>
+  <data name="Prefs_Rules_Tab" xml:space="preserve">
+    <value>Rules</value>
+    <comment>Settings window: title of the 'Rules' tab (user-defined actions). New in Coco.Nut.</comment>
+  </data>
+  <data name="Prefs_Rules_Intro" xml:space="preserve">
+    <value>Your own rules run after the built-in stop conditions. Those are configured on the Shutdown options tab and are always evaluated first. Rules are evaluated from top to bottom; the order is their priority.</value>
+    <comment>Settings &gt; Rules: explanatory text above the rule list.</comment>
+  </data>
+  <data name="Prefs_Rules_Add" xml:space="preserve">
+    <value>Add</value>
+    <comment>Settings &gt; Rules: button that adds a new rule.</comment>
+  </data>
+  <data name="Prefs_Rules_Duplicate" xml:space="preserve">
+    <value>Duplicate</value>
+    <comment>Settings &gt; Rules: button that duplicates the selected rule.</comment>
+  </data>
+  <data name="Prefs_Rules_Delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Settings &gt; Rules: button that deletes the selected rule.</comment>
+  </data>
+  <data name="Prefs_Rules_MoveUp" xml:space="preserve">
+    <value>Move up</value>
+    <comment>Settings &gt; Rules: button that moves the selected rule up (higher priority).</comment>
+  </data>
+  <data name="Prefs_Rules_MoveDown" xml:space="preserve">
+    <value>Move down</value>
+    <comment>Settings &gt; Rules: button that moves the selected rule down (lower priority).</comment>
+  </data>
+  <data name="Prefs_Rules_Delete_ConfirmTitle" xml:space="preserve">
+    <value>Delete rule</value>
+    <comment>Settings &gt; Rules: title of the confirmation dialog before a rule is deleted.</comment>
+  </data>
+  <data name="Prefs_Rules_Delete_ConfirmMessage" xml:space="preserve">
+    <value>Delete the rule "{0}"?</value>
+    <comment>Settings &gt; Rules: confirmation question before a rule is deleted. {0} = rule name.</comment>
+  </data>
+  <data name="Prefs_Rules_NewName" xml:space="preserve">
+    <value>New rule</value>
+    <comment>Settings &gt; Rules: default name of a newly added rule.</comment>
+  </data>
+  <data name="Prefs_Rules_CopyName" xml:space="preserve">
+    <value>{0} (copy)</value>
+    <comment>Settings &gt; Rules: name of a duplicated rule. {0} = name of the original rule.</comment>
+  </data>
+  <data name="Prefs_Rules_Empty" xml:space="preserve">
+    <value>No rules yet. Use Add to create one.</value>
+    <comment>Settings &gt; Rules: hint shown while the rule list is empty.</comment>
+  </data>
+  <data name="Prefs_Rules_Invalid" xml:space="preserve">
+    <value>This rule has problems that must be fixed before saving.</value>
+    <comment>Settings &gt; Rules: tooltip of the marker shown next to a rule in the list that has validation problems.</comment>
+  </data>
+  <data name="Prefs_Rules_Name" xml:space="preserve">
+    <value>Name</value>
+    <comment>Settings &gt; Rules: label of the rule name field.</comment>
+  </data>
+  <data name="Prefs_Rules_Enabled" xml:space="preserve">
+    <value>Enabled</value>
+    <comment>Settings &gt; Rules: checkbox that enables or disables a rule.</comment>
+  </data>
+  <data name="Prefs_Rules_Trigger" xml:space="preserve">
+    <value>Trigger</value>
+    <comment>Settings &gt; Rules: label of the trigger kind selector (what makes the rule fire).</comment>
+  </data>
+  <data name="Prefs_Rules_Flags" xml:space="preserve">
+    <value>Status flags</value>
+    <comment>Settings &gt; Rules: label of the status flag checkboxes (UPS status flags such as OL, OB, LB).</comment>
+  </data>
+  <data name="Prefs_Rules_Flags_Hint" xml:space="preserve">
+    <value>'Are active': all selected flags must be present. 'Became active/inactive': any one of the selected flags changing is enough.</value>
+    <comment>Settings &gt; Rules: hint below the status flag checkboxes.</comment>
+  </data>
+  <data name="Prefs_Rules_Metric" xml:space="preserve">
+    <value>Value</value>
+    <comment>Settings &gt; Rules: label of the selector for the UPS value a threshold trigger compares.</comment>
+  </data>
+  <data name="Prefs_Rules_Threshold" xml:space="preserve">
+    <value>Threshold</value>
+    <comment>Settings &gt; Rules: label of the threshold field of a value trigger (inclusive).</comment>
+  </data>
+  <data name="Prefs_Rules_OnBatteryOnly" xml:space="preserve">
+    <value>Only while on battery</value>
+    <comment>Settings &gt; Rules: checkbox that restricts a value trigger to times when the UPS is on battery.</comment>
+  </data>
+  <data name="Prefs_Rules_Duration" xml:space="preserve">
+    <value>Duration (seconds)</value>
+    <comment>Settings &gt; Rules: label of the duration field (seconds) of the on-battery-for and connection-lost triggers.</comment>
+  </data>
+  <data name="Prefs_Rules_Delay" xml:space="preserve">
+    <value>Delay (seconds)</value>
+    <comment>Settings &gt; Rules: label of the delay field (seconds) of a rule with a level trigger.</comment>
+  </data>
+  <data name="Prefs_Rules_Delay_ToolTip" xml:space="preserve">
+    <value>How long the condition must hold without interruption before the rule fires. 0 fires at once.</value>
+    <comment>Settings &gt; Rules: tooltip of the delay field.</comment>
+  </data>
+  <data name="Prefs_Rules_Actions" xml:space="preserve">
+    <value>Actions</value>
+    <comment>Settings &gt; Rules: heading of the action list of a rule.</comment>
+  </data>
+  <data name="Prefs_Rules_AddAction" xml:space="preserve">
+    <value>Add action</value>
+    <comment>Settings &gt; Rules: button that adds an action to the rule.</comment>
+  </data>
+  <data name="Prefs_Rules_RemoveAction" xml:space="preserve">
+    <value>Remove</value>
+    <comment>Settings &gt; Rules: button that removes an action from the rule.</comment>
+  </data>
+  <data name="Prefs_Rules_ActionKind" xml:space="preserve">
+    <value>Action</value>
+    <comment>Settings &gt; Rules: label of the action kind selector.</comment>
+  </data>
+  <data name="Prefs_Rules_Message" xml:space="preserve">
+    <value>Message</value>
+    <comment>Settings &gt; Rules: label of the message template field of a notify or log action.</comment>
+  </data>
+  <data name="Prefs_Rules_Message_Hint" xml:space="preserve">
+    <value>Placeholders: {0}</value>
+    <comment>Settings &gt; Rules: hint below the message field. {0} = list of the available placeholders, e.g. '{rule}, {ups}, {status}' (the braces are literal, they are the placeholder syntax).</comment>
+  </data>
+  <data name="Prefs_Rules_Command" xml:space="preserve">
+    <value>Command</value>
+    <comment>Settings &gt; Rules: label of the executable field of a run-command action.</comment>
+  </data>
+  <data name="Prefs_Rules_Arguments" xml:space="preserve">
+    <value>Arguments (one per line)</value>
+    <comment>Settings &gt; Rules: label of the arguments field of a run-command action (one argument per line).</comment>
+  </data>
+  <data name="Prefs_Rules_Timeout" xml:space="preserve">
+    <value>Timeout (seconds)</value>
+    <comment>Settings &gt; Rules: label of the timeout field (seconds) of a run-command action.</comment>
+  </data>
+  <data name="Prefs_Rules_Url" xml:space="preserve">
+    <value>Webhook URL</value>
+    <comment>Settings &gt; Rules: label of the URL field of a webhook action.</comment>
+  </data>
+  <data name="Prefs_Rules_StopWarning" xml:space="preserve">
+    <value>Warning: when this rule fires, it stops this computer (shut down, suspend or hibernate) after the countdown configured on the Shutdown options tab.</value>
+    <comment>Settings &gt; Rules: warning shown in the editor of a rule that contains a stop-computer action.</comment>
+  </data>
+  <data name="Prefs_Rules_Problems" xml:space="preserve">
+    <value>Problems</value>
+    <comment>Settings &gt; Rules: heading above the list of validation problems of the selected rule.</comment>
+  </data>
+  <data name="Prefs_Rules_Trigger_FlagsActive" xml:space="preserve">
+    <value>Status flags are active</value>
+    <comment>Rule trigger kind (level): all selected UPS status flags are present.</comment>
+  </data>
+  <data name="Prefs_Rules_Trigger_FlagsBecameActive" xml:space="preserve">
+    <value>Status flags became active</value>
+    <comment>Rule trigger kind (edge): a selected UPS status flag just became active.</comment>
+  </data>
+  <data name="Prefs_Rules_Trigger_FlagsBecameInactive" xml:space="preserve">
+    <value>Status flags became inactive</value>
+    <comment>Rule trigger kind (edge): a selected UPS status flag just became inactive.</comment>
+  </data>
+  <data name="Prefs_Rules_Trigger_ValueAtOrBelow" xml:space="preserve">
+    <value>Value is at or below a threshold</value>
+    <comment>Rule trigger kind (level): a UPS value is at or below a threshold.</comment>
+  </data>
+  <data name="Prefs_Rules_Trigger_ValueAtOrAbove" xml:space="preserve">
+    <value>Value is at or above a threshold</value>
+    <comment>Rule trigger kind (level): a UPS value is at or above a threshold.</comment>
+  </data>
+  <data name="Prefs_Rules_Trigger_OnBatteryFor" xml:space="preserve">
+    <value>On battery for a while</value>
+    <comment>Rule trigger kind (level): the UPS has been on battery for a given time.</comment>
+  </data>
+  <data name="Prefs_Rules_Trigger_ConnectionLost" xml:space="preserve">
+    <value>Connection to the NUT server lost for a while</value>
+    <comment>Rule trigger kind (level): the connection to the NUT server has been lost for a given time.</comment>
+  </data>
+  <data name="Prefs_Rules_Metric_BatteryCharge" xml:space="preserve">
+    <value>Battery charge (%)</value>
+    <comment>Rule value: battery charge.</comment>
+  </data>
+  <data name="Prefs_Rules_Metric_BatteryRuntimeSeconds" xml:space="preserve">
+    <value>Battery runtime (seconds)</value>
+    <comment>Rule value: estimated battery runtime.</comment>
+  </data>
+  <data name="Prefs_Rules_Metric_BatteryVoltage" xml:space="preserve">
+    <value>Battery voltage (V)</value>
+    <comment>Rule value: battery voltage.</comment>
+  </data>
+  <data name="Prefs_Rules_Metric_InputVoltage" xml:space="preserve">
+    <value>Input voltage (V)</value>
+    <comment>Rule value: input voltage.</comment>
+  </data>
+  <data name="Prefs_Rules_Metric_OutputVoltage" xml:space="preserve">
+    <value>Output voltage (V)</value>
+    <comment>Rule value: output voltage.</comment>
+  </data>
+  <data name="Prefs_Rules_Metric_LoadPercent" xml:space="preserve">
+    <value>Load (%)</value>
+    <comment>Rule value: load.</comment>
+  </data>
+  <data name="Prefs_Rules_Metric_OutputPowerWatts" xml:space="preserve">
+    <value>Output power (W)</value>
+    <comment>Rule value: output power.</comment>
+  </data>
+  <data name="Prefs_Rules_Action_StopComputer" xml:space="preserve">
+    <value>Stop this computer</value>
+    <comment>Rule action kind: stop (shut down, suspend, hibernate) this computer.</comment>
+  </data>
+  <data name="Prefs_Rules_Action_Notify" xml:space="preserve">
+    <value>Show a notification</value>
+    <comment>Rule action kind: show a desktop notification.</comment>
+  </data>
+  <data name="Prefs_Rules_Action_Log" xml:space="preserve">
+    <value>Write to the log</value>
+    <comment>Rule action kind: write a line to the application log.</comment>
+  </data>
+  <data name="Prefs_Rules_Action_RunCommand" xml:space="preserve">
+    <value>Run a command</value>
+    <comment>Rule action kind: run an external program.</comment>
+  </data>
+  <data name="Prefs_Rules_Action_Webhook" xml:space="preserve">
+    <value>Call a webhook</value>
+    <comment>Rule action kind: send an HTTP POST request.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary" xml:space="preserve">
+    <value>{0} → {1}</value>
+    <comment>Settings &gt; Rules: one-line summary of a rule in the list. {0} = trigger summary, {1} = comma separated action names.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_FlagsActive" xml:space="preserve">
+    <value>{0} active</value>
+    <comment>Rule summary of a flags-active trigger. {0} = flag names, e.g. 'OB + LB'.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_FlagsBecameActive" xml:space="preserve">
+    <value>{0} became active</value>
+    <comment>Rule summary of a flags-became-active trigger. {0} = flag names.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_FlagsBecameInactive" xml:space="preserve">
+    <value>{0} became inactive</value>
+    <comment>Rule summary of a flags-became-inactive trigger. {0} = flag names.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_ValueAtOrBelow" xml:space="preserve">
+    <value>{0} ≤ {1}</value>
+    <comment>Rule summary of an at-or-below trigger. {0} = value name, {1} = threshold.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_ValueAtOrAbove" xml:space="preserve">
+    <value>{0} ≥ {1}</value>
+    <comment>Rule summary of an at-or-above trigger. {0} = value name, {1} = threshold.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_OnBatteryOnly" xml:space="preserve">
+    <value>{0}, on battery</value>
+    <comment>Rule summary: suffix of a value trigger that only applies on battery. {0} = the trigger summary so far.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_OnBatteryFor" xml:space="preserve">
+    <value>On battery for {0} s</value>
+    <comment>Rule summary of an on-battery-for trigger. {0} = seconds.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_ConnectionLost" xml:space="preserve">
+    <value>Connection lost for {0} s</value>
+    <comment>Rule summary of a connection-lost trigger. {0} = seconds.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_NoFlags" xml:space="preserve">
+    <value>no flags</value>
+    <comment>Rule summary: placeholder when no status flag is selected.</comment>
+  </data>
+  <data name="Prefs_Rules_Summary_NoActions" xml:space="preserve">
+    <value>no actions</value>
+    <comment>Rule summary: placeholder when the rule has no actions.</comment>
+  </data>
 </root>
