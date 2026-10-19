@@ -179,7 +179,13 @@ public sealed class ShutdownCoordinator : IAsyncDisposable
 
     private void OnStateChanged(object? sender, MonitorStateChangedEventArgs e)
     {
-        if (e.NewState != MonitorState.Connected)
+        // The lost state ends in two cases: the connection is back (Connected), or the monitor was stopped on
+        // purpose (Disconnected without an error - the user disconnected, or this coordinator's own LOGOUT before a
+        // power action). A Disconnected *with* an error (lost, auto-reconnect off) is still a lost connection and
+        // keeps counting towards connection-lost rules.
+        var ended = e.NewState == MonitorState.Connected
+            || (e.NewState == MonitorState.Disconnected && e.Error is null);
+        if (!ended)
         {
             return;
         }

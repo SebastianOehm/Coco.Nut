@@ -590,4 +590,28 @@ public class ShutdownCoordinatorTests
         await h.Cancelled.AssertNoneAsync(TimeSpan.FromMilliseconds(50));
         Assert.True(h.Coordinator.IsShutdownPending);
     }
+
+    [Fact]
+    public async Task ConnectionLostRule_DoesNotFire_WhenTheUserDisconnectsAfterTheLoss()
+    {
+        var rule = new ActionRule
+        {
+            Name = "Stop when the server is gone",
+            Trigger = new RuleTrigger { Kind = TriggerKind.ConnectionLost, DurationSeconds = 30 },
+            Actions = [RuleAction.StopComputer(StopAction.Shutdown)],
+        };
+        await using var h = await CreateStartedHarnessAsync(new PowerSettings { StopImmediately = true }, () => [rule]);
+
+        h.Client.ListVarsResults.Enqueue(new IOException("server gone"));
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(1));
+        await h.StateChanges.NextAsync(); // Connected -> Disconnected with an error (lost)
+
+        // A deliberate stop (graceful Disconnected, no error) ends the lost state.
+        await h.Monitor.StopAsync();
+
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(60));
+        h.TimeProvider.Advance(TimeSpan.FromSeconds(60));
+        await h.PowerActions.Executions.AssertNoneAsync(TimeSpan.FromMilliseconds(100));
+        Assert.False(h.Coordinator.IsShutdownPending);
+    }
 }
