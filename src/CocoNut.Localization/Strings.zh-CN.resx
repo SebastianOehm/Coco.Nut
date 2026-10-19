@@ -719,6 +719,9 @@
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>必须填写 NUT 主机。</value>
   </data>
+  <data name="Validation_HostInvalid" xml:space="preserve">
+    <value>请输入有效的 IP 地址或主机名（不含协议和端口）。</value>
+  </data>
   <data name="Validation_PollIntervalRange" xml:space="preserve">
     <value>轮询间隔必须介于 0.1 到 100 秒之间。</value>
   </data>

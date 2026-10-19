@@ -717,6 +717,9 @@ IPV4 / IPV6 / доменне ім'я.</value>
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>Хост NUT є обов'язковим.</value>
   </data>
+  <data name="Validation_HostInvalid" xml:space="preserve">
+    <value>Введіть дійсну IP-адресу або ім'я хоста (без протоколу та порту).</value>
+  </data>
   <data name="Validation_PollIntervalRange" xml:space="preserve">
     <value>Інтервал опитування має бути від 0,1 до 100 секунд.</value>
   </data>

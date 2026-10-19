@@ -718,6 +718,9 @@ Temps restant : {1}</value>
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>L'hôte NUT est requis.</value>
   </data>
+  <data name="Validation_HostInvalid" xml:space="preserve">
+    <value>Saisissez une adresse IP ou un nom d'hôte valide (sans protocole ni port).</value>
+  </data>
   <data name="Validation_PollIntervalRange" xml:space="preserve">
     <value>L'intervalle d'interrogation doit être compris entre 0,1 et 100 secondes.</value>
   </data>

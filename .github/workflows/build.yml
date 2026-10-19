@@ -113,12 +113,12 @@ jobs:
             os: ubuntu-latest
             channel: linux
             exe: CocoNut
-            icon: '' # vpk needs a PNG on Linux; the repo only has coconut.ico
+            icon: src/CocoNut.App/Assets/coconut.png
           - rid: osx-arm64
             os: macos-latest
             channel: osx
             exe: CocoNut
-            icon: '' # vpk needs an .icns on macOS; the repo has none
+            icon: src/CocoNut.App/Assets/coconut.icns
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -176,7 +176,7 @@ jobs:
 
       - name: Pack ${{ matrix.rid }} with Velopack
         if: env.PACK == 'true'
-        # The macOS pack is unverified (no signing, no icon); do not let it block the Windows and Linux assets.
+        # The macOS pack is unverified (no signing); do not let it block the Windows and Linux assets.
         continue-on-error: ${{ matrix.rid == 'osx-arm64' }}
         env:
           ICON: ${{ matrix.icon }}

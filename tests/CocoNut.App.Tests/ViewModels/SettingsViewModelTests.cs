@@ -265,6 +265,49 @@ public sealed class SettingsViewModelTests : IDisposable
     }
 
     [Fact]
+    public void Hibernate_is_not_offered_when_it_is_unsupported()
+    {
+        var store = new InMemorySettingsStore { Settings = new AppSettings() };
+        var powerActions = new FakePowerActions();
+        powerActions.Supported.Remove(StopAction.Hibernate);
+
+        var vm = BuildWith(store, powerActions);
+
+        Assert.DoesNotContain(vm.StopActionOptions, o => o.Value == StopAction.Hibernate);
+        Assert.Contains(vm.StopActionOptions, o => o.Value == StopAction.Shutdown);
+        Assert.Contains(vm.StopActionOptions, o => o.Value == StopAction.Suspend);
+    }
+
+    [Fact]
+    public void Saved_hibernate_selects_the_first_option_when_hibernate_is_unsupported()
+    {
+        // Documents current behaviour: the saved value is not offered, so the combo box falls back to its first
+        // option (Shutdown).
+        var settings = new AppSettings();
+        settings.Power.StopAction = StopAction.Hibernate;
+        var store = new InMemorySettingsStore { Settings = settings };
+        var powerActions = new FakePowerActions();
+        powerActions.Supported.Remove(StopAction.Hibernate);
+
+        var vm = BuildWith(store, powerActions);
+
+        Assert.Equal(StopAction.Shutdown, vm.SelectedStopAction.Value);
+    }
+
+    private SettingsViewModel BuildWith(InMemorySettingsStore store, FakePowerActions powerActions) =>
+        new(
+            new SettingsService(store, store.Settings),
+            new FakeUpsMonitorEvents(),
+            powerActions,
+            new FakeAutoStartService(),
+            new FakeShellLauncher(),
+            new FileLoggerProvider(_logDirectory),
+            SharedUpdateChecker,
+            new FakeWindowNavigator(),
+            new FakeNotificationService(),
+            NullLogger<SettingsViewModel>.Instance);
+
+    [Fact]
     public void Language_options_include_english_and_every_supported_culture()
     {
         var f = Build();

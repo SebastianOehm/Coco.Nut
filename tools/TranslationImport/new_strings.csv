@@ -414,6 +414,12 @@ Validation_HostRequired,ru-RU,Необходимо указать хост NUT.
 Validation_HostRequired,uk-UA,Хост NUT є обов'язковим.
 Validation_HostRequired,zh-CN,必须填写 NUT 主机。
 Validation_HostRequired,zh-TW,必須填寫 NUT 主機。
+Validation_HostInvalid,de-DE,Geben Sie eine gültige IP-Adresse oder einen Hostnamen ein (ohne Protokoll oder Port).
+Validation_HostInvalid,fr-FR,Saisissez une adresse IP ou un nom d'hôte valide (sans protocole ni port).
+Validation_HostInvalid,ru-RU,Введите допустимый IP-адрес или имя хоста (без протокола и порта).
+Validation_HostInvalid,uk-UA,Введіть дійсну IP-адресу або ім'я хоста (без протоколу та порту).
+Validation_HostInvalid,zh-CN,请输入有效的 IP 地址或主机名（不含协议和端口）。
+Validation_HostInvalid,zh-TW,請輸入有效的 IP 位址或主機名稱（不含通訊協定和連接埠）。
 Validation_PollIntervalRange,de-DE,"Das Abrufintervall muss zwischen 0,1 und 100 Sekunden liegen."
 Validation_PollIntervalRange,fr-FR,"L'intervalle d'interrogation doit être compris entre 0,1 et 100 secondes."
 Validation_PollIntervalRange,ru-RU,"Интервал опроса должен быть от 0,1 до 100 секунд."

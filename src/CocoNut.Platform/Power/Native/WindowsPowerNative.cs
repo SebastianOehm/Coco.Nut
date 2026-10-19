@@ -10,11 +10,19 @@ namespace CocoNut.Platform.Power.Native;
 [SupportedOSPlatform("windows")]
 internal sealed class WindowsPowerNative : IWindowsPowerNative
 {
-    // We do not query GetPwrCapabilities/HiberFilePresent: it needs a large native struct for a check the
-    // WP explicitly marks optional, and getting that struct's layout wrong is a worse failure mode than
-    // just reporting "supported" and letting SetSuspendState itself fail if the machine truly has no
-    // hibernation file.
-    public bool IsHibernateSupported() => true;
+    // IsPwrHibernateAllowed is false when hibernation is disabled or there is no hibernation file. If the call
+    // itself cannot be made, report "supported" and let SetSuspendState fail instead.
+    public bool IsHibernateSupported()
+    {
+        try
+        {
+            return NativeIsPwrHibernateAllowed();
+        }
+        catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException)
+        {
+            return true;
+        }
+    }
 
     public bool SetSuspendState(bool hibernate, bool forceCritical, bool disableWakeEvent) =>
         NativeSetSuspendState(hibernate, forceCritical, disableWakeEvent);
@@ -29,4 +37,9 @@ internal sealed class WindowsPowerNative : IWindowsPowerNative
         [MarshalAs(UnmanagedType.U1)] bool hibernate,
         [MarshalAs(UnmanagedType.U1)] bool forceCritical,
         [MarshalAs(UnmanagedType.U1)] bool disableWakeEvent);
+
+    [DllImport("powrprof.dll", EntryPoint = "IsPwrHibernateAllowed", ExactSpelling = true)]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [return: MarshalAs(UnmanagedType.U1)]
+    private static extern bool NativeIsPwrHibernateAllowed();
 }

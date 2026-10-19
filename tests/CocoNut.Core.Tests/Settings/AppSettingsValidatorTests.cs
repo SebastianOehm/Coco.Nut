@@ -52,6 +52,40 @@ public class AppSettingsValidatorTests
     }
 
     [Theory]
+    [InlineData("127.0.0.1")]
+    [InlineData("::1")]
+    [InlineData("[::1]")]
+    [InlineData("fe80::1")]
+    [InlineData("nas.local")]
+    [InlineData("ups-server")]
+    [InlineData("localhost")]
+    [InlineData("  nas.local  ")]
+    public void Validate_ValidHost_ReportsNoHostProblem(string host)
+    {
+        var settings = new AppSettings { Connection = new ConnectionSettings { Host = host } };
+
+        var problems = AppSettingsValidator.Validate(settings);
+
+        Assert.DoesNotContain(problems, p => p.PropertyPath == "Connection.Host");
+    }
+
+    [Theory]
+    [InlineData("http://host")]
+    [InlineData("host:3493")]
+    [InlineData("my host")]
+    [InlineData("host/")]
+    [InlineData("-")]
+    public void Validate_InvalidHost_ReportsOnlyHostInvalid(string host)
+    {
+        var settings = new AppSettings { Connection = new ConnectionSettings { Host = host } };
+
+        var problems = AppSettingsValidator.Validate(settings);
+
+        var hostProblem = Assert.Single(problems, p => p.PropertyPath == "Connection.Host");
+        Assert.Equal("Validation_HostInvalid", hostProblem.ErrorKey);
+    }
+
+    [Theory]
     [InlineData(99)]
     [InlineData(100_001)]
     public void Validate_PollIntervalOutOfRange_ReportsProblem(int pollIntervalMs)

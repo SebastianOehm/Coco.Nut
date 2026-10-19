@@ -738,6 +738,9 @@ Verbleibende Zeit: {1}</value>
   <data name="Validation_HostRequired" xml:space="preserve">
     <value>Der NUT-Host ist erforderlich.</value>
   </data>
+  <data name="Validation_HostInvalid" xml:space="preserve">
+    <value>Geben Sie eine gültige IP-Adresse oder einen Hostnamen ein (ohne Protokoll oder Port).</value>
+  </data>
   <data name="Validation_PollIntervalRange" xml:space="preserve">
     <value>Das Abrufintervall muss zwischen 0,1 und 100 Sekunden liegen.</value>
   </data>
