@@ -570,3 +570,27 @@ About_AiUsage,ru-RU,"Значительная часть Coco.Nut написан
 About_AiUsage,uk-UA,"Значну частину Coco.Nut написано за допомогою ШІ (Claude від Anthropic, з використанням Claude Code): модель ШІ планувала й перевіряла роботу, а ШІ-субагенти написали більшу частину коду. Усі зміни спрямовувалися й перевірялися супровідниками та покриті автоматичними збірками й тестами. Будь ласка, повідомляйте про проблеми на сторінці проєкту."
 About_AiUsage,zh-CN,Coco.Nut 的大部分内容是在 AI 辅助下编写的（Anthropic 的 Claude，通过 Claude Code）：由一个 AI 模型规划和审查工作，由 AI 子代理编写大部分代码。所有更改均由维护者指导和检查，并有自动构建和测试保障。如有问题，请在项目页面反馈。
 About_AiUsage,zh-TW,Coco.Nut 的大部分內容是在 AI 輔助下撰寫的（Anthropic 的 Claude，透過 Claude Code）：由一個 AI 模型規劃並審查工作，由 AI 子代理撰寫大部分程式碼。所有變更均由維護者指導與檢查，並有自動建置與測試把關。如有問題，請在專案頁面回報。
+Main_Menu_View,de-DE,Ansicht
+Main_Menu_View,fr-FR,Affichage
+Main_Menu_View,ru-RU,Вид
+Main_Menu_View,uk-UA,Вигляд
+Main_Menu_View,zh-CN,视图
+Main_Menu_View,zh-TW,檢視
+Prefs_Misc_DisplayStyle,de-DE,Anzeige im Hauptfenster
+Prefs_Misc_DisplayStyle,fr-FR,Affichage de la fenêtre principale
+Prefs_Misc_DisplayStyle,ru-RU,Отображение в главном окне
+Prefs_Misc_DisplayStyle,uk-UA,Відображення в головному вікні
+Prefs_Misc_DisplayStyle,zh-CN,主窗口显示方式
+Prefs_Misc_DisplayStyle,zh-TW,主視窗顯示方式
+DisplayStyle_Gauges,de-DE,Rundinstrumente
+DisplayStyle_Gauges,fr-FR,Cadrans
+DisplayStyle_Gauges,ru-RU,Циферблаты
+DisplayStyle_Gauges,uk-UA,Циферблати
+DisplayStyle_Gauges,zh-CN,仪表盘
+DisplayStyle_Gauges,zh-TW,儀表板
+DisplayStyle_Digital,de-DE,Digital
+DisplayStyle_Digital,fr-FR,Numérique
+DisplayStyle_Digital,ru-RU,Цифровой
+DisplayStyle_Digital,uk-UA,Цифровий
+DisplayStyle_Digital,zh-CN,数字
+DisplayStyle_Digital,zh-TW,數位

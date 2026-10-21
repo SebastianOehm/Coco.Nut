@@ -69,6 +69,12 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>Oui</value>
   </data>
+  <data name="DisplayStyle_Digital" xml:space="preserve">
+    <value>Numérique</value>
+  </data>
+  <data name="DisplayStyle_Gauges" xml:space="preserve">
+    <value>Cadrans</value>
+  </data>
   <data name="History_Chart_BatteryCharge" xml:space="preserve">
     <value>Charge batterie</value>
   </data>
@@ -363,6 +369,9 @@
   <data name="Main_Menu_UpsVariables" xml:space="preserve">
     <value>Variable de l'UPS</value>
   </data>
+  <data name="Main_Menu_View" xml:space="preserve">
+    <value>Affichage</value>
+  </data>
   <data name="Main_RuntimeUnknown" xml:space="preserve">
     <value>Inconnu</value>
   </data>
@@ -613,6 +622,9 @@ Valeur acceptée: 1 à 3600.</value>
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>Envoie dans le Systray à la fermeture.</value>
+  </data>
+  <data name="Prefs_Misc_DisplayStyle" xml:space="preserve">
+    <value>Affichage de la fenêtre principale</value>
   </data>
   <data name="Prefs_Misc_Language" xml:space="preserve">
     <value>Langue</value>

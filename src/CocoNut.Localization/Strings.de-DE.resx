@@ -72,6 +72,12 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
+  <data name="DisplayStyle_Digital" xml:space="preserve">
+    <value>Digital</value>
+  </data>
+  <data name="DisplayStyle_Gauges" xml:space="preserve">
+    <value>Rundinstrumente</value>
+  </data>
   <data name="History_Chart_BatteryCharge" xml:space="preserve">
     <value>Akkuladung</value>
   </data>
@@ -375,6 +381,9 @@
   <data name="Main_Menu_UpsVariables" xml:space="preserve">
     <value>USV-Variablen</value>
   </data>
+  <data name="Main_Menu_View" xml:space="preserve">
+    <value>Ansicht</value>
+  </data>
   <data name="Main_RuntimeUnknown" xml:space="preserve">
     <value>Unbekannt</value>
   </data>
@@ -633,6 +642,9 @@ Wertebereich: 1 bis 3600.</value>
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>Ins Systray minimieren, anstatt zu schliessen.</value>
+  </data>
+  <data name="Prefs_Misc_DisplayStyle" xml:space="preserve">
+    <value>Anzeige im Hauptfenster</value>
   </data>
   <data name="Prefs_Misc_Language" xml:space="preserve">
     <value>Sprache</value>

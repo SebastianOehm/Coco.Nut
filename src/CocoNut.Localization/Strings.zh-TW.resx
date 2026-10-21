@@ -69,6 +69,12 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>是</value>
   </data>
+  <data name="DisplayStyle_Digital" xml:space="preserve">
+    <value>數位</value>
+  </data>
+  <data name="DisplayStyle_Gauges" xml:space="preserve">
+    <value>儀表板</value>
+  </data>
   <data name="History_Chart_BatteryCharge" xml:space="preserve">
     <value>電池電量</value>
   </data>
@@ -363,6 +369,9 @@
   <data name="Main_Menu_UpsVariables" xml:space="preserve">
     <value>UPS 變數</value>
   </data>
+  <data name="Main_Menu_View" xml:space="preserve">
+    <value>檢視</value>
+  </data>
   <data name="Main_RuntimeUnknown" xml:space="preserve">
     <value>未知</value>
   </data>
@@ -595,6 +604,9 @@
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>關閉程式視窗時縮小到工作列系統匣。</value>
+  </data>
+  <data name="Prefs_Misc_DisplayStyle" xml:space="preserve">
+    <value>主視窗顯示方式</value>
   </data>
   <data name="Prefs_Misc_Language" xml:space="preserve">
     <value>語言</value>

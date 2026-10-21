@@ -69,6 +69,12 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>Да</value>
   </data>
+  <data name="DisplayStyle_Digital" xml:space="preserve">
+    <value>Цифровой</value>
+  </data>
+  <data name="DisplayStyle_Gauges" xml:space="preserve">
+    <value>Циферблаты</value>
+  </data>
   <data name="History_Chart_BatteryCharge" xml:space="preserve">
     <value>Заряд батареи</value>
   </data>
@@ -363,6 +369,9 @@
   <data name="Main_Menu_UpsVariables" xml:space="preserve">
     <value>Переменные ИБП</value>
   </data>
+  <data name="Main_Menu_View" xml:space="preserve">
+    <value>Вид</value>
+  </data>
   <data name="Main_RuntimeUnknown" xml:space="preserve">
     <value>Неизвестно</value>
   </data>
@@ -612,6 +621,9 @@ IPV4 / IPV6 / доменное имя.</value>
   </data>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>Свернуть в трей при закрытии.</value>
+  </data>
+  <data name="Prefs_Misc_DisplayStyle" xml:space="preserve">
+    <value>Отображение в главном окне</value>
   </data>
   <data name="Prefs_Misc_Language" xml:space="preserve">
     <value>Язык</value>
