@@ -12,9 +12,10 @@ e.g. `0.3.0-pre.3`.
 
 ## Original goals (by gbakeman)
 
-Coco.Nut was proposed by gbakeman, maintainer of WinNUT-Client and the nutdotnet library, as the successor of
-WinNUT ([nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/issues/40)). His goals for it,
-numbered in the order they ship (goal G<n> ships as 0.<n>.0):
+Coco.Nut is a proof of concept for a possible future successor of WinNUT. gbakeman, maintainer of WinNUT-Client
+and the nutdotnet library, proposed a C# rewrite in
+[nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/issues/40) and listed these goals for it,
+numbered here in the order they ship (goal G<n> ships as 0.<n>.0):
 
 | # | Goal | Status |
 |---|------|--------|

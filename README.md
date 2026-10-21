@@ -2,12 +2,13 @@
 
 [![Build](https://github.com/SebastianOehm/Coco.Nut/actions/workflows/build.yml/badge.svg)](https://github.com/SebastianOehm/Coco.Nut/actions/workflows/build.yml)
 
-Coco.Nut is a cross-platform desktop client for [Network UPS Tools](https://networkupstools.org/) (NUT), and the
-successor of [WinNUT-Client](https://github.com/nutdotnet/WinNUT-Client): a full C#/.NET rewrite that replaces
-WinNUT's VB.NET/WinForms/.NET Framework stack (Windows-only) with C# 13, .NET 10 and
-[Avalonia UI](https://avaloniaui.net/), so the same client now runs on Windows, Linux and macOS. See
-[nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/issues/40) for the background on why this
-rewrite exists, and [`docs/PLAN.md`](docs/PLAN.md) for the detailed migration plan and architecture.
+Coco.Nut is a cross-platform desktop client for [Network UPS Tools](https://networkupstools.org/) (NUT), and a
+proof of concept for a possible future successor of [WinNUT-Client](https://github.com/nutdotnet/WinNUT-Client): a
+full C#/.NET rewrite that replaces WinNUT's VB.NET/WinForms/.NET Framework stack (Windows-only) with C# 13, .NET 10
+and [Avalonia UI](https://avaloniaui.net/), so the same client runs on Windows, Linux and macOS. The idea of a C#
+rewrite comes from the discussion in [nutdotnet/WinNUT-Client#40](https://github.com/nutdotnet/WinNUT-Client/issues/40);
+whether Coco.Nut becomes WinNUT's successor is still open. See [`docs/PLAN.md`](docs/PLAN.md) for the detailed
+migration plan and architecture.
 
 ## Status
 
@@ -152,9 +153,9 @@ Coco.Nut's client IP address there so it is allowed to connect.
 ## Migrating from WinNUT
 
 On Windows, Coco.Nut can import settings from an existing WinNUT-Client 2.x installation (connection details,
-calibration, power actions, etc.) from its `user.config` file, so upgrading users keep their preferences. WinNUT
-1.x's registry/INI-based settings are not supported. WinNUT was Windows-only, so this import is a Windows-only
-feature.
+calibration, power actions, etc.) from its `user.config` file, so users switching from WinNUT keep their
+preferences. WinNUT 1.x's registry/INI-based settings are not supported. WinNUT was Windows-only, so this import is
+a Windows-only feature.
 
 ## Project structure
 
