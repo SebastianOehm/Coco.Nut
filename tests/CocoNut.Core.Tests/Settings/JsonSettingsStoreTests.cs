@@ -257,6 +257,34 @@ public sealed class JsonSettingsStoreTests : IDisposable
     }
 
     [Fact]
+    public void SaveAndLoad_RoundTripsTheDisplayStyle_AsAString()
+    {
+        var store = CreateStore();
+        var settings = new AppSettings { General = new GeneralSettings { DisplayStyle = DisplayStyle.Digital } };
+
+        store.Save(settings);
+        var loaded = store.Load();
+
+        Assert.Equal(DisplayStyle.Digital, loaded.General.DisplayStyle);
+        Assert.Contains("\"displayStyle\": \"Digital\"", File.ReadAllText(_filePath));
+        Assert.Equal(DisplayStyle.Digital, loaded.Clone().General.DisplayStyle);
+    }
+
+    [Fact]
+    public void Load_WithoutADisplayStyle_DefaultsToGauges()
+    {
+        // A settings file written before the digital display existed.
+        File.WriteAllText(_filePath, """
+            { "schemaVersion": 1, "general": { "theme": "Dark", "isFirstRun": false } }
+            """);
+
+        var general = CreateStore().Load().General;
+
+        Assert.Equal(DisplayStyle.Gauges, general.DisplayStyle);
+        Assert.Equal(AppTheme.Dark, general.Theme);
+    }
+
+    [Fact]
     public void Load_WithNullSections_UsesDefaultsForThem()
     {
         File.WriteAllText(_filePath, """
