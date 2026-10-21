@@ -91,6 +91,14 @@ along with this program. If not, see https://www.gnu.org/licenses/.</value>
     <value>Yes</value>
     <comment>Generic affirmative answer for Yes/No prompts. New in Coco.Nut (WinNUT had no Yes/No dialog).</comment>
   </data>
+  <data name="DisplayStyle_Digital" xml:space="preserve">
+    <value>Digital</value>
+    <comment>Display style option (Settings > Misc combo box and main window View menu): compact tiles with large numbers.</comment>
+  </data>
+  <data name="DisplayStyle_Gauges" xml:space="preserve">
+    <value>Gauges</value>
+    <comment>Display style option (Settings > Misc combo box and main window View menu): circular dials.</comment>
+  </data>
   <data name="History_Chart_BatteryCharge" xml:space="preserve">
     <value>Battery charge</value>
     <comment>History window: title of the battery charge chart.</comment>
@@ -523,6 +531,10 @@ along with this program. If not, see https://www.gnu.org/licenses/.</value>
     <value>UPS variables</value>
     <comment>Main window File menu: opens the UPS variables window.</comment>
   </data>
+  <data name="Main_Menu_View" xml:space="preserve">
+    <value>View</value>
+    <comment>Main window menu bar: 'View' top-level menu (choice between the gauge and the digital display).</comment>
+  </data>
   <data name="Main_RuntimeUnknown" xml:space="preserve">
     <value>Unknown</value>
     <comment>Main window: shown instead of a runtime/estimate value when it cannot be computed (distinct from Common_Unavailable, which is for a value the server does not report at all). New in Coco.Nut.</comment>
@@ -863,6 +875,10 @@ Accepted value: 1 to 3600.</value>
   <data name="Prefs_Misc_CloseToTray_ToolTip" xml:space="preserve">
     <value>Hides Coco.Nut in the system tray instead of exiting when the window is closed.</value>
     <comment>Settings &gt; Misc: tooltip for the close-to-tray checkbox.</comment>
+  </data>
+  <data name="Prefs_Misc_DisplayStyle" xml:space="preserve">
+    <value>Main window display</value>
+    <comment>Settings > Misc: label of the combo box that chooses how the main window shows its six values (gauges or digital).</comment>
   </data>
   <data name="Prefs_Misc_Language" xml:space="preserve">
     <value>Language</value>

@@ -23,7 +23,11 @@
         <MenuItem Header="{x:Static loc:Strings.Main_Menu_Connect}" Command="{Binding ConnectCommand}" IsEnabled="{Binding CanConnect}" />
         <MenuItem Header="{x:Static loc:Strings.Main_Menu_Disconnect}" Command="{Binding DisconnectCommand}" IsEnabled="{Binding CanDisconnect}" />
         <Separator />
-        <MenuItem Header="{x:Static loc:Strings.Main_Menu_Persist}" ToggleType="CheckBox" IsChecked="{Binding AutoReconnectEnabled}" />
+        <MenuItem Header="{x:Static loc:Strings.Main_Menu_Persist}" ToggleType="CheckBox" IsChecked="{Binding AutoReconnectEnabled, Mode=TwoWay}" />
+      </MenuItem>
+      <MenuItem Header="{x:Static loc:Strings.Main_Menu_View}">
+        <MenuItem Header="{x:Static loc:Strings.DisplayStyle_Gauges}" ToggleType="Radio" GroupName="DisplayStyle" IsChecked="{Binding IsGaugeDisplay, Mode=TwoWay}" />
+        <MenuItem Header="{x:Static loc:Strings.DisplayStyle_Digital}" ToggleType="Radio" GroupName="DisplayStyle" IsChecked="{Binding IsDigitalDisplay, Mode=TwoWay}" />
       </MenuItem>
       <MenuItem Header="{x:Static loc:Strings.Main_Menu_Help}">
         <MenuItem Header="{x:Static loc:Strings.Main_Menu_CheckForUpdate}" Command="{Binding CheckForUpdatesCommand}" />
@@ -104,44 +108,53 @@
           </Border>
         </StackPanel>
 
-        <WrapPanel Grid.Column="1" HorizontalAlignment="Center">
-          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-            <controls:Gauge Width="180" Height="180"
-                             Minimum="{Binding InputVoltageGauge.Minimum}" Maximum="{Binding InputVoltageGauge.Maximum}"
-                             Value="{Binding InputVoltageGauge.Value}" Ranges="{Binding InputVoltageGauge.Ranges}"
-                             Caption="{Binding InputVoltageGauge.Caption}" Unit="{Binding InputVoltageGauge.Unit}" />
-          </Border>
-          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-            <controls:Gauge Width="180" Height="180"
-                             Minimum="{Binding OutputVoltageGauge.Minimum}" Maximum="{Binding OutputVoltageGauge.Maximum}"
-                             Value="{Binding OutputVoltageGauge.Value}" Ranges="{Binding OutputVoltageGauge.Ranges}"
-                             Caption="{Binding OutputVoltageGauge.Caption}" Unit="{Binding OutputVoltageGauge.Unit}" />
-          </Border>
-          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-            <controls:Gauge Width="180" Height="180"
-                             Minimum="{Binding InputFrequencyGauge.Minimum}" Maximum="{Binding InputFrequencyGauge.Maximum}"
-                             Value="{Binding InputFrequencyGauge.Value}" Ranges="{Binding InputFrequencyGauge.Ranges}"
-                             Caption="{Binding InputFrequencyGauge.Caption}" Unit="{Binding InputFrequencyGauge.Unit}" />
-          </Border>
-          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-            <controls:Gauge Width="180" Height="180"
-                             Minimum="{Binding BatteryVoltageGauge.Minimum}" Maximum="{Binding BatteryVoltageGauge.Maximum}"
-                             Value="{Binding BatteryVoltageGauge.Value}" Ranges="{Binding BatteryVoltageGauge.Ranges}"
-                             Caption="{Binding BatteryVoltageGauge.Caption}" Unit="{Binding BatteryVoltageGauge.Unit}" />
-          </Border>
-          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-            <controls:Gauge Width="180" Height="180"
-                             Minimum="{Binding LoadGauge.Minimum}" Maximum="{Binding LoadGauge.Maximum}"
-                             Value="{Binding LoadGauge.Value}" Ranges="{Binding LoadGauge.Ranges}"
-                             Caption="{Binding LoadGauge.Caption}" Unit="{Binding LoadGauge.Unit}" />
-          </Border>
-          <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-            <controls:Gauge Width="180" Height="180"
-                             Minimum="{Binding PowerGauge.Minimum}" Maximum="{Binding PowerGauge.Maximum}"
-                             Value="{Binding PowerGauge.Value}" Ranges="{Binding PowerGauge.Ranges}"
-                             Caption="{Binding PowerGauge.Caption}" Unit="{Binding PowerGauge.Unit}" />
-          </Border>
-        </WrapPanel>
+        <Panel Grid.Column="1">
+          <ItemsControl ItemsSource="{Binding Gauges}" IsVisible="{Binding !IsDigitalDisplay}" HorizontalAlignment="Center">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:GaugeViewModel">
+                <Border Margin="8" Padding="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+                  <controls:Gauge Width="180" Height="180"
+                                   Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"
+                                   Value="{Binding Value}" Ranges="{Binding Ranges}"
+                                   Caption="{Binding Caption}" Unit="{Binding Unit}" />
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+          <ItemsControl ItemsSource="{Binding Gauges}" IsVisible="{Binding IsDigitalDisplay}" HorizontalAlignment="Center">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:GaugeViewModel">
+                <!-- The status strip sits on a neutral track so a tile without a reading or ranges still shows a strip. -->
+                <Border Width="180" Height="92" Margin="8" BorderThickness="1" BorderBrush="Gray" CornerRadius="4" ClipToBounds="True">
+                  <Grid ColumnDefinitions="6,*">
+                    <Border Grid.Column="0" Background="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+                    <Border Grid.Column="0" Background="{Binding StatusBrush}" />
+                    <StackPanel Grid.Column="1" Margin="10,4,8,4" VerticalAlignment="Center">
+                      <TextBlock Text="{Binding Caption}" FontSize="12" Opacity="0.7" TextTrimming="CharacterEllipsis" />
+                      <StackPanel Orientation="Horizontal" Spacing="4">
+                        <TextBlock Text="{Binding DigitalValueText}" FontFamily="Consolas,Menlo,DejaVu Sans Mono,monospace"
+                                   FontSize="32" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding Unit}" FontSize="14" Opacity="0.7" VerticalAlignment="Bottom" Margin="0,0,0,6" />
+                      </StackPanel>
+                      <TextBlock Text="{Binding RangeText}" FontSize="11" Opacity="0.6" />
+                    </StackPanel>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </Panel>
       </Grid>
     </ScrollViewer>
 

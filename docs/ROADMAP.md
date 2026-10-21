@@ -60,6 +60,21 @@ Follow-ups:
 
 ## Change log
 
+### 2026-10-21 – 0.3.1: Digital display
+* The main window can show its six values (input and output voltage, frequency, battery voltage, load, power) as
+  digital tiles instead of the dials: a large number in a fixed-width font, the unit, the calibrated range
+  (e.g. "210–270 V") and a colored strip on the left edge with the status of the band the value is in (the same bands
+  as the dial's scale; a value outside the scale takes the nearest end band, no reading shows a neutral strip). The
+  number is not colored, so it stays readable in the light and the dark theme.
+* One global choice for all six values, switched in Settings > Misc ("Main window display") or in the new **View**
+  menu of the main window, which applies at once. Stored as `general.displayStyle` (`Gauges` or `Digital`) in the
+  settings file; files without it keep the dials.
+* The main window builds the dials and tiles from a list of six `GaugeViewModel` instead of six copies of the same
+  XAML. The band lookup is `GaugeRangeLookup`.
+* Fix: the check mark of the Connection > Automatic reconnection menu item was not written back to the view model
+  (`MenuItem.IsChecked` binds one way by default).
+* Strings in all 7 languages; version raised to 0.3.1.
+
 ### 2026-10-19 – 0.3.0: Actions system (G3)
 * Rule engine replacing the fixed shutdown policy. Triggers: status flag active / became active / became inactive,
   value at or below / at or above a threshold (optionally "only on battery"), on battery for N seconds, connection

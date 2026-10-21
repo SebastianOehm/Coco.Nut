@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 using Avalonia.VisualTree;
 using CocoNut.App.Services;
 using CocoNut.App.Tests.Fakes;
@@ -10,6 +11,7 @@ using CocoNut.App.Views;
 using CocoNut.Core.Logging;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Nut;
+using CocoNut.Core.Settings;
 using CocoNut.Core.Ups;
 using CocoNut.Core.Updates;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -25,10 +27,22 @@ namespace CocoNut.App.Tests;
 public class DemoScreenshotTests
 {
     [AvaloniaFact]
-    public void MainWindow_with_sample_data_screenshot_is_saved_to_artifacts_mainwindow_png()
+    public void MainWindow_with_sample_data_screenshot_is_saved_to_artifacts_mainwindow_png() =>
+        SaveMainWindowScreenshot("mainwindow.png", DisplayStyle.Gauges, themeVariant: null);
+
+    [AvaloniaFact]
+    public void MainWindow_digital_display_with_sample_data_screenshot_is_saved_to_artifacts_mainwindow_digital_png() =>
+        SaveMainWindowScreenshot("mainwindow-digital.png", DisplayStyle.Digital, themeVariant: null);
+
+    [AvaloniaFact]
+    public void MainWindow_digital_display_in_dark_theme_screenshot_is_saved_to_artifacts_mainwindow_digital_dark_png() =>
+        SaveMainWindowScreenshot("mainwindow-digital-dark.png", DisplayStyle.Digital, ThemeVariant.Dark);
+
+    private static void SaveMainWindowScreenshot(string fileName, DisplayStyle displayStyle, ThemeVariant? themeVariant)
     {
         var monitor = new FakeUpsMonitorEvents { Info = new UpsInfo("CyberPower", "CP1500PFCLCD", "SN-000123", "CR01") };
         var settingsStore = new InMemorySettingsStore();
+        settingsStore.Settings.General.DisplayStyle = displayStyle;
         var settingsService = new SettingsService(settingsStore, settingsStore.Settings);
         var vm = new MainWindowViewModel(
             monitor,
@@ -58,6 +72,11 @@ public class DemoScreenshotTests
         });
 
         var window = new MainWindow(settingsService, requestExit: null) { DataContext = vm };
+        if (themeVariant is not null)
+        {
+            window.RequestedThemeVariant = themeVariant;
+        }
+
         window.Show();
 
         WriteableBitmap? frame = window.CaptureRenderedFrame();
@@ -65,7 +84,7 @@ public class DemoScreenshotTests
 
         string artifactsDirectory = Path.Combine(FindRepositoryRoot(), "artifacts");
         Directory.CreateDirectory(artifactsDirectory);
-        frame.Save(Path.Combine(artifactsDirectory, "mainwindow.png"));
+        frame.Save(Path.Combine(artifactsDirectory, fileName));
 
         vm.Dispose();
     }

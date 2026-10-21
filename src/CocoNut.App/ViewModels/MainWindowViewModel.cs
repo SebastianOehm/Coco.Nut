@@ -70,18 +70,35 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         _settingsService.SettingsChanged += OnSettingsChanged;
 
+        Gauges = [InputVoltageGauge, OutputVoltageGauge, InputFrequencyGauge, BatteryVoltageGauge, LoadGauge, PowerGauge];
+
         ApplySettings(_settingsService.Current);
         HydrateFromMonitor();
     }
 
     // ---- Gauges -----------------------------------------------------------------------------------------------
 
-    public GaugeViewModel InputVoltageGauge { get; } = new(Strings.Main_Gauge_InputVoltage, "V");
-    public GaugeViewModel OutputVoltageGauge { get; } = new(Strings.Main_Gauge_OutputVoltage, "V");
-    public GaugeViewModel InputFrequencyGauge { get; } = new(Strings.Main_Gauge_Frequency, "Hz");
-    public GaugeViewModel BatteryVoltageGauge { get; } = new(Strings.Main_Gauge_BatteryVoltage, "V");
-    public GaugeViewModel LoadGauge { get; } = new(Strings.Main_Gauge_Load, "%");
-    public GaugeViewModel PowerGauge { get; } = new(Strings.Main_Gauge_Power, "W");
+    public GaugeViewModel InputVoltageGauge { get; } = new(Strings.Main_Gauge_InputVoltage, "V", "0.0");
+    public GaugeViewModel OutputVoltageGauge { get; } = new(Strings.Main_Gauge_OutputVoltage, "V", "0.0");
+    public GaugeViewModel InputFrequencyGauge { get; } = new(Strings.Main_Gauge_Frequency, "Hz", "0.0");
+    public GaugeViewModel BatteryVoltageGauge { get; } = new(Strings.Main_Gauge_BatteryVoltage, "V", "0.0");
+    public GaugeViewModel LoadGauge { get; } = new(Strings.Main_Gauge_Load, "%", "0");
+    public GaugeViewModel PowerGauge { get; } = new(Strings.Main_Gauge_Power, "W", "0");
+
+    /// <summary>The six values in display order, for the items controls of the dial and the digital view.</summary>
+    public IReadOnlyList<GaugeViewModel> Gauges { get; }
+
+    /// <summary>Whether the main window shows the digital tiles instead of the dials; persisted as <see cref="GeneralSettings.DisplayStyle"/>.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsGaugeDisplay))]
+    private bool _isDigitalDisplay;
+
+    /// <summary>The opposite of <see cref="IsDigitalDisplay"/>; the View menu's "Gauges" radio item binds to it.</summary>
+    public bool IsGaugeDisplay
+    {
+        get => !IsDigitalDisplay;
+        set => IsDigitalDisplay = !value;
+    }
 
     // ---- UPS info -----------------------------------------------------------------------------------------------
 
@@ -228,6 +245,18 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         var updated = _settingsService.Current.Clone();
         updated.Connection.AutoReconnect = value;
+        _settingsService.Save(updated);
+    }
+
+    partial void OnIsDigitalDisplayChanged(bool value)
+    {
+        if (_isApplyingSettings)
+        {
+            return;
+        }
+
+        var updated = _settingsService.Current.Clone();
+        updated.General.DisplayStyle = value ? DisplayStyle.Digital : DisplayStyle.Gauges;
         _settingsService.Save(updated);
     }
 
@@ -442,6 +471,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         try
         {
             AutoReconnectEnabled = settings.Connection.AutoReconnect;
+            IsDigitalDisplay = settings.General.DisplayStyle == DisplayStyle.Digital;
             ApplyCalibration(settings.Calibration);
         }
         finally

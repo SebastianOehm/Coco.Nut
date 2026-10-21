@@ -53,6 +53,13 @@ public sealed record ThemeOption(AppTheme Value, string Text)
     public override string ToString() => Text;
 }
 
+/// <summary>One selectable entry of the Settings window's main-window display combo box (Settings &gt; Misc).</summary>
+public sealed record DisplayStyleOption(DisplayStyle Value, string Text)
+{
+    /// <inheritdoc />
+    public override string ToString() => Text;
+}
+
 /// <summary>One selectable entry of the rule editor's trigger-kind combo box (Settings &gt; Rules).</summary>
 public sealed record TriggerKindOption(TriggerKind Value, string Text)
 {

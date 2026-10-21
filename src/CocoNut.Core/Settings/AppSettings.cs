@@ -99,6 +99,8 @@ public sealed class GeneralSettings
     public string? Language { get; set; }
     /// <summary>Light/dark appearance (new in Coco.Nut).</summary>
     public AppTheme Theme { get; set; } = AppTheme.System;
+    /// <summary>How the main window shows its six values: dials or a digital read-out (new in Coco.Nut).</summary>
+    public DisplayStyle DisplayStyle { get; set; } = DisplayStyle.Gauges;
     /// <summary>IsFirstRun</summary>
     public bool IsFirstRun { get; set; } = true;
 }
@@ -110,6 +112,15 @@ public enum AppTheme
     System = 0,
     Light = 1,
     Dark = 2,
+}
+
+/// <summary>How the main window presents the six UPS values (input/output voltage, frequency, battery voltage, load, power).</summary>
+public enum DisplayStyle
+{
+    /// <summary>Circular dials (WinNUT's look).</summary>
+    Gauges = 0,
+    /// <summary>Compact tiles with a large number and a colored status strip.</summary>
+    Digital = 1,
 }
 
 public sealed class LoggingSettings
