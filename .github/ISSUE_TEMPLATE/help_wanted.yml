@@ -1,0 +1,82 @@
+name: Help wanted
+description: Ask the community for help with translations, testing, docs and more
+labels: ["help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe what help you're asking for. The fields below become the issue text.
+  - type: textarea
+    id: about
+    attributes:
+      label: About Coco.Nut
+      value: |
+        Coco.Nut is a cross-platform client for Network UPS Tools and a proof of concept for a possible future successor of WinNUT-Client.
+
+        This issue is a call for help, and anyone is welcome to join in. No coding skills are needed unless stated below.
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: What kind of help is this about?
+      options:
+        - Translation
+        - Testing
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what_help_is_needed
+    attributes:
+      label: What help is needed
+      description: Describe the task in a few sentences.
+      placeholder: "e.g. Please review the AI-translated strings for your language and correct anything that sounds wrong."
+    validations:
+      required: true
+  - type: textarea
+    id: who_can_help
+    attributes:
+      label: Who can help
+      description: Which skills, languages, platforms or hardware are useful?
+      placeholder: "e.g. native speaker of German, no coding needed"
+    validations:
+      required: true
+  - type: textarea
+    id: scope_and_time
+    attributes:
+      label: Scope and time
+      description: How much work is it, and is there a deadline?
+      placeholder: "e.g. ~220 short strings, about 1–2 hours; you can do just part of it"
+    validations:
+      required: false
+  - type: textarea
+    id: links
+    attributes:
+      label: Links
+      description: Anything that helps to get started.
+      placeholder: |
+        e.g.
+        - Review sheet: <link>
+        - Latest pre-release: https://github.com/SebastianOehm/Coco.Nut/releases
+        - How to switch the language: Settings
+    validations:
+      required: false
+  - type: textarea
+    id: how_to_respond
+    attributes:
+      label: How to respond
+      description: Tell helpers how to get in touch or hand in their work.
+      value: "Comment on this issue, or open a pull request. Partial help is very welcome."
+    validations:
+      required: false
+  - type: textarea
+    id: mentions
+    attributes:
+      label: Mentions
+      description: People who may be able to help and should be notified.
+      placeholder: "e.g. @username1 @username2"
+    validations:
+      required: false
