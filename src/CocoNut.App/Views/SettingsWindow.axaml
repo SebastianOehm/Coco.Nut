@@ -381,6 +381,10 @@
               <ComboBox ItemsSource="{Binding ThemeOptions}" SelectedItem="{Binding SelectedTheme}" Width="200" HorizontalAlignment="Left" />
             </StackPanel>
             <StackPanel Spacing="2">
+              <TextBlock Text="{x:Static loc:Strings.Prefs_Misc_DisplayStyle}" />
+              <ComboBox ItemsSource="{Binding DisplayStyleOptions}" SelectedItem="{Binding SelectedDisplayStyle}" Width="200" HorizontalAlignment="Left" />
+            </StackPanel>
+            <StackPanel Spacing="2">
               <TextBlock Text="{x:Static loc:Strings.Prefs_Misc_Language}" />
               <ComboBox ItemsSource="{Binding LanguageOptions}" SelectedItem="{Binding SelectedLanguage}" Width="200" HorizontalAlignment="Left" />
               <TextBlock Text="{x:Static loc:Strings.Prefs_Misc_LanguageRestartHint}" FontStyle="Italic" FontSize="11"

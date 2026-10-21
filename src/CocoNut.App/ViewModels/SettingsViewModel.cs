@@ -116,6 +116,12 @@ public sealed partial class SettingsViewModel : ObservableObject
             new ThemeOption(AppTheme.Dark, Strings.Theme_Dark),
         ];
 
+        DisplayStyleOptions =
+        [
+            new DisplayStyleOption(DisplayStyle.Gauges, Strings.DisplayStyle_Gauges),
+            new DisplayStyleOption(DisplayStyle.Digital, Strings.DisplayStyle_Digital),
+        ];
+
         LanguageOptions =
         [
             new LanguageOption(null, Strings.Language_System),
@@ -169,6 +175,9 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     /// <summary>Options of the theme combo box (System / Light / Dark); applied immediately on save.</summary>
     public IReadOnlyList<ThemeOption> ThemeOptions { get; }
+
+    /// <summary>Options of the main-window display combo box (Gauges / Digital); applied immediately on save.</summary>
+    public IReadOnlyList<DisplayStyleOption> DisplayStyleOptions { get; }
 
     public IReadOnlyList<int> NominalFrequencyOptions { get; }
 
@@ -760,6 +769,11 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     partial void OnSelectedThemeChanged(ThemeOption value) => _working.General.Theme = value.Value;
 
+    [ObservableProperty]
+    private DisplayStyleOption _selectedDisplayStyle = null!;
+
+    partial void OnSelectedDisplayStyleChanged(DisplayStyleOption value) => _working.General.DisplayStyle = value.Value;
+
     /// <summary>Shown once the selected language differs from the one the app is actually running with.</summary>
     public bool IsLanguageRestartHintVisible => !_isLoading && !string.Equals(SelectedLanguage?.CultureCode, _originalLanguage, StringComparison.Ordinal);
 
@@ -1024,6 +1038,7 @@ public sealed partial class SettingsViewModel : ObservableObject
             CloseToTray = _working.General.CloseToTray;
             SelectedLanguage = LanguageOptions.FirstOrDefault(o => o.CultureCode == _working.General.Language) ?? LanguageOptions[0];
             SelectedTheme = ThemeOptions.FirstOrDefault(o => o.Value == _working.General.Theme) ?? ThemeOptions[0];
+            SelectedDisplayStyle = DisplayStyleOptions.FirstOrDefault(o => o.Value == _working.General.DisplayStyle) ?? DisplayStyleOptions[0];
 
             CheckAtStart = _working.Update.CheckAtStart;
             SelectedCheckInterval = CheckIntervalOptions.FirstOrDefault(o => o.Days == _working.Update.AutoCheckIntervalDays) ?? CheckIntervalOptions[1];

@@ -338,6 +338,30 @@ public sealed class SettingsViewModelTests : IDisposable
     }
 
     [Fact]
+    public async Task Selected_display_style_is_saved()
+    {
+        var f = Build();
+        Assert.Equal(DisplayStyle.Gauges, f.ViewModel.SelectedDisplayStyle.Value);
+
+        f.ViewModel.SelectedDisplayStyle = f.ViewModel.DisplayStyleOptions.First(o => o.Value == DisplayStyle.Digital);
+        await f.ViewModel.SaveCommand.ExecuteAsync(null);
+
+        Assert.Equal(DisplayStyle.Digital, f.Settings.Current.General.DisplayStyle);
+    }
+
+    [Fact]
+    public void Display_style_option_is_loaded_from_the_settings()
+    {
+        var settings = new AppSettings();
+        settings.General.DisplayStyle = DisplayStyle.Digital;
+
+        var f = Build(settings);
+
+        Assert.Equal(DisplayStyle.Digital, f.ViewModel.SelectedDisplayStyle.Value);
+        Assert.Equal([DisplayStyle.Gauges, DisplayStyle.Digital], f.ViewModel.DisplayStyleOptions.Select(o => o.Value));
+    }
+
+    [Fact]
     public void Language_restart_hint_is_hidden_until_the_selection_changes()
     {
         var f = Build();

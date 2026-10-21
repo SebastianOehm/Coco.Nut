@@ -310,6 +310,79 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public void Gauges_lists_the_six_values_in_display_order()
+    {
+        var (vm, _, _, _, _, _) = Build();
+
+        Assert.Equal(
+            [vm.InputVoltageGauge, vm.OutputVoltageGauge, vm.InputFrequencyGauge, vm.BatteryVoltageGauge, vm.LoadGauge, vm.PowerGauge],
+            vm.Gauges);
+    }
+
+    [Fact]
+    public void The_display_style_defaults_to_gauges_and_follows_the_loaded_settings()
+    {
+        var (vm, _, _, _, _, _) = Build();
+        Assert.False(vm.IsDigitalDisplay);
+        Assert.True(vm.IsGaugeDisplay);
+
+        var settings = new AppSettings();
+        settings.General.DisplayStyle = DisplayStyle.Digital;
+        var (digital, _, _, _, _, _) = Build(settings);
+        Assert.True(digital.IsDigitalDisplay);
+        Assert.False(digital.IsGaugeDisplay);
+    }
+
+    [Fact]
+    public void Choosing_the_digital_display_persists_it_and_choosing_gauges_again_reverts_it()
+    {
+        var (vm, _, _, settings, _, _) = Build();
+
+        vm.IsDigitalDisplay = true;
+        Assert.Equal(DisplayStyle.Digital, settings.Current.General.DisplayStyle);
+        Assert.False(vm.IsGaugeDisplay);
+
+        vm.IsGaugeDisplay = true; // what the menu's "Gauges" radio item does
+        Assert.False(vm.IsDigitalDisplay);
+        Assert.Equal(DisplayStyle.Gauges, settings.Current.General.DisplayStyle);
+    }
+
+    [Fact]
+    public void Changing_the_display_style_keeps_the_other_settings()
+    {
+        var (vm, _, _, settings, _, _) = Build();
+        var updated = settings.Current.Clone();
+        updated.Connection.Host = "ups.example.org";
+        settings.Save(updated);
+
+        vm.IsDigitalDisplay = true;
+
+        Assert.Equal("ups.example.org", settings.Current.Connection.Host);
+    }
+
+    [Fact]
+    public void Settings_changed_with_the_digital_display_switches_the_view_model_without_saving_again()
+    {
+        var (vm, _, _, settings, _, _) = Build();
+        var saves = 0;
+        settings.SettingsChanged += (_, _) => saves++;
+
+        var updated = settings.Current.Clone();
+        updated.General.DisplayStyle = DisplayStyle.Digital;
+        settings.Save(updated);
+
+        Assert.True(vm.IsDigitalDisplay);
+        Assert.Equal(1, saves);
+
+        var back = settings.Current.Clone();
+        back.General.DisplayStyle = DisplayStyle.Gauges;
+        settings.Save(back);
+
+        Assert.False(vm.IsDigitalDisplay);
+        Assert.Equal(2, saves);
+    }
+
+    [Fact]
     public void Shutdown_pending_and_cancelled_are_logged_and_cancelled_notifies()
     {
         var (vm, _, shutdownEvents, _, notifications, _) = Build();
