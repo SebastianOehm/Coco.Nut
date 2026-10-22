@@ -3,6 +3,7 @@ using CocoNut.App.Services;
 using CocoNut.App.Tests.Fakes;
 using CocoNut.App.ViewModels;
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.History;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Shutdown;
@@ -144,8 +145,8 @@ public class MainWindowViewModelTests
         Assert.Equal(35, vm.LoadGauge.Value);
         Assert.Equal(180, vm.PowerGauge.Value);
 
-        Assert.Equal("Acme", vm.ManufacturerText);
-        Assert.Equal("Model X", vm.ModelText);
+        Assert.Equal("Acme", vm.Manufacturer.Text);
+        Assert.Equal("Model X", vm.Model.Text);
         Assert.Equal("SN123", vm.SerialText);
         Assert.Equal("1.0", vm.FirmwareText);
 
@@ -177,7 +178,7 @@ public class MainWindowViewModelTests
         Assert.Null(vm.PowerGauge.Value);
         Assert.Equal(Strings.Common_Unavailable, vm.BatteryChargeText);
         Assert.Equal(Strings.Main_RuntimeUnknown, vm.BatteryRuntimeText);
-        Assert.Equal(Strings.Common_Unavailable, vm.ManufacturerText);
+        Assert.Equal(Strings.Common_Unavailable, vm.Manufacturer.Text);
         Assert.Empty(vm.ActiveStatusFlags);
     }
 
@@ -440,5 +441,220 @@ public class MainWindowViewModelTests
         Assert.Equal(1, navigator.ShowUpsVariablesCount);
         Assert.Equal(1, navigator.ShowHistoryCount);
         Assert.Equal(1, navigator.ShowAboutCount);
+    }
+
+    // ---- Manually entered manufacturer and model ------------------------------------------------------------------
+
+    private static readonly UpsKey ConnectedUps = new("nutserver", 3493, "ups");
+
+    private static (MainWindowViewModel ViewModel, FakeUpsMonitorEvents Monitor, SettingsService Settings) BuildConnected(
+        UpsInfo info, AppSettings? settings = null)
+    {
+        var (vm, monitor, _, settingsService, _, _) = Build(settings);
+        monitor.Info = info;
+        monitor.RaiseStateChanged(MonitorState.Disconnected, MonitorState.Connected);
+        monitor.RaiseReadingUpdated(SampleReading());
+        return (vm, monitor, settingsService);
+    }
+
+    private static UpsInfo NotDetected() => new(UpsInfo.UnknownValue, UpsInfo.UnknownValue, "SN123", "1.0");
+
+    [Theory]
+    [InlineData("Unknown")]
+    [InlineData("unknown")]
+    [InlineData("")]
+    [InlineData("  ")]
+    public void A_value_the_ups_does_not_report_shows_unavailable_and_can_be_overridden(string reported)
+    {
+        var (vm, _, _) = BuildConnected(new UpsInfo(reported, reported, "SN123", "1.0"));
+
+        Assert.Equal(Strings.Common_Unavailable, vm.Manufacturer.Text);
+        Assert.Equal(Strings.Common_Unavailable, vm.Model.Text);
+        Assert.False(vm.Manufacturer.IsOverridden);
+        Assert.True(vm.Manufacturer.CanOverride);
+        Assert.True(vm.Model.CanOverride);
+    }
+
+    [Fact]
+    public void A_reported_value_is_shown_plainly_and_cannot_be_overridden()
+    {
+        var (vm, _, _) = BuildConnected(new UpsInfo("Acme", "Unknown", "SN123", "1.0"));
+
+        Assert.Equal("Acme", vm.Manufacturer.Text);
+        Assert.False(vm.Manufacturer.IsOverridden);
+        Assert.False(vm.Manufacturer.CanOverride);
+        Assert.False(vm.Manufacturer.BeginEditCommand.CanExecute(null));
+        Assert.True(vm.Model.CanOverride, "the two fields are independent");
+    }
+
+    [Fact]
+    public void Nothing_can_be_overridden_while_disconnected_or_without_info()
+    {
+        var (vm, monitor, _, _, _, _) = Build();
+        Assert.False(vm.Manufacturer.CanOverride);
+
+        monitor.RaiseStateChanged(MonitorState.Disconnected, MonitorState.Connected);
+        monitor.RaiseReadingUpdated(SampleReading()); // Info is still null
+        Assert.False(vm.Manufacturer.CanOverride);
+        Assert.False(vm.Model.CanOverride);
+
+        monitor.Info = NotDetected();
+        monitor.RaiseReadingUpdated(SampleReading());
+        Assert.True(vm.Manufacturer.CanOverride);
+
+        monitor.RaiseStateChanged(MonitorState.Connected, MonitorState.Reconnecting, new IOException("dropped"));
+        Assert.False(vm.Manufacturer.CanOverride);
+        Assert.Equal(Strings.Common_Unavailable, vm.Manufacturer.Text);
+    }
+
+    [Fact]
+    public void Saving_an_entry_shows_it_marks_it_overridden_and_persists_it_for_the_connected_ups()
+    {
+        var (vm, _, settings) = BuildConnected(NotDetected());
+
+        vm.Manufacturer.BeginEditCommand.Execute(null);
+        Assert.True(vm.Manufacturer.IsEditing);
+        Assert.Equal("", vm.Manufacturer.EditText);
+        vm.Manufacturer.EditText = "  Acme Corp ";
+        vm.Manufacturer.SaveEditCommand.Execute(null);
+
+        Assert.False(vm.Manufacturer.IsEditing);
+        Assert.Equal("Acme Corp", vm.Manufacturer.Text);
+        Assert.True(vm.Manufacturer.IsOverridden);
+        Assert.True(vm.Manufacturer.CanOverride);
+        Assert.Equal(Strings.Common_Unavailable, vm.Model.Text);
+        Assert.False(vm.Model.IsOverridden);
+        var entry = Assert.Single(settings.Current.InfoOverrides.Entries);
+        Assert.Equal(("nutserver", 3493, "ups", "Acme Corp", null), (entry.Host, entry.Port, entry.UpsName, entry.Manufacturer, entry.Model));
+    }
+
+    [Fact]
+    public void Editing_an_existing_entry_starts_with_its_value_and_an_empty_save_clears_it()
+    {
+        var settings = new AppSettings();
+        UpsInfoOverrideResolver.SetOverride(settings, ConnectedUps, UpsInfoField.Model, "X-1000");
+        var (vm, _, service) = BuildConnected(NotDetected(), settings);
+        Assert.Equal("X-1000", vm.Model.Text);
+        Assert.True(vm.Model.IsOverridden);
+
+        vm.Model.BeginEditCommand.Execute(null);
+        Assert.Equal("X-1000", vm.Model.EditText);
+        vm.Model.EditText = "   ";
+        vm.Model.SaveEditCommand.Execute(null);
+
+        Assert.Equal(Strings.Common_Unavailable, vm.Model.Text);
+        Assert.False(vm.Model.IsOverridden);
+        Assert.True(vm.Model.CanOverride);
+        Assert.Empty(service.Current.InfoOverrides.Entries);
+    }
+
+    [Fact]
+    public void Cancelling_leaves_the_text_and_the_settings_untouched()
+    {
+        var (vm, _, settings) = BuildConnected(NotDetected());
+        var current = settings.Current;
+
+        vm.Model.BeginEditCommand.Execute(null);
+        vm.Model.EditText = "Typed but cancelled";
+        vm.Model.CancelEditCommand.Execute(null);
+
+        Assert.False(vm.Model.IsEditing);
+        Assert.Equal(Strings.Common_Unavailable, vm.Model.Text);
+        Assert.False(vm.Model.IsOverridden);
+        Assert.Same(current, settings.Current);
+        Assert.Empty(settings.Current.InfoOverrides.Entries);
+    }
+
+    [Fact]
+    public void An_open_editor_survives_the_next_reading()
+    {
+        var (vm, monitor, _) = BuildConnected(NotDetected());
+        vm.Model.BeginEditCommand.Execute(null);
+        vm.Model.EditText = "X-";
+
+        monitor.RaiseReadingUpdated(SampleReading());
+
+        Assert.True(vm.Model.IsEditing);
+        Assert.Equal("X-", vm.Model.EditText);
+    }
+
+    [Fact]
+    public void A_reported_value_wins_over_a_stored_override_which_is_kept()
+    {
+        var settings = new AppSettings();
+        UpsInfoOverrideResolver.SetOverride(settings, ConnectedUps, UpsInfoField.Manufacturer, "Mine");
+        var (vm, monitor, service) = BuildConnected(new UpsInfo("Acme", "Unknown", "SN123", "1.0"), settings);
+
+        Assert.Equal("Acme", vm.Manufacturer.Text);
+        Assert.False(vm.Manufacturer.IsOverridden);
+        Assert.False(vm.Manufacturer.CanOverride);
+        Assert.Equal("Mine", UpsInfoOverrideResolver.GetOverride(service.Current, ConnectedUps, UpsInfoField.Manufacturer));
+
+        // The UPS stops reporting it (e.g. a firmware change): the stored entry applies again.
+        monitor.Info = NotDetected();
+        monitor.RaiseReadingUpdated(SampleReading());
+
+        Assert.Equal("Mine", vm.Manufacturer.Text);
+        Assert.True(vm.Manufacturer.IsOverridden);
+    }
+
+    [Fact]
+    public void An_override_of_another_ups_is_not_applied()
+    {
+        var settings = new AppSettings();
+        UpsInfoOverrideResolver.SetOverride(settings, new UpsKey("nutserver", 3493, "other-ups"), UpsInfoField.Model, "Other");
+        UpsInfoOverrideResolver.SetOverride(settings, new UpsKey("nutserver", 3494, "ups"), UpsInfoField.Model, "Other port");
+        var (vm, _, _) = BuildConnected(NotDetected(), settings);
+
+        Assert.Equal(Strings.Common_Unavailable, vm.Model.Text);
+        Assert.False(vm.Model.IsOverridden);
+    }
+
+    [Fact]
+    public void The_host_of_a_stored_override_matches_case_insensitively()
+    {
+        var settings = new AppSettings();
+        UpsInfoOverrideResolver.SetOverride(settings, new UpsKey("NUTSERVER", 3493, "ups"), UpsInfoField.Model, "X-1000");
+
+        var (vm, _, _) = BuildConnected(NotDetected(), settings);
+
+        Assert.Equal("X-1000", vm.Model.Text);
+        Assert.True(vm.Model.IsOverridden);
+    }
+
+    [Fact]
+    public void Disconnecting_resets_the_entries_closes_the_editor_and_keeps_the_stored_override()
+    {
+        var settings = new AppSettings();
+        UpsInfoOverrideResolver.SetOverride(settings, ConnectedUps, UpsInfoField.Model, "X-1000");
+        var (vm, monitor, service) = BuildConnected(NotDetected(), settings);
+        vm.Manufacturer.BeginEditCommand.Execute(null);
+
+        monitor.RaiseStateChanged(MonitorState.Connected, MonitorState.Disconnected);
+
+        Assert.Equal(Strings.Common_Unavailable, vm.Model.Text);
+        Assert.False(vm.Model.IsOverridden);
+        Assert.False(vm.Model.CanOverride);
+        Assert.False(vm.Manufacturer.IsEditing);
+        Assert.Single(service.Current.InfoOverrides.Entries);
+    }
+
+    [Fact]
+    public void A_settings_change_from_elsewhere_re_resolves_the_displayed_values()
+    {
+        var (vm, _, service) = BuildConnected(NotDetected());
+        Assert.Equal(Strings.Common_Unavailable, vm.Model.Text);
+
+        var changed = service.Current.Clone();
+        UpsInfoOverrideResolver.SetOverride(changed, ConnectedUps, UpsInfoField.Model, "From elsewhere");
+        service.Save(changed);
+
+        Assert.Equal("From elsewhere", vm.Model.Text);
+        Assert.True(vm.Model.IsOverridden);
+
+        service.Save(new AppSettings());
+
+        Assert.Equal(Strings.Common_Unavailable, vm.Model.Text);
+        Assert.False(vm.Model.IsOverridden);
     }
 }

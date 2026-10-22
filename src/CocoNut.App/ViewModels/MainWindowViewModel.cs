@@ -3,6 +3,7 @@ using System.Globalization;
 using CocoNut.App.Controls;
 using CocoNut.App.Services;
 using CocoNut.Core.Abstractions;
+using CocoNut.Core.History;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Settings;
 using CocoNut.Core.Shutdown;
@@ -58,6 +59,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         _requestExit = requestExit ?? throw new ArgumentNullException(nameof(requestExit));
 
+        Manufacturer = new UpsInfoFieldViewModel(UpsInfoField.Manufacturer, SaveInfoOverride);
+        Model = new UpsInfoFieldViewModel(UpsInfoField.Model, SaveInfoOverride);
+
         _monitor.StateChanged += OnMonitorStateChanged;
         _monitor.ReadingUpdated += OnMonitorReadingUpdated;
         _monitor.StatusChanged += OnMonitorStatusChanged;
@@ -102,11 +106,11 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     // ---- UPS info -----------------------------------------------------------------------------------------------
 
-    [ObservableProperty]
-    private string _manufacturerText = Strings.Common_Unavailable;
+    /// <summary>The manufacturer line; the user can enter it by hand while the UPS does not report it.</summary>
+    public UpsInfoFieldViewModel Manufacturer { get; }
 
-    [ObservableProperty]
-    private string _modelText = Strings.Common_Unavailable;
+    /// <summary>The model line; the user can enter it by hand while the UPS does not report it.</summary>
+    public UpsInfoFieldViewModel Model { get; }
 
     [ObservableProperty]
     private string _serialText = Strings.Common_Unavailable;
@@ -345,17 +349,23 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                 AddLogEntry(Strings.Main_Status_Reconnecting);
                 break;
         }
+
+        if (e.NewState != MonitorState.Disconnected)
+        {
+            // Whether a manual entry is possible depends on the connection state.
+            ApplyUpsInfo();
+        }
     }
 
     private void HandleReadingUpdated(UpsReading reading)
     {
         if (_monitor.Info is { } info)
         {
-            ManufacturerText = string.IsNullOrWhiteSpace(info.Manufacturer) ? Strings.Common_Unavailable : info.Manufacturer;
-            ModelText = string.IsNullOrWhiteSpace(info.Model) ? Strings.Common_Unavailable : info.Model;
             SerialText = string.IsNullOrWhiteSpace(info.Serial) ? Strings.Common_Unavailable : info.Serial;
             FirmwareText = string.IsNullOrWhiteSpace(info.Firmware) ? Strings.Common_Unavailable : info.Firmware;
         }
+
+        ApplyUpsInfo();
 
         InputVoltageGauge.Value = reading.InputVoltage;
         OutputVoltageGauge.Value = reading.OutputVoltage;
@@ -447,8 +457,8 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         BatteryRuntimeText = Strings.Main_RuntimeUnknown;
         IsBatteryRuntimeEstimated = false;
 
-        ManufacturerText = Strings.Common_Unavailable;
-        ModelText = Strings.Common_Unavailable;
+        Manufacturer.Reset();
+        Model.Reset();
         SerialText = Strings.Common_Unavailable;
         FirmwareText = Strings.Common_Unavailable;
 
@@ -473,11 +483,46 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             AutoReconnectEnabled = settings.Connection.AutoReconnect;
             IsDigitalDisplay = settings.General.DisplayStyle == DisplayStyle.Digital;
             ApplyCalibration(settings.Calibration);
+            ApplyUpsInfo();
         }
         finally
         {
             _isApplyingSettings = false;
         }
+    }
+
+    /// <summary>
+    /// Shows manufacturer and model: what the UPS reports, else the user's entry for this UPS from the settings. Entering a
+    /// value is only possible while connected with product info at hand and only for a value the UPS does not report.
+    /// </summary>
+    private void ApplyUpsInfo()
+    {
+        if (_monitor.Info is not { } info)
+        {
+            Manufacturer.Reset();
+            Model.Reset();
+            return;
+        }
+
+        var settings = _settingsService.Current;
+        var key = _monitor.Settings is { } connection ? UpsKey.From(connection) : null;
+        var canOverride = IsConnected && key is not null;
+        Manufacturer.Update(info.Manufacturer, key is null ? null : UpsInfoOverrideResolver.GetOverride(settings, key, UpsInfoField.Manufacturer), canOverride);
+        Model.Update(info.Model, key is null ? null : UpsInfoOverrideResolver.GetOverride(settings, key, UpsInfoField.Model), canOverride);
+    }
+
+    /// <summary>Stores the user's entry for the connected UPS (empty clears it) and shows the result.</summary>
+    private void SaveInfoOverride(UpsInfoField field, string? value)
+    {
+        if (_monitor.Settings is not { } connection)
+        {
+            return;
+        }
+
+        var updated = _settingsService.Current.Clone();
+        UpsInfoOverrideResolver.SetOverride(updated, UpsKey.From(connection), field, value);
+        _settingsService.Save(updated);
+        ApplyUpsInfo();
     }
 
     private void ApplyCalibration(CalibrationSettings calibration)
