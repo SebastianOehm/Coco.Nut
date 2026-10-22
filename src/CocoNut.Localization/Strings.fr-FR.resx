@@ -321,6 +321,15 @@
   <data name="Main_Gauge_Power" xml:space="preserve">
     <value>Puissance de sortie</value>
   </data>
+  <data name="Main_InfoOverride_Edit" xml:space="preserve">
+    <value>Saisir manuellement</value>
+  </data>
+  <data name="Main_InfoOverride_Tooltip" xml:space="preserve">
+    <value>Saisi manuellement – l'UPS ne fournit pas cette valeur</value>
+  </data>
+  <data name="Main_InfoOverride_Watermark" xml:space="preserve">
+    <value>Laisser vide pour supprimer</value>
+  </data>
   <data name="Main_Label_Firmware" xml:space="preserve">
     <value>Firmware :</value>
   </data>
