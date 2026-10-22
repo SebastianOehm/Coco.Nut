@@ -60,6 +60,20 @@ Follow-ups:
 
 ## Change log
 
+### 2026-10-22 – 0.3.2: Manual manufacturer and model
+* When the UPS reports no manufacturer or model (nothing, an empty value or NUT's "Unknown"), the main window shows
+  "Unavailable" with a pencil button; the user can enter the value in place (Enter saves, Escape cancels, an empty
+  entry removes it). A manually entered value is shown in italics, and the button next to it changes from the plain pencil to
+  an accent-colored person-with-pencil symbol ("Entered manually – the UPS does not report this value") so the marker
+  differs by shape, not only by color; it is also the button to change or clear the entry. A value the UPS reports always wins,
+  is shown plainly and cannot be edited; manufacturer and model are handled independently. Serial number and firmware
+  are unchanged.
+* Stored per UPS (host, port and UPS name, like the history) as `infoOverrides.entries` in the settings file; files
+  without it load with no entries. An entry is kept while the UPS reports the value and applies again if it stops.
+* Core: `UpsInfo.IsReported` / `UpsInfo.UnknownValue` and `UpsInfoOverrideResolver` (find, set, clear, resolve). The main
+  window gets one `UpsInfoFieldViewModel` each for manufacturer and model.
+* Strings in all 7 languages; version raised to 0.3.2.
+
 ### 2026-10-21 – 0.3.1: Digital display
 * The main window can show its six values (input and output voltage, frequency, battery voltage, load, power) as
   digital tiles instead of the dials: a large number in a fixed-width font, the unit, the calibrated range

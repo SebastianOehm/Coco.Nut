@@ -346,7 +346,7 @@ public static class UpsCalculations
             }
         }
 
-        return "Unknown";
+        return UpsInfo.UnknownValue;
     }
 
     private static double? ParseDoubleOrNull(IReadOnlyDictionary<string, string> vars, string key)

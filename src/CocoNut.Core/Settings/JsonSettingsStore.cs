@@ -143,6 +143,7 @@ public sealed class JsonSettingsStore : ISettingsStore
             Update = model.Update ?? new UpdateSettings(),
             History = model.History ?? new HistorySettings(),
             Actions = MapActions(model.Actions),
+            InfoOverrides = MapInfoOverrides(model.InfoOverrides),
         };
     }
 
@@ -161,6 +162,10 @@ public sealed class JsonSettingsStore : ISettingsStore
 
         return new ActionsSettings { Rules = rules };
     }
+
+    /// <summary>A missing/null section or list becomes empty, and entries a hand-edited file left null are dropped.</summary>
+    private static UpsInfoOverridesSettings MapInfoOverrides(UpsInfoOverridesSettings? overrides) =>
+        new() { Entries = (overrides?.Entries ?? []).Where(entry => entry is not null).ToList() };
 
     private SettingsFileModel MapToFileModel(AppSettings settings) => new()
     {
@@ -182,6 +187,7 @@ public sealed class JsonSettingsStore : ISettingsStore
         Update = settings.Update,
         History = settings.History,
         Actions = settings.Actions,
+        InfoOverrides = settings.InfoOverrides,
     };
 
     private string? UnprotectOrNull(string? protectedValue, string fieldName)

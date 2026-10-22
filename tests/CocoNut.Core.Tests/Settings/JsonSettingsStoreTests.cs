@@ -492,4 +492,74 @@ public sealed class JsonSettingsStoreTests : IDisposable
         Assert.Equal(4, copy.Actions.Rules[0].Actions[3].Arguments.Count);
         Assert.Equal("Everything", copy.Actions.Rules[0].Name);
     }
+
+    // ---- UPS info overrides section ----
+
+    [Fact]
+    public void SaveThenLoad_RoundTripsTheInfoOverrides_AsCamelCaseJson()
+    {
+        var store = CreateStore();
+        var settings = new AppSettings();
+        settings.InfoOverrides.Entries.Add(new UpsInfoOverride { Host = "nut.example", Port = 3494, UpsName = "rack", Manufacturer = "Acme", Model = null });
+        settings.InfoOverrides.Entries.Add(new UpsInfoOverride { Host = "other", Port = 3493, UpsName = "ups", Manufacturer = null, Model = "X-1000" });
+
+        store.Save(settings);
+        var loaded = store.Load();
+
+        var json = File.ReadAllText(_filePath);
+        Assert.Contains("\"infoOverrides\"", json);
+        Assert.Contains("\"upsName\": \"rack\"", json);
+        Assert.Equal(2, loaded.InfoOverrides.Entries.Count);
+        var first = loaded.InfoOverrides.Entries[0];
+        Assert.Equal(("nut.example", 3494, "rack", "Acme", null), (first.Host, first.Port, first.UpsName, first.Manufacturer, first.Model));
+        var second = loaded.InfoOverrides.Entries[1];
+        Assert.Equal(("other", 3493, "ups", null, "X-1000"), (second.Host, second.Port, second.UpsName, second.Manufacturer, second.Model));
+    }
+
+    [Fact]
+    public void Load_AFileWithoutAnInfoOverridesSection_HasNoEntries_AndRoundTrips()
+    {
+        File.WriteAllText(_filePath, """{ "schemaVersion": 1, "power": { "batteryChargeFloor": 42 } }""");
+        var store = CreateStore();
+
+        var loaded = store.Load();
+
+        Assert.NotNull(loaded.InfoOverrides);
+        Assert.Empty(loaded.InfoOverrides.Entries);
+
+        store.Save(loaded);
+
+        Assert.Empty(store.Load().InfoOverrides.Entries);
+        Assert.Equal(1, SettingsFileModel.CurrentSchemaVersion);
+    }
+
+    [Theory]
+    [InlineData("""{ "schemaVersion": 1, "infoOverrides": null }""")]
+    [InlineData("""{ "schemaVersion": 1, "infoOverrides": {} }""")]
+    [InlineData("""{ "schemaVersion": 1, "infoOverrides": { "entries": null } }""")]
+    public void Load_NullOrEmptyInfoOverridesSection_BecomesAnEmptyList(string json)
+    {
+        File.WriteAllText(_filePath, json);
+
+        var loaded = CreateStore().Load();
+
+        Assert.Empty(loaded.InfoOverrides.Entries);
+    }
+
+    [Fact]
+    public void Load_NullInfoOverrideEntries_AreDropped()
+    {
+        File.WriteAllText(_filePath, """
+            { "schemaVersion": 1, "infoOverrides": { "entries": [
+                null,
+                { "host": "h", "port": 3493, "upsName": "ups", "model": "X-1000" }
+            ] } }
+            """);
+
+        var loaded = CreateStore().Load();
+
+        var entry = Assert.Single(loaded.InfoOverrides.Entries);
+        Assert.Equal("X-1000", entry.Model);
+        Assert.Null(entry.Manufacturer);
+    }
 }

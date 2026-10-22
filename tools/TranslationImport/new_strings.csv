@@ -594,3 +594,21 @@ DisplayStyle_Digital,ru-RU,Цифровой
 DisplayStyle_Digital,uk-UA,Цифровий
 DisplayStyle_Digital,zh-CN,数字
 DisplayStyle_Digital,zh-TW,數位
+Main_InfoOverride_Edit,de-DE,Manuell eingeben
+Main_InfoOverride_Edit,fr-FR,Saisir manuellement
+Main_InfoOverride_Edit,ru-RU,Ввести вручную
+Main_InfoOverride_Edit,uk-UA,Ввести вручну
+Main_InfoOverride_Edit,zh-CN,手动输入
+Main_InfoOverride_Edit,zh-TW,手動輸入
+Main_InfoOverride_Tooltip,de-DE,Manuell eingegeben – die USV meldet diesen Wert nicht
+Main_InfoOverride_Tooltip,fr-FR,Saisi manuellement – l'UPS ne fournit pas cette valeur
+Main_InfoOverride_Tooltip,ru-RU,Введено вручную – ИБП не сообщает это значение
+Main_InfoOverride_Tooltip,uk-UA,Введено вручну – ДБЖ не повідомляє це значення
+Main_InfoOverride_Tooltip,zh-CN,手动输入 – UPS 未报告此值
+Main_InfoOverride_Tooltip,zh-TW,手動輸入 – UPS 未回報此值
+Main_InfoOverride_Watermark,de-DE,"Leer lassen, um den Eintrag zu entfernen"
+Main_InfoOverride_Watermark,fr-FR,Laisser vide pour supprimer
+Main_InfoOverride_Watermark,ru-RU,"Оставьте пустым, чтобы удалить"
+Main_InfoOverride_Watermark,uk-UA,"Залиште порожнім, щоб видалити"
+Main_InfoOverride_Watermark,zh-CN,留空可删除
+Main_InfoOverride_Watermark,zh-TW,留空可刪除

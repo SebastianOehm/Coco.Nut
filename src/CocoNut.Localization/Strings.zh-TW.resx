@@ -321,6 +321,15 @@
   <data name="Main_Gauge_Power" xml:space="preserve">
     <value>輸出功率</value>
   </data>
+  <data name="Main_InfoOverride_Edit" xml:space="preserve">
+    <value>手動輸入</value>
+  </data>
+  <data name="Main_InfoOverride_Tooltip" xml:space="preserve">
+    <value>手動輸入 – UPS 未回報此值</value>
+  </data>
+  <data name="Main_InfoOverride_Watermark" xml:space="preserve">
+    <value>留空可刪除</value>
+  </data>
   <data name="Main_Label_Firmware" xml:space="preserve">
     <value>韌體：</value>
   </data>

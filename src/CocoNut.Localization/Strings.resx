@@ -459,6 +459,18 @@ along with this program. If not, see https://www.gnu.org/licenses/.</value>
     <value>Output power</value>
     <comment>Main window: title under the output power gauge. New in Coco.Nut (WinNUT had no power gauge).</comment>
   </data>
+  <data name="Main_InfoOverride_Edit" xml:space="preserve">
+    <value>Enter manually</value>
+    <comment>Main window: tooltip and accessible name of the pencil button next to the manufacturer or model that lets the user enter or change the value by hand, because the UPS does not report it.</comment>
+  </data>
+  <data name="Main_InfoOverride_Tooltip" xml:space="preserve">
+    <value>Entered manually – the UPS does not report this value</value>
+    <comment>Main window: tooltip and accessible name of the small pencil indicator shown after a manufacturer or model that the user entered by hand instead of the UPS reporting it.</comment>
+  </data>
+  <data name="Main_InfoOverride_Watermark" xml:space="preserve">
+    <value>Leave empty to remove</value>
+    <comment>Main window: placeholder text of the text box in which the user enters the manufacturer or model by hand. Saving it empty removes the manual entry.</comment>
+  </data>
   <data name="Main_Label_Firmware" xml:space="preserve">
     <value>Firmware:</value>
     <comment>Main window: label in front of the UPS firmware version.</comment>

@@ -321,6 +321,15 @@
   <data name="Main_Gauge_Power" xml:space="preserve">
     <value>Выходная мощность</value>
   </data>
+  <data name="Main_InfoOverride_Edit" xml:space="preserve">
+    <value>Ввести вручную</value>
+  </data>
+  <data name="Main_InfoOverride_Tooltip" xml:space="preserve">
+    <value>Введено вручную – ИБП не сообщает это значение</value>
+  </data>
+  <data name="Main_InfoOverride_Watermark" xml:space="preserve">
+    <value>Оставьте пустым, чтобы удалить</value>
+  </data>
   <data name="Main_Label_Firmware" xml:space="preserve">
     <value>Прошивка:</value>
   </data>

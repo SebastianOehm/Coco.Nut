@@ -19,6 +19,8 @@ public sealed class AppSettings
     public HistorySettings History { get; set; } = new();
     /// <summary>The user-defined rules (new in Coco.Nut). The built-in stop rules are not part of this; they derive from <see cref="Power"/>.</summary>
     public ActionsSettings Actions { get; set; } = new();
+    /// <summary>Manufacturer/model the user entered for UPSes that do not report them (new in Coco.Nut).</summary>
+    public UpsInfoOverridesSettings InfoOverrides { get; set; } = new();
 }
 
 /// <summary>
@@ -31,6 +33,31 @@ public sealed class ActionsSettings
     /// <summary>The user rules, in priority order (after the built-in ones). Their stop reason is always
     /// <see cref="Shutdown.ShutdownReason.CustomRule"/>.</summary>
     public List<ActionRule> Rules { get; set; } = [];
+}
+
+/// <summary>
+/// Manufacturer and model the user typed in for UPSes that do not report them, one entry per UPS. See
+/// <see cref="UpsInfoOverrideResolver"/> for how they are looked up and applied.
+/// </summary>
+public sealed class UpsInfoOverridesSettings
+{
+    /// <summary>One entry per UPS; at most one per <see cref="History.UpsKey"/>, and never an entry with both values empty.</summary>
+    public List<UpsInfoOverride> Entries { get; set; } = [];
+}
+
+/// <summary>The manually entered manufacturer and model of one UPS, identified like <see cref="History.UpsKey"/>.</summary>
+public sealed class UpsInfoOverride
+{
+    /// <summary>NUT server host of the UPS (compared case-insensitively).</summary>
+    public string Host { get; set; } = "";
+    /// <summary>NUT server port of the UPS.</summary>
+    public int Port { get; set; } = 3493;
+    /// <summary>UPS name on the server (compared case-sensitively).</summary>
+    public string UpsName { get; set; } = "";
+    /// <summary>Manufacturer entered by the user; <see langword="null"/> when none.</summary>
+    public string? Manufacturer { get; set; }
+    /// <summary>Model entered by the user; <see langword="null"/> when none.</summary>
+    public string? Model { get; set; }
 }
 
 public sealed class ConnectionSettings

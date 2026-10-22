@@ -8,6 +8,7 @@ using CocoNut.App.Services;
 using CocoNut.App.Tests.Fakes;
 using CocoNut.App.ViewModels;
 using CocoNut.App.Views;
+using CocoNut.Core.History;
 using CocoNut.Core.Logging;
 using CocoNut.Core.Monitoring;
 using CocoNut.Core.Nut;
@@ -38,11 +39,37 @@ public class DemoScreenshotTests
     public void MainWindow_digital_display_in_dark_theme_screenshot_is_saved_to_artifacts_mainwindow_digital_dark_png() =>
         SaveMainWindowScreenshot("mainwindow-digital-dark.png", DisplayStyle.Digital, ThemeVariant.Dark);
 
-    private static void SaveMainWindowScreenshot(string fileName, DisplayStyle displayStyle, ThemeVariant? themeVariant)
+    [AvaloniaFact]
+    public void MainWindow_with_a_manual_model_screenshot_is_saved_to_artifacts_mainwindow_manual_info_png() =>
+        SaveMainWindowScreenshot("mainwindow-manual-info.png", DisplayStyle.Gauges, themeVariant: null, ManualInfo, ManualModel);
+
+    [AvaloniaFact]
+    public void MainWindow_with_a_manual_model_in_dark_theme_screenshot_is_saved_to_artifacts_mainwindow_manual_info_dark_png() =>
+        SaveMainWindowScreenshot("mainwindow-manual-info-dark.png", DisplayStyle.Gauges, ThemeVariant.Dark, ManualInfo, ManualModel);
+
+    [AvaloniaFact]
+    public void MainWindow_editing_a_manual_manufacturer_screenshot_is_saved_to_artifacts_mainwindow_manual_info_editing_png() =>
+        SaveMainWindowScreenshot(
+            "mainwindow-manual-info-editing.png", DisplayStyle.Gauges, themeVariant: null, ManualInfo, ManualModel,
+            vm =>
+            {
+                vm.Manufacturer.BeginEditCommand.Execute(null);
+                vm.Manufacturer.EditText = "Eaton";
+            });
+
+    private static readonly UpsInfo ManualInfo = new("Unknown", "Unknown", "SN-000123", "CR01");
+
+    private static void ManualModel(AppSettings settings) =>
+        UpsInfoOverrideResolver.SetOverride(settings, new UpsKey("nutserver", 3493, "ups"), UpsInfoField.Model, "Ellipse PRO 1200");
+
+    private static void SaveMainWindowScreenshot(
+        string fileName, DisplayStyle displayStyle, ThemeVariant? themeVariant,
+        UpsInfo? info = null, Action<AppSettings>? configureSettings = null, Action<MainWindowViewModel>? arrange = null)
     {
-        var monitor = new FakeUpsMonitorEvents { Info = new UpsInfo("CyberPower", "CP1500PFCLCD", "SN-000123", "CR01") };
+        var monitor = new FakeUpsMonitorEvents { Info = info ?? new UpsInfo("CyberPower", "CP1500PFCLCD", "SN-000123", "CR01") };
         var settingsStore = new InMemorySettingsStore();
         settingsStore.Settings.General.DisplayStyle = displayStyle;
+        configureSettings?.Invoke(settingsStore.Settings);
         var settingsService = new SettingsService(settingsStore, settingsStore.Settings);
         var vm = new MainWindowViewModel(
             monitor,
@@ -70,6 +97,7 @@ public class DemoScreenshotTests
             LoadPercent = 32,
             OutputPowerWatts = 210,
         });
+        arrange?.Invoke(vm);
 
         var window = new MainWindow(settingsService, requestExit: null) { DataContext = vm };
         if (themeVariant is not null)

@@ -327,6 +327,15 @@
   <data name="Main_Gauge_Power" xml:space="preserve">
     <value>Ausgangsleistung</value>
   </data>
+  <data name="Main_InfoOverride_Edit" xml:space="preserve">
+    <value>Manuell eingeben</value>
+  </data>
+  <data name="Main_InfoOverride_Tooltip" xml:space="preserve">
+    <value>Manuell eingegeben – die USV meldet diesen Wert nicht</value>
+  </data>
+  <data name="Main_InfoOverride_Watermark" xml:space="preserve">
+    <value>Leer lassen, um den Eintrag zu entfernen</value>
+  </data>
   <data name="Main_Label_Firmware" xml:space="preserve">
     <value>Firmware:</value>
   </data>

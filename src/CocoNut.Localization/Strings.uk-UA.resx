@@ -324,6 +324,15 @@
   <data name="Main_Gauge_Power" xml:space="preserve">
     <value>Вихідна потужність</value>
   </data>
+  <data name="Main_InfoOverride_Edit" xml:space="preserve">
+    <value>Ввести вручну</value>
+  </data>
+  <data name="Main_InfoOverride_Tooltip" xml:space="preserve">
+    <value>Введено вручну – ДБЖ не повідомляє це значення</value>
+  </data>
+  <data name="Main_InfoOverride_Watermark" xml:space="preserve">
+    <value>Залиште порожнім, щоб видалити</value>
+  </data>
   <data name="Main_Label_Firmware" xml:space="preserve">
     <value>Прошивка:</value>
   </data>

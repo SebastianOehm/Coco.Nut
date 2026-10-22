@@ -10,6 +10,90 @@
         Width="980" Height="760" MinWidth="720" MinHeight="520"
         WindowStartupLocation="CenterScreen"
         Title="{x:Static loc:Strings.AppName}">
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <!-- Accent of a manually entered manufacturer/model; distinct from the text color and legible on both backgrounds. -->
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="UpsInfoOverrideBrush" Color="#C2410C" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="UpsInfoOverrideBrush" Color="#FDBA74" />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+
+      <StreamGeometry x:Key="PencilIcon">M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.13,5.12L18.88,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z</StreamGeometry>
+      <!-- A person with a pencil: the value was entered by the user, not reported by the UPS. -->
+      <StreamGeometry x:Key="UserEditIcon">M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z</StreamGeometry>
+      <StreamGeometry x:Key="CheckIcon">M9,16.17L4.83,12L3.41,13.41L9,19L21,7L19.59,5.59L9,16.17Z</StreamGeometry>
+      <StreamGeometry x:Key="CloseIcon">M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z</StreamGeometry>
+
+      <!-- Manufacturer/model line: the text with an edit button, or the inline editor. While the value is a manual entry the text is
+           italic and the button shows the accent-colored person-with-pencil "entered manually" indicator (a different shape, not
+           just a different color); clicking it edits the entry. -->
+      <DataTemplate x:Key="UpsInfoFieldTemplate" x:DataType="vm:UpsInfoFieldViewModel">
+        <Panel>
+          <Grid ColumnDefinitions="*,Auto" ColumnSpacing="2" IsVisible="{Binding !IsEditing}">
+            <TextBlock Grid.Column="0" Text="{Binding Text}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                       Classes.overridden="{Binding IsOverridden}" />
+            <Button Grid.Column="1" Classes="infoIcon" Classes.overridden="{Binding IsOverridden}"
+                    IsVisible="{Binding CanOverride}" Command="{Binding BeginEditCommand}">
+              <Panel>
+                <PathIcon Classes="plainIcon" Data="{StaticResource PencilIcon}" IsVisible="{Binding !IsOverridden}" />
+                <PathIcon Classes="userEditIcon" Data="{StaticResource UserEditIcon}" IsVisible="{Binding IsOverridden}" />
+              </Panel>
+            </Button>
+          </Grid>
+          <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="2" IsVisible="{Binding IsEditing}"
+                controls:FocusWhenVisible.IsEnabled="True">
+            <TextBox Grid.Column="0" Text="{Binding EditText}" MaxLength="{x:Static vm:UpsInfoFieldViewModel.MaxLength}"
+                     Watermark="{x:Static loc:Strings.Main_InfoOverride_Watermark}"
+                     AutomationProperties.Name="{x:Static loc:Strings.Main_InfoOverride_Edit}"
+                     MinHeight="26" Padding="6,2" VerticalContentAlignment="Center">
+              <TextBox.KeyBindings>
+                <KeyBinding Gesture="Enter" Command="{Binding SaveEditCommand}" />
+                <KeyBinding Gesture="Escape" Command="{Binding CancelEditCommand}" />
+              </TextBox.KeyBindings>
+            </TextBox>
+            <Button Grid.Column="1" Classes="infoIcon" Command="{Binding SaveEditCommand}"
+                    ToolTip.Tip="{x:Static loc:Strings.Common_Save}" AutomationProperties.Name="{x:Static loc:Strings.Common_Save}">
+              <PathIcon Data="{StaticResource CheckIcon}" />
+            </Button>
+            <Button Grid.Column="2" Classes="infoIcon" Command="{Binding CancelEditCommand}"
+                    ToolTip.Tip="{x:Static loc:Strings.Common_Cancel}" AutomationProperties.Name="{x:Static loc:Strings.Common_Cancel}">
+              <PathIcon Data="{StaticResource CloseIcon}" />
+            </Button>
+          </Grid>
+        </Panel>
+      </DataTemplate>
+    </ResourceDictionary>
+  </Window.Resources>
+  <Window.Styles>
+    <Style Selector="Button.infoIcon">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="4" />
+      <Setter Property="MinWidth" Value="0" />
+      <Setter Property="MinHeight" Value="0" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="ToolTip.Tip" Value="{x:Static loc:Strings.Main_InfoOverride_Edit}" />
+      <Setter Property="AutomationProperties.Name" Value="{x:Static loc:Strings.Main_InfoOverride_Edit}" />
+    </Style>
+    <Style Selector="Button.infoIcon PathIcon">
+      <Setter Property="Width" Value="14" />
+      <Setter Property="Height" Value="14" />
+    </Style>
+    <Style Selector="Button.infoIcon.overridden">
+      <Setter Property="ToolTip.Tip" Value="{x:Static loc:Strings.Main_InfoOverride_Tooltip}" />
+      <Setter Property="AutomationProperties.Name" Value="{x:Static loc:Strings.Main_InfoOverride_Tooltip}" />
+    </Style>
+    <Style Selector="TextBlock.overridden">
+      <Setter Property="FontStyle" Value="Italic" />
+    </Style>
+    <Style Selector="Button.infoIcon.overridden PathIcon">
+      <Setter Property="Foreground" Value="{DynamicResource UpsInfoOverrideBrush}" />
+    </Style>
+  </Window.Styles>
   <Grid RowDefinitions="Auto,*,200">
     <Menu Grid.Row="0">
       <MenuItem Header="{x:Static loc:Strings.Main_Menu_File}">
@@ -40,10 +124,10 @@
         <StackPanel Grid.Column="0" Spacing="12" Margin="0,0,12,0">
           <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="4" Padding="10">
             <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="4" ColumnSpacing="6">
-              <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Manufacturer}" />
-              <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ManufacturerText}" TextTrimming="CharacterEllipsis" />
-              <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Model}" />
-              <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ModelText}" TextTrimming="CharacterEllipsis" />
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Manufacturer}" VerticalAlignment="Center" />
+              <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding Manufacturer}" ContentTemplate="{StaticResource UpsInfoFieldTemplate}" />
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Model}" VerticalAlignment="Center" />
+              <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding Model}" ContentTemplate="{StaticResource UpsInfoFieldTemplate}" />
               <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Serial}" />
               <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SerialText}" TextTrimming="CharacterEllipsis" />
               <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.Main_Label_Firmware}" />

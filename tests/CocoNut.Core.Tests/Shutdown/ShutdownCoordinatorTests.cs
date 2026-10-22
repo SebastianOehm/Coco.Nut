@@ -21,6 +21,10 @@ public class ShutdownCoordinatorTests
         /// clears itself so a later call succeeds normally.</summary>
         public Exception? ThrowOnExecute { get; set; }
 
+        /// <summary>When set, <see cref="ExecuteAsync"/> records the execution and then stays in progress until this
+        /// source is completed, so a test can hold the coordinator's "already executing" guard.</summary>
+        public TaskCompletionSource? Gate { get; set; }
+
         public bool IsSupported(StopAction action) => true;
 
         public Task ExecuteAsync(StopAction action, CancellationToken cancellationToken = default)
@@ -33,7 +37,7 @@ public class ShutdownCoordinatorTests
             }
 
             Executions.Add(action);
-            return Task.CompletedTask;
+            return Gate?.Task ?? Task.CompletedTask;
         }
     }
 
@@ -306,13 +310,18 @@ public class ShutdownCoordinatorTests
         await PushReadingAsync(h, "OB", "10");
         await h.Pending.NextAsync();
 
-        // _executed is set synchronously as the very first step of ExecuteAsync, before either call reaches a real
-        // await, so calling this twice without awaiting in between still deterministically exercises the guard.
+        // The guard is reset when an execution ends, and the fake action completes immediately, so without a gate the
+        // first execution could finish on the thread pool before the second call is made and the second one would
+        // then legitimately run again. Holding the action open keeps the first execution provably in progress.
+        h.PowerActions.Gate = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var first = h.Coordinator.ExecuteNowAsync();
-        var second = h.Coordinator.ExecuteNowAsync();
-        await Task.WhenAll(first, second);
-
         await h.PowerActions.Executions.NextAsync();
+
+        await h.Coordinator.ExecuteNowAsync(); // returns without executing: the first execution is still running
+
+        h.PowerActions.Gate.SetResult();
+        await first;
+
         await h.PowerActions.Executions.AssertNoneAsync();
     }
 
