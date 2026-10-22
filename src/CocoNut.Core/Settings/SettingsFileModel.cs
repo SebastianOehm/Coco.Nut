@@ -24,6 +24,9 @@ public sealed class SettingsFileModel
 
     /// <summary>Optional and additive: files written before it existed simply lack it (no schema version bump).</summary>
     public ActionsSettings Actions { get; set; } = new();
+
+    /// <summary>Optional and additive like <see cref="Actions"/>: files written before it existed simply lack it.</summary>
+    public UpsInfoOverridesSettings InfoOverrides { get; set; } = new();
 }
 
 /// <summary>Mirrors <see cref="ConnectionSettings"/> but stores the username/password protected on disk.</summary>
