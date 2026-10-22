@@ -24,8 +24,8 @@ is done) and the change log.
 - Live monitoring of UPS values (input/output voltage, load, frequency, battery voltage, battery charge, estimated
   runtime) on gauge and bar controls, or as a digital read-out with large numbers and a colored status strip
   (Settings > Misc or the View menu)
-- Manufacturer and model can be entered by hand when the UPS does not report them; a small pencil marks the value as
-  manually entered
+- Manufacturer and model can be entered by hand when the UPS does not report them; italic text and a person-with-pencil
+  symbol mark the value as manually entered
 - Desktop notifications on power/status changes (power lost/restored, low battery, forced shutdown, connection
   lost/restored)
 - Actions system: user-defined rules (Settings > Rules) fire when a status flag changes, a value crosses a threshold,

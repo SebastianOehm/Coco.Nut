@@ -23,18 +23,25 @@
       </ResourceDictionary.ThemeDictionaries>
 
       <StreamGeometry x:Key="PencilIcon">M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.13,5.12L18.88,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z</StreamGeometry>
+      <!-- A person with a pencil: the value was entered by the user, not reported by the UPS. -->
+      <StreamGeometry x:Key="UserEditIcon">M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z</StreamGeometry>
       <StreamGeometry x:Key="CheckIcon">M9,16.17L4.83,12L3.41,13.41L9,19L21,7L19.59,5.59L9,16.17Z</StreamGeometry>
       <StreamGeometry x:Key="CloseIcon">M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z</StreamGeometry>
 
-      <!-- Manufacturer/model line: the text with a pencil button, or the inline editor. While the value is a manual entry the
-           pencil is the accent-colored "entered manually" indicator; clicking it edits the entry. -->
+      <!-- Manufacturer/model line: the text with an edit button, or the inline editor. While the value is a manual entry the text is
+           italic and the button shows the accent-colored person-with-pencil "entered manually" indicator (a different shape, not
+           just a different color); clicking it edits the entry. -->
       <DataTemplate x:Key="UpsInfoFieldTemplate" x:DataType="vm:UpsInfoFieldViewModel">
         <Panel>
           <Grid ColumnDefinitions="*,Auto" ColumnSpacing="2" IsVisible="{Binding !IsEditing}">
-            <TextBlock Grid.Column="0" Text="{Binding Text}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="0" Text="{Binding Text}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                       Classes.overridden="{Binding IsOverridden}" />
             <Button Grid.Column="1" Classes="infoIcon" Classes.overridden="{Binding IsOverridden}"
                     IsVisible="{Binding CanOverride}" Command="{Binding BeginEditCommand}">
-              <PathIcon Data="{StaticResource PencilIcon}" />
+              <Panel>
+                <PathIcon Classes="plainIcon" Data="{StaticResource PencilIcon}" IsVisible="{Binding !IsOverridden}" />
+                <PathIcon Classes="userEditIcon" Data="{StaticResource UserEditIcon}" IsVisible="{Binding IsOverridden}" />
+              </Panel>
             </Button>
           </Grid>
           <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="2" IsVisible="{Binding IsEditing}"
@@ -73,12 +80,15 @@
       <Setter Property="AutomationProperties.Name" Value="{x:Static loc:Strings.Main_InfoOverride_Edit}" />
     </Style>
     <Style Selector="Button.infoIcon PathIcon">
-      <Setter Property="Width" Value="12" />
-      <Setter Property="Height" Value="12" />
+      <Setter Property="Width" Value="14" />
+      <Setter Property="Height" Value="14" />
     </Style>
     <Style Selector="Button.infoIcon.overridden">
       <Setter Property="ToolTip.Tip" Value="{x:Static loc:Strings.Main_InfoOverride_Tooltip}" />
       <Setter Property="AutomationProperties.Name" Value="{x:Static loc:Strings.Main_InfoOverride_Tooltip}" />
+    </Style>
+    <Style Selector="TextBlock.overridden">
+      <Setter Property="FontStyle" Value="Italic" />
     </Style>
     <Style Selector="Button.infoIcon.overridden PathIcon">
       <Setter Property="Foreground" Value="{DynamicResource UpsInfoOverrideBrush}" />

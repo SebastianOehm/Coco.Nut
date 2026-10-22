@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Avalonia.LogicalTree;
@@ -140,6 +141,12 @@ public class MainWindowSmokeTests
         Assert.True(indicator.IsEffectivelyVisible);
         Assert.NotNull(indicator.Command);
         Assert.Empty(VisibleButtons(window, Strings.Main_InfoOverride_Edit));
+
+        // The marker differs by shape (person with pencil), not only by color, and the manual value is italic.
+        var icon = Assert.Single(VisibleIcons(indicator));
+        Assert.Contains("userEditIcon", icon.Classes);
+        Assert.Equal(FontStyle.Italic, VisibleTextBlocks(window).First(t => t.Text == "X-1000").FontStyle);
+        Assert.Equal(FontStyle.Normal, VisibleTextBlocks(window).First(t => t.Text == "Acme").FontStyle);
     }
 
     [AvaloniaFact]
@@ -150,6 +157,11 @@ public class MainWindowSmokeTests
         Assert.Equal(2, VisibleButtons(window, Strings.Main_InfoOverride_Edit).Count);
         Assert.Empty(VisibleButtons(window, Strings.Main_InfoOverride_Tooltip));
         Assert.Contains(Strings.Common_Unavailable, VisibleTextBlocks(window).Select(t => t.Text));
+        Assert.All(VisibleButtons(window, Strings.Main_InfoOverride_Edit), b =>
+        {
+            Assert.Contains("plainIcon", Assert.Single(VisibleIcons(b)).Classes);
+        });
+        Assert.All(VisibleTextBlocks(window).Where(t => t.Text == Strings.Common_Unavailable), t => Assert.Equal(FontStyle.Normal, t.FontStyle));
     }
 
     [AvaloniaFact]
@@ -196,6 +208,9 @@ public class MainWindowSmokeTests
         Assert.Contains("Acme Corp", VisibleTextBlocks(window).Select(t => t.Text));
         Assert.Single(VisibleButtons(window, Strings.Main_InfoOverride_Tooltip));
     }
+
+    private static List<PathIcon> VisibleIcons(Button button) =>
+        button.GetVisualDescendants().OfType<PathIcon>().Where(i => i.IsEffectivelyVisible).ToList();
 
     private static List<Button> VisibleButtons(Window window, string automationName) =>
         window.GetVisualDescendants().OfType<Button>()

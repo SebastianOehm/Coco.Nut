@@ -63,8 +63,9 @@ Follow-ups:
 ### 2026-10-21 – 0.3.2: Manual manufacturer and model
 * When the UPS reports no manufacturer or model (nothing, an empty value or NUT's "Unknown"), the main window shows
   "Unavailable" with a pencil button; the user can enter the value in place (Enter saves, Escape cancels, an empty
-  entry removes it). A manually entered value is followed by a small accent-colored pencil ("Entered manually – the UPS
-  does not report this value"), which is also the button to change or clear it. A value the UPS reports always wins,
+  entry removes it). A manually entered value is shown in italics, and the button next to it changes from the plain pencil to
+  an accent-colored person-with-pencil symbol ("Entered manually – the UPS does not report this value") so the marker
+  differs by shape, not only by color; it is also the button to change or clear the entry. A value the UPS reports always wins,
   is shown plainly and cannot be edited; manufacturer and model are handled independently. Serial number and firmware
   are unchanged.
 * Stored per UPS (host, port and UPS name, like the history) as `infoOverrides.entries` in the settings file; files
