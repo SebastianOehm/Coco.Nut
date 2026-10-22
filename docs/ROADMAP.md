@@ -60,7 +60,7 @@ Follow-ups:
 
 ## Change log
 
-### 2026-10-21 – 0.3.2: Manual manufacturer and model
+### 2026-10-22 – 0.3.2: Manual manufacturer and model
 * When the UPS reports no manufacturer or model (nothing, an empty value or NUT's "Unknown"), the main window shows
   "Unavailable" with a pencil button; the user can enter the value in place (Enter saves, Escape cancels, an empty
   entry removes it). A manually entered value is shown in italics, and the button next to it changes from the plain pencil to
